@@ -1,0 +1,149 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Creates a menu bar.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function menu_bar_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'menu_bar/menu',
+      'access' => user_access('view menu bar'),
+      'callback' => 'menu_bar_get_menu',
+      'type' => MENU_CALLBACK
+    );
+    
+    $items[] = array(
+      'path' => 'admin/settings/menu_bar',
+      'title' => t('menu bar'),
+      'description' => t('Set which menus should appear in the menu bar.'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('menu_bar_admin_settings'),
+      'access' => user_access('administer menu bar')
+    );
+  }
+  
+  elseif (user_access('view menu bar')) {
+    $path = drupal_get_path('module', 'menu_bar');
+    // Add the CSS for this module
+    // We put this in !$may_cache so it's only added once per request
+    drupal_add_css($path .'/menu_bar.css');
+  
+    // pass in base path to the JS file
+    drupal_add_js(array('menu_bar' => array('basePath' => base_path())), 'setting');
+    drupal_add_js($path .'/menu_bar.js');
+  }
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function menu_bar_perm() {
+  return array('view menu bar', 'administer menu bar');
+}
+
+/**
+ * Menu bar settings page
+ */
+function menu_bar_admin_settings() {
+  $form['default_menu']['menu_bar_menu'] = array(
+    '#type' => 'select',
+    '#title' => t('Menu'),
+    '#options' => menu_get_root_menus(),
+    '#default_value' => variable_get('menu_bar_menu', 1),
+    '#description' => t('Select the menu to display in the menu bar.')
+  );
+  
+  $form['default_menu']['menu_bar_devel'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add devel module links'),
+    '#default_value' => variable_get('menu_bar_devel', 0),
+    '#description' => t('Add devel module links for those users that can access the devel module.')
+  );
+  
+  return system_settings_form($form);
+}
+
+/**
+ * Return a list of devel module links if the module is enabled
+ * and the user has access to this module
+ */
+function menu_bar_get_devel() {
+  $output = '';
+  
+  if (variable_get('menu_bar_devel', 0) && module_exists('devel')) {
+    if (user_access('access devel information')) {
+      $links[] = l('module settings', 'admin/settings/devel');
+      $links[] = l('empty cache', 'devel/cache/clear');
+      $links[] = l('phpinfo()', 'devel/phpinfo');
+      $links[] = l('reinstall modules', 'devel/reinstall');
+      $links[] = l('reset menus', 'devel/menu/reset');
+      $links[] = l('variable viewer', 'devel/variable');
+      $links[] = l('session viewer', 'devel/session');
+
+      if (function_exists('devel_node_access_perm') && user_access(DNA_ACCESS_VIEW)) {
+        // True only if devel_node_access enabled.
+        $links[] = l('node_access summary', 'devel/node_access/summary');
+      }
+    
+      $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('devel module') .'</a><ul>';
+      $output .= '<li class="leaf">'. implode($links, '</li><li class="leaf">') .'</li>';
+      $output .= '</ul></li>';
+    }
+  }
+  
+  return $output;
+}
+
+/**
+ * Custom implementation of menu_tree()
+ * We want to retrieve the entire menu structure for a given menu,
+ * regardless of whether or not the menu item is expanded or not.
+ */
+function menu_bar_menu_tree($pid = 1) {
+  $menu = menu_get_menu();
+  $output = '';
+
+  if (isset($menu['visible'][$pid]) && $menu['visible'][$pid]['children']) {
+    foreach ($menu['visible'][$pid]['children'] as $mid) {
+      $type = isset($menu['visible'][$mid]['type']) ? $menu['visible'][$mid]['type'] : NULL;
+      $children = isset($menu['visible'][$mid]['children']) ? $menu['visible'][$mid]['children'] : NULL;
+      $output .= theme('menu_item', $mid, menu_bar_theme_menu_tree($mid), count($children) == 0);
+    }
+  }
+
+  return $output;
+}
+
+/**
+ * Custom implementation of theme_menu_tree() to call our custom menu above
+ */
+function menu_bar_theme_menu_tree($pid = 1) {
+  if ($tree = menu_bar_menu_tree($pid)) {
+    return '<ul>'. $tree .'</ul>';
+  }
+}
+
+/**
+ * AJAX menu callback to return an HTML list of links for a given menu
+ */
+function menu_bar_get_menu() {
+  $menu = menu_bar_menu_tree(variable_get('menu_bar_menu', 1));
+  
+  if (!$menu) {
+    $menu = '<li><a href="'. url('admin/settings/menu_bar') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
+  }
+  
+  print menu_bar_get_devel();
+  print $menu;
+  exit;
+}

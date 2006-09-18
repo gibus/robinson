@@ -1,0 +1,4 @@
+; $Id$
+name = Menu bar
+description = Creates a menu bar that is displayed at the top of every page.
+

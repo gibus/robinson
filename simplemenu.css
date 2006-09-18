@@ -1,0 +1,72 @@
+/* $Id$ */
+
+ul#menubar,ul#menubar ul,ul#menubar li,ul#menubar a {
+color:#333;
+display:block;
+list-style:none;
+margin:0;
+padding:0;
+z-index:48;
+}
+
+ul#menubar {
+background:#eee;
+border-bottom:1px solid #a3a3a3;
+font:10px Arial, Helvetica, sans-serif;
+left:0;
+position:fixed;
+top:0;
+width:100%;
+}
+
+ul#menubar li {
+float:left;
+}
+
+ul#menubar li a {
+background:#ccc;
+border-right:1px solid #a3a3a3;
+font-weight:400;
+padding:0.3em 0.6em;
+text-decoration:none;
+}
+
+ul#menubar li:hover > a {
+background:orange;
+}
+
+ul#menubar ul li a {
+border:none;
+width:11em;
+}
+
+ul#menubar li.leaf {
+background:#eee url(bullet_go.gif) no-repeat 0.2em;
+padding-left:2em;
+}
+
+ul#menubar li.expanded {
+background:#eee url(folder.gif) no-repeat 0.2em;
+padding-left:2em;
+}
+
+ul#menubar li ul {
+background:#ccc;
+border:1px solid #a3a3a3;
+left:9999px;
+position:absolute;
+width:15em;
+z-index:24;
+}
+
+ul#menubar li ul ul {
+margin:0 0 0 3em;
+}
+
+ul#menubar li:hover ul ul,ul#menubar li:hover ul ul ul,ul#menubar li.sfhover ul ul,ul#menubar li.sfhover ul ul ul {
+left:9999px;
+}
+
+ul#menubar li:hover ul,ul#menubar li li:hover ul,ul#menubar li li li:hover ul,ul#menubar li.sfhover ul,ul#menubar li li.sfhover ul,ul#menubar li li li.sfhover ul {
+left:auto;
+}
