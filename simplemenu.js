@@ -9,9 +9,9 @@ $(document).ready(function() {
   
   // Drupal menu callback
   $('#menubar').load(basePath + 'menu_bar/menu', function() {
-      $('li', this).hover(function() {
-        $('ul', this).slideDown(200);
-      }, function() { }
-    );
+    $('li', this).hover(function() {
+      $('ul', this).slideDown(200);
+    }, function() {});
+    $('a', this).title('');
   });
 });
