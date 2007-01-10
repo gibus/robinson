@@ -53,7 +53,7 @@ padding-left:2em;
 ul#menubar li ul {
 background:#ccc;
 border:1px solid #a3a3a3;
-left:9999px;
+left:-9999px;
 position:absolute;
 width:15em;
 z-index:24;
@@ -64,7 +64,7 @@ margin:0 0 0 3em;
 }
 
 ul#menubar li:hover ul ul,ul#menubar li:hover ul ul ul,ul#menubar li.sfhover ul ul,ul#menubar li.sfhover ul ul ul {
-left:9999px;
+left:-9999px;
 }
 
 ul#menubar li:hover ul,ul#menubar li li:hover ul,ul#menubar li li li:hover ul,ul#menubar li.sfhover ul,ul#menubar li li.sfhover ul,ul#menubar li li li.sfhover ul {
