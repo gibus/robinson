@@ -14,7 +14,7 @@ background:#eee;
 border-bottom:1px solid #a3a3a3;
 font:12px Arial, Helvetica, sans-serif;
 left:0;
-position:fixed;
+position:static;
 top:0;
 width:100%;
 }

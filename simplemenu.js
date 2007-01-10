@@ -5,7 +5,7 @@ $(document).ready(function() {
   var basePath = Drupal.settings.menu_bar.basePath;
   
   // insert extra <br /> so menu doesn't overlap theme
-  $('body').prepend('<ul id="menubar"></ul><br />');
+  $('body').prepend('<ul id="menubar" class="clear-block"></ul>');
   
   // Drupal menu callback
   $('#menubar').load(basePath + 'menu_bar/menu', function() {
