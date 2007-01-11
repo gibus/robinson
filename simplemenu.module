@@ -95,7 +95,7 @@ function simplemenu_get_devel() {
         $links[] = l('node_access summary', 'devel/node_access/summary');
       }
     
-      $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('devel module') .'</a><ul>';
+      $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('Devel module') .'</a><ul>';
       $output .= '<li class="leaf">'. implode($links, '</li><li class="leaf">') .'</li>';
       $output .= '</ul></li>';
     }
