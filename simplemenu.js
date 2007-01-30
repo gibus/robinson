@@ -3,9 +3,22 @@
 $(document).ready(function() {
   // get the Drupal basepath
   var basePath = Drupal.settings.simplemenu.basePath;
-                              
-  // insert extra <br /> so menu doesn't overlap theme
-  $('<ul id="simplemenu" class="clear-block"></ul>').prependTo('body');
+  // get the element to add the menu to
+  var element = Drupal.settings.simplemenu.element;                        
+  var menu = '<ul id="simplemenu" class="clear-block"></ul>';
+  
+  switch (Drupal.settings.simplemenu.placement) {
+    case 'prepend':
+      $(menu).prependTo(element);
+      break;
+    case 'append':
+      $(menu).appendTo(element);
+      break;
+    case 'replace':
+      $(element).html(menu);
+      break;
+  }  
+  
   $('body').css('margin-top', '23px');
   
   // Drupal menu callback
