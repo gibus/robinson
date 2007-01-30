@@ -6,6 +6,7 @@ $(document).ready(function() {
                               
   // insert extra <br /> so menu doesn't overlap theme
   $('<ul id="simplemenu" class="clear-block"></ul>').prependTo('body');
+  $('body').css('margin-top', '23px');
   
   // Drupal menu callback
   $('#simplemenu').load(basePath + 'simplemenu/menu', function() {
