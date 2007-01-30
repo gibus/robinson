@@ -38,11 +38,16 @@ width:11em;
 }
 
 ul#simplemenu li.expanded > a {
-background:#ddd url(bullet_go.gif) no-repeat 97%;
+background:#ddd url(right-green.gif) no-repeat 97%;
+}
+
+ul#simplemenu li.root > a {
+font-weight:bold;
+background:#ddd url(down-green.gif) no-repeat 97%;
 }
 
 ul#simplemenu li:hover > a {
-background-color:#2662F1;
+background-color:#3875d7;
 color:#fff;
 }
 

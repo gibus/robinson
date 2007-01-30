@@ -27,5 +27,6 @@ $(document).ready(function() {
       $('ul', this).slideDown(200);
     }, function() {});
     $('a', this).title('');
+    $(this).children('li.expanded').addClass('root');
   });
 });
