@@ -29,9 +29,18 @@ function simplemenu_menu($may_cache) {
       'access' => user_access('administer simplemenu')
     );
   }
-  
-  // We put this in !$may_cache so it's only added once per request
-  elseif (user_access('view simplemenu')) {
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_footer()
+ */
+function simplemenu_footer() {
+  global $theme;
+  $exclusions = variable_get('simplemenu_exclusions', array());
+  if (user_access('view simplemenu') && !$exclusions[$theme]) {
+    global $theme, $custom_theme;
     $path = drupal_get_path('module', 'simplemenu');
     drupal_add_css($path .'/simplemenu.css');  
     
@@ -46,8 +55,6 @@ function simplemenu_menu($may_cache) {
     drupal_add_js(array('simplemenu' => $settings), 'setting');
     drupal_add_js($path .'/simplemenu.js');
   }
-
-  return $items;
 }
 
 /**
@@ -98,6 +105,14 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_element_method', 'prepend'),
     '#description' => t('Choose how the menu should be attached to the above selector.'),
     '#required' => TRUE
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_exclusions'] = array(
+    '#type' => 'checkboxes',
+    '#title' => 'Theme exclusions', 
+    '#options' => drupal_map_assoc(array_keys(list_themes())),
+    '#default_value' => variable_get('simplemenu_exclusions', array()),
+    '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
   );
   
   return system_settings_form($form);
