@@ -19,7 +19,7 @@ Icons from: http://www.famfamfam.com/
 
 1. Place simplemenu folder in your modules directory
 
-2. Enable "SimpleMenu" under administer > site configuration > modules
+2. Enable "SimpleMenu" under administer > site building > modules
 
 3. Enable access to "view simplemenu" under administer > user management > access control
 
