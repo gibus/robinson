@@ -42,7 +42,11 @@ function simplemenu_footer() {
   if (user_access('view simplemenu') && !$exclusions[$theme]) {
     global $theme, $custom_theme;
     $path = drupal_get_path('module', 'simplemenu');
-    drupal_add_css($path .'/simplemenu.css');  
+    drupal_add_css($path .'/simplemenu.css');
+    
+    if (variable_get('simplemenu_rtl', 0)) {
+      drupal_add_css($path .'/simplemenu_rtl.css');
+    }
     
     $settings = array(                       
       // pass in base path to the JS file
@@ -113,6 +117,13 @@ function simplemenu_admin_settings() {
     '#options' => drupal_map_assoc(array_keys(list_themes())),
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
+  );   
+  
+  $form['default_menu']['advanced']['simplemenu_rtl'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Set menu orientation to RTL'),
+    '#default_value' => variable_get('simplemenu_rtl', 0),
+    '#description' => t('Set the orientation of the menu to RTL for Eastern languages.')
   );
   
   return system_settings_form($form);

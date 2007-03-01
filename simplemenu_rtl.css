@@ -1,0 +1,20 @@
+/* $Id$ */
+                               
+ul#simplemenu li {
+float:right;
+border-right:1px solid #eee;
+border-left:1px solid #999;  
+}
+
+ul#simplemenu li.expanded > a {
+background:#ddd url(left-green.gif) no-repeat 97%;
+}     
+
+ul#simplemenu li.root > a {
+font-weight:bold;
+background:#ddd url(down-green.gif) no-repeat 97%;
+}  
+
+ul#simplemenu li:hover ul,ul#simplemenu li li:hover ul,ul#simplemenu li li li:hover ul,ul#simplemenu li.sfhover ul,ul#simplemenu li li.sfhover ul,ul#simplemenu li li li.sfhover ul {
+right:auto;
+}
