@@ -3,7 +3,7 @@
 
 --- README  -------------------------------------------------------------
 
-SimpleMenu, Version 2.0
+SimpleMenu, Version 2.1
 
 Written by Ted Serbinski, aka, m3avrck
   hello@tedserbinski.com
