@@ -138,19 +138,20 @@ function simplemenu_get_devel() {
   
   if (variable_get('simplemenu_devel', 0) && module_exists('devel')) {
     if (user_access('access devel information')) {
-      $links[] = l('module settings', 'admin/settings/devel');
-      $links[] = l('empty cache', 'devel/cache/clear');
-      $links[] = l('phpinfo()', 'devel/phpinfo');
-      $links[] = l('reinstall modules', 'devel/reinstall');
-      $links[] = l('reset menus', 'devel/menu/reset');
-      $links[] = l('variable viewer', 'devel/variable');
-      $links[] = l('session viewer', 'devel/session');
+      $links[] = l('Devel settings', 'admin/settings/devel', array('title' => t('Adjust module settings for devel module')));
+      $links[] = l('Empty cache', 'devel/cache/clear', array('title' => t('Clear the database cache tables which store page, menu, node, and variable caches.')), drupal_get_destination());
+      $links[] = l('Phpinfo()', 'admin/logs/status/php');
+      $links[] = l('Function reference', 'devel/reference', array('title' => t('View a list of currently defined user functions with documentation links')));
+      $links[] = l('Reinstall modules', 'devel/reinstall', array('title' => t('Re-run hook_install() for a given module')));
+      $links[] = l('Reset menus', 'devel/menu/reset', array('title' => t('Resets all menu items to their default settings')));
+      $links[] = l('Variable editor', 'devel/variable', array('title' => t('Edit and delete site variables')));
+      $links[] = l('Session viewer', 'devel/session', array('title' => t('List the contents of $_SESSION')));
 
       if (function_exists('devel_node_access_perm') && user_access(DNA_ACCESS_VIEW)) {
         // True only if devel_node_access enabled.
-        $links[] = l('node_access summary', 'devel/node_access/summary');
+        $links[] = l('Node access summary', 'devel/node_access/summary');
       }
-    
+  
       $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('Devel module') .'</a><ul>';
       $output .= '<li class="leaf">'. implode($links, '</li><li class="leaf">') .'</li>';
       $output .= '</ul></li>';
