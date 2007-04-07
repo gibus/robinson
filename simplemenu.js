@@ -22,17 +22,21 @@ $(document).ready(function() {
   $('body').css('margin-top', '20px');
   
   // Build menu        
-  $('#simplemenu').append(simplemenu).children('li.expanded').addClass('root').superfish({
-		animation : { opacity:"show", delay: 750 }
-	})
-	.find(">li[ul]")
-		.mouseover(function(){
-			$("ul", this).bgIframe({opacity:false});
-		})
-		.find("a")
-			.focus(function(){
-				$("ul", $("#simplemenu>li[ul]")).bgIframe({opacity:false});
-			});    
+  $('#simplemenu')
+    .append(simplemenu)
+    .superfish({
+		  hoverClass	: "sfhover", animation : { opacity:"show", delay: 750 }
+	  })
+    .find(">li[ul]")
+  		.mouseover(function(){
+  			$("ul", this).bgIframe({opacity:false});
+  		})
+  		.find("a")
+  			.focus(function(){
+  				$("ul", $("#simplemenu>li[ul]")).bgIframe({opacity:false});
+  			})
+	 
+	 $('#simplemenu').children('li.expanded').addClass('root');    
 });           
 
 /*
