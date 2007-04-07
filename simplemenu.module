@@ -50,7 +50,7 @@ function simplemenu_footer() {
     );
     
     drupal_add_js(array('simplemenu' => $settings), 'setting');
-    drupal_add_js('var simplemenu = '. drupal_to_js(simplemenu_get_menu() .';'), 'inline');
+    drupal_add_js('var simplemenu = '. drupal_to_js(simplemenu_get_menu()) .';', 'inline');
     drupal_add_js($path .'/simplemenu.js');
   }
 }

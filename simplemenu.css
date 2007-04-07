@@ -1,74 +1,102 @@
 /* $Id$ */
-
-ul#simplemenu,ul#simplemenu ul,ul#simplemenu li,ul#simplemenu a {
-color:#333;
-display:block;
-list-style:none;
-margin:0;
-padding:0;
-z-index:48;
+#simplemenu
+{
+	background:#ddd;
+	color:#333;
+	margin:0;
+	padding:0;
+	z-index:48;
+	border-bottom:1px solid #999;
+	font:11px Verdana, Helvetica, sans-serif;
+	left:0;
+	position:absolute;
+	top:0;
+	width:100%;
+	height:20px;
+	z-index:48;
 }
 
-ul#simplemenu {
-background:#ddd;
-border-bottom:1px solid #999;
-font:11px Verdana, Helvetica, sans-serif;
-left:0;
-position:absolute;
-top:0;
-width:100%;
-height:21px;
+#simplemenu li
+{
+	background:#ddd;
+	border-right:1px solid #999;
+	border-left:1px solid #eee;
+	float:left;
+	list-style:none;
+	position:relative;
+	margin:0;
+	padding:0;
+	z-index:48;
 }
 
-ul#simplemenu li {
-float:left;
-border-right:1px solid #999;
-border-left:1px solid #eee;
-text-align: left;  
+#simplemenu a
+{
+	color:#333;
+	display:block;
+	float:left;
+	padding:.3em 2em .3em .6em;
+	text-decoration:none;
+	background:#ddd;
 }
 
-ul#simplemenu li a {
-background:#ddd;
-padding:0.3em 2em 0.3em 0.6em;
-text-decoration:none;
+#simplemenu li.expanded > a
+{
+	background:url(right-green.gif) no-repeat 97%;
+	padding-right:2em;
 }
 
-ul#simplemenu ul li a {
-border:none;
-width:11em;
+#simplemenu li.root > a
+{
+	font-weight:700;
+	background:url(down-green.gif) no-repeat 97%;
 }
 
-ul#simplemenu li.expanded > a {
-background:#ddd url(right-green.gif) no-repeat 97%;
+#simplemenu li ul
+{
+	float:none;
+	top:-999em;
+	position:absolute;
+	margin:0;
+	padding:0;
+	z-index:48;
+	width:14em;
+	background:#ddd;
+	border:1px solid #999;
 }
 
-ul#simplemenu li.root > a {
-font-weight:bold;
-background:#ddd url(down-green.gif) no-repeat 97%;
+#simplemenu li:hover,#simplemenu li.sfhover,#simplemenu a:focus,#simplemenu a:hover,#simplemenu a:active
+{
+	background:#3875d7;
+	color:#fff;
 }
 
-ul#simplemenu li:hover > a {
-background-color:#3875d7;
-color:#fff;
+#simplemenu li:hover ul,#simplemenu li.sfhover ul
+{
+	left:-1px;
+	top:20px;
 }
 
-ul#simplemenu li ul {
-background:#999;
-border:1px solid #999;
-left:-9999px;
-position:absolute;
-width:14em;
-z-index:24;
-}       
-
-ul#simplemenu li ul ul {
-margin:0 0 0 6em;
+#simplemenu li:hover li ul,#simplemenu li.sfhover li ul
+{
+	top:-999em;
 }
 
-ul#simplemenu li:hover ul ul,ul#simplemenu li:hover ul ul ul,ul#simplemenu li.sfhover ul ul,ul#simplemenu li.sfhover ul ul ul {
-left:-9999px;
+#simplemenu li li:hover ul,#simplemenu li li.sfhover ul
+{
+	left:14em;
+	top:-1px;
+	width:14em;
 }
 
-ul#simplemenu li:hover ul,ul#simplemenu li li:hover ul,ul#simplemenu li li li:hover ul,ul#simplemenu li.sfhover ul,ul#simplemenu li li.sfhover ul,ul#simplemenu li li li.sfhover ul {
-left:auto;
+#simplemenu li li
+{
+	background:#ddd;
+	float:none;
+	border:none;
+}
+
+#simplemenu li li a
+{
+	float:none;
+	padding-right:0;
 }

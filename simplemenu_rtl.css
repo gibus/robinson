@@ -1,20 +1,30 @@
 /* $Id$ */
-                               
-ul#simplemenu li {
-float:right;
-border-right:1px solid #eee;
-border-left:1px solid #999;  
+
+#simplemenu li
+{
+	float:right;
+	border-right:1px solid #eee;
+	border-left:1px solid #999;
 }
 
-ul#simplemenu li.expanded > a {
-background:#ddd url(left-green.gif) no-repeat 97%;
-}     
+#simplemenu a
+{
+	padding:.3em .6em .3em 2em;
+}
 
-ul#simplemenu li.root > a {
-font-weight:bold;
-background:#ddd url(down-green.gif) no-repeat 97%;
-}  
+#simplemenu li.expanded > a
+{
+	background:url(left-green.gif) no-repeat 3%;
+	padding-left:2em;
+}
 
-ul#simplemenu li:hover ul,ul#simplemenu li li:hover ul,ul#simplemenu li li li:hover ul,ul#simplemenu li.sfhover ul,ul#simplemenu li li.sfhover ul,ul#simplemenu li li li.sfhover ul {
-right:auto;
+#simplemenu li.root > a
+{
+	font-weight:700;
+	background:url(down-green.gif) no-repeat 3%;
+}
+
+#simplemenu li li:hover ul,#simplemenu li li.sfhover ul
+{
+	left:-14.2em;
 }

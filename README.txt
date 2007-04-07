@@ -3,7 +3,7 @@
 
 --- README  -------------------------------------------------------------
 
-SimpleMenu, Version 2.1
+SimpleMenu, Version 3.0
 
 Written by Ted Serbinski, aka, m3avrck
   hello@tedserbinski.com
@@ -12,6 +12,7 @@ Written by Ted Serbinski, aka, m3avrck
 Requirements: Drupal 5.0
 
 Icons from: http://www.famfamfam.com/
+jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 
 
