@@ -12,14 +12,7 @@
 function simplemenu_menu($may_cache) {
   $items = array();
 
-  if ($may_cache) {
-    $items[] = array(
-      'path' => 'simplemenu/menu',
-      'access' => user_access('view simplemenu'),
-      'callback' => 'simplemenu_get_menu',
-      'type' => MENU_CALLBACK
-    );
-    
+  if ($may_cache) {    
     $items[] = array(
       'path' => 'admin/settings/simplemenu',
       'title' => t('SimpleMenu'),
@@ -57,6 +50,7 @@ function simplemenu_footer() {
     );
     
     drupal_add_js(array('simplemenu' => $settings), 'setting');
+    drupal_add_js('var simplemenu = '. drupal_to_js(simplemenu_get_menu() .';'), 'inline');
     drupal_add_js($path .'/simplemenu.js');
   }
 }
@@ -130,6 +124,53 @@ function simplemenu_admin_settings() {
 }
 
 /**
+ * Render an HTML list of links for a given menu.
+ */
+function simplemenu_get_menu() {
+  $output = '';
+  
+  $menu = simplemenu_menu_tree(variable_get('simplemenu_menu', 1));
+  
+  if (!$menu) {
+    $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
+  }
+  
+  $output .= simplemenu_get_devel();
+  $output .= $menu;
+  
+  return $output;
+}      
+
+/**
+ * Custom implementation of menu_tree().
+ * We want to retrieve the entire menu structure for a given menu,
+ * regardless of whether or not the menu item is expanded or not.
+ */
+function simplemenu_menu_tree($pid = 1) {
+  $menu = menu_get_menu();
+  $output = '';
+
+  if (isset($menu['visible'][$pid]) && $menu['visible'][$pid]['children']) {
+    foreach ($menu['visible'][$pid]['children'] as $mid) {
+      $type = isset($menu['visible'][$mid]['type']) ? $menu['visible'][$mid]['type'] : NULL;
+      $children = isset($menu['visible'][$mid]['children']) ? $menu['visible'][$mid]['children'] : NULL;
+      $output .= theme('menu_item', $mid, simplemenu_theme_menu_tree($mid), count($children) == 0);
+    }
+  }
+
+  return $output;
+}                    
+
+/**
+ * Custom implementation of theme_menu_tree() to call our custom menu above.
+ */
+function simplemenu_theme_menu_tree($pid = 1) {
+  if ($tree = simplemenu_menu_tree($pid)) {
+    return '<ul>'. $tree .'</ul>';
+  }
+}   
+
+/**
  * Return a list of devel module links if the module is enabled
  * and the user has access to this module.
  */
@@ -159,48 +200,4 @@ function simplemenu_get_devel() {
   }
   
   return $output;
-}
-
-/**
- * Custom implementation of menu_tree().
- * We want to retrieve the entire menu structure for a given menu,
- * regardless of whether or not the menu item is expanded or not.
- */
-function simplemenu_menu_tree($pid = 1) {
-  $menu = menu_get_menu();
-  $output = '';
-
-  if (isset($menu['visible'][$pid]) && $menu['visible'][$pid]['children']) {
-    foreach ($menu['visible'][$pid]['children'] as $mid) {
-      $type = isset($menu['visible'][$mid]['type']) ? $menu['visible'][$mid]['type'] : NULL;
-      $children = isset($menu['visible'][$mid]['children']) ? $menu['visible'][$mid]['children'] : NULL;
-      $output .= theme('menu_item', $mid, simplemenu_theme_menu_tree($mid), count($children) == 0);
-    }
-  }
-
-  return $output;
-}
-
-/**
- * Custom implementation of theme_menu_tree() to call our custom menu above.
- */
-function simplemenu_theme_menu_tree($pid = 1) {
-  if ($tree = simplemenu_menu_tree($pid)) {
-    return '<ul>'. $tree .'</ul>';
-  }
-}
-
-/**
- * AJAX menu callback to return an HTML list of links for a given menu.
- */
-function simplemenu_get_menu() {
-  $menu = simplemenu_menu_tree(variable_get('simplemenu_menu', 1));
-  
-  if (!$menu) {
-    $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
-  }
-  
-  print simplemenu_get_devel();
-  print $menu;
-  exit;
 }

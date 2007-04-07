@@ -21,12 +21,11 @@ $(document).ready(function() {
   
   $('body').css('margin-top', '23px');
   
-  // Drupal menu callback
-  $('#simplemenu').load(basePath + 'simplemenu/menu', function() {
-    $('li', this).hover(function() {
-      $('ul', this).slideDown(200);
-    }, function() {});
-    $('a', this).title('');
-    $(this).children('li.expanded').addClass('root');
-  });
+  // Build menu
+  $('#simplemenu').append(simplemenu);
+  $('#simplemenu li').hover(function() {
+    $('ul', this).slideDown(200);
+  }, function() {});
+  $('#simplemenu a').title('');
+  $('#simplemenu').children('li.expanded').addClass('root');          
 });
