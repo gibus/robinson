@@ -1,4 +1,3 @@
 ; $Id$
 name = SimpleMenu
 description = Creates a menu bar that is displayed at the top of every page.
-version = 3.0
