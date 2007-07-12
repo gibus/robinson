@@ -34,7 +34,7 @@ $(document).ready(function() {
   		.find("a")
   			.focus(function(){
   				$("ul", $("#simplemenu>li[ul]")).bgIframe({opacity:false});
-  			})
+  			});
 	 
 	 $('#simplemenu').children('li.expanded').addClass('root');    
 });           
