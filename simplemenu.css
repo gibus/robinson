@@ -64,24 +64,24 @@
 	border:1px solid #999;
 }
 
-#simplemenu li:hover,#simplemenu li.sfhover,#simplemenu a:focus,#simplemenu a:hover,#simplemenu a:active
+#simplemenu li:hover,#simplemenu li.sfHover,#simplemenu a:focus,#simplemenu a:hover,#simplemenu a:active
 {
 	background:#3875d7;
 	color:#fff;
 }
 
-#simplemenu li:hover ul,#simplemenu li.sfhover ul
+#simplemenu li:hover ul,#simplemenu li.sfHover ul
 {
 	left:-1px;
 	top:20px;
 }
 
-#simplemenu li:hover li ul,#simplemenu li.sfhover li ul
+#simplemenu li:hover li ul,#simplemenu li.sfHover li ul
 {
 	top:-999em;
 }
 
-#simplemenu li li:hover ul,#simplemenu li li.sfhover ul
+#simplemenu li li:hover ul,#simplemenu li li.sfHover ul
 {
 	left:14em;
 	top:-1px;
