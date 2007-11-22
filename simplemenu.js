@@ -24,15 +24,15 @@ $(document).ready(function() {
   // Build menu        
   $('#simplemenu')
     .append(simplemenu)
-    .superfish()
-    .find(">li[ul]")
+    .superfish( { speed: 'fast' } )
+  	.find(">li:has(ul)")
   		.mouseover(function(){
-  			$("ul", this).bgiframe({opacity:false});  
+  			$("ul", this).bgIframe({opacity:false});
   		})
   		.find("a")
   			.focus(function(){
-  				$("ul", $("#simplemenu>li[ul]")).bgiframe({opacity:false});
-  			});
+  				$("ul", $(".nav>li:has(ul)")).bgIframe({opacity:false});
+  			});  			  			
 	 
 	 $('#simplemenu').children('li.expanded').addClass('root');    
 });           

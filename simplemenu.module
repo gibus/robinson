@@ -12,7 +12,7 @@
 function simplemenu_menu($may_cache) {
   $items = array();
 
-  if ($may_cache) {    
+  if ($may_cache) {
     $items[] = array(
       'path' => 'admin/settings/simplemenu',
       'title' => t('SimpleMenu'),
@@ -35,16 +35,21 @@ function simplemenu_footer() {
   if (user_access('view simplemenu') && !$exclusions[$theme]) {
     global $theme, $custom_theme;
     $path = drupal_get_path('module', 'simplemenu');
+    $simplemenu_theme = variable_get('simplemenu_theme', 'original');
     drupal_add_css($path .'/simplemenu.css');
-        
-    $settings = array(                       
+
+    if ($theme != 'custom') {
+      drupal_add_css($path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css');
+    }
+
+    $settings = array(
       // pass in base path to the JS file
       // url() handles appending ?q= but in this case, we need to pass in the variable so the menus work when mod_rewrite is off
       'basePath' => base_path() . (variable_get('clean_url', 0) ? '' : '?q='),
       'placement' => variable_get('simplemenu_element_method', 'prepend'),
       'element' => variable_get('simplemenu_element', 'body')
     );
-    
+
     drupal_add_js(array('simplemenu' => $settings), 'setting');
     drupal_add_js('var simplemenu = '. drupal_to_js(simplemenu_get_menu()) .';', 'inline');
     drupal_add_js($path .'/simplemenu.js');
@@ -69,21 +74,29 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_menu', 1),
     '#description' => t('Select the menu to display.')
   );
-  
+
   $form['default_menu']['simplemenu_devel'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add devel module links'),
     '#default_value' => variable_get('simplemenu_devel', 0),
     '#description' => t('Add devel module links for those users that can access the devel module.')
-  );                             
-  
+  );
+
+  $form['default_menu']['simplemenu_theme'] = array(
+    '#type' => 'select',
+    '#title' => t('Theme'),
+    '#options' => drupal_map_assoc(array('original', 'custom')),
+    '#default_value' => variable_get('simplemenu_theme', 'original'),
+    '#description' => t('Select which theme to use. If you specify custom, you need to define CSS in your theme.')
+  );
+
   $form['default_menu']['advanced'] = array(
-    '#type' => 'fieldset', 
+    '#type' => 'fieldset',
     '#title' => t('Advanced settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE
   );
-  
+
   $form['default_menu']['advanced']['simplemenu_element'] = array(
     '#type' => 'textfield',
     '#title' => t('CSS selector to attach menu to'),
@@ -91,24 +104,24 @@ function simplemenu_admin_settings() {
     '#description' => t('A valid CSS selector to attach the menu to. <em>Example: body, #primary, div.my-class</em>'),
     '#required' => TRUE
   );
-  
+
   $form['default_menu']['advanced']['simplemenu_element_method'] = array(
     '#type' => 'radios',
-    '#title' => 'Attach method', 
+    '#title' => 'Attach method',
     '#options' => drupal_map_assoc(array('prepend', 'append', 'replace')),
     '#default_value' => variable_get('simplemenu_element_method', 'prepend'),
     '#description' => t('Choose how the menu should be attached to the above selector.'),
     '#required' => TRUE
   );
-  
+
   $form['default_menu']['advanced']['simplemenu_exclusions'] = array(
     '#type' => 'checkboxes',
-    '#title' => 'Theme exclusions', 
+    '#title' => 'Theme exclusions',
     '#options' => drupal_map_assoc(array_keys(list_themes())),
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
-  );   
-    
+  );
+
   return system_settings_form($form);
 }
 
@@ -117,18 +130,18 @@ function simplemenu_admin_settings() {
  */
 function simplemenu_get_menu() {
   $output = '';
-  
+
   $menu = simplemenu_menu_tree(variable_get('simplemenu_menu', 1));
-  
+
   if (!$menu) {
     $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
   }
-  
+
   $output .= simplemenu_get_devel();
   $output .= $menu;
-  
+
   return $output;
-}      
+}
 
 /**
  * Custom implementation of menu_tree().
@@ -148,7 +161,7 @@ function simplemenu_menu_tree($pid = 1) {
   }
 
   return $output;
-}                    
+}
 
 /**
  * Custom implementation of theme_menu_tree() to call our custom menu above.
@@ -157,7 +170,7 @@ function simplemenu_theme_menu_tree($pid = 1) {
   if ($tree = simplemenu_menu_tree($pid)) {
     return '<ul>'. $tree .'</ul>';
   }
-}   
+}
 
 /**
  * Return a list of devel module links if the module is enabled
@@ -165,7 +178,7 @@ function simplemenu_theme_menu_tree($pid = 1) {
  */
 function simplemenu_get_devel() {
   $output = '';
-  
+
   if (variable_get('simplemenu_devel', 0) && module_exists('devel')) {
     if (user_access('access devel information')) {
       $links[] = l('Devel settings', 'admin/settings/devel', array('title' => t('Adjust module settings for devel module')));
@@ -181,12 +194,12 @@ function simplemenu_get_devel() {
         // True only if devel_node_access enabled.
         $links[] = l('Node access summary', 'devel/node_access/summary');
       }
-  
+
       $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('Devel module') .'</a><ul>';
       $output .= '<li class="leaf">'. implode($links, '</li><li class="leaf">') .'</li>';
       $output .= '</ul></li>';
     }
   }
-  
+
   return $output;
 }

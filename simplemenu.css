@@ -1,102 +1,50 @@
 /* $Id$ */
-#simplemenu
-{
-	background:#ddd;
-	color:#333;
+
+/* There is a version of this file commented in great detail for educational purposes here:
+ * http://users.tpg.com.au/j_birch/plugins/superfish/superfish.commented.css
+ */
+
+/*** ESSENTIAL STYLES ***/
+#simplemenu, #simplemenu * {
 	margin:0;
 	padding:0;
-	border-bottom:1px solid #999;
-	font:11px Verdana, Helvetica, sans-serif;
-	left:0;
-	position:absolute;
-	top:0;
-	width:100%;
-	height:20px;
-	z-index:9999;
-}
-
-#simplemenu li
-{
-	background:#ddd;
-	border-right:1px solid #999;
-	border-left:1px solid #eee;
-	float:left;
 	list-style:none;
-	position:relative;
-	margin:0;
-	padding:0;
-	z-index:9999;
-	text-align: left;
 }
-
-#simplemenu a
-{
-	color:#333;
-	display:block;
-	float:left;
-	padding:.3em 2em .3em .6em;
-	text-decoration:none;
-	background:#ddd;
+#simplemenu {
+	line-height:1.0;
 }
-
-#simplemenu li.expanded > a
-{
-	background:url(right-green.gif) no-repeat 97%;
-	padding-right:2em;
-}
-
-#simplemenu li.root > a
-{
-	font-weight:700;
-	background:url(down-green.gif) no-repeat 97%;
-}
-
-#simplemenu li ul
-{
-	float:none;
-	top:-999em;
+#simplemenu ul {
 	position:absolute;
-	margin:0;
-	padding:0;
-	z-index:9999;
+	top:-999em;
 	width:14em;
-	background:#ddd;
-	border:1px solid #999;
 }
-
-#simplemenu li:hover,#simplemenu li.sfHover,#simplemenu a:focus,#simplemenu a:hover,#simplemenu a:active
-{
-	background:#3875d7;
-	color:#fff;
+#simplemenu ul li,
+#simplemenu a {
+	width: 100%;
 }
-
-#simplemenu li:hover ul,#simplemenu li.sfHover ul
-{
-	left:-1px;
-	top:20px;
+#simplemenu li {
+	float:left;
+	position:relative;
+	z-index:99;
 }
-
-#simplemenu li:hover li ul,#simplemenu li.sfHover li ul
-{
+#simplemenu a {
+	display:block;
+}
+#simplemenu li:hover ul,
+ul#simplemenu li.sfHover ul {
+	left:0px;
+	top:21px;
+}
+#simplemenu li:hover li ul,
+#simplemenu li.sfHover li ul {
 	top:-999em;
 }
-
-#simplemenu li li:hover ul,#simplemenu li li.sfHover ul
-{
+#simplemenu li li:hover ul,
+ul#simplemenu li li.sfHover ul {
 	left:14em;
 	top:-1px;
-	width:14em;
 }
-
-#simplemenu li li
-{
-	background:#ddd;
-	float:none;
-	border:none;
-}
-
-#simplemenu li li a
-{
-	float:none;
-	padding-right:0;
+.superfish li:hover ul,
+.superfish li li:hover ul {
+	top: -999em;
 }

@@ -35,4 +35,5 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 - new CHANGELOG to keep track of changes
 - #156256 upgrade to SuperFish 1.3
 - upgrade to bgIframe 2.1.1 (for IE6 compatibility with forms)    
-- remove RTL option; this conflicts with other changes and is properly implemented in Drupal 6
+- remove RTL option; this conflicts with other changes and is properly implemented in Drupal 6   
+- new option to select which theme to style SimpleMenu with, or provide a custom one
