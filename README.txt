@@ -42,4 +42,5 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 - #180106 - fix missing translatable strings"      
 - #144742 - don't show annoying A titles     
 - remove dependency on menu module, now works with menu module off
-- 
+- new black & blue theme, design by Jeremy Caldwell (http://nerdliness.com/article/2007/11/01/simplemenu-module-customizations)
+- alter height of menu and rollover to fix gaps

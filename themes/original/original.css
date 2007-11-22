@@ -1,7 +1,7 @@
 /* $Id$ */
 
 body.simplemenu-enabled {
-  margin-top: 20px;
+  margin-top: 21px;
 }
 #simplemenu {
 	background:#ddd;
@@ -12,7 +12,6 @@ body.simplemenu-enabled {
 	position:absolute;
 	top:0;
 	width:100%;
-	height:20px;
 	z-index:9999;
 }
 #simplemenu a {
@@ -21,21 +20,19 @@ body.simplemenu-enabled {
 	background:#ddd;
 	border-right:1px solid #999;
 	border-left:1px solid #eee;
-	padding:2px 6px 3px 6px;
+	padding:2px 6px 3px 6px; 
+	height:15px;
 	width:auto;
 }   
 #simplemenu li {
 	background:#ddd;
 	text-align: left;
 }   
-#simplemenu li.expanded > a
-{
+#simplemenu li.expanded > a {
 	background:url(right-green.gif) no-repeat 97%;
 	padding-right:2em;
 }
-
-#simplemenu li.root > a
-{
+#simplemenu li.root > a {
 	font-weight:700;
 	background:url(down-green.gif) no-repeat 97%;
 }
@@ -47,4 +44,7 @@ body.simplemenu-enabled {
 #simplemenu li:hover ul,
 ul#simplemenu li.sfHover ul {
 	border-bottom:1px solid #999;
+}
+#simplemenu li ul a {
+ 	height:auto;
 }

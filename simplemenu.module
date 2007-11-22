@@ -89,7 +89,7 @@ function simplemenu_admin_settings() {
   $form['default_menu']['simplemenu_theme'] = array(
     '#type' => 'select',
     '#title' => t('Theme'),
-    '#options' => drupal_map_assoc(array('original', 'custom')),
+    '#options' => array('original' => 'original', 'blackblue' => 'black & blue', 'custom' => 'custom'),
     '#default_value' => variable_get('simplemenu_theme', 'original'),
     '#description' => t('Select which theme to use. If you specify custom, you need to define CSS in your theme.')
   );
