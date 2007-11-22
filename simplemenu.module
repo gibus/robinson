@@ -36,11 +36,7 @@ function simplemenu_footer() {
     global $theme, $custom_theme;
     $path = drupal_get_path('module', 'simplemenu');
     drupal_add_css($path .'/simplemenu.css');
-    
-    if (variable_get('simplemenu_rtl', 0)) {
-      drupal_add_css($path .'/simplemenu_rtl.css');
-    }
-    
+        
     $settings = array(                       
       // pass in base path to the JS file
       // url() handles appending ?q= but in this case, we need to pass in the variable so the menus work when mod_rewrite is off
@@ -112,14 +108,7 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
   );   
-  
-  $form['default_menu']['advanced']['simplemenu_rtl'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Set menu orientation to RTL'),
-    '#default_value' => variable_get('simplemenu_rtl', 0),
-    '#description' => t('Set the orientation of the menu to RTL for Eastern languages.')
-  );
-  
+    
   return system_settings_form($form);
 }
 
