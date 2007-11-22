@@ -33,4 +33,5 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 4.0, 2007-Nov-21
 ----------------------
 - new CHANGELOG to keep track of changes
-- #156256 upgrade to SuperFish 1.3
+- #156256 upgrade to SuperFish 1.3.2
+- upgrade to bgIframe 2.1.1 (for IE6 compatibility with forms)

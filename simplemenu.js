@@ -24,16 +24,14 @@ $(document).ready(function() {
   // Build menu        
   $('#simplemenu')
     .append(simplemenu)
-    .superfish({
-		  hoverClass	: "sfhover", animation : { opacity:"show", delay: 750 }
-	  })
+    .superfish()
     .find(">li[ul]")
   		.mouseover(function(){
-  			$("ul", this).bgIframe({opacity:false});
+  			$("ul", this).bgiframe({opacity:false});  
   		})
   		.find("a")
   			.focus(function(){
-  				$("ul", $("#simplemenu>li[ul]")).bgIframe({opacity:false});
+  				$("ul", $("#simplemenu>li[ul]")).bgiframe({opacity:false});
   			});
 	 
 	 $('#simplemenu').children('li.expanded').addClass('root');    
@@ -41,7 +39,7 @@ $(document).ready(function() {
 
 
 /*
- * Superfish v1.3 - jQuery menu widget
+ * Superfish v1.3.2 - jQuery menu widget
  *
  * Copyright (c) 2007 Joel Birch
  *
@@ -49,14 +47,18 @@ $(document).ready(function() {
  * 	http://www.opensource.org/licenses/mit-license.php
  * 	http://www.gnu.org/licenses/gpl.html
  *
- * YOU MAY DELETE THIS CHANGELOG:
- * v1.2.1 altered: 2nd July 07. added hide() before animate to make work for jQuery 1.1.3. See comment in 'over' function.
- * v1.2.2 altered: 2nd August 07. changed over function .find('ul') to .find('>ul') for smoother animations
- * 				   Also deleted the iframe removal lines - not necessary it turns out
- * v1.2.3 altered: jquery 1.1.3.1 broke keyboard access - had to change quite a few things and set display:none on the
- *				   .superfish rule in CSS instead of top:-999em
- * v1.3	: 		   Pretty much a complete overhaul to make all original features work in 1.1.3.1 and above.
- *				   .superfish rule reverted back to top:-999em (which is better)
+ * YOU SHOULD DELETE THIS CHANGELOG TO REDUCE FILE SIZE:
+ * v1.2.1 altered:  2nd July 07. added hide() before animate to make work for jQuery 1.1.3. See comment in 'over' function.
+ * v1.2.2 altered:  2nd August 07. changed over function .find('ul') to .find('>ul') for smoother animations
+ * 				    Also deleted the iframe removal lines - not necessary it turns out
+ * v1.2.3 altered:  jquery 1.1.3.1 broke keyboard access - had to change quite a few things and set display:none on the
+ *				    .superfish rule in CSS instead of top:-999em
+ * v1.3	: 		    Pretty much a complete overhaul to make all original features work in 1.1.3.1 and above.
+ *				    .superfish rule reverted back to top:-999em (which is better).
+ * v1.3.1 altered:  'li[ul]' to $('li:has(ul)') to work with jQuery 1.2
+ * v1.3.2: 			added onshow callback option. 'this' keyword refers to revealed ul.
+		   			fixed bug whereby multiple menus on a page shared options. Now each menu can have separate options.
+					fixed IE6 and IE7 bug whereby under certain circumstances => 3rd tier menus appear instantly with text missing when revisited
  */
 
 (function($){
@@ -67,41 +69,44 @@ $(document).ready(function() {
 			pathClass	: 'overideThisToUse',
 			delay		: 800,
 			animation	: {opacity:'show'},
-			speed		: 'normal'
+			speed		: 'normal',
+			onshow		: function(){} // in your function, 'this' is the revealed ul
 		},
 			over = function(){
 				clearTimeout(this.sfTimer);
-				clearTimeout($sf[0].sfTimer);
 				$(this)
-				.showSuperfishUl()
+				.showSuperfishUl(o)
 				.siblings()
-				.hideSuperfishUl();
+				.hideSuperfishUl(o);
 			},
 			out = function(){
 				var $$ = $(this);
 				if ( !$$.is('.'+o.bcClass) ) {
 					this.sfTimer=setTimeout(function(){
-						$$.hideSuperfishUl();
-						if (!$('.'+o.hoverClass,$sf).length) { 
-							over.call($currents.hideSuperfishUl());
+						$$.hideSuperfishUl(o);
+						var sf = $$.parents('ul.superfish:first')[0];
+						if (!$('.'+o.hoverClass,sf).length) {
+							over.call(sf.o.$currents.hideSuperfishUl(o));
 						}
 					},o.delay);
 				}		
 			};
 		$.fn.extend({
-			hideSuperfishUl : function(){
+			hideSuperfishUl : function(o){
 				return this
 					.removeClass(o.hoverClass)
-					.find('ul:visible')
+					.find('ul')
 						.hide()
+						.css('visibility','hidden')
 					.end();
 			},
-			showSuperfishUl : function(){
+			showSuperfishUl : function(o){
 				return this
 					.addClass(o.hoverClass)
 					.find('>ul:hidden')
+						.css('visibility','visible')
 						.animate(o.animation,o.speed,function(){
-							$(this).removeAttr('style');
+							o.onshow.call(this);
 						})
 					.end();
 			},
@@ -109,33 +114,44 @@ $(document).ready(function() {
 				return this[($.fn.hoverIntent) ? 'hoverIntent' : 'hover'](over,out);
 			}
 		});
-		o = $.extend({bcClass:'sfbreadcrumb'},defaults,o || {});
-		var $currents = $('.'+o.pathClass,this).filter('li[ul]');
-		if ($currents.length) {
-			$currents.each(function(){
-				$(this).removeClass(o.pathClass).addClass(o.hoverClass+' '+o.bcClass);
-			});
-		}
-		var $sfHovAr=$('li[ul]',this).applySuperfishHovers(over,out)
-			.find('a').each(function(){
-				var $a = $(this), $li = $a.parents('li');
-				$a.focus(function(){
-					over.call($li);
-					return false;
-				}).blur(function(){
-					$li.removeClass(o.hoverClass);
+		
+		return this
+			.addClass('superfish')
+			.each(function(){
+				o = $.extend({bcClass:'sfbreadcrumb'},defaults,o || {});
+				o = $.extend(o,{$currents:$('li.'+o.pathClass+':has(ul)',this)});
+				this.o = o;
+				if (o.$currents.length) {
+					o.$currents.each(function(){
+						$(this).removeClass(o.pathClass).addClass(o.hoverClass+' '+o.bcClass);
+					});
+				}
+				
+				var $sfHovAr=$('li:has(ul)',this)
+					.applySuperfishHovers(over,out)
+					.find('a').each(function(){
+						var $a = $(this), $li = $a.parents('li');
+						$a.focus(function(){
+							over.call($li);
+							return false;
+						}).blur(function(){
+							out.call(this);
+							$li.removeClass(o.hoverClass);
+							return false;
+						});
+					})
+					.end()
+					.not('.'+o.bcClass)
+						.hideSuperfishUl(o)
+					.end();
+				
+				$(window).unload(function(){
+					$sfHovAr.unbind('mouseover').unbind('mouseout');
+					$('ul.superfish').each(function(){
+						this.o = this.o.$currents = null; // clean up
+					});
 				});
-			})
-			.end()
-			.not('.'+o.bcClass)
-				.hideSuperfishUl()
-			.end();
-		$(window).unload(function(){
-			$sfHovAr.unbind('mouseover').unbind('mouseout');
-		});
-		return this.addClass('superfish').blur(function(){
-			out.call(this);
-		});
+			});
 	};
 })(jQuery);
 
@@ -144,48 +160,9 @@ $(document).ready(function() {
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- * $LastChangedDate: 2007-03-07 15:07:51 -0600 (Wed, 07 Mar 2007) $
- * $Rev: 1505 $
+ * $LastChangedDate: 2007-07-21 18:45:56 -0500 (Sat, 21 Jul 2007) $
+ * $Rev: 2447 $
+ *
+ * Version 2.1.1
  */
-
-/**
- * The bgiframe is chainable and applies the iframe hack to get 
- * around zIndex issues in IE6. It will only apply itself in IE 
- * and adds a class to the iframe called 'bgiframe'.
- * 
- * It does take borders into consideration but all values
- * need to be in pixels and the element needs to have
- * position relative or absolute.
- *
- * NOTICE: This plugin uses CSS expersions in order to work
- * with an element's borders, height and with and can result in poor 
- * performance when used on an element that changes properties 
- * like size and position a lot. Two of these expressions can be
- * removed if border doesn't matter and performance does.
- * See lines 39 and 40 below and set top: 0 and left: 0
- * instead of their current values.
- *
- * @example $('div').bgiframe();
- * @before <div><p>Paragraph</p></div>
- * @result <div><iframe class="bgiframe".../><p>Paragraph</p></div>
- *
- * @name bgiframe
- * @type jQuery
- * @cat Plugins/bgiframe
- * @author Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
- */
-jQuery.fn.bgIframe = jQuery.fn.bgiframe = function() {
-	// This is only for IE6
-	if ( !(jQuery.browser.msie && typeof XMLHttpRequest == 'function') ) return this;
-	var html = '<iframe class="bgiframe" src="javascript:;" tabindex="-1" '
-	 					+'style="display:block; position:absolute; '
-						+'top: expression(((parseInt(this.parentNode.currentStyle.borderTopWidth)  || 0) * -1) + \'px\'); '
-						+'left:expression(((parseInt(this.parentNode.currentStyle.borderLeftWidth) || 0) * -1) + \'px\'); ' 
-						+'z-index:-1; filter:Alpha(Opacity=\'0\'); '
-						+'width:expression(this.parentNode.offsetWidth + \'px\'); '
-						+'height:expression(this.parentNode.offsetHeight + \'px\')"/>';
-	return this.each(function() {
-		if ( !jQuery('iframe.bgiframe', this)[0] )
-			this.insertBefore( document.createElement(html), this.firstChild );
-	});
-};
+(function($){$.fn.bgIframe=$.fn.bgiframe=function(s){if($.browser.msie&&/6.0/.test(navigator.userAgent)){s=$.extend({top:'auto',left:'auto',width:'auto',height:'auto',opacity:true,src:'javascript:false;'},s||{});var prop=function(n){return n&&n.constructor==Number?n+'px':n;},html='<iframe class="bgiframe"frameborder="0"tabindex="-1"src="'+s.src+'"'+'style="display:block;position:absolute;z-index:-1;'+(s.opacity!==false?'filter:Alpha(Opacity=\'0\');':'')+'top:'+(s.top=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderTopWidth)||0)*-1)+\'px\')':prop(s.top))+';'+'left:'+(s.left=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderLeftWidth)||0)*-1)+\'px\')':prop(s.left))+';'+'width:'+(s.width=='auto'?'expression(this.parentNode.offsetWidth+\'px\')':prop(s.width))+';'+'height:'+(s.height=='auto'?'expression(this.parentNode.offsetHeight+\'px\')':prop(s.height))+';'+'"/>';return this.each(function(){if($('> iframe.bgiframe',this).length==0)this.insertBefore(document.createElement(html),this.firstChild);});}return this;};})(jQuery);
