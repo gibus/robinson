@@ -39,3 +39,5 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 - remove RTL option; this conflicts with other changes and is properly implemented in Drupal 6   
 - new option to select which theme to style SimpleMenu with, or provide a custom one
 - #184051 - don't hardcode CSS, add class to body
+- #180106 - fix missing translatable strings"      
+- #144742 - don't show annoying A titles

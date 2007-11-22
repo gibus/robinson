@@ -32,7 +32,11 @@ $(document).ready(function() {
   		.find("a")
   			.focus(function(){
   				$("ul", $(".nav>li:has(ul)")).bgIframe({opacity:false});
-  			});  			  			
+  			})
+  	  .end()
+  	.end()
+  	.find("a")
+  	  .removeAttr('title');  			  			
 	 
 	 $('#simplemenu').children('li.expanded').addClass('root');    
 });           
