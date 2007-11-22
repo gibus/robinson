@@ -25,3 +25,12 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 3. Enable access to "view simplemenu" under administer > user management > access control
 
 4. Configure menu to use under administer > site configuration > simplemenu
+
+
+
+--- CHANGELOG --------------------------------------------------------
+
+4.0, 2007-Nov-21
+----------------------
+- new CHANGELOG to keep track of changes
+- #156256 upgrade to SuperFish 1.3
