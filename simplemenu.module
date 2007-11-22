@@ -107,7 +107,7 @@ function simplemenu_admin_settings() {
 
   $form['default_menu']['advanced']['simplemenu_element_method'] = array(
     '#type' => 'radios',
-    '#title' => 'Attach method',
+    '#title' => t('Attach method'),
     '#options' => drupal_map_assoc(array('prepend', 'append')),
     '#default_value' => variable_get('simplemenu_element_method', 'prepend'),
     '#description' => t('Choose how the menu should be attached to the above selector.'),
@@ -116,7 +116,7 @@ function simplemenu_admin_settings() {
 
   $form['default_menu']['advanced']['simplemenu_exclusions'] = array(
     '#type' => 'checkboxes',
-    '#title' => 'Theme exclusions',
+    '#title' => t('Theme exclusions'),
     '#options' => drupal_map_assoc(array_keys(list_themes())),
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
