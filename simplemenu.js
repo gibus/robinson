@@ -19,7 +19,7 @@ $(document).ready(function() {
       break;
   }  
   
-  $('body').css('margin-top', '20px');
+  $('body').addClass('simplemenu-enabled')  
   
   // Build menu        
   $('#simplemenu')
