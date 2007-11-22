@@ -30,7 +30,7 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 --- CHANGELOG --------------------------------------------------------
 
-4.0, 2007-Nov-21
+4.0, 2007-Nov-22
 ----------------------
 - new CHANGELOG to keep track of changes
 - #156256 upgrade to SuperFish 1.3
@@ -40,4 +40,6 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 - new option to select which theme to style SimpleMenu with, or provide a custom one
 - #184051 - don't hardcode CSS, add class to body
 - #180106 - fix missing translatable strings"      
-- #144742 - don't show annoying A titles
+- #144742 - don't show annoying A titles     
+- remove dependency on menu module, now works with menu module off
+- 

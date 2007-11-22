@@ -67,20 +67,24 @@ function simplemenu_perm() {
  * SimpleMenu settings page.
  */
 function simplemenu_admin_settings() {
-  $form['default_menu']['simplemenu_menu'] = array(
-    '#type' => 'select',
-    '#title' => t('Menu'),
-    '#options' => menu_parent_options(0),
-    '#default_value' => variable_get('simplemenu_menu', 1),
-    '#description' => t('Select the menu to display.')
-  );
+  if (module_exists('menu')) {
+    $form['default_menu']['simplemenu_menu'] = array(
+      '#type' => 'select',
+      '#title' => t('Menu'),
+      '#options' => menu_parent_options(0),
+      '#default_value' => variable_get('simplemenu_menu', 1),
+      '#description' => t('Select the menu to display.')
+    );
+  }
 
-  $form['default_menu']['simplemenu_devel'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Add devel module links'),
-    '#default_value' => variable_get('simplemenu_devel', 0),
-    '#description' => t('Add devel module links for those users that can access the devel module.')
-  );
+  if (module_exists('devel')) {
+    $form['default_menu']['simplemenu_devel'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Add devel module links'),
+      '#default_value' => variable_get('simplemenu_devel', 0),
+      '#description' => t('Add devel module links for those users that can access the devel module.')
+    );
+  }
 
   $form['default_menu']['simplemenu_theme'] = array(
     '#type' => 'select',
@@ -131,7 +135,14 @@ function simplemenu_admin_settings() {
 function simplemenu_get_menu() {
   $output = '';
 
-  $menu = simplemenu_menu_tree(variable_get('simplemenu_menu', 1));
+  // if a user turned off menu module but SimpleMenu was previously set
+  // reset variable so a menu appears
+  if (module_exists('menu')) {
+    $menu = simplemenu_menu_tree(variable_get('simplemenu_menu', 1));
+  }
+  else {
+    $menu = simplemenu_menu_tree(1);
+  }
 
   if (!$menu) {
     $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
