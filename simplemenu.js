@@ -4,9 +4,9 @@ $(document).ready(function() {
   // get the Drupal basepath
   var basePath = Drupal.settings.simplemenu.basePath;
   // get the element to add the menu to
-  var element = Drupal.settings.simplemenu.element;                        
+  var element = Drupal.settings.simplemenu.element;
   var menu = '<ul id="simplemenu" class="clear-block"></ul>';
-  
+
   switch (Drupal.settings.simplemenu.placement) {
     case 'prepend':
       $(menu).prependTo(element);
@@ -17,11 +17,11 @@ $(document).ready(function() {
     case 'replace':
       $(element).html(menu);
       break;
-  }  
-  
-  $('body').addClass('simplemenu-enabled')  
-  
-  // Build menu        
+  }
+
+  $('body').addClass('simplemenu-enabled');
+
+  // Build menu
   $('#simplemenu')
     .append(simplemenu)
     .superfish( { speed: 'fast' } )
@@ -36,10 +36,10 @@ $(document).ready(function() {
   	  .end()
   	.end()
   	.find("a")
-  	  .removeAttr('title');  			  			
-	 
-	 $('#simplemenu').children('li.expanded').addClass('root');    
-});           
+  	  .removeAttr('title');
+
+	 $('#simplemenu').children('li.expanded').addClass('root');
+});
 
 
 /*
@@ -84,11 +84,11 @@ $(document).ready(function() {
 				if ( !$$.is('.'+o.bcClass) ) {
 					this.sfTimer=setTimeout(function(){
 						$$.hideSuperfishUl();
-						if (!$('.'+o.hoverClass,$sf).length) { 
+						if (!$('.'+o.hoverClass,$sf).length) {
 							over.call($currents.hideSuperfishUl());
 						}
 					},o.delay);
-				}		
+				}
 			};
 		$.fn.extend({
 			hideSuperfishUl : function(){
@@ -143,7 +143,7 @@ $(document).ready(function() {
 
 
 /* Copyright (c) 2006 Brandon Aaron (http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * $LastChangedDate: 2007-07-21 18:45:56 -0500 (Sat, 21 Jul 2007) $
