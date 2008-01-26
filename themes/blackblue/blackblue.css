@@ -12,12 +12,12 @@ body.simplemenu-enabled {
 	top:0;
 	width:100%;
 	z-index:9999;
+	text-align:left;
 }
 #simplemenu a {
 	color:#fff;
 	text-decoration:none;
 	padding:3px 12px 5px 12px;
-	height:13px;
 	width:auto;
 }
 #simplemenu li {

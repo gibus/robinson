@@ -13,6 +13,7 @@ body.simplemenu-enabled {
 	top:0;
 	width:100%;
 	z-index:9999;
+	text-align:left;
 }
 #simplemenu a {
 	color:#333;
@@ -21,7 +22,6 @@ body.simplemenu-enabled {
 	border-right:1px solid #999;
 	border-left:1px solid #eee;
 	padding:2px 6px 3px 6px; 
-	height:15px;
 	width:auto;
 }   
 #simplemenu li {
