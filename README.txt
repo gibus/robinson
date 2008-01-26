@@ -33,7 +33,8 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 4.1, 2008-Jan-26
 ----------------------
 
-- #199224, fix display issues in IE6/7
+- #199224, fix display issues in IE6/7 
+- #200086, don't load non-existent custom.css file
 
 
 4.0, 2007-Nov-22

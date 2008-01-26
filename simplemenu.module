@@ -38,7 +38,7 @@ function simplemenu_footer() {
     $simplemenu_theme = variable_get('simplemenu_theme', 'original');
     drupal_add_css($path .'/simplemenu.css');
 
-    if ($theme != 'custom') {
+    if ($simplemenu_theme != 'custom') {
       drupal_add_css($path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css');
     }
 
