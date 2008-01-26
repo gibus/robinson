@@ -1,16 +1,10 @@
 /* $Id$ */
 
-body.simplemenu-enabled {
-  margin-top: 21px;
-}
 #simplemenu {
 	background:#ddd;
 	color:#333;
 	border-bottom:1px solid #999;
 	font:11px Verdana, Helvetica, sans-serif;
-	left:0;
-	position:absolute;
-	top:0;
 	width:100%;
 	z-index:9999;
 	text-align:left;
