@@ -46,8 +46,11 @@ function simplemenu_footer() {
       // pass in base path to the JS file
       // url() handles appending ?q= but in this case, we need to pass in the variable so the menus work when mod_rewrite is off
       'basePath' => base_path() . (variable_get('clean_url', 0) ? '' : '?q='),
+      'effect' => variable_get('simplemenu_effect', 'opacity'),
+      'effectSpeed' => variable_get('simplemenu_effect_speed', 'fast'),
+      'element' => variable_get('simplemenu_element', 'body'),
+      'hideDelay' => variable_get('simplemenu_hide_delay', 800),
       'placement' => variable_get('simplemenu_element_method', 'prepend'),
-      'element' => variable_get('simplemenu_element', 'body')
     );
 
     drupal_add_js(array('simplemenu' => $settings), 'setting');
@@ -124,6 +127,30 @@ function simplemenu_admin_settings() {
     '#options' => drupal_map_assoc(array_keys(list_themes())),
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_hide_delay'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hide delay'),
+    '#size' => 4,
+    '#default_value' => variable_get('simplemenu_hide_delay', 800),
+    '#description' => t('How long (in milliseconds) should a menu still appear after losing focus.')
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_effect'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show effect'),
+    '#options' => array('opacity' => t('Fade'), 'height' => t('Slide'), 'none' => t('None')),
+    '#default_value' => variable_get('simplemenu_effect', 'opacity'),
+    '#description' => t('The effect used when displaying a menu.')
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_effect_speed'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show speed'),
+    '#options' => array('slow' => t('Slow'), 'medium' => t('Medium'), 'fast' => t('Fast')),
+    '#default_value' => variable_get('simplemenu_effect_speed', 'fast'),
+    '#description' => t('The speed of the effect, not used when "none" is set to show effect.')
   );
 
   return system_settings_form($form);

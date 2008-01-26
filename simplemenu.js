@@ -21,10 +21,17 @@ $(document).ready(function() {
 
   $('body').addClass('simplemenu-enabled');
 
+  var animation = {};
+  animation[Drupal.settings.simplemenu.effect] = 'toggle';
+  
   // Build menu
   $('#simplemenu')
     .append(simplemenu)
-    .superfish( { speed: 'fast' } )
+    .superfish( { 
+      animation: animation,
+      delay: Drupal.settings.simplemenu.hideDelay,
+      speed: Drupal.settings.simplemenu.effectSpeed
+    } )
   	.find(">li:has(ul)")
   		.mouseover(function(){
   			$("ul", this).bgIframe({opacity:false});

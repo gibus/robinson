@@ -11,7 +11,6 @@ Written by Ted Serbinski, aka, m3avrck
 
 Requirements: Drupal 5.0
 
-Icons from: http://www.famfamfam.com/
 jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 
@@ -30,13 +29,14 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 --- CHANGELOG --------------------------------------------------------
 
-4.1, 2008-Jan-26
+5.0, 2008-Jan-26
 ----------------------
 
 - #199224, fix display issues in IE6/7 
 - #200086, don't load non-existent custom.css file
 - #195972, better default CSS to avoid conflicts with themes
 - #199715, remove absolute positioning to improve theme and CSS attaching compatibility
+- #199882, new options for controlling menu effects and timing
 
 
 4.0, 2007-Nov-22
