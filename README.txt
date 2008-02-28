@@ -3,13 +3,13 @@
 
 --- README  -------------------------------------------------------------
 
-SimpleMenu, Version 4.0
+SimpleMenu, Version 6.0
 
 Written by Ted Serbinski, aka, m3avrck
   hello@tedserbinski.com
   http://tedserbinski.com
 
-Requirements: Drupal 5.0
+Requirements: Drupal 6.x
 
 jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
@@ -28,6 +28,14 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 
 --- CHANGELOG --------------------------------------------------------
+
+6.0, 2008-xx-xx
+----------------------
+- compatible with Drupal 6.x
+- Superfish 1.4.1
+- separate superfish.js into own file
+- remove devel links, since devel module links in 6.x can be moved to any menu now
+
 
 5.0, 2008-Jan-26
 ----------------------
