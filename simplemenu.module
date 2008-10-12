@@ -114,8 +114,11 @@ function simplemenu_admin_settings() {
   $form['default_menu']['advanced']['simplemenu_element_method'] = array(
     '#type' => 'radios',
     '#title' => t('Attach method'),
-    '#options' => drupal_map_assoc(array('prepend', 'append')),
-    '#default_value' => variable_get('simplemenu_element_method', 'prepend'),
+    '#options' => array(
+    	'prepend' => t('Prepend'), 
+    	'append' => t('Append'),
+    ),    
+  	'#default_value' => variable_get('simplemenu_element_method', 'prepend'),
     '#description' => t('Choose how the menu should be attached to the above selector.'),
     '#required' => TRUE
   );
