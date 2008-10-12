@@ -75,10 +75,23 @@ function simplemenu_admin_settings() {
     );
   }
 
+  if (module_exists('devel')) {
+    $form['default_menu']['simplemenu_devel'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Add devel module links'),
+      '#default_value' => variable_get('simplemenu_devel', 0),
+      '#description' => t('Add devel module links for those users that can access the devel module.')
+    );
+  }
+
   $form['default_menu']['simplemenu_theme'] = array(
     '#type' => 'select',
     '#title' => t('Theme'),
-    '#options' => array('original' => 'original', 'blackblue' => 'black & blue', 'custom' => 'custom'),
+    '#options' => array(
+      'original' => t('original'),
+      'blackblue' => t('black & blue'),
+      'custom' => t('custom'),
+    ),
     '#default_value' => variable_get('simplemenu_theme', 'original'),
     '#description' => t('Select which theme to use. If you specify custom, you need to define CSS in your theme.')
   );
@@ -156,7 +169,14 @@ function simplemenu_get_menu() {
   if (!$menu) {
     $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
   }
-
+  
+  // This is ugly, I know, but it is the only way I can see to get the additional 
+  // links inside the <ul> tags
+  if($devel = simplemenu_get_devel()) {
+    $pos = strpos($menu, '>') + 1;
+    $menu = substr($menu, 0, $pos) . $devel .substr($menu, $pos);
+  }
+  
   $output .= $menu;
 
   return $output;
@@ -237,4 +257,22 @@ function simplemenu_tree_all_data($root_menu = 'navigation:0') {
   }
 
   return $tree[$cid];
+}
+
+/**
+ * Return a list of devel module links if the module is enabled
+ * and the user has access to this module.
+ */
+function simplemenu_get_devel() {
+  $output = '';
+
+  if (variable_get('simplemenu_devel', 0) && module_exists('devel')) {
+    if (user_access('access devel information')) {
+      $output = '<li class="expanded"><a href="'. url('admin/settings/devel') .'">'. t('Devel module') .'</a>';
+      $output .= simplemenu_menu_tree('devel');
+      $output .= '</li>';
+    }
+  }
+  
+  return $output;
 }
