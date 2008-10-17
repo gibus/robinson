@@ -1,6 +1,11 @@
 // $Id$
 
 $(document).ready(function() {
+  // If detect pop-ups setting is enabled and we are in a pop-up window
+  if (Drupal.settings.simplemenu.detectPopup && window.opener) {
+  	return;
+ 	}
+ 	
   // get the element to add the menu to
   var element = Drupal.settings.simplemenu.element;
   var menu = $(simplemenu).attr("id", "simplemenu");

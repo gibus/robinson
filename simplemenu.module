@@ -29,7 +29,7 @@ function simplemenu_menu() {
 function simplemenu_init() {
   global $theme;
   $exclusions = variable_get('simplemenu_exclusions', array());
-  if (user_access('view simplemenu') && (!isset($exclusions[$theme])) ) {
+  if (user_access('view simplemenu') && (!isset($exclusions[$theme])) && _simplemenu_page_visibility()) {
     global $theme, $custom_theme;
     $path = drupal_get_path('module', 'simplemenu');
     $simplemenu_theme = variable_get('simplemenu_theme', 'original');
@@ -45,6 +45,7 @@ function simplemenu_init() {
       'element' => variable_get('simplemenu_element', 'body'),
       'hideDelay' => variable_get('simplemenu_hide_delay', 800),
       'placement' => variable_get('simplemenu_element_method', 'prepend'),
+      'detectPopup' => variable_get('simplemenu_detect_popop', 1),
     );
 
     drupal_add_js(array('simplemenu' => $settings), 'setting');
@@ -153,6 +154,30 @@ function simplemenu_admin_settings() {
     '#options' => array('slow' => t('Slow'), 'medium' => t('Medium'), 'fast' => t('Fast')),
     '#default_value' => variable_get('simplemenu_effect_speed', 'fast'),
     '#description' => t('The speed of the effect, not used when "none" is set to show effect.')
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_detect_popop'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Detect pop-up windows'),
+    '#default_value' => variable_get('simplemenu_detect_popop', 1),
+    '#description' => t("Choose whether SimpleMenu should attempt to detect if it is inside of a pop-up window.  If enabled, SimpleMenu will not display if it is inside of a pop-up window."),
+  );
+
+  $form['default_menu']['advanced']['simplemenu_visibility_operator'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show block on specific pages'),
+    '#default_value' => variable_get('simplemenu_visibility_operator', 0),
+    '#options' => array(
+      0 => t('Show on every page except the listed pages.'), 
+      1 => t('Show on only the listed pages.')
+    ),
+  );
+  
+  $form['default_menu']['advanced']['simplemenu_visibility_pages'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Pages'),
+    '#default_value' => variable_get('simplemenu_visibility_pages', ''),
+    '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
   );
 
   return system_settings_form($form);
@@ -278,4 +303,32 @@ function simplemenu_get_devel() {
   }
   
   return $output;
+}
+
+/**
+ * Determine if simplemenu should be displayed based on visibility settings.
+ *
+ * @return boolean
+ */
+function _simplemenu_page_visibility() {
+  $operator = variable_get('simplemenu_visibility_operator', 0);
+  $pages = variable_get('simplemenu_visibility_pages', '');
+  
+  if ($pages) {
+    $path = drupal_get_path_alias($_GET['q']);
+    // Compare with the internal and path alias (if any).
+    $page_match = drupal_match_path($path, $pages);
+    if ($path != $_GET['q']) {
+      $page_match = $page_match || drupal_match_path($_GET['q'], $pages);
+    }
+    // When $operator has a value of 0, the menu is displayed on
+    // all pages except those listed in $pages. When set to 1, it
+    // is displayed only on those pages listed in $pages.
+    $page_match = !($operator xor $page_match);
+  }
+  else {
+    $page_match = TRUE;
+  }
+  
+  return $page_match;
 }
