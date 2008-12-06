@@ -24,13 +24,25 @@ function simplemenu_menu() {
 }
 
 /**
+ * Is simplemenu enabled for this page request?
+ */
+function simplemenu_enabled() {
+  static $enabled;
+  
+  if(!isset($enabled)) {
+    global $theme;
+    $exclusions = variable_get('simplemenu_exclusions', array());
+    $enabled = (user_access('view simplemenu') && (!isset($exclusions[$theme])) && _simplemenu_page_visibility());
+  }
+  
+  return $enabled;  
+}
+
+/**
  * Implementation of hook_init()
  */
 function simplemenu_init() {
-  global $theme;
-  $exclusions = variable_get('simplemenu_exclusions', array());
-  if (user_access('view simplemenu') && (!isset($exclusions[$theme])) && _simplemenu_page_visibility()) {
-    global $theme, $custom_theme;
+  if (simplemenu_enabled()) {
     $path = drupal_get_path('module', 'simplemenu');
     $simplemenu_theme = variable_get('simplemenu_theme', 'original');
     drupal_add_css($path .'/simplemenu.css');
@@ -49,9 +61,29 @@ function simplemenu_init() {
     );
 
     drupal_add_js(array('simplemenu' => $settings), 'setting');
-    drupal_add_js('var simplemenu = '. drupal_to_js(simplemenu_get_menu()) .';', 'inline');
-    drupal_add_js($path .'/simplemenu.js');
-    drupal_add_js($path .'/superfish.js');
+  }
+}
+
+/**
+ * Implementation of hook_footer().
+ * 
+ * This has been broken off of simplemenu_init() because simplemenu_get_menu()
+ * calls simplemenu_menu_tree() which calls menu_tree_output() which has several
+ * calls to theme().  This initializes the theme system too early causing hard
+ * to track bugs.
+ * 
+ * @see http://drupal.org/node/219910
+ */
+function simplemenu_footer() {
+  if(simplemenu_enabled()) {
+    $simplemenu = drupal_to_js(simplemenu_get_menu());
+    $path = base_path() . drupal_get_path('module', 'simplemenu');
+
+    $output = "<script type=\"text/javascript\">var simplemenu = $simplemenu;</script>\n";
+    $output .= "<script type=\"text/javascript\" src=\"$path/simplemenu.js\"></script>\n";
+    $output .= "<script type=\"text/javascript\" src=\"$path/superfish.js\"></script>\n";
+    
+    return $output;
   }
 }
 
