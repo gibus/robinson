@@ -8,7 +8,7 @@ $(document).ready(function() {
  	
   // get the element to add the menu to
   var element = Drupal.settings.simplemenu.element;
-  var menu = $(simplemenu).attr("id", "simplemenu");
+  var menu = $(simplemenu).attr("id", "simplemenu").addClass('clear-block');
 
   switch (Drupal.settings.simplemenu.placement) {
     case 'prepend':
@@ -23,7 +23,7 @@ $(document).ready(function() {
   }
 
   $('body').addClass('simplemenu-enabled');
-
+  
   var animation = {};
   animation[Drupal.settings.simplemenu.effect] = 'toggle';
   
