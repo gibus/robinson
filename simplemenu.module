@@ -32,17 +32,20 @@ function simplemenu_enabled() {
   if(!isset($enabled)) {
     global $theme;
     $exclusions = variable_get('simplemenu_exclusions', array());
-    $enabled = (user_access('view simplemenu') && (!isset($exclusions[$theme])) && _simplemenu_page_visibility());
+    $enabled = (user_access('view simplemenu') 
+      && (!isset($exclusions[$theme]) || !$exclusions[$theme]) 
+      && _simplemenu_page_visibility());
   }
   
   return $enabled;  
 }
 
 /**
- * Implementation of hook_init()
+ * Implementation of hook_init().
  */
 function simplemenu_init() {
-  if (simplemenu_enabled()) {
+  // do a simple access check here, since theme isn't available to check yet
+  if (user_access('view simplemenu')) {
     $path = drupal_get_path('module', 'simplemenu');
     $simplemenu_theme = variable_get('simplemenu_theme', 'original');
     drupal_add_css($path .'/simplemenu.css');
@@ -60,7 +63,9 @@ function simplemenu_init() {
       'detectPopup' => variable_get('simplemenu_detect_popop', 1),
     );
 
-    drupal_add_js(array('simplemenu' => $settings), 'setting');
+    drupal_add_js(array('simplemenu' => $settings), 'setting');    
+    drupal_add_js($path .'/simplemenu.js');
+    drupal_add_js($path .'/superfish.js');    
   }
 }
 
@@ -80,8 +85,6 @@ function simplemenu_footer() {
     $path = base_path() . drupal_get_path('module', 'simplemenu');
 
     $output = "<script type=\"text/javascript\">var simplemenu = $simplemenu;</script>\n";
-    $output .= "<script type=\"text/javascript\" src=\"$path/simplemenu.js\"></script>\n";
-    $output .= "<script type=\"text/javascript\" src=\"$path/superfish.js\"></script>\n";
     
     return $output;
   }
