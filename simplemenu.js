@@ -1,6 +1,6 @@
 // $Id$
 
-$(document).ready(function() {
+Drupal.behaviors.simplemenuAttach = function(context) {
   // If detect pop-ups setting is enabled and we are in a pop-up window
   if (Drupal.settings.simplemenu.detectPopup && window.opener) {
   	return;
@@ -48,7 +48,7 @@ $(document).ready(function() {
   	  .removeAttr('title');
 
 	 $('#simplemenu').children('li.expanded').addClass('root');
-});
+};
 
 
 /* Copyright (c) 2006 Brandon Aaron (http://brandonaaron.net)
