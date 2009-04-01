@@ -12,6 +12,8 @@
 }
 #simplemenu {
 	line-height:1.0;
+	position: relative;
+	z-index: 9999;
 }
 #simplemenu ul {
 	position:absolute;
