@@ -36,11 +36,11 @@ $(document).ready(function() {
     } )
   	.find(">li:has(ul)")
   		.mouseover(function(){
-  			$("ul", this).bgIframe({opacity:false});
+  			$("ul", this).bgIframe();
   		})
   		.find("a")
   			.focus(function(){
-  				$("ul", $(".nav>li:has(ul)")).bgIframe({opacity:false});
+  				$("ul", $(".nav>li:has(ul)")).bgIframe();
   			})
   	  .end()
   	.end()
