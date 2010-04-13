@@ -3,9 +3,13 @@
 Drupal.behaviors.simplemenuAttach = function(context) {
   // If detect pop-ups setting is enabled and we are in a pop-up window
   if (Drupal.settings.simplemenu.detectPopup && window.opener) {
-  	return;
- 	}
- 	
+    return;
+  }
+
+  if ($('body').hasClass('simplemenu-enabled')) {
+    return;
+  }
+
   // get the element to add the menu to
   var element = Drupal.settings.simplemenu.element;
   var menu = $(simplemenu).attr("id", "simplemenu").addClass('clear-block');
@@ -29,25 +33,26 @@ Drupal.behaviors.simplemenuAttach = function(context) {
   
   // Build menu
   $(menu)
-    .superfish( { 
+    .superfish({
+      pathClass: 'current',
       animation: animation,
       delay: Drupal.settings.simplemenu.hideDelay,
       speed: Drupal.settings.simplemenu.effectSpeed
-    } )
-  	.find(">li:has(ul)")
-  		.mouseover(function(){
-  			$("ul", this).bgIframe();
-  		})
-  		.find("a")
-  			.focus(function(){
-  				$("ul", $(".nav>li:has(ul)")).bgIframe();
-  			})
-  	  .end()
-  	.end()
-  	.find("a")
-  	  .removeAttr('title');
+    })
+    .find(">li:has(ul)")
+      .mouseover(function(){
+        $("ul", this).bgIframe();
+      })
+      .find("a")
+        .focus(function(){
+          $("ul", $(".nav>li:has(ul)")).bgIframe();
+        })
+      .end()
+    .end()
+    .find("a")
+      .removeAttr('title');
 
-	 $('#simplemenu').children('li.expanded').addClass('root');
+   $('#simplemenu').children('li.expanded').addClass('root');
 };
 
 

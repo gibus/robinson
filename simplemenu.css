@@ -6,49 +6,58 @@
 
 /*** ESSENTIAL STYLES ***/
 #simplemenu, #simplemenu * {
-	margin:0;
-	padding:0;
-	list-style:none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+
 #simplemenu {
-	line-height:1.0;
-	position: relative;
-	z-index: 9999;
+  line-height: 1.0;
+  position: relative;
+  z-index: 9999;
 }
+
 #simplemenu ul {
-	position:absolute;
-	top:-999em;
-	width:14em;
-	font-size:1em;
-	line-height:1em;
+  position: absolute;
+  top: -999em;
+  width: 14em;
+  font-size: 1em;
+  line-height: 1em;
 }
+
 #simplemenu ul li,
 #simplemenu a {
-	width: 100%;
+  width: 100%;
 }
+
 #simplemenu li {
-	float:left;
-	position:relative;
-	z-index:99;
+  float: left;
+  position: relative;
+  z-index: 99;
 }
+
 #simplemenu a {
-	display:block;
+  display: block;
 }
+
 #simplemenu li:hover ul,
 ul#simplemenu li.sfHover ul {
-	left:0px;
-	top:21px;
+  left: 0px;
+  top: 21px;
 }
+
 #simplemenu li:hover li ul,
 #simplemenu li.sfHover li ul {
-	top:-999em;
+  top: -999em;
 }
+
 #simplemenu li li:hover ul,
 ul#simplemenu li li.sfHover ul {
-	left:14em;
-	top:-1px;
+  left: 14em;
+  top: -1px;
 }
+
 .superfish li:hover ul,
 .superfish li li:hover ul {
-	top: -999em;
+  top: -999em;
 }
