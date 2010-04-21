@@ -50,10 +50,11 @@ function simplemenu_init() {
   if (user_access('view simplemenu') && simplemenu_enabled()) {
     $path = drupal_get_path('module', 'simplemenu');
     drupal_add_css($path .'/simplemenu.css');
-    $simplemenu_theme = variable_get('simplemenu_theme', 'original');
 
-    if ($simplemenu_theme != 'custom') {
-      drupal_add_css($path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css');
+    $simplemenu_theme = variable_get('simplemenu_theme', 'original');
+    $theme_file = $path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css';
+    if (is_file($theme_file)) {
+      drupal_add_css($theme_file);
     }
 
     $settings = array(

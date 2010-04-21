@@ -50,6 +50,54 @@ function simplemenu_admin_settings() {
   );
 
 
+  // standard settings
+  $form['settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  $form['settings']['simplemenu_hide_delay'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hide delay'),
+    '#size' => 4,
+    '#default_value' => variable_get('simplemenu_hide_delay', 800),
+    '#description' => t('How long (in milliseconds) should a menu still appear after losing focus.'),
+  );
+
+  $form['settings']['simplemenu_scroll_effect'] = array(
+    '#type' => 'radios',
+    '#title' => t('Scroll effect'),
+    '#options' => array(
+      'scroll' => t('Scroll with the page'),
+      'fixed' => t('Fixed'),
+    ),
+    '#default_value' => variable_get('simplemenu_scroll_effect', 'scroll'),
+    '#description' => t('Whether the menu scrolls with the page or stays at the top or bottom (this should only be used when the menu is attached to the &lt;body&gt; tag.)'),
+  );
+
+  $form['settings']['simplemenu_effect'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show effect'),
+    '#options' => array(
+      'opacity' => t('Fade'),
+      'height' => t('Slide'),
+      'none' => t('None')
+    ),
+    '#default_value' => variable_get('simplemenu_effect', 'opacity'),
+    '#description' => t('The effect used when displaying a menu.'),
+  );
+
+  $form['settings']['simplemenu_effect_speed'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show speed'),
+    '#options' => array('slow' => t('Slow'), 'medium' => t('Medium'), 'fast' => t('Fast')),
+    '#default_value' => variable_get('simplemenu_effect_speed', 'fast'),
+    '#description' => t('The speed of the effect, not used when "none" is set to show effect.'),
+  );
+
+
   // advanced options
   $form['advanced'] = array(
     '#type' => 'fieldset',
@@ -95,34 +143,6 @@ function simplemenu_admin_settings() {
     '#multiple' => $use_list,
     '#default_value' => variable_get('simplemenu_exclusions', array()),
     '#description' => t('Select which themes to <strong>not</strong> display the menu. Use this when you have a theme that displays its own admin navigation.'),
-  );
-
-  $form['advanced']['simplemenu_hide_delay'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Hide delay'),
-    '#size' => 4,
-    '#default_value' => variable_get('simplemenu_hide_delay', 800),
-    '#description' => t('How long (in milliseconds) should a menu still appear after losing focus.'),
-  );
-
-  $form['advanced']['simplemenu_effect'] = array(
-    '#type' => 'radios',
-    '#title' => t('Show effect'),
-    '#options' => array(
-      'opacity' => t('Fade'),
-      'height' => t('Slide'),
-      'none' => t('None')
-    ),
-    '#default_value' => variable_get('simplemenu_effect', 'opacity'),
-    '#description' => t('The effect used when displaying a menu.'),
-  );
-
-  $form['advanced']['simplemenu_effect_speed'] = array(
-    '#type' => 'radios',
-    '#title' => t('Show speed'),
-    '#options' => array('slow' => t('Slow'), 'medium' => t('Medium'), 'fast' => t('Fast')),
-    '#default_value' => variable_get('simplemenu_effect_speed', 'fast'),
-    '#description' => t('The speed of the effect, not used when "none" is set to show effect.'),
   );
 
   $form['advanced']['simplemenu_detect_popop'] = array(
