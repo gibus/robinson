@@ -53,7 +53,7 @@ function simplemenu_admin_settings() {
   // standard settings
   $form['settings'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Advanced settings'),
+    '#title' => t('Simplemenu settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
