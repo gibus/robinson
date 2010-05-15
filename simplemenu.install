@@ -20,4 +20,14 @@ function simplemenu_update_6001() {
   return array();
 }
 
+/**
+ * Implementation of hook_update_N().
+ */
+function simplemenu_update_6002() {
+  // fix variable name
+  variable_set('simplemenu_detect_popup', variable_get('simplemenu_detect_popop', 1));
+  variable_del('simplemenu_detect_popop');
+  return array();
+}
+
 // vim: ts=2 sw=2 et syntax=php
