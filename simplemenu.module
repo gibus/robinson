@@ -48,28 +48,129 @@ function simplemenu_enabled() {
 function simplemenu_init() {
   // do a simple access check here, since theme isn't available to check yet
   if (user_access('view simplemenu') && simplemenu_enabled()) {
-    $path = drupal_get_path('module', 'simplemenu');
-    drupal_add_css($path .'/simplemenu.css');
+    $simplemenu_path = drupal_get_path('module', 'simplemenu');
+    $css_path = file_create_path('css'); // same path as concatenated Core CSS
+    if (file_check_directory($css_path, FILE_CREATE_DIRECTORY)) {
+      // The old way had a "static" CSS which meant that we could not easily
+      // offer options to the users.
+      //drupal_add_css($simplemenu_path .'/simplemenu.css');
 
+      $fix = variable_get('simplemenu_fix', 'scroll');
+
+      // XXX add a variable simplemenu_update which is set to TRUE whenever
+      //     the settings get modified and false here
+      $output_filename = variable_get('simplemenu_css_filename', '');
+      if (!$output_filename) {
+        $tags = array(
+          '@MENUBAR_ZINDEX@' => simplemnu_get_zindex('simplemenu_menubar_zindex', 9999),
+          '@DROPDOWN_ZINDEX@' => simplemnu_get_zindex('simplemenu_dropdown_zindex', 9999),
+        );
+        switch ($fix) {
+        case 'top':
+          $tags['@FIX@'] = "position: fixed;\n  top: 0;";
+          break;
+
+        case 'bottom':
+          $tags['@FIX@'] = "position: fixed;\n  bottom: 0;";
+          break;
+
+        default: // scroll
+          $tags['@FIX@'] = 'position: relative;';
+          break;
+
+        }
+        $css = file_get_contents($simplemenu_path . '/simplemenu.css.tpl');
+        $css = strtr($css, $tags);
+        $css_md5 = md5($css);
+        $output_filename = $css_path . '/simplemenu-' . $css_md5 . '.css';
+        if (!file_exists($output_filename)) {
+          // new content, create a new file
+          file_put_contents($output_filename, $css);
+        }
+        else {
+          // this call is rather ugly, but we must make sure that the
+          // system cache will take the current Simplemenu CSS in account
+          _drupal_flush_css_js();
+        }
+        //variable_set('simplemenu_css_filename', $output_filename);
+      }
+      drupal_add_css($output_filename);
+    }
+    else {
+      drupal_set_message(t('Simplemenu could not create the folder @path in order to save the dynamic CSS data.',
+        array('@path' => $css_path)), 'error');
+
+      // use a default that cannot react to the dynamic changes...
+      drupal_add_css($simplemenu_path .'/simplemenu.css');
+    }
+
+    // we want to put the simplemenu theme CSS first
+    // so we can change some CSS entries dynamically
+    // but at this time the simplemenu.css is used to
+    // reset many of the CSS entries... Hmmm...
     $simplemenu_theme = variable_get('simplemenu_theme', 'original');
-    $theme_file = $path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css';
+    $theme_file = $simplemenu_path .'/themes/'. $simplemenu_theme .'/'. $simplemenu_theme .'.css';
     if (is_file($theme_file)) {
       drupal_add_css($theme_file);
+    }
+
+    switch ($fix) {
+    case 'top':
+      $element = 'body';
+      $placement = 'prepend';
+      break;
+
+    case 'bottom':
+      $element = 'body';
+      $placement = 'append';
+      break;
+
+    default: // 'scroll'
+      // let user defined other elements when not fixed
+      $element = variable_get('simplemenu_element', 'body');
+      $placement = variable_get('simplemenu_element_method', 'prepend');
+      break;
+
     }
 
     $settings = array(
       'effect' => variable_get('simplemenu_effect', 'opacity'),
       'effectSpeed' => variable_get('simplemenu_effect_speed', 'fast'),
-      'element' => variable_get('simplemenu_element', 'body'),
+      'element' => $element,
+      'placement' => $placement,
       'hideDelay' => variable_get('simplemenu_hide_delay', 800),
-      'placement' => variable_get('simplemenu_element_method', 'prepend'),
-      'detectPopup' => variable_get('simplemenu_detect_popop', 1),
+      'detectPopup' => variable_get('simplemenu_detect_popup', 1),
     );
 
     drupal_add_js(array('simplemenu' => $settings), 'setting');
-    drupal_add_js($path .'/simplemenu.js');
-    drupal_add_js($path .'/superfish.js');
+    drupal_add_js($simplemenu_path . '/simplemenu.js');
+    $superfish = variable_get('simplemenu_superfish_version', 'superfish-1.4.1.js');
+    drupal_add_js($simplemenu_path . '/' . $superfish);
   }
+}
+
+/**
+ * \brief Retrieve the zindex for the CSS files.
+ *
+ * This function retrieves a z-index from a Drupal variable and
+ * transform it to fit in a CSS file.
+ *
+ * \param[in] $name The name of the z-index variable to read.
+ * \param[in] $default The default value to use when the variable is not defined.
+ *
+ * \return A string representing the current value of the specified z-index.
+ */
+function simplemnu_get_zindex($name, $default) {
+  $zindex = variable_get($name, $default);
+
+  if ($zindex == -1) {
+    $zindex = '';
+  }
+  else {
+    $zindex = 'z-index: ' . $zindex . ';';
+  }
+
+  return $zindex;
 }
 
 /**
@@ -104,15 +205,13 @@ function simplemenu_perm() {
  * Render an HTML list of links for a given menu.
  */
 function simplemenu_get_menu() {
-  $output = '';
-
   // if a user turned off menu module but SimpleMenu was previously set
   // reset variable so a menu appears
   $menu_name = module_exists('menu') ? variable_get('simplemenu_menu', 'navigation:0') : 'navigation:0';
   $menu = simplemenu_menu_tree($menu_name);
 
   if (!$menu) {
-    $menu = '<li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li>';
+    $menu = '<ul class="menu"><li><a href="'. url('admin/settings/simplemenu') .'">'. t('No menu items found. Try a different menu as the default.') .'</a></li></ul>';
   }
 
   // This is ugly, I know, but it is the only way I can see to get the additional
@@ -122,9 +221,12 @@ function simplemenu_get_menu() {
     $menu = substr($menu, 0, $pos) . $devel . substr($menu, $pos);
   }
 
-  $output .= $menu;
+  // add the class & id to the UL tag here instead of the JavaScript
+  // otherwise it could be added to the <div> tag instead...
+  $pos = strpos($menu, '>') + 1;
+  $menu = '<ul class="menu clear-block" id="simplemenu">' . substr($menu, $pos);
 
-  return $output;
+  return '<div class="simplemenu-block">' . $menu . '&nbsp;</div>';
 }
 
 /**
