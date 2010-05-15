@@ -12,7 +12,7 @@ Drupal.behaviors.simplemenuAttach = function(context) {
 
   // get the element to add the menu to
   var element = Drupal.settings.simplemenu.element;
-  var menu = $(simplemenu).attr("id", "simplemenu").addClass('clear-block');
+  var menu = $(simplemenu);
 
   switch (Drupal.settings.simplemenu.placement) {
     case 'prepend':
@@ -33,11 +33,13 @@ Drupal.behaviors.simplemenuAttach = function(context) {
   
   // Build menu
   $(menu)
+    .find('#simplemenu')
     .superfish({
       pathClass: 'current',
       animation: animation,
       delay: Drupal.settings.simplemenu.hideDelay,
-      speed: Drupal.settings.simplemenu.effectSpeed
+      speed: Drupal.settings.simplemenu.effectSpeed,
+      autoArrows: false
     })
     .find(">li:has(ul)")
       .mouseover(function(){
