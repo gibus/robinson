@@ -2,3 +2,4 @@
 name = SimpleMenu
 description = Displays a menu bar with drop down items. By default it appears at the top of the screen with the Navigation menu.
 core = 6.x
+package = Menu
