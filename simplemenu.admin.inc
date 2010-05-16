@@ -21,13 +21,13 @@ function simplemenu_admin_settings() {
   );
 
   if (module_exists('menu')) {
-    $form['default_menu']['simplemenu_menus'] = array(
+    $form['default_menu']['simplemenu_menu'] = array(
       '#type' => 'select',
-      '#multiple' => TRUE,
       '#title' => t('Menu'),
       '#options' => menu_parent_options(menu_get_menus(), array('mlid' => 0)), // return complete tree
-      '#default_value' => variable_get('simplemenu_menus', array('navigation:0')),
-      '#description' => t('Select the menu to display. Select multiple menus to show each one of them (use Ctrl or Shift to select multiple entries.) Please, avoid selecting a parent and a child from the same menu.'),
+      '#default_value' => variable_get('simplemenu_menu', 'navigation:0'),
+      '#description' => t('Select the menu to display.'),
+      '#weight' => -1,
     );
   }
 

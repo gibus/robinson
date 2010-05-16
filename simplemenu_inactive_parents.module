@@ -22,16 +22,16 @@
  * is built by the system (i.e. caches are cleared by user,
  * because a module is installed, etc.)
  */
-function simplemenu_theme_registry_alter(&$theme_registry) {
+function simplemenu_inactive_parents_theme_registry_alter(&$theme_registry) {
   global $theme;
 
   // Save theme function
-  $themes = variable_get('simplemenu_theme_function', array());
+  $themes = variable_get('simplemenu_inactive_parents_theme_function', array());
   $themes[$theme] = $theme_registry['menu_item_link']['function'];
-  variable_set('simplemenu_theme_function', $themes);
+  variable_set('simplemenu_inactive_parents_theme_function', $themes);
 
   // Replace with our own
-  $theme_registry['menu_item_link']['function'] = 'simplemenu_theme_menu_item_link';
+  $theme_registry['menu_item_link']['function'] = 'simplemenu_inactive_parents_theme_menu_item_link';
 }
 
 /**
@@ -40,7 +40,7 @@ function simplemenu_theme_registry_alter(&$theme_registry) {
  * This function intercepts the menu item link theming function of
  * the system and 
  */
-function simplemenu_theme_menu_item_link($link) {
+function simplemenu_inactive_parents_theme_menu_item_link($link) {
   global $theme;
   static $cnt = 0;
 
@@ -51,7 +51,7 @@ function simplemenu_theme_menu_item_link($link) {
   }
 
   // got a theme function?
-  $themes = variable_get('simplemenu_theme_function', array());
+  $themes = variable_get('simplemenu_inactive_parents_theme_function', array());
   if (isset($themes[$theme])) {
     return $themes[$theme]($link);
   }

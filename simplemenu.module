@@ -283,9 +283,8 @@ function simplemenu_get_menu() {
   // if a user turned off menu module but SimpleMenu was previously set
   // reset variable so a menu appears
   $all_menus = array('navigation:0');
-  if (module_exists('menu')) {
-    $all_menus = variable_get('simplemenu_menus', $all_menus);
-  }
+  drupal_alter('simplemenu_menus', $all_menus);
+
   if (count($all_menus) > 1) {
     // if menu is not enable then we cannot have a count other than 1
     $menu_titles = menu_get_menus();
@@ -294,6 +293,7 @@ function simplemenu_get_menu() {
       list($menu_name, $mlid) = explode(':', $full_name);
       $tree[] = array(
         'link' => array(
+          'simplemenu_multi_menu_root' => TRUE,
           'mlid' => $mlid,
           'menu_name' => $full_name,
           'hidden' => FALSE,
