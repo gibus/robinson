@@ -1,0 +1,11 @@
+; $Id$
+name = SimpleMenu Multi-Menu support
+description = Give support to display multiple menu in the top row.
+dependencies[] = simplemenu
+dependencies[] = menu
+core = 6.x
+package = Menu
+project = simplemenu
+
+version = "6.x-1.x-dev"
+
