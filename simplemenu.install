@@ -30,4 +30,15 @@ function simplemenu_update_6002() {
   return array();
 }
 
+/**
+ * Implementation of hook_update_N().
+ */
+function simplemenu_update_6003() {
+  if (variable_get('simplemenu_devel', 0)) {
+    drupal_set_message('The Simplemenu Devel is now defined in a separate module. Enable that module if you want to use the devel menu.', 'warning');
+  }
+  variable_del('simplemenu_devel');
+  return array();
+}
+
 // vim: ts=2 sw=2 et syntax=php

@@ -10,6 +10,8 @@
  * SimpleMenu settings page.
  */
 function simplemenu_admin_settings() {
+  $simplemenu_path = drupal_get_path('module', 'simplemenu');
+
   // menu selection
   $form['default_menu'] = array(
     '#type' => 'fieldset',
@@ -22,29 +24,22 @@ function simplemenu_admin_settings() {
     $form['default_menu']['simplemenu_menu'] = array(
       '#type' => 'select',
       '#title' => t('Menu'),
-      '#options' => menu_parent_options(menu_get_menus(), array( 'mlid' => 0 )), // return complete tree;
+      '#options' => menu_parent_options(menu_get_menus(), array('mlid' => 0)), // return complete tree
       '#default_value' => variable_get('simplemenu_menu', 'navigation:0'),
       '#description' => t('Select the menu to display.'),
     );
   }
 
-  if (module_exists('devel')) {
-    $form['default_menu']['simplemenu_devel'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Add devel module links'),
-      '#default_value' => variable_get('simplemenu_devel', 0),
-      '#description' => t('Add devel module links for those users that can access the devel module.'),
-    );
+  $themes = file_scan_directory($simplemenu_path . '/themes', '.*',
+    array('.', '..', 'CVS', '.svn'), 0, FALSE, 'basename');
+  $theme_selection = array('custom' => 'custom');
+  foreach ($themes as $name => $ignore) {
+    $theme_selection[$name] = $name;
   }
-
   $form['default_menu']['simplemenu_theme'] = array(
     '#type' => 'select',
     '#title' => t('Theme'),
-    '#options' => array(
-      'original' => t('original'),
-      'blackblue' => t('black & blue'),
-      'custom' => t('custom'),
-    ),
+    '#options' => $theme_selection,
     '#default_value' => variable_get('simplemenu_theme', 'original'),
     '#description' => t('Select which theme to use. If you specify custom, you need to define CSS in your theme.'),
   );
@@ -68,7 +63,9 @@ function simplemenu_admin_settings() {
     '#title' => t('Scroll or fix menu'),
     '#options' => $fix_options,
     '#default_value' => variable_get('simplemenu_fix', 'scroll'),
-    '#description' => t('Select the mode to use. The default is to let the menu scroll with the page.<br /><span style="color: red;">WARNING:</span> The At the Top/Bottom options prevent you from ever seeing the bottom of your drop-down menus. In other words, if you have many modules installed, it is not unlikely that your <em>Site configuration</em> menu will not fit the screen and the last few entries won\'t be accessible via Simplemenu.'),
+    '#description' => t('Select the mode to use. The default is to let the menu scroll with the page.')
+      . '<br /><span style="color: red;">' . t('WARNING') . ':</span> '
+      . t('The At the Top/Bottom options prevent you from ever seeing the bottom of your drop-down menus. In other words, if you have many modules installed, it is not unlikely that your <em>Site configuration</em> menu will not fit the screen and the last few entries won\'t be accessible via Simplemenu.'),
   );
 
   $form['settings']['simplemenu_hide_delay'] = array(
@@ -115,24 +112,43 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_uid1', 1),
   );
 
-  $simplemenu_path = drupal_get_path('module', 'simplemenu');
-  $superfish = file_scan_directory($simplemenu_path, '^superfish-[0-9.]*\.js$',
+  $superfish_js = file_scan_directory($simplemenu_path, '^superfish-[0-9.]*\.js$',
     array('.', '..', 'CVS', '.svn'), 0, FALSE, 'basename');
-  foreach ($superfish as $name => $ignore) {
+  $superfish = array('custom' => 'custom or theme');
+  foreach ($superfish_js as $name => $ignore) {
     $superfish[$name] = $name;
   }
   $form['advanced']['simplemenu_superfish_version'] = array(
     '#type' => 'select',
     '#title' => t('SuperFish Version'),
     '#options' => $superfish,
-    '#description' => t('Select which version of SuperFish you prefer using.') .$simplemenu_path,
+    '#description' => t('Select which version of SuperFish you prefer using. The choice "custom or theme" means that Simplemenu does not include one of its own version of Superfish. It is expected that another module or your theme does so already.'),
     '#default_value' => variable_get('simplemenu_superfish_version', 'superfish-1.4.1.js'),
+  );
+
+  $scope = array(
+    'header' => 'Header',
+    'footer' => 'Footer',
+  );
+  $form['advanced']['simplemenu_menu_scope'] = array(
+    '#type' => 'select',
+    '#title' => t('Scope of simplemenu variable'),
+    '#options' => $scope,
+    '#description' => t('By default, the <code>simplemenu</code> variable is put in the footer (backward compatible.) It is also possible to put it in the header instead.'),
+    '#default_value' => variable_get('simplemenu_menu_scope', 'footer'),
+  );
+
+  $form['advanced']['simplemenu_cache_menu'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Cache the simplemenu variable'),
+    '#description' => t('The Simplemenu now has the capability to cache the simplemenu variable in a .js file. This accelerate the transfer by using the Browser cache.'),
+    '#default_value' => variable_get('simplemenu_cache_menu', TRUE),
   );
 
   $form['advanced']['simplemenu_menubar_zindex'] = array(
     '#type' => 'textfield',
     '#title' => t('Menubar CSS z-index value'),
-    '#description' => t('By default, the menubar CSS z-index is set to 1. Some themes or other modules may require you to change this value. Use -1 to completely disable the z-index in the menubar.'),
+    '#description' => t('By default, the menubar CSS z-index is set to 9999. Some themes or other modules may require you to change this value. Use -1 to completely disable the z-index in the menubar. If this value is not set to -1, then the following z-index will not have any effect and can as well be set to -1.'),
     '#default_value' => variable_get('simplemenu_menubar_zindex', 9999),
   );
 
