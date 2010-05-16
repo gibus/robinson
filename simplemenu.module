@@ -282,8 +282,37 @@ function simplemenu_get_menu() {
 
   // if a user turned off menu module but SimpleMenu was previously set
   // reset variable so a menu appears
-  $menu_name = module_exists('menu') ? variable_get('simplemenu_menu', 'navigation:0') : 'navigation:0';
-  $tree = simplemenu_menu_tree($menu_name);
+  $all_menus = array('navigation:0');
+  if (module_exists('menu')) {
+    $all_menus = variable_get('simplemenu_menus', $all_menus);
+  }
+  if (count($all_menus) > 1) {
+    // if menu is not enable then we cannot have a count other than 1
+    $menu_titles = menu_get_menus();
+    $tree = array();
+    foreach ($all_menus as $full_name) {
+      list($menu_name, $mlid) = explode(':', $full_name);
+      $tree[] = array(
+        'link' => array(
+          'mlid' => $mlid,
+          'menu_name' => $full_name,
+          'hidden' => FALSE,
+          'title' => $menu_titles[$menu_name],
+          'href' => 'admin/settings/simplemenu', /// ??? -- we should not have a link here
+          'in_active_trail' => FALSE,
+          'has_children' => TRUE,
+          'localized_options' => array(
+            'attributes' => array('class' => 'simplemenu-top-level'),
+          ),
+        ),
+        'below' => simplemenu_menu_tree($full_name),
+      );
+    }
+  }
+  else {
+    reset($all_menus);
+    $tree = simplemenu_menu_tree(current($all_menus));
+  }
 
   // allow other modules to modify the menu tree
   drupal_alter('simplemenu_tree', $tree);

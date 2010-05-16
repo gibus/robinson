@@ -41,4 +41,13 @@ function simplemenu_update_6003() {
   return array();
 }
 
+/**
+ * Implementation of hook_update_N().
+ */
+function simplemenu_update_6004() {
+  // enable multiple menus selection
+  variable_set('simplemenu_menus', array(variable_get('simplemenu_menu', 'navigation:0')));
+  return array();
+}
+
 // vim: ts=2 sw=2 et syntax=php

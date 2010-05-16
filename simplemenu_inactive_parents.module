@@ -42,10 +42,12 @@ function simplemenu_theme_registry_alter(&$theme_registry) {
  */
 function simplemenu_theme_menu_item_link($link) {
   global $theme;
+  static $cnt = 0;
 
   // this is a drop down?
   if (!empty($link['has_children']) && variable_get('simplemenu_running', FALSE)) {
-    return '<a name="menu-id-' . $link['mlid'] . '">' . $link['title'] . '</a>';
+    ++$cnt;
+    return '<a name="menu-id-' . $cnt . '">' . $link['title'] . '</a>';
   }
 
   // got a theme function?

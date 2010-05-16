@@ -13,6 +13,8 @@ function simplemenu_devel_simplemenu_tree_alter(&$tree) {
   if (user_access('access devel information')) {
     $devel = array(
       'link' => array(
+        'mlid' => 0,
+        'menu_name' => 'devel',
         'hidden' => FALSE,
         'title' => t('Devel module'),
         'href' => 'admin/settings/devel',
