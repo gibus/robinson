@@ -32,13 +32,17 @@
   font-weight: 700;
   background: url(down-green.gif) no-repeat 97%;
 }
-#simplemenu li:hover, #simplemenu li.sfHover,
-#simplemenu a:focus, #simplemenu a:hover, #simplemenu a:active {
+#simplemenu li:hover,
+#simplemenu li.sfHover,
+#simplemenu a:focus,
+#simplemenu a:hover,
+#simplemenu a:active {
   background: #3875d7;
   color: #fff;
 }
 #simplemenu li:hover ul,
 ul#simplemenu li.sfHover ul {
+  border-top: 1px solid white;
   border-bottom: 1px solid #999;
 }
 #simplemenu li ul a {
