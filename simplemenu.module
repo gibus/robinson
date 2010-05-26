@@ -282,7 +282,7 @@ function simplemenu_get_menu() {
 
   // if a user turned off menu module but SimpleMenu was previously set
   // reset variable so a menu appears
-  $all_menus = array('navigation:0');
+  $all_menus = array(variable_get('simplemenu_menu', 'navigation:0'));
   drupal_alter('simplemenu_menus', $all_menus);
 
   if (count($all_menus) > 1) {
