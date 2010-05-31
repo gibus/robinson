@@ -1,61 +1,65 @@
 // $Id$
+(function($){
 
-Drupal.behaviors.simplemenuAttach = function(context) {
-  // If detect pop-ups setting is enabled and we are in a pop-up window
-  if (Drupal.settings.simplemenu.detectPopup && window.opener) {
-    return;
-  }
-
-  if ($('body').hasClass('simplemenu-enabled')) {
-    return;
-  }
-
-  // get the element to add the menu to
-  var element = Drupal.settings.simplemenu.element;
-  var menu = $(simplemenu);
-
-  switch (Drupal.settings.simplemenu.placement) {
-    case 'prepend':
-      $(menu).prependTo(element);
-      break;
-    case 'append':
-      $(menu).appendTo(element);
-      break;
-    case 'replace':
-      $(element).html(menu);
-      break;
-  }
-
-  $('body').addClass('simplemenu-enabled');
+Drupal.behaviors.simplemenuAttach = {
+  attach: function(context, settings) {
+    // If detect pop-ups setting is enabled and we are in a pop-up window
+    if (settings.simplemenu.detectPopup && window.opener) {
+      return;
+    }
   
-  var animation = {};
-  animation[Drupal.settings.simplemenu.effect] = 'toggle';
+    if ($('body').hasClass('simplemenu-enabled')) {
+      return;
+    }
   
-  // Build menu
-  $(menu)
-    .find('#simplemenu')
-    .superfish({
-      pathClass: 'current',
-      animation: animation,
-      delay: Drupal.settings.simplemenu.hideDelay,
-      speed: Drupal.settings.simplemenu.effectSpeed,
-      autoArrows: false
-    })
-    .find(">li:has(ul)")
-      .mouseover(function(){
-        $("ul", this).bgIframe();
+    // get the element to add the menu to
+    var element = settings.simplemenu.element;
+    var menu = $(simplemenu);
+  
+    switch (settings.simplemenu.placement) {
+      case 'prepend':
+        $(menu).prependTo(element);
+        break;
+      case 'append':
+        $(menu).appendTo(element);
+        break;
+      case 'replace':
+        $(element).html(menu);
+        break;
+    }
+  
+    $('body').addClass('simplemenu-enabled');
+    
+    var animation = {};
+    animation[settings.simplemenu.effect] = 'toggle';
+    
+    // Build menu
+    $(menu)
+      .find('#simplemenu')
+      .superfish({
+        pathClass: 'current',
+        animation: animation,
+        delay: settings.simplemenu.hideDelay,
+        speed: settings.simplemenu.effectSpeed,
+        autoArrows: false
       })
-      .find("a")
-        .focus(function(){
-          $("ul", $(".nav>li:has(ul)")).bgIframe();
+      .find(">li:has(ul)")
+        .mouseover(function(){
+          $("ul", this).bgIframe();
         })
+        .find("a")
+          .focus(function(){
+            $("ul", $(".nav>li:has(ul)")).bgIframe();
+          })
+        .end()
       .end()
-    .end()
-    .find("a")
-      .removeAttr('title');
-
-   $('#simplemenu').children('li.expanded').addClass('root');
+      .find("a")
+        .removeAttr('title');
+  
+    $('#simplemenu').children('li.expanded').addClass('root');
+  }
 };
+})(jQuery);
 
 
 /* Copyright (c) 2006 Brandon Aaron (http://brandonaaron.net)

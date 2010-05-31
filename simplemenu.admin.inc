@@ -25,14 +25,14 @@ function simplemenu_admin_settings() {
       '#type' => 'select',
       '#title' => t('Menu'),
       '#options' => menu_parent_options(menu_get_menus(), array('mlid' => 0)), // return complete tree
-      '#default_value' => variable_get('simplemenu_menu', 'navigation:0'),
+      '#default_value' => variable_get('simplemenu_menu', 'management:0'),
       '#description' => t('Select the menu to display.'),
       '#weight' => -1,
     );
   }
 
-  $themes = file_scan_directory($simplemenu_path . '/themes', '.*',
-    array('.', '..', 'CVS', '.svn'), 0, FALSE, 'basename');
+  $themes = file_scan_directory($simplemenu_path . '/themes', '%.*%',
+    array('key' => 'filename', 'recurse' => FALSE));
   $theme_selection = array('custom' => 'custom');
   foreach ($themes as $name => $ignore) {
     $theme_selection[$name] = $name;
@@ -66,7 +66,7 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_fix', 'scroll'),
     '#description' => t('Select the mode to use. The default is to let the menu scroll with the page.')
       . '<br /><span style="color: red;">' . t('WARNING') . ':</span> '
-      . t('The At the Top/Bottom options prevent you from ever seeing the bottom of your drop-down menus. In other words, if you have many modules installed, it is not unlikely that your <em>Site configuration</em> menu will not fit the screen and the last few entries won\'t be accessible via Simplemenu.'),
+      . t('The At the Top option prevents you from ever seeing the bottom of your drop-down menus when they are too long. In other words, if you have many modules installed, it is not unlikely that some drop down menus will not fit the height of the screen and the last few entries won\'t be accessible via Simplemenu.'),
   );
 
   $form['settings']['simplemenu_hide_delay'] = array(
@@ -113,8 +113,8 @@ function simplemenu_admin_settings() {
     '#default_value' => variable_get('simplemenu_uid1', 1),
   );
 
-  $superfish_js = file_scan_directory($simplemenu_path, '^superfish-[0-9.]*\.js$',
-    array('.', '..', 'CVS', '.svn'), 0, FALSE, 'basename');
+  $superfish_js = file_scan_directory($simplemenu_path, '%^superfish-[0-9.]*\.js$%',
+    array('key' => 'filename', 'recurse' => FALSE));
   $superfish = array('custom' => 'custom or theme');
   foreach ($superfish_js as $name => $ignore) {
     $superfish[$name] = $name;
@@ -135,7 +135,7 @@ function simplemenu_admin_settings() {
     '#type' => 'select',
     '#title' => t('Scope of simplemenu variable'),
     '#options' => $scope,
-    '#description' => t('By default, the <code>simplemenu</code> variable is put in the footer (backward compatible.) It is also possible to put it in the header instead.'),
+    '#description' => t('By default, the <code>simplemenu</code> variable is put in the footer (backward compatible.) It is possible to put it in the header instead.'),
     '#default_value' => variable_get('simplemenu_menu_scope', 'footer'),
   );
 

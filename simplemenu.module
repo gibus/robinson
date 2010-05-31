@@ -12,7 +12,7 @@
 function simplemenu_menu() {
   $items = array();
 
-  $items['admin/settings/simplemenu'] = array(
+  $items['admin/config/simplemenu'] = array(
     'title' => 'SimpleMenu',
     'description' => 'Select the menu to display.',
     'page callback' => 'drupal_get_form',
@@ -65,34 +65,34 @@ function simplemenu_init() {
  * to be sent inline.
  */
 function _simplemenu_add_menu() {
-  $simplemenu = 'var simplemenu=' . drupal_to_js(simplemenu_get_menu()) . ';';
+  // XXX -- should we put that in the settings instead? why put it in its own variable?
+  $simplemenu = 'var simplemenu=' . drupal_json_encode(simplemenu_get_menu()) . ';';
 
   $has_file = variable_get('simplemenu_cache_menu', TRUE);
   if ($has_file) {
-    $js_path = file_create_path('js'); // same path as concatenated Core JS
-    $js_md5 = md5($simplemenu); // this is a lot faster than transferring the menu for each page!
-    $js_filename = $js_path . '/simplemenu-' . $js_md5 . '.js';
-
-    $has_file = file_check_directory($js_path, FILE_CREATE_DIRECTORY);
-    if ($has_file) {
-      // The old way was to send the whole menu each time
-      if (!file_exists($js_filename)) {
-        // use LOCK so concurrent writes don't mess up the file
-        @file_put_contents($js_filename, $simplemenu);
-        $has_file = file_exists($js_filename);
-      }
-      else {
-        $has_file = TRUE;
+    $js_hash = drupal_hash_base64($simplemenu);
+    $js_path = 'public://js'; // same path as concatenated Core JS
+    $js_filename = $js_path . '/simplemenu_' . $js_hash . '.js';
+    if (!file_exists($js_filename)) {
+      file_prepare_directory($js_path, FILE_CREATE_DIRECTORY);
+      if (!file_unmanaged_save_data($simplemenu, $js_filename, FILE_EXISTS_REPLACE)) {
+        $has_file = FALSE;
       }
     }
   }
 
-  $scope = variable_get('simplemenu_menu_scope', 'footer');
+  $options = array(
+    'scope' => variable_get('simplemenu_menu_scope', 'footer'),
+    // 'version' => ?, -- could we make use of the version?
+  );
   if ($has_file) {
-    drupal_add_js($js_filename, 'module', $scope);
+    //$options['type'] = 'file'; -- default
+    drupal_add_js($js_filename, $options);
   }
   else {
-    drupal_add_js($simplemenu, 'inline', $scope);
+    // inline adds the value as is (untouched)
+    $options['type'] = 'inline';
+    drupal_add_js($simplemenu, $options);
   }
 }
 
@@ -111,8 +111,8 @@ function _simplemenu_add_css() {
   global $user;
 
   $simplemenu_path = drupal_get_path('module', 'simplemenu');
-  $css_path = file_create_path('css'); // same path as concatenated Core CSS
-  if (file_check_directory($css_path, FILE_CREATE_DIRECTORY)) {
+  $css_path = 'public://css'; // same path as concatenated Core CSS
+  if (file_prepare_directory($css_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
     $fix = variable_get('simplemenu_fix', 'scroll');
 
     // XXX add a variable simplemenu_update which is set to TRUE whenever
@@ -139,8 +139,8 @@ function _simplemenu_add_css() {
       }
       $css = file_get_contents($simplemenu_path . '/simplemenu.css.tpl');
       $css = strtr($css, $tags);
-      $css_md5 = md5($css);
-      $output_filename = $css_path . '/simplemenu-' . $css_md5 . '.css';
+      $css_hash = hash('sha256', $css);
+      $output_filename = $css_path . '/simplemenu-' . $css_hash . '.css';
       if (!file_exists($output_filename)) {
         // new content, create a new file
         file_put_contents($output_filename, $css);
@@ -231,15 +231,16 @@ function _simplemenu_add_js() {
     'hideDelay' => variable_get('simplemenu_hide_delay', 800),
     'detectPopup' => variable_get('simplemenu_detect_popup', 1),
   );
-  drupal_add_js(array('simplemenu' => $settings), 'setting');
+  drupal_add_js(array('simplemenu' => $settings), array('type' => 'setting'));
 
   // Simplemenu
-  drupal_add_js($simplemenu_path . '/simplemenu.js');
+  drupal_add_js($simplemenu_path . '/simplemenu.js', array('version' => '1.2'));
 
   // Superfish
   $superfish = variable_get('simplemenu_superfish_version', 'superfish-1.4.1.js');
   if ($superfish != 'custom') {
-    drupal_add_js($simplemenu_path . '/' . $superfish);
+    $sf_version = str_replace(array('superfish-', '.js'), '', $superfish);
+    drupal_add_js($simplemenu_path . '/' . $superfish, array('version' => $sf_version));
   }
 }
 
@@ -282,7 +283,7 @@ function simplemenu_get_menu() {
 
   // if a user turned off menu module but SimpleMenu was previously set
   // reset variable so a menu appears
-  $all_menus = array(variable_get('simplemenu_menu', 'navigation:0'));
+  $all_menus = array(variable_get('simplemenu_menu', 'management:0'));
   drupal_alter('simplemenu_menus', $all_menus);
 
   if (count($all_menus) > 1) {
@@ -316,9 +317,11 @@ function simplemenu_get_menu() {
 
   // allow other modules to modify the menu tree
   drupal_alter('simplemenu_tree', $tree);
+  $tree = simplemenu_tree_remove_hidden($tree);
 
   // now generate the output
-  $menu = menu_tree_output($tree);
+  $menu_form = menu_tree_output($tree);
+  $menu = drupal_render($menu_form);
   if (!$menu) {
     $menu = '<ul class="menu"><li><a href="' . url('admin/settings/simplemenu') . '">'
         . t('No menu items found. Try a different menu as the default.') . '</a></li></ul>';
@@ -335,15 +338,40 @@ function simplemenu_get_menu() {
 }
 
 /**
+ * At this point (May 31, 2010) the menu tree includes
+ * many 'below' that should be considered empty but
+ * aren't... unless we make sure we remove the children
+ * ourselves.
+ */
+function simplemenu_tree_remove_hidden($tree) {
+  $clean = array();
+
+  foreach ($tree as $key => $data) {
+    if (!$data['link']['hidden']) {
+      if ($data['below']) {
+        $data['below'] = simplemenu_tree_remove_hidden($data['below']);
+        if (count($data['below']) == 0) {
+          $data['below'] = 0;
+        }
+      }
+      $clean[] = $data;
+    }
+  }
+
+  return $clean;
+}
+
+/**
  * Custom implementation of menu_tree().
  * We want to retrieve the entire menu structure for a given menu,
  * regardless of whether or not the menu item is expanded or not.
  */
-function simplemenu_menu_tree($menu_name = 'navigation:0') {
+function simplemenu_menu_tree($menu_name = 'management:0') {
   static $menu_tree = array();
 
   if (!isset($menu_output[$menu_name])) {
-    $menu_tree[$menu_name] = simplemenu_tree_all_data($menu_name);
+    //$menu_tree[$menu_name] = simplemenu_tree_all_data($menu_name);
+    $menu_tree[$menu_name] = menu_tree_all_data('management');
   }
   return $menu_tree[$menu_name];
 }
@@ -357,49 +385,128 @@ function simplemenu_menu_tree($menu_name = 'navigation:0') {
  *
  * @todo we don't actually need $menu_name, $mlid would be sufficient
  */
-function simplemenu_tree_all_data($root_menu = 'navigation:0') {
+function simplemenu_tree_all_data($root_menu = 'management:0') {
   static $tree = array();
 
   list($menu_name, $mlid) = explode(':', $root_menu);
 
-  // Generate the cache ID.
-  // "links:navigation:all:2" means "all from root to 2" (what the ...), so for "all from 2 down" we do "links:navigation:all:2:all"
-  $cid = "links:$menu_name:all:$mlid" . ($mlid ? ':all' : '');
+  // Generate the cache ID for Drupal 7.
+  $cid = 'links:' . $menu_name . ':all-cid:' . $mlid . ':' . $GLOBALS['language']->language . ':0';
 
   if (!isset($tree[$cid])) {
+    // // If the static variable doesn't have the data, check {cache_menu}.
+    // $cache = cache_get($cid, 'cache_menu');
+    // if ($cache && isset($cache->data)) {
+    //   $data = $cache->data;
+    // }
+    // else {
+    //   // Build and run the query, and build the tree.
+    //   $where = '';
+    //   $args = array(':menu_name' => $menu_name);
+
+    //   if ($mlid > 0) {
+    //     $item = menu_link_load($mlid);
+    //     if ($item) {
+    //       // The tree is a subtree of $menu_name, so we need to restrict the query to
+    //       // this subtree.
+    //       $px = "p" . (int) $item['depth'];
+    //       $where = " AND ml.$px = :ml AND ml.mlid != :mlid";
+    //       $args[':ml'] = $item[$px];
+    //       $args[':mlid'] = $mlid;
+    //     }
+    //   }
+    //   // Select the links from the table, and recursively build the tree.  We
+    //   // LEFT JOIN since there is no match in {menu_router} for an external
+    //   // link.
+    //   $result = db_query("SELECT m.load_functions, m.to_arg_functions, m.access_callback,
+    //                     m.access_arguments, m.page_callback, m.page_arguments,
+    //                     m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+    //     FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
+    //     WHERE ml.menu_name = :menu_name$where
+    //     ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC", $args);
+    //   $data['tree'] = menu_tree_data($result->fetchAssoc());
+    //   $data['node_links'] = array();
+    //   menu_tree_collect_node_links($data['tree'], $data['node_links']);
+    //   // Cache the data.
+    //   cache_set($cid, $data, 'cache_menu');
+    // }
+    // // Check access for the current user to each item in the tree.
+    // menu_tree_check_access($data['tree'], $data['node_links']);
+    // $tree[$cid] = $data['tree'];
+
     // If the static variable doesn't have the data, check {cache_menu}.
     $cache = cache_get($cid, 'cache_menu');
     if ($cache && isset($cache->data)) {
-      $data = $cache->data;
+      // If the cache entry exists, it will just be the cid for the actual data.
+      // This avoids duplication of large amounts of data.
+      $cache = cache_get($cache->data, 'cache_menu');
+      if ($cache && isset($cache->data)) {
+        $data = $cache->data;
+      }
     }
-    else {
-      // Build and run the query, and build the tree.
-      if ($mlid > 0) {
-        $item = menu_link_load($mlid);
-        // The tree is a subtree of $menu_name, so we need to restrict the query to
-        // this subtree.
-        $px = "p$item[depth]";
-        $where = " AND ml.$px = %d AND ml.mlid != %d";
-        $args = array($item[$px], $mlid);
+    // If the tree data was not in the cache, $data will be NULL.
+    if (!isset($data)) {
+      // Build the query using a LEFT JOIN since there is no match in
+      // {menu_router} for an external link.
+      $query = db_select('menu_links', 'ml', array('fetch' => PDO::FETCH_ASSOC));
+      $query->addTag('translatable');
+      $query->leftJoin('menu_router', 'm', 'm.path = ml.router_path');
+      $query->fields('ml');
+      $query->fields('m', array(
+        'load_functions',
+        'to_arg_functions',
+        'access_callback',
+        'access_arguments',
+        'page_callback',
+        'page_arguments',
+        'delivery_callback',
+        'title',
+        'title_callback',
+        'title_arguments',
+        'theme_callback',
+        'theme_arguments',
+        'type',
+        'description',
+      ));
+      for ($i = 1; $i <= MENU_MAX_DEPTH; $i++) {
+        $query->orderBy('p' . $i, 'ASC');
+      }
+      $query->condition('ml.menu_name', $menu_name);
+      if (isset($max_depth)) {
+        $query->condition('ml.depth', $max_depth, '<=');
+      }
+      if ($mlid) {
+        // The tree is for a single item, so we need to match the values in its
+        // p columns and 0 (the top level) with the plid values of other links.
+        $args = array(0);
+        for ($i = 1; $i < MENU_MAX_DEPTH; $i++) {
+          $args[] = $link["p$i"];
+        }
+        $args = array_unique($args);
+        $query->condition('ml.plid', $args, 'IN');
+        $parents = $args;
+        $parents[] = $link['mlid'];
       }
       else {
         // Get all links in this menu.
-        $where = '';
-        $args = array();
+        $parents = array();
       }
-      array_unshift($args, $menu_name);
-      // Select the links from the table, and recursively build the tree.  We
-      // LEFT JOIN since there is no match in {menu_router} for an external
-      // link.
-      $data['tree'] = menu_tree_data(db_query("
-        SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
-        FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
-        WHERE ml.menu_name = '%s'". $where ."
-        ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC", $args));
+      // Select the links from the table, and build an ordered array of links
+      // using the query result object.
+      $links = array();
+      foreach ($query->execute() as $item) {
+        $links[] = $item;
+      }
+      $data['tree'] = menu_tree_data($links, $parents);
       $data['node_links'] = array();
       menu_tree_collect_node_links($data['tree'], $data['node_links']);
-      // Cache the data.
-      cache_set($cid, $data, 'cache_menu');
+      // Cache the data, if it is not already in the cache.
+      $tree_cid = _menu_tree_cid($menu_name, $data);
+      if (!cache_get($tree_cid, 'cache_menu')) {
+        cache_set($tree_cid, $data, 'cache_menu');
+      }
+      // Cache the cid of the (shared) data using the menu and item-specific cid.
+      cache_set($cid, $tree_cid, 'cache_menu');
     }
     // Check access for the current user to each item in the tree.
     menu_tree_check_access($data['tree'], $data['node_links']);
