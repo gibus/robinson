@@ -11,9 +11,17 @@ Drupal.behaviors.simplemenuAttach = {
     if ($('body').hasClass('simplemenu-enabled')) {
       return;
     }
+    $('body').addClass('simplemenu-enabled');
+    
   
     // get the element to add the menu to
     var element = settings.simplemenu.element;
+    if ($(element).length == 0) {
+      // this happens when you open a pop-up or a different theme
+      // that does not have such an element or the named element
+      // just does not exist in the first place.
+      return;
+    }
     var menu = $(simplemenu);
   
     switch (settings.simplemenu.placement) {
@@ -28,8 +36,6 @@ Drupal.behaviors.simplemenuAttach = {
         break;
     }
   
-    $('body').addClass('simplemenu-enabled');
-    
     var animation = {};
     animation[settings.simplemenu.effect] = 'toggle';
     
