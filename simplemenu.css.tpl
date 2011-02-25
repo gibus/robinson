@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /* There is a version of this file commented in great detail for educational purposes here:
  * http://users.tpg.com.au/j_birch/plugins/superfish/superfish.commented.css

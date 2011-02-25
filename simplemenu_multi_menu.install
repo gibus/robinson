@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function simplemenu_multi_menu_uninstall() {
   variable_del('simplemenu_menus');

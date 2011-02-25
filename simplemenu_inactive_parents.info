@@ -1,4 +1,3 @@
-; $Id$
 name = SimpleMenu Inactive Parent Menu
 description = Make all the parent menus inactive so users cannot click on them inadvertendly.
 dependencies[] = simplemenu

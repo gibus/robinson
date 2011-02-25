@@ -1,4 +1,3 @@
-; $Id$
 name = SimpleMenu Devel Menu
 description = Include the developer menu in the simplemenu tree.
 dependencies[] = simplemenu
