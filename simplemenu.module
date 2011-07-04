@@ -268,10 +268,17 @@ function simplemnu_get_zindex($name, $default) {
 }
 
 /**
- * Implementation of hook_perm().
+ * Implementation of hook_permission().
  */
-function simplemenu_perm() {
-  return array('view simplemenu', 'administer simplemenu');
+function simplemenu_permission() {
+  return array(
+    'view simplemenu' => array(
+      'title' => t('See and use the Simplemenu'),
+    ),
+    'administer simplemenu' => array(
+      'title' => t('Administer the Simplemenu'),
+    ),
+  );
 }
 
 /**
