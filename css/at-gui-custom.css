@@ -166,36 +166,41 @@ form:not(	#views-ui-config-item-form ) .form-item {
 
 /* INPUT SUBMIT STANDARD BLEU */
 
-
-input.form-submit,input.teaser-button, .node-edit a, .node-delete a, a.button{
-	
-	border:0 solid #fff;
-	outline:none;
-  color:#333;
-	font-weight:normal;
-	background:#bdf url(images/bleeds.png) 0px 100px repeat-x!important; 
-	padding:2px 5px 4px;
-	margin:2px;
-	-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		border-radius: 5px;
-	  border-width:1px;
-	  border-style:solid;
-	  border-color:#ddd #ddd #ccc;
-	
-	
+/* /!\ PROPOSITION DE CHANGEMENT :
+ * attribuer la classe node-edit au lien directement.
+ * Facile à faire dans l’admin (Rewrite results>Output this field as a link>Link class, laisser le champs link path vide.)
+ * Cela évite aussi un élèment HTML supplémentaire.
+*/
+/*input.form-submit,input.teaser-button, .node-edit a, .node-delete a, a.button{*/
+input.form-submit,input.teaser-button, a.node-edit, .node-delete a, a.button{
+   border:0 solid #fff;
+   outline:none;
+   color:#333;
+   font-weight:normal;
+   background:#bdf url(images/bleeds.png) 0px 100px repeat-x!important; 
+   padding:2px 5px 4px;
+   margin:2px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   border-radius: 5px;
+   border-width:1px;
+   border-style:solid;
+   border-color:#ddd #ddd #ccc;
 }
 /* views admin/content/all custom links */
-.node-edit a, .node-delete a{font-size:0.8em; margin:4px 0 3px 0; padding:1px 4px 3px;}
 
+/*.node-edit a, .node-delete a*/
+a.node-edit, .node-delete a{font-size:0.8em; margin:4px 0 3px 0; padding:1px 4px 3px;}
 
 
 input.teaser-button:hover,
 input.form-submit:hover,
 input.teaser-button:active,
 input.form-submit:active,
-.node-edit a:hover, .node-delete a:hover,
-.node-edit a:active, .node-delete a:active,
+/*.node-edit a:hover, .node-delete a:hover,
+.node-edit a:active, .node-delete a:active,*/
+a.node-edit:hover, .node-delete a:hover,
+a.node-edit:active, .node-delete a:active,
 a.button:hover, a.button:active{ 
 	background-position: 0px 0px!important;
 	color:#bdf;
@@ -210,7 +215,8 @@ input#edit-save.form-submit,
 input#edit-submit.form-submit,
 .node-form input#edit-submit.form-submit,
 #system-theme-settings input#edit-submit,
-.node-edit a{
+/*.node-edit a*/
+a.node-edit{
 	background-color:#CF8!important;
 
 }
@@ -220,14 +226,16 @@ input#edit-save.form-submit:hover,
 input#edit-submit.form-submit:hover,
 .node-form input#edit-submit.form-submit:hover,
 #system-theme-settings input#edit-submit:hover,
-.node-edit a:hover,
+/*.node-edit a:hover*/
+a.node-edit:hover,
 /**/
 input[value~=Save]:active,
 input#edit-save.form-submit:active,
 input#edit-submit.form-submit:active,
 .node-form input#edit-submit.form-submit:active,
 #system-theme-settings input#edit-submit:active,
-.node-edit a:active{
+/*.node-edit a:active*/
+a.node-edit:active{
 	color: #CF8;	
 /*	background-position: 0px 0px!important;*/
 }
