@@ -60,7 +60,7 @@ function tode_field_widget_info() {
 	
 	return array(
     'tode' => array(
-      'label' => t('Create update/change'),
+      'label' => t('Tode (create then update one unique term)'),
       'field types' => array('taxonomy_term_reference'),
       'behaviors' => array(
         'multiple values' => FIELD_BEHAVIOR_DEFAULT,
@@ -159,7 +159,10 @@ function tode_field_widget_settings_form($field, $instance){
 // }
 
 function _tode_widget_settings_maxlength_validate($element, &$form_state) {
-	$value = $form_state['values']['maxlength'];
+	// dsm('_tode_widget_settings_maxlength_validate');
+	// dsm($form_state, '$form_state');
+	$widget = $form_state['values']['instance']['widget'];
+	$value = $widget['settings']['tode']['maxlength'];
 	if (!is_numeric($value) || intval($value) != $value || $value <= 0) {
 		form_error($element, t('"Maximum length" must be a positive integer.'));
 	}
@@ -196,9 +199,12 @@ function tode_element_info() {
  * Implementation of hook_field_widget_form().
  */
 function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-	dsm('tode_field_widget_form');
-	dsm($items, 'items');
-	dsm($element, '$element');
+	// dsm('tode_field_widget_form');
+	// dsm($items, 'items');
+	// dsm($element, '$element');
+	// dsm($field, '$field');
+	// dsm($instance, '$instance');
+
 	/*
 		$element['#entity_type']
 		$element['#bundle']
@@ -212,30 +218,13 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 		$element['#language']
 	*/
 	
-	# thats the original D6 $element
-	// $element = array(
-	// 	'#type' => 'tode',
-	// 	'#default_value' => isset($items) ? $items : NULL,
-	// 	'#vid' => $field['vid'],
-	// );
-	
-	# example
-	//   // use += to avoid overwriting incoming $element
-	//   $element['value'] += array(
-	//     // Fill in $element.
-	//   );
-	
- // $tags = array();
- //  foreach ($items as $item) {
- //    $tags[$item['tid']] = isset($item['taxonomy_term']) ? $item['taxonomy_term'] : taxonomy_term_load($item['tid']);
- //  }
-	
 	$term_name = '';
 	$term_tid = 0;
 	
 	if(count($items)){
-		$term = isset($items[0]['taxonomy_term']) ? $items[0]['taxonomy_term'] : taxonomy_term_load($items[0]['tid']);
-		$term_name = $term->term_name;
+		$term = taxonomy_term_load($items[0]['tid']);
+		dsm($term, '$term');
+		$term_name = $term->name;
 		$term_tid = $term->tid;
 	}
 
@@ -250,77 +239,11 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
   );
 	
 	# add the term edit form
-	// if(isset($value))
-	// 	_tode_add_term_form($element, $term, $widget['show_term_form']);
+	// if($term_tid)
+	// 	_tode_add_term_form($element, $term, $instance['widget']['settings']['show_term_form']);
 	
   return $element;
 }
-
-
-/**
- * Process an individual element.
- *
- * Build the form element. When creating a form using FAPI #process,
- * note that $element['#value'] is already set.
- *
- */
-# OLD NOT USED ANY MORE, TRANSPOSE THIS CODE (ALL OR PART) ON hook_field_widget_form();
-function tode_element_process($element, $edit, $form_state, $form) {
-	// dsm('tode widget process');
-	// dsm($form, 'form');
-	// dsm($element, 'element');
-
-	$field_name = $element['#field_name'];
-	$field = $form['#field_info'][$field_name];
-	$field_key	= $element['#columns'][0];
-	// dsm($field);
-	$widget = $field['widget'];
-
-	$value = NULL;
-	if (count($element['#default_value'])) {
-		$term = taxonomy_get_term($element['#default_value'][0][$field_key]);
-		// dsm($term);
-		$value = $term->name;
-	}
-	
-	# converting the tid to term name on visible value oh the text field, we re-convert terma name to tid on the validat function
-	$element['#default_value'][0][$field_key] = $value;
-	$element['#value'][$field_key] = $value;
-	
-	# memorize the tid for the validate function
-	if($value)
-		$element['tode_tid'] = array('#type' => 'hidden', '#value' => $term->tid,'#delta' => $element['#delta'],);
-	
-	$element[$field_key] = array(
-		'#type' => 'textfield',
-		'#default_value' => isset($element['#value'][$field_key]) ? $element['#value'][$field_key] : '',
-		'#title' => $element['#title'],
-		'#required' => $element['#required'],
-		'#description' => $element['#description'],
-		'#field_name' => $element['#field_name'],
-		'#type_name' => $element['#type_name'],
-		'#delta' => $element['#delta'],
-		'#columns' => $element['#columns'],
-		'#maxlength' => !empty($field['widget']['maxlength']) ? $field['widget']['maxlength'] : 255,
-	);
-
-	# add the term edit form
-	if(isset($value))
-		_tode_add_term_form($element, $term, $widget['show_term_form']);
-	
-	# add validation for the fieldform to retrive tid instead of term name (content taxonomy module), As i know we can't add a submit callback to the form from the widget
-	if (empty($element[$field_key]['#element_validate']))
-		$element[$field_key]['#element_validate'] = array();
-	// 
-	array_unshift($element[$field_key]['#element_validate'], 'tode_validate');
-	# replace validate with submit added on form alter
-	
-	// dsm($form_state, 'form_state');
-	// dsm($element, 'element');
-
-	return $element;
-}
-
 
 
 /**
@@ -330,42 +253,42 @@ function tode_element_process($element, $edit, $form_state, $form) {
 function _tode_add_term_form(&$element, $term, $show){
 	module_load_include('inc', 'taxonomy', 'taxonomy.admin');
 	
-	$term_form = _tode_term_form($term->tid);
-	// dsm($term_form, 'term_form');
+	$term_form = _tode_term_form($term);
+	dsm($term_form, 'term_form');
 	
 	if($term_form){
-		
-		$term_form['identification']['#prefix'] = '<div style="display:none;">';
-		$term_form['identification']['#suffix'] = '</div>';
-		$term_form['advanced']['synonyms']['#prefix'] = '<div style="display:none;">';
-		$term_form['advanced']['synonyms']['#suffix'] = '</div>';
-		$term_form['advanced']['weight']['#prefix'] = '<div style="display:none;">';
-		$term_form['advanced']['weight']['#suffix'] = '</div>';
-		$term_form['advanced']['parent']['#prefix'] = '<div style="display:none;">';
-		$term_form['advanced']['parent']['#suffix'] = '</div>';
-		$term_form['advanced']['relations']['#prefix'] = '<div style="display:none;">';
-		$term_form['advanced']['relations']['#suffix'] = '</div>';
-
-		# change appearence of adavnced fiedset to show both fiedlset inline
-		$term_form['advanced']['#collapsible'] = FALSE;
-		$term_form['fields']['#collapsible'] = FALSE;
-		
-		_tode_trim_options($term_form, 'advanced');
-		$term_form['advanced']['#attributes'] = array('class'=>'tcu-advanced-options');
-		$term_form['fields']['#attributes'] = array('class'=>'tcu-term-fields');
-		
-		foreach($term_form['fields'] as $field_name => $field){
-			if($field['#type'] == 'textfield')
-				$field['#size'] = 30;
-				
-			$term_form['fields'][$field_name] = $field;
-		}
-
-		unset($term_form['submit']);
-		unset($term_form['delete']);
-		
-		#unset vid info 'cause is in conflict with the node's vid field
-		// unset($term_form['vid']);
+		// 
+		// $term_form['identification']['#prefix'] = '<div style="display:none;">';
+		// $term_form['identification']['#suffix'] = '</div>';
+		// $term_form['advanced']['synonyms']['#prefix'] = '<div style="display:none;">';
+		// $term_form['advanced']['synonyms']['#suffix'] = '</div>';
+		// $term_form['advanced']['weight']['#prefix'] = '<div style="display:none;">';
+		// $term_form['advanced']['weight']['#suffix'] = '</div>';
+		// $term_form['advanced']['parent']['#prefix'] = '<div style="display:none;">';
+		// $term_form['advanced']['parent']['#suffix'] = '</div>';
+		// $term_form['advanced']['relations']['#prefix'] = '<div style="display:none;">';
+		// $term_form['advanced']['relations']['#suffix'] = '</div>';
+		// 
+		// # change appearence of adavnced fiedset to show both fiedlset inline
+		// $term_form['advanced']['#collapsible'] = FALSE;
+		// $term_form['fields']['#collapsible'] = FALSE;
+		// 
+		// _tode_trim_options($term_form, 'advanced');
+		// $term_form['advanced']['#attributes'] = array('class'=>'tcu-advanced-options');
+		// $term_form['fields']['#attributes'] = array('class'=>'tcu-term-fields');
+		// 
+		// foreach($term_form['fields'] as $field_name => $field){
+		// 	if($field['#type'] == 'textfield')
+		// 		$field['#size'] = 30;
+		// 		
+		// 	$term_form['fields'][$field_name] = $field;
+		// }
+		// 
+		// unset($term_form['submit']);
+		// unset($term_form['delete']);
+		// 
+		// #unset vid info 'cause is in conflict with the node's vid field
+		// // unset($term_form['vid']);
 
 		$element['term_form'] = array(
 			'#type' => 'fieldset',
@@ -377,10 +300,10 @@ function _tode_add_term_form(&$element, $term, $show){
 			'#group'=>'additional_settings',
 		);
 		
-		if(!$show){
-			$element['term_form']['#prefix'] = '<div style="display:none;">';
-			$element['term_form']['#suffix'] = '</div>';
-		}
+		// if(!$show){
+		// 	$element['term_form']['#prefix'] = '<div style="display:none;">';
+		// 	$element['term_form']['#suffix'] = '</div>';
+		// }
 
 		$term_form = _tode_prefix_form($term_form, 'tode_termform_'.$element['#field_name'].'_');
 
@@ -391,7 +314,7 @@ function _tode_add_term_form(&$element, $term, $show){
 		// $element['#prefix'] = '<div class="tode-term-edit-form-box">';
 		// $element['#suffix'] = '</div>';
 
-		// dsm($element, 'element');
+		dsm($element, 'element');
 	}
 
 }
@@ -403,14 +326,14 @@ function _tode_add_term_form(&$element, $term, $show){
  * parses input and sets the values as needed (tid) for storing the data
  */
 function tode_validate($element, &$form_state){
-	dsm('tode_validate');
-	dsm($form_state, 'form_state');
-	dsm($element, 'element');
+	// dsm('tode_validate');
+	// dsm($form_state, 'form_state');
+	// dsm($element, 'element');
 
  	$value = array();
   if ($typed_term = $element['#value']) {
 		$field = field_widget_field($element, $form_state);
-		dsm($field, 'field');
+		// dsm($field, 'field');
 
     $vocabularies = array();
     foreach ($field['settings']['allowed_values'] as $tree) {
@@ -419,11 +342,8 @@ function tode_validate($element, &$form_state){
       }
     }
 		
-		
-		
-		
-		// See if the term exists in the chosen vocabulary and return the tid;
-    // otherwise, create a new 'autocreate' term for insert/update.
+		// See if the term already exists and load the term
+    // otherwise, create a new 'autocreate' term for insert.
 		if($tid = $element['tode_tid']['#value']){
 			$term = taxonomy_term_load($tid);
 		}else{
@@ -436,54 +356,13 @@ function tode_validate($element, &$form_state){
       );
 		}
 		
-		dsm($term, '$term');
+		// dsm($term, '$term');
 		
-		$value[] = (array)$term;
+		$value = (array)$term;
 	
 	}
-	dsm($value, '$value');
+	// dsm($value, '$value');
   form_set_value($element, $value, $form_state);
-
-
-	// $field_name = $element['#field_name'];
-	//   $field = content_fields($field_name, $element['#type_name']);
-	//   $field_key  = $element['#columns'][0];
-	// 
-	// #if the element parents array contains the field key, we have to remove it
-	//   #because otherwise form_set_value won't work. (still the question why is it in)
-	//   if ($element['#parents'][count($element['#parents'])-1] == $field_key) {
-	//     array_pop($element['#parents']);
-	//     array_pop($element['#array_parents']);
-	//   }
-	// 
-	// $term_name = $element['#value'] != '' ? $element['#value'] : ($element['#default_value'] != '' ? $element['#default_value'] : NULL);
-	// // dsm($term_name, 'term_name');
-	// $form_state['values']['tode_termform_'.$field_name.'_name'] = $term_name;
-	// 
-	// $tid = isset($form_state['values'][$field_name]['tode_tid']) ? $form_state['values'][$field_name]['tode_tid'] : NULL;
-	// // dsm($tid, 'tid');
-	// $value = array();
-	// if($tid){
-	// 	$value[$tid] = $tid;
-	// }else{
-	// 	# if no tid it says that we create a node so a term
-	// 	$term = array(
-	// 		"vid" => $field['vid'],
-	// 		"name" => $term_name,
-	// 		"parent" => $field['widget']['extra_parent'] ? $field['widget']['extra_parent'] : content_taxonomy_field_get_parent($field),
-	// 	);
-	// 	$status = taxonomy_save_term($term);
-	// 	$value[$term['tid']] = $term['tid'];
-	// }
-	// 
-	// $values = content_transpose_array_rows_cols(array($element['#columns'][0] => $value));
-	// // dsm($values, 'values');
-	// form_set_value($element, $values, $form_state);
-	// 
-	// // dsm($element, 'element');
-	// // dsm($form_state, 'form_state');
-
-  // form_set_value($element, $value, $form_state);
 }
 
 /**
@@ -495,38 +374,25 @@ function tode_field_widget_error($element, $error, $form, &$form_state) {
 }
 
 /**
- * implementation of hook_nodeapi()
- * 
- * process the tode term on node create or update
- * we make this on nodeapi cause we can't cache field save from a widget … mayde in D7
- * 
+ * Implements hook_node_validate().
+ *
+ * use to save the all term form (steel have to be debuged)
+ *
  */
-/*
-	TODO add term translation feature
-*/
-
-function tode_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
-	// dsm($op, 'tode nodeapi : op');
-	switch($op){
-		// case 'presave':
-		case 'update':
-			// tode_save($node);
-			break;
-	}
-}
-
-/**
- * submit values
- */
-function tode_save($node) {
+function __tode_node_validate($node, $form){
 	
 	module_load_include('inc', 'taxonomy', 'taxonomy.admin');
 	
-	// dsm('tode save');
-	// dsm($node, 'tode submit : node');
+ 	dsm('tode_node_validate');
+ 	dsm($node, '&node');
+	dsm($form, '&form');
 
-	$tode_fields = _tode_get_tode_fields_def($node->type);
+	$tode_fields = _tode_get_tode_fields_def($node);
+	dsm($tode_fields, '$tode_fields');
 	
+	#	OK
+	
+/*	
 	if(!count($tode_fields))
 		return;
 		
@@ -561,6 +427,7 @@ function tode_save($node) {
 		drupal_execute('taxonomy_form_term', $form_state, taxonomy_vocabulary_load($array_term['vid']), $array_term);
 		
 	}
+	*/
 }
 
 
@@ -700,9 +567,9 @@ function _tode_prefix_form($form, $prefix = '', $add = TRUE){
  * _tode_term_form($tid)
  * 
  */
-function _tode_term_form($tid){
+function _tode_term_form($term){
 	
-	if ($array_term = (array)taxonomy_get_term($tid)) {
+	if ($array_term = (array)$term) {
 		
 		$form_state = array();
 		$term_form = drupal_retrieve_form('taxonomy_form_term', $form_state, taxonomy_vocabulary_load($array_term['vid']), $array_term);
@@ -740,18 +607,18 @@ function _tode_trim_options(&$form, $item){
 }
 
 /**
- * 
+ * OK OK OK
  */
-function _tode_get_tode_fields_def($type){
-	// dsm($type, '_tode_get_fields_def');
+function _tode_get_tode_fields_def($node){
+	dsm($node, '_tode_get_fields_def');
 
 	#get the fields defenition of node type
-	$type_fields = content_types($type);
-	// dsm($type_fields, 'type_fields definition');
+	$type_fields = field_info_instances('node', $node->type);
+	dsm($type_fields, 'type_fields definition');
 
 	#get the tode node fields
 	$tode_fields = array();
-	foreach ($type_fields['fields'] as $field_name => $field) {
+	foreach ($type_fields as $field_name => $field) {
 		if($field['widget']['type'] == 'tode')
 			$tode_fields[$field_name] = $field;
 	}
