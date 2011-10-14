@@ -377,7 +377,8 @@ function simplemenu_menu_tree($menu_name = 'management:0') {
 
   if (!isset($menu_output[$menu_name])) {
     //$menu_tree[$menu_name] = simplemenu_tree_all_data($menu_name);
-    $menu_tree[$menu_name] = menu_tree_all_data('management');
+    list($mname, $mlid) = explode(':', $menu_name);
+    $menu_tree[$menu_name] = menu_tree_all_data($mname);
   }
   return $menu_tree[$menu_name];
 }
