@@ -1,56 +1,45 @@
 <?php
 /**
- * Override or insert variables into page templates.
+ * Override or insert variables into html templates.
  */
 function adaptivetheme_gui_admin_preprocess_html(&$vars) {
-	
-	$heads = array();
-	
-	
+  $vars['classes_array'][] = theme_get_setting('font_family');
+  $vars['classes_array'][] = theme_get_setting('font_size'); 
+}
 
-	#  Mobile Viewport Fix
-	# j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
-	# device-width : Occupy full width of the screen in its current orientation
-	# initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
-	# maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+/**
+ * Override or insert variables into page templates.
+ */
+function adaptivetheme_gui_admin_preprocess_page(&$vars) {
+  $vars['datetime_rfc'] = '';
+  $vars['datetime_iso'] = '';
+  $vars['datetime_rfc'] = date("r" , time()); // RFC2822 date format
+  $vars['datetime_iso'] = gmdate('Y-m-d\TH:i:s\Z'); // ISO 8601 date format   
+}
 
-	$heads['viewport'] = array(
-	  '#tag' => 'meta',
-	  '#attributes' => array(
-	    'name' => 'viewport', 
-	    'content' => 'width=device-width,initial-scale=1',
-	  ),
-	);
+/**
+* Theme button. Override AT Core because it screws with Views.
+*/
+function adaptivetheme_gui_admin_button($vars) {
+  $element = $vars['element'];
+  $element['#attributes']['type'] = 'submit';
+  element_set_attributes($element, array('id', 'name', 'value'));
+  $element['#attributes']['class'][] = 'form-' . $element['#button_type'];
+  if (!empty($element['#attributes']['disabled'])) {
+    $element['#attributes']['class'][] = 'form-button-disabled';
+  }
+  return '<input' . drupal_attributes($element['#attributes']) . ' />';
+}
 
-
-
-	# Add these icons links to your sub theme
-	# or Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references
-
-	// $head[] = '<link rel="apple-touch-icon" sizes="72x72" href="'. base_path() . path_to_theme() .'/touch-icon-ipad.png'.'"/>' . "\n";
-	// $head[] = '<link rel="apple-touch-icon" sizes="114x114" href="'. base_path() . path_to_theme() .'/touch-icon-iphone4.png'.'"/>' . "\n";
-
-	$heads['icon'] = array(
-	  '#tag' => 'link',
-	  '#attributes' => array(
-	    'href' => base_path() . path_to_theme() .'/icon.png', 
-	    'rel' => 'shortcut icon',
-	    'type' => 'image/png',
-	  ),
-	);
-
-	$heads['apple-touch-icon'] = array(
-	  '#tag' => 'link',
-	  '#attributes' => array(
-	    'href' => base_path() . path_to_theme() .'/apple-touch-icon.png', 
-	    'rel' => 'apple-touch-icon',
-	  ),
-	);
-
-	
-	foreach ($heads as $type=>$head)
-		drupal_add_html_head($head, $type);
-	
-
-
+/**
+ * Alter the search block form.
+ */
+function adaptivetheme_gui_admin_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'search_block_form') {
+    $form['search_block_form']['#title'] = t('Search');
+    $form['search_block_form']['#title_display'] = 'invisible';
+    $form['search_block_form']['#size'] = 20;
+    $form['search_block_form']['#attributes']['placeholder'] = t('Search');
+    $form['actions']['submit']['#value'] = t('Go');
+  }
 }
