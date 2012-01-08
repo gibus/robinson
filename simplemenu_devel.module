@@ -15,6 +15,7 @@ function simplemenu_devel_simplemenu_tree_alter(&$tree) {
         'mlid' => 0,
         'menu_name' => 'devel',
         'hidden' => FALSE,
+        'access' => TRUE,
         'title' => t('Devel module'),
         'href' => 'admin/settings/devel',
         'in_active_trail' => FALSE,
