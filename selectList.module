@@ -1,0 +1,59 @@
+<?php
+// $Id$
+// 
+//  jqplug.module
+//  
+// 
+// 
+//  Created by Bach on 2008-04.
+//  Modified by bach on 2009-09-09
+//  Copyright 2009 gui. All rights reserved.
+// 
+
+/**
+ * Implementation of hook_init().
+ */
+function selectList_init() {
+	// $activated = variable_get('jqplug', array());
+	// 
+	// $match = false;
+	// foreach($activated as $plug){
+	// 	if(stripos($plug, "selectlist")){
+	// 		$match = true;
+	// 		break;
+	// 	} 
+	// }
+	// 
+	// if($match){
+	// 	drupal_add_css(drupal_get_path('module', 'selectList').'/selectList.css');
+	// 
+	// 	drupal_add_js("(function ($) { $('select[multiple], .selectlist').removeAttr('size').selectList();})(jQuery);", array('type'=>'inline', 'scope'=>'header', 'group'=>JS_DEFAULT));
+	// }
+	
+	$curr_uri = preg_replace('/\?.*$/', '', request_uri());
+  $curr_uri_parts = explode('/', ltrim($curr_uri, '/'));
+	// dsm($curr_uri_parts, '$curr_uri');
+	
+	if ($curr_uri_parts[0] == 'admin'
+			|| $curr_uri_parts[2] == 'edit'
+			|| $curr_uri_parts[1] == 'add'
+			|| $curr_uri_parts[0] == 'batch'
+			|| $curr_uri_parts[0] == 'imce'
+	){
+		drupal_add_js(drupal_get_path('module', 'selectList') .'/jquery.selectlist.pack.js');
+		
+		$mod_path = drupal_get_path('module', 'selectList');
+		drupal_add_css($mod_path.'/selectList.css');
+
+		$js = '
+			$(document).ready(function() {
+				// #node-form 
+				$("select[multiple], .selectlist").removeAttr("size").selectList();
+			});
+		';
+
+		drupal_add_js($js, "inline");
+
+	}
+	
+}
