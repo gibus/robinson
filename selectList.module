@@ -30,30 +30,27 @@ function selectList_init() {
 	// 	drupal_add_js("(function ($) { $('select[multiple], .selectlist').removeAttr('size').selectList();})(jQuery);", array('type'=>'inline', 'scope'=>'header', 'group'=>JS_DEFAULT));
 	// }
 	
-	$curr_uri = preg_replace('/\?.*$/', '', request_uri());
-  $curr_uri_parts = explode('/', ltrim($curr_uri, '/'));
-	// dsm($curr_uri_parts, '$curr_uri');
-	
-	if ($curr_uri_parts[0] == 'admin'
-			|| $curr_uri_parts[2] == 'edit'
-			|| $curr_uri_parts[1] == 'add'
-			|| $curr_uri_parts[0] == 'batch'
-			|| $curr_uri_parts[0] == 'imce'
-	){
-		drupal_add_js(drupal_get_path('module', 'selectList') .'/jquery.selectlist.pack.js');
+	// $curr_uri = preg_replace('/\?.*$/', '', request_uri());
+	// $curr_uri = preg_replace('/^(fr|en)/', '', ltrim($curr_uri, '/'));
+	// dsm($curr_uri, '$curr_uri');
+	//   $curr_uri_parts = explode('/', ltrim($curr_uri, '/'));
+	// dsm($curr_uri_parts, '$curr_uri_parts');
+	// 
+	// if ($curr_uri_parts[0] == 'admin'
+	// 		// || $curr_uri_parts[0] == 'batch'
+	// 		// || $curr_uri_parts[0] == 'imce'
+	// 		|| (isset($curr_uri_parts[1]) && ($curr_uri_parts[1] == 'add'))
+	// 		|| (isset($curr_uri_parts[2]) && ($curr_uri_parts[2] == 'edit'))
+	// ){
+	// 	
 		
 		$mod_path = drupal_get_path('module', 'selectList');
 		drupal_add_css($mod_path.'/selectList.css');
+		
+		drupal_add_js($mod_path.'/jquery.selectlist.pack.js', array('type'=>'file', 'scope'=>'header', 'group'=>JS_LIBRARY));
 
-		$js = '
-			$(document).ready(function() {
-				// #node-form 
-				$("select[multiple], .selectlist").removeAttr("size").selectList();
-			});
-		';
+		drupal_add_js('jQuery(document).ready(function($) { $("select[multiple], .selectlist").removeAttr("size").selectList(); });', array('type'=>'inline', 'scope'=>'header', 'group'=>JS_THEME));
 
-		drupal_add_js($js, "inline");
-
-	}
+	// }
 	
 }
