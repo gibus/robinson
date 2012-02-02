@@ -226,7 +226,8 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
     '#default_value' => isset($term) ? i18n_taxonomy_term_name($term, $node->language) : '',
     '#size' => $instance['widget']['settings']['size'],
     '#maxlength' => $instance['widget']['settings']['maxlength'],
-    '#element_validate' => array('tode_validate'),
+    '#element_validate' => array('tode_widget_validate'),
+    // '#element_submit' => array('tode_widget_submit'),
   );
 	
 
@@ -322,16 +323,13 @@ function tode_parent_autocomplete_validate($element, &$form_state) {
  *
  * parses input and sets the values as needed (tid) for storing the data
  */
-function tode_validate($element, &$form_state){
-	// dsm('- - - - tode_validate');
+function tode_widget_validate($element, &$form_state){
+	// dsm('- - - - tode_widget_validate');
 	// dsm($form_state, 'form_state');
 	// dsm($element, 'element');
 	
 	$node = $form_state['node'];
 	
-	/*
-		TODO term translation (entity translate + node title question)
-	*/
 	
  	$value = array();
   if ($typed_term = $element['#value']) {
@@ -359,13 +357,17 @@ function tode_validate($element, &$form_state){
 		}else{
 			$vocabulary = reset($vocabularies);
 			$term = (object)array(
-        // 'tid' => 'autocreate', // autocreate not nbeeded with direct taxonomy_term_save
+        'tid' => 'autocreate', // autocreate not needed with direct taxonomy_term_save [EDIT] autocreate needed because of the hook_submit insted of hook_validate 
         'vid' => $vocabulary->vid,
         'name' => $typed_term,
         'vocabulary_machine_name' => $vocabulary->machine_name,
 				'parent' => $parent_tid,
       );
-			taxonomy_term_save($term); // save here the new term to directly get the tid on hook_node_validate
+			// taxonomy_term_save($term); // save here the new term to directly get the tid on hook_node_validate
+			// [EDIT] do not save the term here because it will be save even if node form is not validate
+			// results term without node or mutiple orfan term
+			// moving all process on node submit
+			
 		}
 		
 		// dsm($term, '$term');
@@ -376,6 +378,7 @@ function tode_validate($element, &$form_state){
   form_set_value($element, $value, $form_state);
 }
 
+
 /**
  * Implements hook_field_widget_error().
  */
@@ -384,18 +387,17 @@ function tode_field_widget_error($element, $error, $form, &$form_state) {
 	form_error($element['value'], $error['message']);
 }
 
+
 /**
- * Implements hook_node_validate().
- *
- * use to save the all term form (steel have to be debuged)
- *
+ * Implements hook_node_submit().
  */
-function tode_node_validate($node, $form, &$form_state){
-	//  	dsm('- - - tode_node_validate');
-	//  	dsm($node, '$node');
+function tode_node_submit($node, $form, &$form_state) {
+	// dsm('- - - tode_node_submit');
+	// dsm($node, '$node');
 	// dsm($form, '$form');
 	// dsm($form_state, '$form_state');
 
+	
 	module_load_include('inc', 'taxonomy', 'taxonomy.admin');
 	// module_load_include('inc', 'i18n_string', 'i18n_string.pages');
 	// 
@@ -416,65 +418,94 @@ function tode_node_validate($node, $form, &$form_state){
 		// retreive the prefixed termfom values (hidden or visible)
 		$prefix = 'tode_termform_'.$field_name;
 		
-		// if we do not have the term form (node creation)
-		if( !isset($form_state['values'][$prefix]) ){
-			$tode_field_term_value = $form_state['values'][$field_name]['und'][0]; // on node creation field language is always to und (sure ?)
-			
-			// test the language, if not default language create the term name translation
-			if( $form_state['values']['language'] != 'und' || $form_state['values']['language'] != $default_language){
-				$context= array('term',$tode_field_term_value['tid'],'name');
-				i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
-			}
-			
+		// if term_form is not available
+		// it meens that we are on the creation of a node
+		// hook_node_presave will handle this case
+		if( !isset($form_state['values'][$prefix]) )
 			continue;
-		}else{
-			// retreive the initial tode_field language
-			$init_language = $form[$field_name]['#language'];
+		
+		// else
+		// we are on the update or on the translation (from initial node)
+		// so we can go forward
+		
+		// retreive the initial tode_field language
+		$init_language = $form[$field_name]['#language'];
+
+		// retreive the value of term field, to get the typed term name
+		$tode_field_term_value = $form_state['values'][$field_name][$init_language][0];
+		// dsm($tode_field_term_value, '$tode_field_term_value');
 	
-			// retreive the value of term field, to get the typed term name
-			$tode_field_term_value = $form_state['values'][$field_name][$init_language][0];
-			// dsm($tode_field_term_value, '$tode_field_term_value');
+		$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
+		// dsm($values, 'values');
+	
+		if($language == 'und' || $language == $default_language || !module_exists('i18n_taxonomy')){
+	
+			// define the form_state for term_form submit
+			$new_term_form_state = array(
+				'build_info'=>array(
+					'args'=>array(0=>(object)$tode_field_term_value),
+				),
+				"values"=>array(
+					'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
+					'op'=> t('Save'),
+				)
+			);
+			// add new values to form_state
+			$new_term_form_state['values'] += $values;
+	
+			// dsm($new_term_form_state, 'form_state');
+			drupal_form_submit('taxonomy_form_term', $new_term_form_state);
+		}else{			
 		
-			$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
-			// dsm($values, 'values');
+			$context= array('term',$values['tid'],'name');
 		
-			if($language == 'und' || $language == $default_language || !module_exists('i18n_taxonomy')){
+			i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
+		}
 		
-				// define the form_state for term_form submit
-				$new_term_form_state = array(
-					'build_info'=>array(
-						'args'=>array(0=>(object)$tode_field_term_value),
-					),
-					"values"=>array(
-						'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
-						'op'=> t('Save'),
-					)
-				);
-				// add new values to form_state
-				$new_term_form_state['values'] += $values;
-		
-				// dsm($new_term_form_state, 'form_state');
-				drupal_form_submit('taxonomy_form_term', $new_term_form_state);
-			}else{			
-			
-				$context= array('term',$values['tid'],'name');
-			
-				i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
-			}
+	}
+	
+}
+
+
+
+/**
+ * Implements hook_node_presave().
+ */
+function tode_node_presave($node) {
+	// dsm('- - - tode_node_presave');
+	// dsm($node, 'node');
+	
+	if($node->nid)
+		return;
+	
+	$tode_fields = _tode_get_tode_fields_def($node);
+	
+	if(!count($tode_fields))
+		return;
+	
+	$default_language = language_default('language');
+
+	// purpose of that is to directly atribute the right language to the term	
+	foreach ($tode_fields as $field_name => $field){
+		$tode_field = $node->$field_name;
+		$tode_field_term = $tode_field[$node->language][0]; // on node creation field language is always to und (sure ?)
+
+		// // test the language, if not default language create the term name translation
+		if( module_exists('i18n_taxonomy') && ( $node->language != 'und' || $node->language != $default_language ) ){
+			$context= array('term',$tode_field_term['tid'],'name');
+			i18n_string_textgroup('taxonomy')->update_translation($context, $node->language, $tode_field_term['name']);
 		}
 		
 	}
 }
 
-/**
- * theme_tode
- * 
- */
-// function theme_tode($element) {1
-// 	dsm('theme_tode');
-// 	dsm($element, '$element');
-// 	return $element['#children'];
-// }
+
+/*
+	TODO Sélectionner une traduction pour test tode fr
+	merge two terms when translation is made by selecting a node whiche already exists
+*/
+
+
 
 
 /**
@@ -592,12 +623,6 @@ function tode_delete_submit($form, &$form_state){
 /**
  * HELPERS 
  */
-// 
-// function _tode_prefix_keys($k){
-// 	if(strpos('#', $kk) == false)
-// 		return $prefix.$k;
-// }
-
 function _tode_clean_form($form, $level = 0){
 	foreach ($form as $key => $value) {
 		if(strpos($key,'#') !== false || $key == 'form_build_id' || $key == 'form_id' || $key == 'form_token'){
