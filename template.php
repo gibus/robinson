@@ -96,6 +96,30 @@ function guibik_preprocess_page(&$vars) {
   if ($theme === 'guibik')
     _rubik_local_tasks($vars);
 	
+}
+
+function guibik_preprocess_html(&$vars){
+	
+	$heads['icon'] = array(
+	  '#tag' => 'link',
+	  '#attributes' => array(
+	    'href' => base_path() . path_to_theme() .'/icon.png', 
+	    'rel' => 'shortcut icon',
+	    'type' => 'image/png',
+	  ),
+	);
+	
+	
+	$heads['apple-touch-icon'] = array(
+	  '#tag' => 'link',
+	  '#attributes' => array(
+	    'href' => base_path() . path_to_theme() .'/apple-touch-icon.png', 
+	    'rel' => 'apple-touch-icon',
+	  ),
+	);
+
+	foreach ($heads as $type=>$head)
+		drupal_add_html_head($head, $type);
 	
 	
 }
