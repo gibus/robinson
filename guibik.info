@@ -1,0 +1,20 @@
+;----------// Theme Information
+  name        = Guibik
+  description = rubik admin subtheme
+  core        = 7.x
+  engine      = phptemplate
+  screenshot  = screenshot.png
+  base theme  = rubik
+
+;----------// Stylesheets
+  stylesheets[screen][] = css/guibik.css
+
+;----------// Regions
+ 	regions[content] = Content
+	regions[help] = Help
+	regions[page_top] = Page top
+	regions[page_bottom] = Page bottom
+
+
+;----------// Shortcut link
+  settings[shortcut_module_link] = 1
