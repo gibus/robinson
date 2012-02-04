@@ -1,3 +1,5 @@
+@import 'elements.less';
+
 /** table */
 @grey:#E0E0E0;
 @grey-lite:#F4F4F4;
@@ -83,6 +85,7 @@ select.form-select {
 .page-content .form-item .description {
   color:#0092D2;
   border-top:1px solid #E0E0E0;
+	a{text-decoration: underline;}
 }
 
 
@@ -150,9 +153,13 @@ li{list-style: none inside url();}
 }
 .vertical-tabs-list .summary { font-size:11px; }
 
-.page-admin table tr.even, .page-admin table tr.even td {
+.page-admin table tr.even{
   background: #EFEFEF;
 }
+.page-admin table tr{
+	&.even, &.odd{ td, h3 {background-color: transparent;} }
+}
+
 
 .admin-block-description,
 .help-items ul li,
@@ -241,15 +248,15 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 
 	.views-ui-display-tab-bucket h3{
 		font-weight:bold;
-		background-color: #DDD;
+		background-color: #D8D8D8;
 	}
 
 	.defaulted, .views-ui-display-tab-bucket .views-display-setting.even, .views-ui-display-tab-bucket .views-display-setting.odd{ //:not(.overriden) 
 	  color: #666;
-		background-color: #EDEDED;
+		background-color: #E0E0E0;
 	  font-style: italic;
 	/*	font-weight:bold;*/
-		a{color: #3188D1}
+		a{color: #3F80B3}
 	}	
 
 	.views-ui-display-tab-bucket.overridden .views-display-setting, .views-ui-display-tab-bucket.overridden .views-display-setting,
@@ -267,3 +274,27 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 }
 
 
+/** media browser */
+.view.inline-block-list{
+	.views-row {
+		.inline-block; vertical-align:top;
+	  padding: 5px; margin:5px; width:250px; min-height:150px; background-color: #E3E3E3;
+		.border-radius(5px,5px,5px,5px); border: 1px solid #ddd;
+		.drop-shadow;
+		.float-left{
+			float:left;
+			&>div{margin:0 10px 10px 0;}
+		}
+		
+	}
+} 
+
+
+
+/* Contain floats: h5bp.com/q */ 
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+.path-admin-content-nodes span.icon { background-position:0px -30px; }

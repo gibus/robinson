@@ -79,3 +79,23 @@ function guibik_theme() {
   return $items;
 }
 
+
+
+/**
+ * Preprocessor for theme('page').
+ */
+function guibik_preprocess_page(&$vars) {
+  // Show a warning if base theme is not present.
+  if (!function_exists('rubik_theme') && user_access('administer site configuration')) {
+    drupal_set_message(t('The Guibik theme requires the !rubik base theme in order to work properly.', array('!rubik' => l('Rubik', 'http://code.developmentseed.org/tao'))), 'warning');
+  }
+
+  // Process local tasks. Only do this processing if the current theme is
+  // indeed Rubik. Subthemes must reimplement this call.
+  global $theme;
+  if ($theme === 'guibik')
+    _rubik_local_tasks($vars);
+	
+	
+	
+}
