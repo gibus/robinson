@@ -223,7 +223,7 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 	// set element form item
   $element += array(
     '#type' => 'textfield',
-    '#default_value' => isset($term) ? i18n_taxonomy_term_name($term, $node->language) : '',
+    '#default_value' => isset($term) ? ( if(module_exists('i18n_taxonomy')) ? i18n_taxonomy_term_name($term, $node->language) : $term->name ) : '',
     '#size' => $instance['widget']['settings']['size'],
     '#maxlength' => $instance['widget']['settings']['maxlength'],
     '#element_validate' => array('tode_widget_validate'),
@@ -438,7 +438,7 @@ function tode_node_submit($node, $form, &$form_state) {
 		$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
 		// dsm($values, 'values');
 	
-		if($language == 'und' || $language == $default_language || !module_exists('i18n_taxonomy')){
+		if(!module_exists('i18n_taxonomy') || $language == 'und' || $language == $default_language){
 	
 			// define the form_state for term_form submit
 			$new_term_form_state = array(
@@ -517,7 +517,7 @@ function tode_node_presave($node) {
 function tode_form_alter(&$form, $form_state, $form_id){
 	
 	/*
-		TODO block the deletion if tode term has children !! cause will delete them to …
+		TODO block the deletion if tode term has children !! because this will delete them to …
 	*/
 	
 	if (stripos($form_id, 'node_delete_confirm') !== false){
