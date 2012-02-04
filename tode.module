@@ -223,7 +223,7 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 	// set element form item
   $element += array(
     '#type' => 'textfield',
-    '#default_value' => isset($term) ? ( if(module_exists('i18n_taxonomy')) ? i18n_taxonomy_term_name($term, $node->language) : $term->name ) : '',
+    '#default_value' => isset($term) ? ( module_exists('i18n_taxonomy') ? i18n_taxonomy_term_name($term, $node->language) : $term->name ) : '',
     '#size' => $instance['widget']['settings']['size'],
     '#maxlength' => $instance['widget']['settings']['maxlength'],
     '#element_validate' => array('tode_widget_validate'),
