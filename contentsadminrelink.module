@@ -1,0 +1,90 @@
+<?php
+/**
+ * @file
+ * This is the file description for Contentsadminrelink module.
+ *
+ * In this more verbose, multi-line description, you can specify what this
+ * file does exactly. Make sure to wrap your documentation in column 78 so
+ * that the file can be displayed nicely in default-sized consoles.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function contentsadminrelink_menu() {
+  $items = array();
+  return $items;
+}
+
+
+/**
+ * Implements hook_url_outbound_alter().
+ */
+# useless, just play with perms and menu_alter
+// function contentsadminrelink_url_outbound_alter(&$path, &$options, $original_path) {
+  // if ($path == 'admin/content' || $path == 'admin/content/node') { 
+  //   $path = 'admin/content/nodes';
+  // }
+//}
+
+/**
+ * Implements hook_permission().
+ */
+function contentsadminrelink_permission() {
+  return array(
+    'access core content overview' =>  array(
+      'title' => t('Access core content overview'),
+      // 'description' => t('Perform administration tasks for my module.'),
+    ),
+    'access core media overview' =>  array(
+      'title' => t('Access classic media overview'),
+      // 'description' => t('Perform administration tasks for my module.'),
+    ),
+
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function contentsadminrelink_menu_alter(&$items) {
+	// dsm($items, '$items');
+	if(isset($items['admin/content']))
+		$items['admin/content']['access arguments'] = array('access core content overview');
+
+	if(isset($items['admin/content/node']))
+		$items['admin/content/node']['access arguments'] = array('access core content overview');
+
+	if(isset($items['admin/content/media']))
+		$items['admin/content/media']['access arguments'] = array('access classic media overview');
+	
+	// dsm($items, '$items');
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function contentsadminrelink_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  switch($root_path){  
+    case 'admin/content/nodes' : // for example 'page/view/news'
+      $item = menu_get_item('node/add'); 
+      if ($item['access']) {       
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+          '#link' => $item,
+        );
+      }
+    break;  
+    // case 'admin/content/medias' : // for example 'page/view/news'
+    //   $item = menu_get_item('admin/content/media/import'); 
+    //   if ($item['access']) {       
+    //     $data['actions']['output'][] = array(
+    //       '#theme' => 'menu_local_action',
+    //       '#link' => $item,
+    //     );
+    //   }
+    // break;  
+		
+  }  
+
+}
