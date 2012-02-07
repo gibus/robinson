@@ -34,6 +34,21 @@ function tode_menu() {
 */
 
 /**
+ * Implements hook_views_api().
+ */
+/*
+	TODO hook_views_api().
+*/
+// function tode_views_api() {
+//   return array(
+//     'api' => 3,
+//     'path' => drupal_get_path('module', 'tode') . '/views',
+//   );
+// }
+
+
+
+/**
  * Implementation of hook_theme().
  */
 function tode_theme() {
@@ -727,3 +742,5 @@ function _tode_get_tode_fields_def($node){
 
 	return $tode_fields;
 }
+
+
