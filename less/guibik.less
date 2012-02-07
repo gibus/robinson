@@ -157,7 +157,10 @@ li{list-style: none inside url();}
   background: #EFEFEF;
 }
 .page-admin table tr{
-	&.even, &.odd{ td, h3 {background-color: transparent;} }
+	&.even, &.odd{ 
+		td, h3 {background-color: transparent;} 
+		&:hover{  background: #D4EFEE;}
+	}
 }
 
 
@@ -182,12 +185,12 @@ input.teaser-button,
 input.form-submit,
 .node-edit, .button, .node-delete{
   cursor:pointer;
-  padding:2px 7px;
+  padding:0.3em 0.9em;
   color:#333;
 
   text-align:center;
 	
-	font-size:10px;
+	font-size:12px;
   font-weight:normal;
   border-width:1px;
   border-style:solid;
@@ -198,6 +201,10 @@ input.form-submit,
 		border-radius: 5px;
 		
 }
+.node-edit, .button, .node-delete{font-size:10px;padding:0.1em 0.6em;}
+
+
+
 input.form-submit:hover,
 .node-edit:hover, .button:hover, .node-delete:hover{
 	border-color:#ddd #ddd #ccc;
@@ -269,10 +276,53 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 				a{color: #3188D1;}
 		}
 	}	
-
-	
 }
+.view{
+	.pager{
+		padding:1em 0; margin:0; text-align: right; height:auto;
+		ul{
+			.inline-block; padding:0;
+			li{
+        height:20px;
+				a, span{padding:1px 10px 2px;}				
+			}
 
+		}
+	}
+	
+	// EXPOSED
+	.view-filters{
+		padding:1em 0; margin:0 0 1em 0;
+		border: 1px solid  #CCC; .border-radius(5px,5px,5px,5px);
+		
+		&>span.title, &>form{.inline-block;width:auto;position:relative;vertical-align: top;} 
+		&>span.title{padding:0.7em 1em;}
+		.views-exposed-form{ 
+			label{font-weight:normal; font-size:0.75em;}
+			.form-item{padding:0; 
+				select, input{font-size:0.8em;}
+			}
+	 	}
+	}
+
+	// VBO
+	fieldset#edit-select{
+		padding:1em 0; margin:0 0 1em 0;
+		border: 1px solid  #CCC; .border-radius(5px,5px,5px,5px);
+		
+		legend, .fieldset-content{.inline-block;}
+		
+		legend{
+			width:auto;
+			*{background-color: transparent;}
+		}
+		
+		.fieldset-content{
+			padding:0;
+			select, input{font-size:0.8em;}
+		}
+	}
+}
 
 /** media browser */
 .view.inline-block-list{
