@@ -600,7 +600,7 @@ function _tode_populate_terms_node_delete(&$terms, $tode_field){
 	foreach ($tode_field as $language) {
 		foreach ($language as $term) {
 			$term = taxonomy_term_load($term['tid']);
-			if(!in_array($term->tid, $terms['tids'])){
+			if(isset($term->tid) && !in_array($term->tid, $terms['tids'])){
 				$terms['names'][] = $term->name;
 				$terms['tids'][] = $term->tid;
 			}
@@ -609,6 +609,7 @@ function _tode_populate_terms_node_delete(&$terms, $tode_field){
 }
 
 function _tode_node_delete_prepare_form(&$form, $terms){
+
 	if(count($terms)){
 		/*
 			TODO add here a checkbox to select terms to delete
