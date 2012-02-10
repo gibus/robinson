@@ -9,6 +9,13 @@
 ;----------// Stylesheets
   stylesheets[screen][] = css/guibik.css
 
+;----------// Scripts
+scripts[] = "js/guibik.js"
+
+
+
+
+
 ;----------// Regions
  	regions[content] = Content
 	regions[help] = Help
