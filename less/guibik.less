@@ -112,6 +112,17 @@ li{list-style: none inside url();}
 
 		
 	}
+	
+	tr.draggable{
+		fieldset{
+			legend{display:none;}
+			.fieldset-content{
+				padding:0;
+				.date-padding{padding:0;}
+			}
+		}
+	}
+	
 }
 
 /** VERTICAL TABS */
@@ -297,12 +308,17 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 		
 		&>span.title, &>form{.inline-block;width:auto;position:relative;vertical-align: top;} 
 		&>span.title{padding:0.7em 1em;}
-		.views-exposed-form{ 
+		fieldset{
+			 .inline-block; padding:0 1em;
+			.fieldset-content{padding:0;}
+			legend{display:none;}
+		}
+/*		.views-exposed-form{ */
 			label{font-weight:normal; font-size:0.75em;}
-			.form-item{padding:0; 
+			.form-item{.inline-block;  padding:0 0.5em 0 0;
 				select, input{font-size:0.8em;}
 			}
-	 	}
+/*	 	}*/
 	}
 
 	// VBO
@@ -322,6 +338,12 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 			select, input{font-size:0.8em;}
 		}
 	}
+	.vbo-fieldset-select-all{
+		width:50%; text-align:left;
+		.form-item{.inline-block;vertical-align:top;}
+		em{padding:0 1em;}
+	}
+	
 }
 
 /** media browser */
@@ -339,7 +361,9 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 	}
 } 
 
-
+*:focus{
+	border: 1px solid #BDF!important;
+}
 
 /* Contain floats: h5bp.com/q */ 
 .clearfix:before, .clearfix:after { content: ""; display: table; }
@@ -348,3 +372,29 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 
 
 .path-admin-content-nodes span.icon { background-position:0px -30px; }
+
+
+/** admin view */
+.custom-admin{
+	table{
+		caption{
+			display:none;
+		}
+		th{line-height:1;}
+		td{padding-top:1em;padding-bottom:1em;}
+		td.views-field-views-bulk-operations{
+			background: @grey!important;
+		}
+		td.views-field-field-media{
+			width:100px;
+			background: @grey!important;
+			img{max-width:100%; height:auto;}
+		}
+
+		td.views-field-title{ width:350px; }
+		a.node-title-link{font-size:1.1em; padding:0 0 0.3em; display:inline-block;}
+		td.views-field-field-people{width:100px;}
+	}
+
+}
+
