@@ -11,27 +11,7 @@
  * 
  */
 
-/**
- * Implementation of hook_menu().
- */
-/*
-function tode_menu() {
-	$items = array();
 
-	// $items['node/%node/tode/%term'] = array(
-	//     'title' => 'Taxonomy Term',
-	//     'type' => MENU_LOCAL_TASK,
-	//     'access callback' => 'tode_node_tab_access',
-	//     'access arguments' => array(2),
-	//     'page callback' => 'tode_tab_page',
-	//     'page arguments' => array(2),
-	//     'file' => 'tode.pages.inc',
-	//     'weight' => 2,
-	//   );
-
-	return $items;
-}
-*/
 
 /**
  * Implements hook_views_api().
@@ -127,8 +107,19 @@ function tode_field_widget_settings_form($field, $instance){
 			'#default_value' => $settings['choose_term_parent'],
 		);
 
+		$form['redirect_term_to_node'] = array(
+			'#type' => 'checkbox',
+			'#title' => t('Rewrite all term link to theire tode node ?'),
+			'#default_value' => $settings['redirect_term_to_node'],
+		);
+
+		$form['show_create_tode'] = array(
+			'#type' => 'checkbox',
+			'#title' => t('Show create "tode" on term fields about this tode\'s vocabulary ?'),
+			'#default_value' => $settings['show_create_tode'],
+		);
+		
 		return $form;
-	
 }
 
 function _tode_widget_settings_maxlength_validate($element, &$form_state) {
@@ -184,7 +175,11 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 	// dsm($instance, '$instance');
 
 	
-	$node = $form_state['node'];
+	if(isset($form_state['node'])){
+		$language = $form_state['node']->language;
+	}else{
+		$language = null;
+	}
 	// dsm($node, '$node');
 	
 	if(isset($items[$delta])){
@@ -238,7 +233,7 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 	// set element form item
   $element += array(
     '#type' => 'textfield',
-    '#default_value' => isset($term) ? ( module_exists('i18n_taxonomy') ? i18n_taxonomy_term_name($term, $node->language) : $term->name ) : '',
+    '#default_value' => isset($term) ? ( module_exists('i18n_taxonomy') ? i18n_taxonomy_term_name($term, $language) : $term->name ) : '',
     '#size' => $instance['widget']['settings']['size'],
     '#maxlength' => $instance['widget']['settings']['maxlength'],
     '#element_validate' => array('tode_widget_validate'),
@@ -343,7 +338,7 @@ function tode_widget_validate($element, &$form_state){
 	// dsm($form_state, 'form_state');
 	// dsm($element, 'element');
 	
-	$node = $form_state['node'];
+	// $node = $form_state['node'];
 	
 	
  	$value = array();
@@ -416,7 +411,7 @@ function tode_node_submit($node, $form, &$form_state) {
 	module_load_include('inc', 'taxonomy', 'taxonomy.admin');
 	// module_load_include('inc', 'i18n_string', 'i18n_string.pages');
 	// 
-	$tode_fields = _tode_get_tode_fields_def($node);
+	$tode_fields = _tode_get_node_tode_fields_def($node);
 	// dsm($tode_fields, '$tode_fields');
 	
 	
@@ -447,34 +442,46 @@ function tode_node_submit($node, $form, &$form_state) {
 		$init_language = $form[$field_name]['#language'];
 
 		// retreive the value of term field, to get the typed term name
-		$tode_field_term_value = $form_state['values'][$field_name][$init_language][0];
+		if(isset($form_state['values'][$field_name][$init_language][0])){
+			$tode_field_term_value = $form_state['values'][$field_name][$init_language][0];			
+		}else if(isset($form_state['values'][$field_name][$language][0])){
+			$tode_field_term_value = $form_state['values'][$field_name][$language][0];			
+		}else if(isset($form_state['values'][$field_name]['und'][0])){
+			$tode_field_term_value = $form_state['values'][$field_name]['und'][0];			
+		}else{
+			drupal_set_message('$form_state[values][$field_name][$language][0] is undefined', 'warning');
+			$tode_field_term_value = false;
+		}
+
 		// dsm($tode_field_term_value, '$tode_field_term_value');
-	
-		$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
-		// dsm($values, 'values');
-	
-		if(!module_exists('i18n_taxonomy') || $language == 'und' || $language == $default_language){
-	
-			// define the form_state for term_form submit
-			$new_term_form_state = array(
-				'build_info'=>array(
-					'args'=>array(0=>(object)$tode_field_term_value),
-				),
-				"values"=>array(
-					'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
-					'op'=> t('Save'),
-				)
-			);
-			// add new values to form_state
-			$new_term_form_state['values'] += $values;
-	
-			// dsm($new_term_form_state, 'form_state');
-			drupal_form_submit('taxonomy_form_term', $new_term_form_state);
-		}else{			
-		
-			$context= array('term',$values['tid'],'name');
-		
-			i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
+		if($tode_field_term_value){
+			$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
+			// dsm($values, 'values');
+
+			if(!module_exists('i18n_taxonomy') || $language == 'und' || $language == $default_language){
+
+				// define the form_state for term_form submit
+				$new_term_form_state = array(
+					'build_info'=>array(
+						'args'=>array(0=>(object)$tode_field_term_value),
+					),
+					"values"=>array(
+						'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
+						'op'=> t('Save'),
+					)
+				);
+				// add new values to form_state
+				$new_term_form_state['values'] += $values;
+
+				// dsm($new_term_form_state, 'form_state');
+				drupal_form_submit('taxonomy_form_term', $new_term_form_state);
+			}else{			
+
+				$context= array('term',$values['tid'],'name');
+
+				i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
+			}
+			
 		}
 		
 	}
@@ -493,7 +500,7 @@ function tode_node_presave($node) {
 	if($node->nid)
 		return;
 	
-	$tode_fields = _tode_get_tode_fields_def($node);
+	$tode_fields = _tode_get_node_tode_fields_def($node);
 	
 	if(!count($tode_fields))
 		return;
@@ -516,10 +523,307 @@ function tode_node_presave($node) {
 
 
 /*
-	TODO Sélectionner une traduction pour test tode fr
-	merge two terms when translation is made by selecting a node whiche already exists
+	TODO  merge two terms when translation is made by selecting a node whiche already exists
 */
 
+/*
+	TODO create a node when a term is created else where than the node which got the tode
+*/
+
+/**
+ * Implements hook_menu().
+ */
+function tode_menu() {
+	// dsm('tode_menu');
+	$items = array();
+	
+	$items['tode/%ctools_js/add'] = array(
+	  'title' => 'Tode modal add entity',
+	  'page callback' => 'tode_entity_add',
+	  'page arguments' => array(1,3,4,5),
+		'access callback' => TRUE,
+		'type' => MENU_CALLBACK,
+	);
+	
+	return $items;
+}
+
+function tode_entity_add($js = FALSE, $bundle, $entity, $title = 'Title'){
+	
+  // Fall back if $js is not set.
+  if (!$js) {
+    return drupal_get_form('tode_entity_add_form', $bundle, $entity);
+  }
+
+  ctools_include('modal');
+  ctools_include('ajax');
+  $form_state = array(
+    'title' => t('Create '.$entity),
+    'ajax' => TRUE,
+    'build_info' => array('args' => array('0' => $bundle, '1' => $entity, '2' => $title)),
+  );
+  $output = ctools_modal_form_wrapper('tode_entity_add_form', $form_state);
+
+  if (!empty($form_state['executed'])) {
+    $commands = array();
+    $commands[] = ctools_modal_command_dismiss();
+    print ajax_render($commands);
+    exit;
+  }
+  else {
+    print ajax_render($output);
+    exit;
+  }
+	
+	
+}
+
+function tode_entity_add_form($form, $form_state, $bundle, $entity, $title) {
+	
+	$form = array();
+	$form['title'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t($title),
+	  '#size' => 40,
+	  '#maxlength' => 255,
+	);
+	$form['bundle'] = array(
+	  '#type' => 'hidden',
+	  '#value' => $bundle,
+	);
+	$form['entity'] = array(
+	  '#type' => 'hidden',
+	  '#value' => $entity,
+	);
+	
+	$form['create'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Create'),
+	);
+	
+	return $form;
+}
+
+function tode_entity_add_form_validate($form, &$form_state){
+
+  if(empty($form_state['values']['title'])){
+    form_set_error('title', 'Title field can\'t be empty!');
+  }
+	
+}
+
+function tode_entity_add_form_submit($form, &$form_state){
+	global $user;
+	// dsm($form_state, '$form_state');
+	$values = $form_state['values'];
+	$bundle_fields = field_info_instances($values['bundle']);
+	// dsm($bundle_fields, '$bundle_fields');
+	
+	$fields = $bundle_fields[$values['entity']];
+	// dsm($fields, '$fields');
+	
+	foreach ($fields as $field_name => $field) {
+		if($field['widget']['type'] == 'tode'){
+			$tode_field = $field;
+			break;
+		}
+	}
+	
+	# get vocabulary
+	$tode_field_infos = field_info_field($field['field_name']);
+	// dsm($tode_field_infos, '$tode_field_infos');
+	$voc_name = $tode_field_infos['settings']['allowed_values'][0]['vocabulary'];
+	$vocabulary = taxonomy_vocabulary_machine_name_load($voc_name);
+	// dsm($vocabulary, '$vocabulary');
+	
+	# create the term
+	$term = new stdClass();
+	$term->name = $values['title'];
+	$term->vid = $vocabulary->vid; // ‘1’ is a vocabulary id you wish this term to assign to
+	// $term->field_custom_field_name[LANGUAGE_NONE][0]['value'] = ‘Some value’; // OPTIONAL. If your term has a custom field attached it can added as simple as this
+	taxonomy_term_save($term); // Finally, save our term
+	// dsm($term, '$term');
+	
+	# create the node
+	//http://www.group42.ca/creating_and_updating_nodes_programmatically_in_drupal_7
+	//http://timonweb.com/how-programmatically-create-nodes-comments-and-taxonomies-drupal-7
+	$node = new stdClass();
+  $node->type = $values['entity'];
+  node_object_prepare($node);
+	$tode_field_name = $tode_field['field_name'];
+	$node = (array)$node +array(
+		"title" => $values['title'],
+		"language" => LANGUAGE_NONE,
+		"uid" => $user->uid,
+		$tode_field_name => array( LANGUAGE_NONE => array(0 => array('tid' => $term->tid))),
+	);
+	
+	
+//	$node->$tode_field_name[$node->language]['tid'] = $term->tid;
+		// $node->$tode_field_name = array( $node->language => array('tid' => $term->tid));
+	
+	// $tode_field_name = $tode_field['field_name'];
+	// $node = (object) array(
+	//   	"type" => $values['entity'],
+	//   // node_object_prepare($node);
+	//  		"title"	=> $values['title'],
+	// 	"language" => LANGUAGE_NONE,
+	// 	"uid" => $user->uid,
+	// 	$tode_field_name => array( LANGUAGE_NONE=>array('tid' => $term->tid)),
+	// );
+	$node = (object)$node;
+	
+	// dsm($node, '$node');
+	node_save($node);
+	// dsm($node, '$node');
+
+	
+	# tag the node with the term
+	
+	# set the tode field to the term tid
+	
+
+}
+
+
+
+function _tode_entity_add_form($js = FALSE, $bundle, $entity) {
+	// dsm('- - - - tode_entity_add_form');
+	//   dsm($bundle, '$bundle');
+	//   dsm($entity, '$entity');
+	
+	// error_log($js);
+	// error_log($bundle);
+	// error_log($entity);
+	// 
+		
+	global $user;
+
+	//module_load_include('inc', 'node', 'node.pages');
+	ctools_include('node.pages', 'node', '');
+
+	$node = (object) array(
+		'uid' => $user->uid, 
+		'name' => (isset($user->name) ? $user->name : ''), 
+		'type' => $entity, 
+		'language' => LANGUAGE_NONE
+	);
+	
+	$form_id = $entity.'_node_form';
+	
+	if (!$js) {
+		return drupal_get_form($form_id, $node);
+	}
+	
+	ctools_include('modal');
+	ctools_include('ajax');
+	
+	$form_state = array(
+		'title' => t('Add '.$entity),
+		'ajax' => TRUE,
+	);
+	
+	$form_state['build_info']['args'] = array($node);
+
+	$output = ctools_modal_form_wrapper($entity.'_node_form', $form_state);
+
+	if (!empty($form_state['executed'])) {
+		$output = array();
+		$output[] = ctools_modal_command_display( t('Node created'), '<div class="modal-message">'.$entity.' creation successful.</div>'); /** Add success message*/
+	};
+
+	print ajax_render($output);
+	exit;
+}
+
+
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function tode_field_widget_form_alter(&$element, &$form_state, $context) {
+	$field = $context['field'];
+	$instance = $context['instance'];
+	if($field['type'] == 'taxonomy_term_reference' && $instance['widget']['type'] == 'taxonomy_autocomplete'){
+		// dsm('- - - - - tode_field_widget_form_alter');
+		// dsm($element, '$element');
+		// dsm($form_state, '$form_state');
+		// dsm($context, '$context');
+		foreach ($field['settings']['allowed_values'] as $key => $value) {
+				
+			if($tode = _tode_get_voc_tode_fields_def($value['vocabulary'])){
+
+				ctools_include('ajax');
+		    ctools_include('modal');
+		    ctools_modal_add_js();
+		
+				// ctools_add_css('tode', 'tode');
+				// drupal_add_css(drupal_get_path('module', 'tode') . "tode.css");
+				// dsm($tode, '$tode');
+				$type_fields = field_info_instances('node');
+
+
+				if(!isset($element['#attributes']["class"]))
+					$element['#attributes']["class"] = array();
+					
+				$element['#attributes']["class"][] = "tode-add-modal";
+				
+				$element['#suffix'] = '';				
+				foreach ($tode['bundles'] as $bundle => $entities) {
+					foreach ($entities as $entity) {
+						$tode_instance = $type_fields[$entity][$tode['field_name']];
+						
+						$btn = ctools_modal_text_button(t('create a new %s', array('%s'=>$entity)), 'tode/nojs/add/'.$bundle.'/'.$entity.'/'.$tode_instance['label'], t('alt'), "ctools-modal-tode-add-modal") . "\n"; // modal-popup-small
+						// $btn .= ctools_modal_text_button(t('create new test'), 'tode/nojs/add/node/test', t('alt'));
+					// dsm($btn);
+						if($element['#suffix'] == '')
+							$element['#suffix'] = '<div class="tode-add-modal-links">';
+							
+						$element['#suffix'] .= $btn;
+					}
+				}
+			}
+		}
+		
+		if( isset($element['#suffix']) && $element['#suffix'] != '' ){
+			
+  		$throbber = theme('image', array('path' => ctools_image_path('loading_animation.gif', 'modal_forms'), 'alt' => t('Loading...'), 'title' => t('Loading')));
+			$js_settings = array(
+					    'tode-add-modal' => array(
+					      'modalSize' => array(
+					        'type' => 'fixed',
+					        'width' => 500,
+					        'height' => 200,
+					      ),
+					      'modalOptions' => array(
+					        'opacity' => 0.4,
+					        'background' => '#000',
+					      ),
+					      'animation' => 'fadeIn',
+					      // 'modalTheme' => 'ModalFormsPopup',
+					      'throbber' => $throbber,
+					      'closeText' => t('Close'),
+					    ),
+					  );
+			
+					  drupal_add_js($js_settings, 'setting');
+			
+			
+			
+			$element['#prefix'] = '<div class="tode-add-modal-wrapper">';
+			$element['#suffix'] .= '</div></div>';
+		}
+		
+		
+	}
+}
+
+/**
+ * Implements hook_taxonomy_term_insert().
+ */
+// function tode_taxonomy_term_insert($term) {
+// 	dsm($term, '$term');
+// }
 
 
 
@@ -530,11 +834,13 @@ function tode_node_presave($node) {
  * 
  */
 function tode_form_alter(&$form, $form_state, $form_id){
-	
+		// dsm($form_id, 'tode form_alter form_id');	
 	/*
 		TODO block the deletion if tode term has children !! because this will delete them to …
 	*/
-	
+	if($form_id == 'test_node_form'){
+		// dsm($form_state);
+	}
 	if (stripos($form_id, 'node_delete_confirm') !== false){
 		// dsm($form_id, 'tode form_alter form_id');
 		_tode_node_delete_form_alter($form, $form_state);
@@ -557,7 +863,7 @@ function _tode_node_delete_form_alter(&$form, $form_state){
 	// dsm($node, '$node');
 
 	#get the fields defenition of node type
-	$tode_fields = _tode_get_tode_fields_def($node);
+	$tode_fields = _tode_get_node_tode_fields_def($node);
 	// dsm($tode_fields);
 	
 	if(count($tode_fields) == 0)
@@ -582,7 +888,7 @@ function _tode_nodes_delete_form_alter(&$form, $form_state){
 	$terms = array('names'=>array(), 'tids'=>array());
 	foreach ($nodes as $node) {
 		#get the fields definition of node type
-		$tode_fields = _tode_get_tode_fields_def($node);
+		$tode_fields = _tode_get_node_tode_fields_def($node);
 		//dsm($tode_fields);
 		
 		if(count($tode_fields) == 0)
@@ -635,6 +941,48 @@ function tode_delete_submit($form, &$form_state){
 	$terms = unserialize($form['tode_terms']['#value']);	
 	drupal_set_message(t('Following Taxonomy terms have been deleted : %terms', array('%terms' => implode(', ', $terms) )), 'status');
 }
+
+
+/**
+ * Implements hook_url_outbound_alter().
+ */
+function tode_url_outbound_alter(&$path, &$options, $original_path) {
+	// dsm($path);
+	# terms url
+	if (preg_match('/^taxonomy\/term\/([0-9]*)$/', $path, $matches)) {
+		$term = taxonomy_term_load($matches[1]);
+		// dsm($term, '$term');
+		$vocabulary = taxonomy_vocabulary_load($term->vid);
+		// dsm($vocabulary, '$vocabulary');
+		
+		if($field = _tode_get_voc_tode_fields_def($vocabulary->machine_name)){
+			// dsm($field, '$field');
+			// $existing_item = db_query('SELECT * FROM {menu_links} WHERE mlid = :mlid', array('mlid' => $item['mlid']))->fetchAssoc();
+			$sr = $field['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+			foreach ($sr as $table => $column) {
+				$query = db_select($table, 'ft')
+				  ->fields('ft')
+				  ->condition('ft.'.$column['tid'], $term->tid);
+					
+				$result = $query->execute();
+				
+				// $entity = db_query('SELECT * FROM :fieldtabe WHERE :fieldcolumn = %tid', array(':fieldtabe'=>$table, ':fieldcolumn'=>$column['tid'], '%tid'=>$term->tid))->fetchAssoc();
+				break;
+			}
+			// dsm($result, '$result');
+			foreach ($result as $entity) {
+				// dsm($entity, '$entity');
+				$path = 'node/'.$entity->entity_id;
+				break;
+			}
+			
+		}
+			
+  }
+}
+
+
+
 
 /**
  * HELPERS 
@@ -724,9 +1072,9 @@ function _tode_trim_options(&$form, $item){
 }
 
 /**
- * OK OK OK
+ * _tode_get_node_tode_fields_def
  */
-function _tode_get_tode_fields_def($node){
+function _tode_get_node_tode_fields_def($node){
 	// dsm($node, '_tode_get_fields_def');
 
 	#get the fields defenition of node type
@@ -744,4 +1092,22 @@ function _tode_get_tode_fields_def($node){
 	return $tode_fields;
 }
 
-
+function _tode_get_voc_tode_fields_def($voc_name){
+	$type_fields = field_info_instances('node');
+	// dsm($type_fields, '$type_fields');
+	foreach ($type_fields as $nodetype => $fields)
+		foreach ($fields as $field_name => $field)
+			if($field['widget']['type'] == 'tode' 
+					&& isset($field['widget']['settings']['redirect_term_to_node']) 
+					&& $field['widget']['settings']['redirect_term_to_node']
+				){
+				$fieldinfos = field_info_field($field_name);
+				// dsm($fieldinfos, '$fieldinfos');
+				if($voc_name == $fieldinfos['settings']['allowed_values'][0]['vocabulary'])
+					return $fieldinfos;
+			}
+				
+	
+	return false;
+	
+}
