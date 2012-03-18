@@ -11,22 +11,3 @@
 .tode-add-modal-wrapper .tode-add-modal-links{
 	display:inline-block;
 }
-
-#modalContent{
-		
-}
-
-#modalContent div.ctools-modal-content{
-	padding:5px;
-	-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		
-	border: 0 solid #999;
-	
-}
-#modalContent div.ctools-modal-content .modal-header,
-#modalContent div.ctools-modal-content .modal-header a,
-#modalContent div.ctools-modal-content .modal-header span{
-	background-color: transparent; color:#000!important;
-}
