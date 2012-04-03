@@ -4,19 +4,19 @@
  */
 
 /*** ESSENTIAL STYLES ***/
-#simplemenu, #simplemenu * {
+#editmenu, #editmenu * {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-#simplemenu {
+#editmenu {
   line-height: 1.0;
   @FIX@
   @MENUBAR_ZINDEX@
 }
 
-#simplemenu ul {
+#editmenu ul {
   position: absolute;
   top: -999em;
   width: 14em;
@@ -24,37 +24,37 @@
   line-height: 1em;
 }
 
-#simplemenu ul li,
-#simplemenu a {
+#editmenu ul li,
+#editmenu a {
   width: 100%;
 }
 
-#simplemenu li {
+#editmenu li {
   float: left;
   position: relative;
 }
 
-#simplemenu a {
+#editmenu a {
   display: block;
 }
 
-#simplemenu li ul {
+#editmenu li ul {
   @DROPDOWN_ZINDEX@
 }
 
-#simplemenu li:hover ul,
-ul#simplemenu li.sfHover ul {
+#editmenu li:hover ul,
+ul#editmenu li.sfHover ul {
   left: 0px;
   top: 21px;
 }
 
-#simplemenu li:hover li ul,
-#simplemenu li.sfHover li ul {
+#editmenu li:hover li ul,
+#editmenu li.sfHover li ul {
   top: -999em;
 }
 
-#simplemenu li li:hover ul,
-ul#simplemenu li li.sfHover ul {
+#editmenu li li:hover ul,
+ul#editmenu li li.sfHover ul {
   left: 14em;
   top: -1px;
 }

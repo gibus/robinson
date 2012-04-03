@@ -2,7 +2,7 @@
 
 --- README  -------------------------------------------------------------
 
-SimpleMenu, Version 6.0
+EditMenu, Version 6.0
 
 Written by Ted Serbinski, aka, m3avrck
   hello@tedserbinski.com
@@ -16,13 +16,13 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 
 --- INSTALLATION --------------------------------------------------------
 
-1. Place simplemenu folder in your modules directory
+1. Place editmenu folder in your modules directory
 
-2. Enable "SimpleMenu" under administer > site building > modules
+2. Enable "EditMenu" under administer > site building > modules
 
-3. Enable access to "view simplemenu" under administer > user management > access control
+3. Enable access to "view editmenu" under administer > user management > access control
 
-4. Configure menu to use under administer > site configuration > simplemenu
+4. Configure menu to use under administer > site configuration > editmenu
 
 
 
@@ -53,10 +53,10 @@ jQuery Superfish: http://users.tpg.com.au/j_birch/plugins/superfish/
 - upgrade to bgIframe 2.1.1 (for IE6 compatibility with forms)
 - #136478 - fix Opera compatibility
 - remove RTL option; this conflicts with other changes and is properly implemented in Drupal 6
-- new option to select which theme to style SimpleMenu with, or provide a custom one
+- new option to select which theme to style EditMenu with, or provide a custom one
 - #184051 - don't hardcode CSS, add class to body
 - #180106 - fix missing translatable strings
 - #144742 - don't show annoying anchor titles
 - remove dependency on menu module, now works with menu module off
-- new black & blue theme, design by Jeremy Caldwell (http://nerdliness.com/article/2007/11/01/simplemenu-module-customizations)
+- new black & blue theme, design by Jeremy Caldwell (http://nerdliness.com/article/2007/11/01/editmenu-module-customizations)
 - alter height of menu and rollover to fix gaps

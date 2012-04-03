@@ -2,17 +2,17 @@
 
 /**
  * @file
- * Make all the simplemenu parent menu items non-clickable.
+ * Make all the editmenu parent menu items non-clickable.
  */
 
 /**
  * \brief Alter the menu item link theme registry.
  *
- * This function grabs the simplemenu theme registry for the
+ * This function grabs the editmenu theme registry for the
  * menu_link theming. This gives us a way to remove the
  * link and replace it with a name (anchor) instead.
  *
- * This is only applied to the Simplemenu as intefering with
+ * This is only applied to the Editmenu as intefering with
  * other menus could have unwanted side effects.
  *
  * \note
@@ -21,16 +21,16 @@
  * is built by the system (i.e. caches are cleared by user,
  * because a module is installed, etc.)
  */
-function simplemenu_inactive_parents_theme_registry_alter(&$theme_registry) {
+function editmenu_inactive_parents_theme_registry_alter(&$theme_registry) {
   global $theme;
 
   // Save theme function
-  $themes = variable_get('simplemenu_inactive_parents_theme_function', array());
+  $themes = variable_get('editmenu_inactive_parents_theme_function', array());
   $themes[$theme] = $theme_registry['menu_link']['function'];
-  variable_set('simplemenu_inactive_parents_theme_function', $themes);
+  variable_set('editmenu_inactive_parents_theme_function', $themes);
 
   // Replace with our own
-  $theme_registry['menu_item_link']['function'] = 'simplemenu_inactive_parents_theme_menu_link';
+  $theme_registry['menu_item_link']['function'] = 'editmenu_inactive_parents_theme_menu_link';
 }
 
 /**
@@ -39,18 +39,18 @@ function simplemenu_inactive_parents_theme_registry_alter(&$theme_registry) {
  * This function intercepts the menu item link theming function of
  * the system and 
  */
-function simplemenu_inactive_parents_theme_menu_link($link) {
+function editmenu_inactive_parents_theme_menu_link($link) {
   global $theme;
   static $cnt = 0;
 
   // this is a drop down?
-  if (!empty($link['has_children']) && variable_get('simplemenu_running', FALSE)) {
+  if (!empty($link['has_children']) && variable_get('editmenu_running', FALSE)) {
     ++$cnt;
     return '<a name="menu-id-' . $cnt . '">' . $link['title'] . '</a>';
   }
 
   // got a theme function?
-  $themes = variable_get('simplemenu_inactive_parents_theme_function', array());
+  $themes = variable_get('editmenu_inactive_parents_theme_function', array());
   if (isset($themes[$theme])) {
     return $themes[$theme]($link);
   }

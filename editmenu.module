@@ -2,22 +2,22 @@
 
 /**
  * @file
- * Creates a simplemenu.
+ * Creates a editmenu.
  */
 
 /**
  * Implements hook_menu().
  */
-function simplemenu_menu() {
+function editmenu_menu() {
   $items = array();
 
-  $items['admin/config/user-interface/simplemenu'] = array(
-    'title' => 'SimpleMenu',
+  $items['admin/config/user-interface/editmenu'] = array(
+    'title' => 'EditMenu',
     'description' => 'Select the menu to display.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('simplemenu_admin_settings'),
-    'access arguments' => array('administer simplemenu'),
-    'file' => 'simplemenu.admin.inc',
+    'page arguments' => array('editmenu_admin_settings'),
+    'access arguments' => array('administer editmenu'),
+    'file' => 'editmenu.admin.inc',
     'type' => MENU_NORMAL_ITEM,
   );
 
@@ -25,9 +25,9 @@ function simplemenu_menu() {
 }
 
 /**
- * Is simplemenu enabled for this page request?
+ * Is editmenu enabled for this page request?
  */
-function simplemenu_enabled() {
+function editmenu_enabled() {
   $enabled = &drupal_static(__FUNCTION__);
 
   if (!isset($enabled)) {
@@ -38,11 +38,11 @@ function simplemenu_enabled() {
       $is_overlay = (overlay_get_mode() == 'child') ? TRUE : FALSE;
     }
     
-    $exclusions = variable_get('simplemenu_exclusions', array());
+    $exclusions = variable_get('editmenu_exclusions', array());
     $enabled = (!isset($exclusions[$theme]) || !$exclusions[$theme])
-      && user_access('view simplemenu')
-      && _simplemenu_page_visibility()
-      && _simplemenu_superuser_active()
+      && user_access('view editmenu')
+      && _editmenu_page_visibility()
+      && _editmenu_superuser_active()
       && !$is_overlay;
   }
 
@@ -52,44 +52,44 @@ function simplemenu_enabled() {
 /**
  * Implements hook_init().
  */
-function simplemenu_init() {
+function editmenu_init() {
   // do a simple access check here, since theme isn't available to check yet
-  if (simplemenu_enabled()) {
-    _simplemenu_add_menu();
-    _simplemenu_add_css();    // basic CSS must be before _simplemenu_add_theme()
-    _simplemenu_add_theme();
-    _simplemenu_add_js();
+  if (editmenu_enabled()) {
+    _editmenu_add_menu();
+    _editmenu_add_css();    // basic CSS must be before _editmenu_add_theme()
+    _editmenu_add_theme();
+    _editmenu_add_js();
   }
 }
 
-/** \brief Add the simplemenu variable with the menu to be displayed.
+/** \brief Add the editmenu variable with the menu to be displayed.
  *
  * This function loads the menu to be displayed and transforms it so
  * it works with superfish.
  *
- * If the cache version of the simplemenu JavaScript string cannot be
+ * If the cache version of the editmenu JavaScript string cannot be
  * created, then it is sent inline whether or not the user asked for it
  * to be sent inline.
  */
-function _simplemenu_add_menu() {
+function _editmenu_add_menu() {
   // XXX -- should we put that in the settings instead? why put it in its own variable?
-  $simplemenu = 'var simplemenu=' . drupal_json_encode(simplemenu_get_menu()) . ';';
+  $editmenu = 'var editmenu=' . drupal_json_encode(editmenu_get_menu()) . ';';
 
-  $has_file = variable_get('simplemenu_cache_menu', TRUE);
+  $has_file = variable_get('editmenu_cache_menu', TRUE);
   if ($has_file) {
-    $js_hash = drupal_hash_base64($simplemenu);
+    $js_hash = drupal_hash_base64($editmenu);
     $js_path = 'public://js'; // same path as concatenated Core JS
-    $js_filename = $js_path . '/simplemenu_' . $js_hash . '.js';
+    $js_filename = $js_path . '/editmenu_' . $js_hash . '.js';
     if (!file_exists($js_filename)) {
       file_prepare_directory($js_path, FILE_CREATE_DIRECTORY);
-      if (!file_unmanaged_save_data($simplemenu, $js_filename, FILE_EXISTS_REPLACE)) {
+      if (!file_unmanaged_save_data($editmenu, $js_filename, FILE_EXISTS_REPLACE)) {
         $has_file = FALSE;
       }
     }
   }
 
   $options = array(
-    'scope' => variable_get('simplemenu_menu_scope', 'footer'),
+    'scope' => variable_get('editmenu_menu_scope', 'footer'),
     // 'version' => ?, -- could we make use of the version?
   );
   if ($has_file) {
@@ -99,7 +99,7 @@ function _simplemenu_add_menu() {
   else {
     // inline adds the value as is (untouched)
     $options['type'] = 'inline';
-    drupal_add_js($simplemenu, $options);
+    drupal_add_js($editmenu, $options);
   }
 }
 
@@ -114,21 +114,21 @@ function _simplemenu_add_menu() {
  * The function has a fall back, in case the dynamic CSS cannot
  * be created.
  */
-function _simplemenu_add_css() {
+function _editmenu_add_css() {
   global $user;
 
-  $simplemenu_path = drupal_get_path('module', 'simplemenu');
+  $editmenu_path = drupal_get_path('module', 'editmenu');
   $css_path = 'public://css'; // same path as concatenated Core CSS
   if (file_prepare_directory($css_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-    $fix = variable_get('simplemenu_fix', 'scroll');
+    $fix = variable_get('editmenu_fix', 'scroll');
 
-    // XXX add a variable simplemenu_update which is set to TRUE whenever
+    // XXX add a variable editmenu_update which is set to TRUE whenever
     //     the settings get modified and false here
-    $output_filename = variable_get('simplemenu_css_filename', '');
+    $output_filename = variable_get('editmenu_css_filename', '');
     if (!$output_filename) {
       $tags = array(
-        '@MENUBAR_ZINDEX@' => simplemnu_get_zindex('simplemenu_menubar_zindex', 9999),
-        '@DROPDOWN_ZINDEX@' => simplemnu_get_zindex('simplemenu_dropdown_zindex', 9999),
+        '@MENUBAR_ZINDEX@' => simplemnu_get_zindex('editmenu_menubar_zindex', 9999),
+        '@DROPDOWN_ZINDEX@' => simplemnu_get_zindex('editmenu_dropdown_zindex', 9999),
       );
       switch ($fix) {
       case 'top':
@@ -144,58 +144,58 @@ function _simplemenu_add_css() {
         break;
 
       }
-      $css = file_get_contents($simplemenu_path . '/simplemenu.css.tpl');
+      $css = file_get_contents($editmenu_path . '/editmenu.css.tpl');
       $css = strtr($css, $tags);
       $css_hash = hash('sha256', $css);
-      $output_filename = $css_path . '/simplemenu-' . $css_hash . '.css';
+      $output_filename = $css_path . '/editmenu-' . $css_hash . '.css';
       if (!file_exists($output_filename)) {
         // new content, create a new file
         file_put_contents($output_filename, $css);
       }
       else {
         // this call is rather ugly, but we must make sure that the
-        // system cache will take the current Simplemenu CSS in account
+        // system cache will take the current Editmenu CSS in account
         _drupal_flush_css_js();
       }
-      //variable_set('simplemenu_css_filename', $output_filename);
+      //variable_set('editmenu_css_filename', $output_filename);
     }
     drupal_add_css($output_filename);
   }
   else {
     // in case we cannot create the dynamic CSS
-    $last_msg = variable_get('simplemenu_css_error', 0);
+    $last_msg = variable_get('editmenu_css_error', 0);
     if (($last_msg != -1 && $last_msg + 3600 > time()) || $user->uid == 1) {
       // avoid displaying the error on each page... only once per hour.
       // (unless you are the admin, in which case you probably want to know!)
-      variable_set('simplemenu_css_error', time());
-      drupal_set_message(t('Simplemenu could not create the folder @path in order to save the dynamic CSS data.',
+      variable_set('editmenu_css_error', time());
+      drupal_set_message(t('Editmenu could not create the folder @path in order to save the dynamic CSS data.',
         array('@path' => $css_path)), 'warning');
     }
 
     // use a default that cannot react to the dynamic changes...
-    drupal_add_css($simplemenu_path .'/simplemenu.css');
+    drupal_add_css($editmenu_path .'/editmenu.css');
   }
 }
 
 /** \brief Add the module theme.
  *
- * This function adds a theme for the Simplemenu look.
+ * This function adds a theme for the Editmenu look.
  *
  * By default, the original theme is used. The module also offers the
  * blackblue theme. It is also possible to create new themes or use
- * the theming of the current theme for simplemenu (so the menu fits
+ * the theming of the current theme for editmenu (so the menu fits
  * perfectly for that theme.)
  */
-function _simplemenu_add_theme() {
-  // we want to put the simplemenu theme CSS first
+function _editmenu_add_theme() {
+  // we want to put the editmenu theme CSS first
   // so we can change some CSS entries dynamically
-  // but at this time the simplemenu.css is used to
+  // but at this time the editmenu.css is used to
   // reset many of the CSS entries... Hmmm...
-  $simplemenu_theme = variable_get('simplemenu_theme', 'original');
-  if ($simplemenu_theme != 'custom') {
-    $simplemenu_path = drupal_get_path('module', 'simplemenu');
-    $theme_file = $simplemenu_path . '/themes/' . $simplemenu_theme
-                                  . '/' . $simplemenu_theme . '.css';
+  $editmenu_theme = variable_get('editmenu_theme', 'original');
+  if ($editmenu_theme != 'custom') {
+    $editmenu_path = drupal_get_path('module', 'editmenu');
+    $theme_file = $editmenu_path . '/themes/' . $editmenu_theme
+                                  . '/' . $editmenu_theme . '.css';
     if (is_file($theme_file)) {
       drupal_add_css($theme_file);
     }
@@ -204,14 +204,14 @@ function _simplemenu_add_theme() {
 
 /** \brief Add the JavaScript that makes it all work.
  *
- * This function adds the Simplemenu JavaScript, the Superfish JavaScript
+ * This function adds the Editmenu JavaScript, the Superfish JavaScript
  * and settings from the user.
  */
-function _simplemenu_add_js() {
-  $simplemenu_path = drupal_get_path('module', 'simplemenu');
+function _editmenu_add_js() {
+  $editmenu_path = drupal_get_path('module', 'editmenu');
 
   // Settings
-  $fix = variable_get('simplemenu_fix', 'scroll');
+  $fix = variable_get('editmenu_fix', 'scroll');
   switch ($fix) {
   case 'top':
     $element = 'body';
@@ -225,29 +225,29 @@ function _simplemenu_add_js() {
 
   default: // 'scroll'
     // let user defined other elements when not fixed
-    $element = variable_get('simplemenu_element', 'body');
-    $placement = variable_get('simplemenu_element_method', 'prepend');
+    $element = variable_get('editmenu_element', 'body');
+    $placement = variable_get('editmenu_element_method', 'prepend');
     break;
 
   }
   $settings = array(
-    'effect' => variable_get('simplemenu_effect', 'opacity'),
-    'effectSpeed' => variable_get('simplemenu_effect_speed', 'fast'),
+    'effect' => variable_get('editmenu_effect', 'opacity'),
+    'effectSpeed' => variable_get('editmenu_effect_speed', 'fast'),
     'element' => $element,
     'placement' => $placement,
-    'hideDelay' => variable_get('simplemenu_hide_delay', 800),
-    'detectPopup' => variable_get('simplemenu_detect_popup', 1),
+    'hideDelay' => variable_get('editmenu_hide_delay', 800),
+    'detectPopup' => variable_get('editmenu_detect_popup', 1),
   );
-  drupal_add_js(array('simplemenu' => $settings), array('type' => 'setting'));
+  drupal_add_js(array('editmenu' => $settings), array('type' => 'setting'));
 
-  // Simplemenu
-  drupal_add_js($simplemenu_path . '/simplemenu.js', array('version' => '1.2'));
+  // Editmenu
+  drupal_add_js($editmenu_path . '/editmenu.js', array('version' => '1.2'));
 
   // Superfish
-  $superfish = variable_get('simplemenu_superfish_version', 'superfish-1.4.1.js');
+  $superfish = variable_get('editmenu_superfish_version', 'superfish-1.4.1.js');
   if ($superfish != 'custom') {
     $sf_version = str_replace(array('superfish-', '.js'), '', $superfish);
-    drupal_add_js($simplemenu_path . '/' . $superfish, array('version' => $sf_version));
+    drupal_add_js($editmenu_path . '/' . $superfish, array('version' => $sf_version));
   }
 }
 
@@ -278,15 +278,15 @@ function simplemnu_get_zindex($name, $default) {
 /**
  * Implements hook_permission().
  */
-function simplemenu_permission() {
+function editmenu_permission() {
   return array(
-    'view simplemenu' => array(
-      'title' => t('View SimpleMenu'),
-      'description' => t('Display SimpleMenu to this user.'),
+    'view editmenu' => array(
+      'title' => t('View EditMenu'),
+      'description' => t('Display EditMenu to this user.'),
     ),
-    'administer simplemenu' => array(
-      'title' => t('Administer SimpleMenu'),
-      'description' => t('Change settings of SimpleMenu.'),
+    'administer editmenu' => array(
+      'title' => t('Administer EditMenu'),
+      'description' => t('Change settings of EditMenu.'),
     ),
   );
 }
@@ -294,13 +294,13 @@ function simplemenu_permission() {
 /**
  * Render an HTML list of links for a given menu.
  */
-function simplemenu_get_menu() {
-  variable_set('simplemenu_running', TRUE);
+function editmenu_get_menu() {
+  variable_set('editmenu_running', TRUE);
 
-  // if a user turned off menu module but SimpleMenu was previously set
+  // if a user turned off menu module but EditMenu was previously set
   // reset variable so a menu appears
-  $all_menus = array(variable_get('simplemenu_menu', 'management:0'));
-  drupal_alter('simplemenu_menus', $all_menus);
+  $all_menus = array(variable_get('editmenu_menu', 'management:0'));
+  drupal_alter('editmenu_menus', $all_menus);
 
   if (count($all_menus) > 1) {
     // if menu is not enable then we cannot have a count other than 1
@@ -310,36 +310,36 @@ function simplemenu_get_menu() {
       list($menu_name, $mlid) = explode(':', $full_name);
       $tree[] = array(
         'link' => array(
-          'simplemenu_multi_menu_root' => TRUE,
+          'editmenu_multi_menu_root' => TRUE,
           'mlid' => $mlid,
           'menu_name' => $full_name,
           'hidden' => FALSE,
           'title' => $menu_titles[$menu_name],
-          'href' => 'admin/settings/simplemenu', /// ??? -- we should not have a link here
+          'href' => 'admin/settings/editmenu', /// ??? -- we should not have a link here
           'in_active_trail' => FALSE,
           'has_children' => TRUE,
           'localized_options' => array(
-            'attributes' => array('class' => 'simplemenu-top-level'),
+            'attributes' => array('class' => 'editmenu-top-level'),
           ),
         ),
-        'below' => simplemenu_menu_tree($full_name),
+        'below' => editmenu_menu_tree($full_name),
       );
     }
   }
   else {
     reset($all_menus);
-    $tree = simplemenu_menu_tree(current($all_menus));
+    $tree = editmenu_menu_tree(current($all_menus));
   }
 
   // allow other modules to modify the menu tree
-  drupal_alter('simplemenu_tree', $tree);
-  $tree = simplemenu_tree_remove_hidden($tree);
+  drupal_alter('editmenu_tree', $tree);
+  $tree = editmenu_tree_remove_hidden($tree);
 
   // now generate the output
   $menu_form = menu_tree_output($tree);
   $menu = drupal_render($menu_form);
   if (!$menu) {
-    $menu = '<ul class="menu"><li><a href="' . url('admin/settings/simplemenu') . '">'
+    $menu = '<ul class="menu"><li><a href="' . url('admin/settings/editmenu') . '">'
         . t('No menu items found. Try a different menu as the default.') . '</a></li></ul>';
   }
 
@@ -347,10 +347,10 @@ function simplemenu_get_menu() {
   // otherwise it could be added to the <div> tag instead...
   $pos = strpos($menu, '>');
   $menu = str_replace('class="menu', 'class="menu clear-block', substr($menu, 0, $pos))
-        . ' id="simplemenu"' . substr($menu, $pos);
+        . ' id="editmenu"' . substr($menu, $pos);
 
-  variable_set('simplemenu_running', FALSE);
-  return '<div class="simplemenu-block">' . $menu . '&nbsp;</div>';
+  variable_set('editmenu_running', FALSE);
+  return '<div class="editmenu-block">' . $menu . '&nbsp;</div>';
 }
 
 /**
@@ -359,13 +359,13 @@ function simplemenu_get_menu() {
  * aren't... unless we make sure we remove the children
  * ourselves.
  */
-function simplemenu_tree_remove_hidden($tree) {
+function editmenu_tree_remove_hidden($tree) {
   $clean = array();
 
   foreach ($tree as $key => $data) {
     if (!$data['link']['hidden']) {
       if ($data['below']) {
-        $data['below'] = simplemenu_tree_remove_hidden($data['below']);
+        $data['below'] = editmenu_tree_remove_hidden($data['below']);
         if (count($data['below']) == 0) {
           $data['below'] = 0;
         }
@@ -382,7 +382,7 @@ function simplemenu_tree_remove_hidden($tree) {
  * We want to retrieve the entire menu structure for a given menu,
  * regardless of whether or not the menu item is expanded or not.
  */
-function simplemenu_menu_tree($menu_name = 'management:0') {
+function editmenu_menu_tree($menu_name = 'management:0') {
   $menu_tree = &drupal_static(__FUNCTION__, array());
 
   // until we take $mlid in account, we can use $mname
@@ -404,7 +404,7 @@ function simplemenu_menu_tree($menu_name = 'management:0') {
  *
  * @todo we don't actually need $menu_name, $mlid would be sufficient
  */
-function simplemenu_tree_all_data($root_menu = 'management:0') {
+function editmenu_tree_all_data($root_menu = 'management:0') {
   $tree = &drupal_static(__FUNCTION__, array());
 
   list($menu_name, $mlid) = explode(':', $root_menu);
@@ -487,13 +487,13 @@ function simplemenu_tree_all_data($root_menu = 'management:0') {
 }
 
 /**
- * Determine if simplemenu should be displayed based on visibility settings.
+ * Determine if editmenu should be displayed based on visibility settings.
  *
  * @return boolean
  */
-function _simplemenu_page_visibility() {
-  $operator = variable_get('simplemenu_visibility_operator', 0);
-  $pages = variable_get('simplemenu_visibility_pages', '');
+function _editmenu_page_visibility() {
+  $operator = variable_get('editmenu_visibility_operator', 0);
+  $pages = variable_get('editmenu_visibility_pages', '');
 
   if ($pages) {
     $path = drupal_get_path_alias($_GET['q']);
@@ -515,9 +515,9 @@ function _simplemenu_page_visibility() {
 }
 
 /**
- * Check whether the superuser/admin should be shown simplemenu.
+ * Check whether the superuser/admin should be shown editmenu.
  */
-function _simplemenu_superuser_active() {
+function _editmenu_superuser_active() {
   global $user;
-  return $user->uid != 1 || variable_get('simplemenu_uid1', 1) == 1;
+  return $user->uid != 1 || variable_get('editmenu_uid1', 1) == 1;
 }

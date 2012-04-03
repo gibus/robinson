@@ -1,29 +1,29 @@
 (function($){
 
-Drupal.behaviors.simplemenuAttach = {
+Drupal.behaviors.editmenuAttach = {
   attach: function(context, settings) {
     // If detect pop-ups setting is enabled and we are in a pop-up window
-    if (settings.simplemenu.detectPopup && window.opener) {
+    if (settings.editmenu.detectPopup && window.opener) {
       return;
     }
   
-    if ($('body').hasClass('simplemenu-enabled')) {
+    if ($('body').hasClass('editmenu-enabled')) {
       return;
     }
-    $('body').addClass('simplemenu-enabled');
+    $('body').addClass('editmenu-enabled');
     
   
     // get the element to add the menu to
-    var element = settings.simplemenu.element;
+    var element = settings.editmenu.element;
     if ($(element).length == 0) {
       // this happens when you open a pop-up or a different theme
       // that does not have such an element or the named element
       // just does not exist in the first place.
       return;
     }
-    var menu = $(simplemenu);
+    var menu = $(editmenu);
   
-    switch (settings.simplemenu.placement) {
+    switch (settings.editmenu.placement) {
       case 'prepend':
         $(menu).prependTo(element);
         break;
@@ -36,16 +36,16 @@ Drupal.behaviors.simplemenuAttach = {
     }
   
     var animation = {};
-    animation[settings.simplemenu.effect] = 'toggle';
+    animation[settings.editmenu.effect] = 'toggle';
     
     // Build menu
     $(menu)
-      .find('#simplemenu')
+      .find('#editmenu')
       .superfish({
         pathClass: 'current',
         animation: animation,
-        delay: settings.simplemenu.hideDelay,
-        speed: settings.simplemenu.effectSpeed,
+        delay: settings.editmenu.hideDelay,
+        speed: settings.editmenu.effectSpeed,
         autoArrows: false
       })
       .find(">li:has(ul)")
@@ -61,7 +61,7 @@ Drupal.behaviors.simplemenuAttach = {
       .find("a")
         .removeAttr('title');
   
-    $('#simplemenu').children('li.expanded').addClass('root');
+    $('#editmenu').children('li.expanded').addClass('root');
   }
 };
 })(jQuery);

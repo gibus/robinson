@@ -1,46 +1,46 @@
 
-.simplemenu-block {
+.editmenu-block {
   height: 21px;
 }
-#simplemenu {
+#editmenu {
   background: #000;
   color: #fff;
   font:11px Verdana, Helvetica, sans-serif;
   width: 100%;
   text-align: left;
 }
-#simplemenu a {
+#editmenu a {
   color: #fff;
   text-decoration: none;
   padding: 3px 12px 5px 12px;
   width: auto;
 }
-#simplemenu li {
+#editmenu li {
   background: transparent;
 }
-#simplemenu li.expanded > a {
+#editmenu li.expanded > a {
   background: url(arrow_right.gif) no-repeat 94%;
   padding-right: 18px;
 }
-#simplemenu li.root > a {
+#editmenu li.root > a {
   background: url(arrow_down.gif) no-repeat 94%;
   padding-right: 18px;
 }
-#simplemenu li:hover, #simplemenu li.sfHover,
-#simplemenu a:focus, #simplemenu a:hover, #simplemenu a:active {
+#editmenu li:hover, #editmenu li.sfHover,
+#editmenu a:focus, #editmenu a:hover, #editmenu a:active {
   background: #4c77b3;
   color: #fff;
 }
-#simplemenu li ul {
+#editmenu li ul {
   border: 1px solid #ccc;
   background: #fafcff;
 }
-#simplemenu li ul a {
+#editmenu li ul a {
   color: #4e4e4e; 
   height: auto;
 }
-#simplemenu li ul li:hover, #simplemenu li ul li.sfHover,
-#simplemenu li ul a:focus, #simplemenu li ul a:hover, #simplemenu li ul a:active {
+#editmenu li ul li:hover, #editmenu li ul li.sfHover,
+#editmenu li ul a:focus, #editmenu li ul a:hover, #editmenu li ul a:active {
   background-color: #cde;
   color: #4e4e4e;
 }

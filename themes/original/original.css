@@ -1,8 +1,8 @@
 
-.simplemenu-block {
+.editmenu-block {
   height: 21px;
 }
-#simplemenu {
+#editmenu {
   background: #ddd;
   color: #333;
   border-bottom: 1px solid #999;
@@ -10,7 +10,7 @@
   width: 100%;
   text-align: left;
 }
-#simplemenu a {
+#editmenu a {
   color: #333;
   text-decoration: none;
   background: #ddd;
@@ -19,32 +19,32 @@
   padding: 2px 6px 3px 6px; 
   width: auto;
 }   
-#simplemenu li {
+#editmenu li {
   background: #ddd;
   text-align: left;
 }   
-#simplemenu li.expanded > a {
+#editmenu li.expanded > a {
   background: url(right-green.gif) no-repeat 97%;
   padding-right: 2em;
 }
-#simplemenu li.root > a {
+#editmenu li.root > a {
   font-weight: 700;
   background: url(down-green.gif) no-repeat 97%;
 }
-#simplemenu li:hover,
-#simplemenu li.sfHover,
-#simplemenu a:focus,
-#simplemenu a:hover,
-#simplemenu a:active {
+#editmenu li:hover,
+#editmenu li.sfHover,
+#editmenu a:focus,
+#editmenu a:hover,
+#editmenu a:active {
   background: #3875d7;
   color: #fff;
 }
-#simplemenu li:hover ul,
-ul#simplemenu li.sfHover ul {
+#editmenu li:hover ul,
+ul#editmenu li.sfHover ul {
   border-top: 1px solid white;
   border-bottom: 1px solid #999;
 }
-#simplemenu li ul a {
+#editmenu li ul a {
   height: auto;
 }
 
