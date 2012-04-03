@@ -124,6 +124,13 @@ function guibik_preprocess_html(&$vars){
 	
 }
 
+function guibik_preprocess_views_view_table(&$vars){
+
+	if($vars['title'] != ''){
+		$vars['classes_array'][] = 'has-caption';
+	}
+	// dsm($vars);	
+}
 /**
  * Implements theme_form_element().
  */

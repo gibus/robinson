@@ -2,7 +2,7 @@
 
 /** table */
 @grey:#E0E0E0;
-@grey-lite:#F4F4F4;
+@greylite:#F4F4F4;
 
 
 /** GENERAL FORM */
@@ -54,6 +54,7 @@ select.form-select {
   max-width:100%;
 }
 
+span.autocomplete-deluxe-button{top:0.25em;}
 .fieldset {
   margin:0px 0px 10px;
   display:block;
@@ -129,7 +130,7 @@ li{list-style: none inside url();}
 
 /** VERTICAL TABS */
 .vertical-tabs {
-  background:@grey-lite;
+  background:@greylite;
   border:1px solid #BFBFBF;
   margin:0px 0px 10px;
   position:relative;
@@ -158,11 +159,11 @@ li{list-style: none inside url();}
 }
 .vertical-tabs-list .selected a ,
 .vertical-tabs-list li:hover a {
-  background:@grey-lite;
+  background:@greylite;
   color:#1A1A1A;
 }
 .vertical-tabs-list .selected a{
-	border-right:0 solid @grey-lite;
+	border-right:0 solid @greylite;
 }
 .vertical-tabs-list .summary { font-size:11px; }
 
@@ -379,20 +380,23 @@ body.admin-vertical.admin-expanded #admin-menu-wrapper{border-left:1px solid #32
 /** admin view */
 .custom-admin{
 	table{
-		caption{
-			display:none;
-		}
-		th{line-height:1;}
+
+		caption{ text-align: left; padding:2em 0 0 0; font-weight:bold;}
+		
+		th{line-height:1; background-color: @greylite!important;}
 		td{padding-top:1em;padding-bottom:1em;}
-		td.views-field-views-bulk-operations{
-			background: @grey!important;
-		}
+
 		td.views-field-field-media{
 			width:100px;
-			background: @grey!important;
 			img{max-width:100%; height:auto;}
 		}
 
+		&.has-caption{
+			th, td.views-field-field-media, td.views-field-views-bulk-operations{
+				background: @grey!important;
+			}
+		}
+		
 		td.views-field-title{ width:350px; }
 		a.node-title-link{font-size:1.1em; padding:0 0 0.3em; display:inline-block;}
 		td.views-field-field-people{width:100px;}
