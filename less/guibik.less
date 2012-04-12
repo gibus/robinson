@@ -55,24 +55,60 @@ select.form-select {
 }
 
 span.autocomplete-deluxe-button{top:0.25em;}
+
 .fieldset {
-  margin:0px 0px 10px;
+  margin:20px 0px 10px;
   display:block;
   position:relative;
   min-height:28px;
   border: 0 solid #eee;
+	border-top:1px solid #4C4C4C;
+	legend{
+		margin-top:-15px;
+	}
+	&.collapsible legend{
+		a.fieldset-title{
+			padding-right:15px;
+			&:after{
+				content:"-";
+				padding:0 3px 2px;
+				margin:-5px 0 0 10px;
+				.rounded();
+				color:#000;
+				background-color: #FFF;
+/*				font-size:9px;*/
+				line-height:0;
+				font-weight:bold;
+			}
+			&:hover{color:#fff; font-weight:bold;}
+		}
+	}
+
+	&.collapsed legend{
+		a.fieldset-title:after{
+			content:"+";
+/*			padding:2px 5px 3px;
+			.rounded();
+			color:#fff;
+			background-color: #1A1A1A;
+*/		}
+	}
+
 }
 
 .item-list h3,
 .block .block-title,
 .fieldset-title,
 .collapsible .fieldset-legend a {
-  display:block;
-  font-size:14px;
+	display:inline-block; width:auto;
+	.rounded(); 
+	font-size:12px; 
+	font-weight:normal;
+	text-transform: uppercase;
   margin:0px;
-  padding:4px 9px 5px;
-  color:#1A1A1A;
-  background:#E0E0E0;
+  padding:2px 9px 3px;
+  color:#fff;
+  background:#666;
 }
 
 .block .block-content,
@@ -96,6 +132,9 @@ li{list-style: none inside url();}
 
 /** NODE FORM */
 .node-form{
+	label{text-transform: uppercase; font-size:1em;}
+	.fieldset-title,
+	.vertical-tab-button strong, .horizontal-tab-button strong{text-transform: uppercase; font-size:0.8em; font-weight:bold;}
 	div.form-type-checkboxes>label, div.form-type-checkboxes>div.form-checkboxes{display:inline-block;}
 	.form-item-language>label, .form-item-language>select{display: inline-block;}
 	.form-type-textfield{
@@ -124,6 +163,16 @@ li{list-style: none inside url();}
 				.date-padding{padding:0;}
 			}
 		}
+	}
+	
+	
+	.field-widget-term-reference-tree .form-item.form-type-checkbox-tree{
+		display: block;
+		.term-reference-tree{
+			&>ul.term-reference-tree-level{.inline-block; padding:0 2em 0 0; min-width:30%;}
+			.term-reference-track-list-container{.inline-block; border-left:1px solid #848484; padding:0 0 2em 1em;}
+		}
+
 	}
 	
 }
