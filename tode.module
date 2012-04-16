@@ -8,6 +8,12 @@
  * you can set an auto title from this field, The required, 
  * number of value at 1 and term_node synch of global field are required
  * 
+ * <?php 
+ * // automatic node titles php snippet for translation
+ * $items = field_get_items('node', $node, 'field_tode_program');
+ * return t($items[0]['name']);
+ * ?>
+ *
  * 
  */
 
@@ -455,32 +461,43 @@ function tode_node_submit($node, $form, &$form_state) {
 
 		// dsm($tode_field_term_value, '$tode_field_term_value');
 		if($tode_field_term_value){
+			// dsm($form_state['values'][$prefix], '$form_state["values"][$prefix]');
 			$values = _tode_prefix_form($form_state['values'][$prefix], $prefix.'_', FALSE);
 			// dsm($values, 'values');
 
-			if(!module_exists('i18n_taxonomy') || $language == 'und' || $language == $default_language){
-
-				// define the form_state for term_form submit
-				$new_term_form_state = array(
-					'build_info'=>array(
-						'args'=>array(0=>(object)$tode_field_term_value),
-					),
-					"values"=>array(
-						'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
-						'op'=> t('Save'),
-					)
-				);
-				// add new values to form_state
-				$new_term_form_state['values'] += $values;
-
-				// dsm($new_term_form_state, 'form_state');
-				drupal_form_submit('taxonomy_form_term', $new_term_form_state);
-			}else{			
-
+			if(module_exists('i18n_taxonomy') && $language != 'und' && $language != $default_language){
 				$context= array('term',$values['tid'],'name');
 
 				i18n_string_textgroup('taxonomy')->update_translation($context, $language, $tode_field_term_value['name']);
+				
+				$tode_field_term_value['name'] = $values['name'];
 			}
+
+
+			$parent_tid = $tode_field_term_value['parent'];
+			$values['parent'] = array($parent_tid => $parent_tid);
+			
+			
+			
+			// if(!module_exists('i18n_taxonomy') || $language == 'und' || $language == $default_language){
+
+			// define the form_state for term_form submit
+			$new_term_form_state = array(
+				'build_info'=>array(
+					'args'=>array(0=>(object)$tode_field_term_value),
+				),
+				"values"=>array(
+					'name'=> $tode_field_term_value['name'], // replace the original (hidden) term name value by the typed in the the entity field
+					'op'=> t('Save'),
+				)
+			);
+			// add new values to form_state
+			$new_term_form_state['values'] += $values;
+
+			// dsm($new_term_form_state, 'form_state');
+			drupal_form_submit('taxonomy_form_term', $new_term_form_state);
+			// }else{			
+				
 			
 		}
 		
@@ -740,15 +757,20 @@ function BAD_ONE_tode_entity_add_form($js = FALSE, $bundle, $entity) {
 
 /**
  * Implements hook_field_widget_form_alter().
+ * 
+ * add create entity bundle front of term reference field with tode voc
  */
-function tode_field_widget_form_alter(&$element, &$form_state, $context) {
+function DESACTIVATED_tode_field_widget_form_alter(&$element, &$form_state, $context) {
 	$field = $context['field'];
 	$instance = $context['instance'];
-	if($field['type'] == 'taxonomy_term_reference' && $instance['widget']['type'] == 'taxonomy_autocomplete'){
-		// dsm('- - - - - tode_field_widget_form_alter');
-		// dsm($element, '$element');
-		// dsm($form_state, '$form_state');
-		// dsm($context, '$context');
+
+	if($field['type'] == 'taxonomy_term_reference' && ($instance['widget']['type'] == 'taxonomy_autocomplete' || $instance['widget']['type'] == 'autocomplete_deluxe_taxonomy')){
+//		dsm('- - - - - tode_field_widget_form_alter');
+		 // dsm($element, '$element');
+		 // dsm($form_state, '$form_state');
+		 // dsm($context, '$context');
+		// dsm($instance['widget']['type'], '$instance[widget][type]');
+		
 		foreach ($field['settings']['allowed_values'] as $key => $value) {
 				
 			if($tode = _tode_get_voc_tode_fields_def($value['vocabulary'])){
@@ -812,6 +834,7 @@ function tode_field_widget_form_alter(&$element, &$form_state, $context) {
 			$element['#suffix'] .= '</div></div>';
 		}
 		
+				 // dsm($element, '$element');
 		
 	}
 }
