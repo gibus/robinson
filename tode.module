@@ -218,7 +218,7 @@ function tode_field_widget_form(&$form, &$form_state, $field, $instance, $langco
 		$form['tode_vid'] = array('#type' => 'hidden', '#value' => $vocabulary->vid,'#delta' => $element['#delta'],);
 		
 		$form['tode_parent_term'] = array(
-			'#title' => 'Parent ' . $vocabulary->name . ' (optional)',
+			'#title' => 'Parent ' . $vocabulary->name,
 	    '#type' => 'textfield',
 	    '#default_value' => isset($term_parent) ? $term_parent->name : '',
 	    '#autocomplete_path' => 'taxonomy/autocomplete' . '/' . $field['field_name'],
@@ -968,7 +968,9 @@ function tode_delete_submit($form, &$form_state){
  * Implements hook_url_outbound_alter().
  */
 function tode_url_outbound_alter(&$path, &$options, $original_path) {
+	
 	# terms url
+	$term = false;
 	if(isset($options['entity_type']) && $options['entity_type'] == 'taxonomy_term'){
 		// dsm('- - - - tode_url_outbound_alter');
 		// dsm($path, '$path');
@@ -977,33 +979,50 @@ function tode_url_outbound_alter(&$path, &$options, $original_path) {
 		
 		$term = $options['entity'];
 
-		if($field = _tode_get_voc_tode_fields_def($term->vocabulary_machine_name)){
-
-			$sr = $field['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
-			foreach ($sr as $table => $column) {
-				$query = db_select($table, 'ft');
-				$query->join('node', 'n', 'ft.entity_id = n.nid AND n.language = :language', array(':language' => $options['language']->language));
-				$query
-				  ->fields('ft')
-				  ->condition('ft.'.$column['tid'], $term->tid);
-				$result = $query->execute();
-				break;
-			}
-
-			foreach ($result as $node) {
-				$new_path = 'node/'.$node->entity_id;
-				if( $new_alias = drupal_get_path_alias($new_path, $options['language']->language) ){
-					$path = $new_alias;
-					$original_path = $new_path;
-					$options['alias'] = TRUE;
-				}else{
-					$path = $new_path;
-				}
-				break;
-			}
-			
+  }else{
+		$args = explode('/', $original_path);
+		// dsm($args, 'args');
+		if($args[0] == 'taxonomy' && $args[1] == 'term' && is_numeric($args[2]) ){
+			$term = taxonomy_term_load($args[2]);			
 		}
-  }
+
+	}
+	
+	if($term){
+		// dsm($term, '$term');
+		if($field = _tode_get_voc_tode_fields_def($term->vocabulary_machine_name)){
+			# add if widget setting;
+			if (isset($field['widget']['settings']['redirect_term_to_node'])  && $field['widget']['settings']['redirect_term_to_node']) {
+				// dsm($field, '$field');
+				// dsm($options, '$options');
+				$sr = $field['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+				foreach ($sr as $table => $column) {
+					$query = db_select($table, 'ft');
+					$query->join('node', 'n', 'ft.entity_id = n.nid AND n.language = :language OR n.language = :language', array(':language' => $options['language']->language, ':language' => 'und'));
+					$query
+					  ->fields('ft')
+					  ->condition('ft.'.$column['tid'], $term->tid);
+					$result = $query->execute();
+					break;
+				}
+
+				foreach ($result as $node) {
+					// dsm($node, '$node');
+					$new_path = 'node/'.$node->entity_id;
+					if( $new_alias = drupal_get_path_alias($new_path, $options['language']->language) ){
+						$path = $new_alias;
+						$original_path = $new_path;
+						$options['alias'] = TRUE;
+					}else{
+						$path = $new_path;
+					}
+					break;
+				}
+			}
+		
+		}
+
+	}
 }
 
 /**
@@ -1119,12 +1138,8 @@ function _tode_get_voc_tode_fields_def($voc_name){
 	// dsm($type_fields, '$type_fields');
 	foreach ($type_fields as $nodetype => $fields)
 		foreach ($fields as $field_name => $field)
-			if($field['widget']['type'] == 'tode' 
-					&& isset($field['widget']['settings']['redirect_term_to_node']) 
-					&& $field['widget']['settings']['redirect_term_to_node']
-				){
+			if($field['widget']['type'] == 'tode'){
 				$fieldinfos = field_info_field($field_name);
-				// dsm($fieldinfos, '$fieldinfos');
 				if($voc_name == $fieldinfos['settings']['allowed_values'][0]['vocabulary'])
 					return $fieldinfos;
 			}
@@ -1133,3 +1148,25 @@ function _tode_get_voc_tode_fields_def($voc_name){
 	return false;
 	
 }
+
+function tode_get_nids_from_term($term, $language = false){
+	$todefield = _tode_get_voc_tode_fields_def($term->vocabulary_machine_name);
+
+	if($todefield){
+		$query = new EntityFieldQuery();
+		$query->entityCondition('entity_type', 'node')
+		->fieldCondition($todefield['field_name'], 'tid', $term->tid);
+		
+		if($language)
+			$query->propertyCondition('language', array('und', $language), 'IN');
+			
+		$result = $query->execute();
+		if(count($result))
+			return $result;
+	}
+	
+	return false;
+}
+
+
+
