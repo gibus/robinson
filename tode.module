@@ -71,6 +71,8 @@ function tode_field_widget_info() {
 				'show_term_form'=> -1,
 				'choose_term_parent'=> -1,
 				'maxlength'=> 255,
+				'redirect_term_to_node' => -1,
+				'show_create_tode' => -1,
       ),
     ),
   );
