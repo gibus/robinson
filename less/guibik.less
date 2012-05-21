@@ -163,17 +163,28 @@ li{list-style: none inside url();}
 	}
 	
 	.form-type-textfield{
-		&>label, &>input.form-text{.inline-block; margin:0;}
+		&>label, &>input.form-text{.inline-block; margin:0; vertical-align:middle;}
 		&>label{width:35%;}
 		&>input.form-text{max-width:60%;}
 	}
-	
+	.form-type-link-field{
+		&>label, &>input.form-text{.inline-block; margin:0;}
+		&>label{width:35%;}
+		div{.inline-block; margin:0; width:100%;}
+		&>div{width:60%;}
+		input.form-text{max-width:100%;}
+	}
 	.form-phone-number{
 		.form-item{.inline-block;}
+		input.form-text{width:100%;}
 	}
 	
 	.autocomplete-deluxe-button{
 		margin-top:-3px;
+	}
+	
+	.addressfield-container-inline{
+		&>div.form-item{.inline-block; margin:0; width:30%;}
 	}
 	
 	fieldset.filter-wrapper{display:none;}
