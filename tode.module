@@ -516,7 +516,7 @@ function tode_node_presave($node) {
 	// dsm('- - - tode_node_presave');
 	// dsm($node, 'node');
 	
-	if($node->nid)
+	if(isset($node->nid))
 		return;
 	
 	$tode_fields = _tode_get_node_tode_fields_def($node);
@@ -529,6 +529,10 @@ function tode_node_presave($node) {
 	// purpose of that is to directly atribute the right language to the term	
 	foreach ($tode_fields as $field_name => $field){
 		$tode_field = $node->$field_name;
+
+		if(!isset($tode_field[$node->language][0]))
+			continue;
+			
 		$tode_field_term = $tode_field[$node->language][0]; // on node creation field language is always to und (sure ?)
 
 		// // test the language, if not default language create the term name translation
