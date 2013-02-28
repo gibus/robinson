@@ -139,7 +139,7 @@ function OUT_guibik_form_element($variables) {
   // This is also used in the installer, pre-database setup.
   $t = get_t();
 	
-	dsm($element);
+	//dsm($element);
 
   // This function is invoked as theme wrapper, but the rendered form element
   // may not necessarily have been processed by form_builder().
