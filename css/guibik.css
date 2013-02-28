@@ -78,11 +78,12 @@ li{list-style:none inside url();}
 .vertical-tabs-list .selected a,.vertical-tabs-list li:hover a{background:#f4f4f4;color:#1A1A1A;}
 .vertical-tabs-list .selected a{border-right:0 solid #f4f4f4;}
 .vertical-tabs-list .summary{font-size:11px;}
+.page-admin table,.update tr.warning .version-recommended,.update tr.error .version-recommended{background-color:transparent;border:0px solid transparent;}.page-admin table tr,.update tr.warning .version-recommended tr,.update tr.error .version-recommended tr{border:0px solid transparent;}
 .page-admin table tr.even td,.page-admin table tr.odd td,.page-admin table tr.even h3,.page-admin table tr.odd h3{background-color:transparent;}
 .page-admin table tr.even:hover,.page-admin table tr.odd:hover{background:#D4EFEE;}
-.page-admin table tr.even.ok,.page-admin table tr.odd.ok{background-color:#d1f2a3;}
-.page-admin table tr.even.warning,.page-admin table tr.odd.warning{background-color:#e9e2a6;}
-.page-admin table tr.even.error,.page-admin table tr.odd.error{background-color:#ffc4be;}
+.page-admin table tr.even.ok,.page-admin table tr.odd.ok{background-color:#d1f2a3;color:#000;}
+.page-admin table tr.even.warning,.page-admin table tr.odd.warning{background-color:#e9e2a6;color:#000;}
+.page-admin table tr.even.error,.page-admin table tr.odd.error{background-color:#ffc4be;color:#000;}
 .page-admin table tr.even{background:#EFEFEF;}
 .page-admin table tr.ok,.page-admin table tr.ok:hover{color:#468847;background-color:#dff0d8;}
 .page-admin table tr.warning,.page-admin table tr.warning:hover{color:#c09853;background-color:#fcf8e3;}

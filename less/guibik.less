@@ -260,6 +260,16 @@ li{list-style: none inside url();}
 }
 .vertical-tabs-list .summary { font-size:11px; }
 
+.page-admin table, 
+.update tr.warning .version-recommended, 
+.update tr.error .version-recommended{
+	background-color: transparent;
+	border:0px solid transparent;
+
+	tr{
+		border:0px solid transparent;
+	}
+}
 
 .page-admin table tr{
 	&.even, &.odd{ 
@@ -267,12 +277,15 @@ li{list-style: none inside url();}
 		&:hover{  background: #D4EFEE;}
 		&.ok{
 			background-color: #d1f2a3;
+			color:#000;
 		}
 		&.warning{
 			background-color: #e9e2a6;
+			color:#000;
 		}
 		&.error{
 			background-color: #ffc4be;
+			color:#000;
 		}
 
 	}
