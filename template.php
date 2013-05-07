@@ -79,8 +79,6 @@ function guibik_theme() {
   return $items;
 }
 
-
-
 /**
  * Preprocessor for theme('page').
  */
@@ -95,7 +93,6 @@ function guibik_preprocess_page(&$vars) {
   global $theme;
   if ($theme === 'guibik')
     _rubik_local_tasks($vars);
-	
 }
 
 function guibik_preprocess_html(&$vars){
@@ -120,8 +117,6 @@ function guibik_preprocess_html(&$vars){
 
 	foreach ($heads as $type=>$head)
 		drupal_add_html_head($head, $type);
-	
-	
 }
 
 function guibik_preprocess_views_view_table(&$vars){
@@ -131,6 +126,7 @@ function guibik_preprocess_views_view_table(&$vars){
 	}
 	// dsm($vars);	
 }
+
 /**
  * Implements theme_form_element().
  */
@@ -203,15 +199,11 @@ function OUT_guibik_form_element($variables) {
   return $output;
 }
 
-
-
 function guibik_form_node_form_alter(&$form, &$form_state){
 	// dsm($form, 'guibik_form_node_form_alter | $form');
 	// dsm($form_state, '$form_state');
-	
 	if(!isset($form['language']['#description']))
 		$form['language']['#description'] = t('Please consider to leave language in neutral state <strong>if you dont plan to translate this node</strong>, even if your content is (obviously) writed in some non neutral language. Then this node will always be visible.');
-	
 }
 
 function guibik_image_field_widget_process($element, &$form_state, $form){
