@@ -214,3 +214,20 @@ function guibik_form_node_form_alter(&$form, &$form_state){
 	
 }
 
+function guibik_image_field_widget_process($element, &$form_state, $form){
+  $element['title']['#type'] = "textarea";
+  return $element;
+}
+
+function guibik_field_widget_form_alter(&$element, &$form_state, $context) {
+  // dsm($context['field']['type'], '$context[field][type]');
+
+  if ($context['field']['type'] == 'image') {
+    foreach ($element as $delta => $item) {
+      if(!isset($element[$delta]['#process']) || !is_array($element[$delta]['#process']))
+        continue;
+ 
+      $element[$delta]['#process'][] = "guibik_image_field_widget_process";
+    }
+  }
+}
