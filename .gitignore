@@ -7,3 +7,6 @@ sites/*/private
 
 # Ignore gui theme and modules
 sites/all/*/gui
+
+# drush config file
+sites/*/drushrc.php
