@@ -1,0 +1,47 @@
+/**
+ * @file
+ * This file handles all the styling needed for the "User Details: logged-in user" block.
+ */
+
+/**
+ * Block Styling
+ */
+#user-details #authored .avatar {
+  text-align: center;
+}
+#user-details #authored .title {
+  float: left;
+  margin-right: 5px;
+  font-weight: bold;
+}
+#user_details #authored .result {
+  font-style: italic;
+}
+#user-details #authored .user-quick-links div {
+  float: left;
+  padding-right: 5px;
+}
+#user-details #authored .user-quick-links div.title {
+  float: none;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+  text-decoration: underline;
+}
+#user-details #authored .content {
+  clear: both;
+}
+#user-details #authored .content .title {
+  float: none;
+  text-align: center;
+  text-decoration: underline;
+}
+#user-details #authored .content ul, #user-details #authored .content ol {
+  list-style: disc inside none;
+  margin: 0;
+  padding: 0;
+}
+#user-details #authored .block-end {
+  clear: both;
+  float: none;
+}

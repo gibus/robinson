@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Allows users with 'administer users' permission and a role (specified in 'Permissions') to edit/delete other users with a specified role.  If the user being edited has multiple roles, the user doing the editing must have permission to edit ALL of the user being edited's roles.  Also provides control over user creation.  Works well in conjunction with <a href='http://drupal.org/project/role_delegation'>role_delegation</a>.
+ */
+
+/**
+  * Implements hook_permission().
+  */
+function administerusersbyrole_permission() {
+  $roles = db_query('SELECT name, rid FROM {role} WHERE rid > 1 ORDER BY name')->fetchAll();
+  $perms = array();
+  $perms['create users'] = array('title' => 'Create new users');
+  foreach ($roles as &$role) {
+    $perms['edit users with role '. $role->rid] = array('title' => 'Edit users that have the role '. $role->name);
+    $perms['delete users with role '. $role->rid] = array('title' => 'Delete users that have the role '. $role->name);
+  }
+  return $perms;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function administerusersbyrole_menu_alter(&$items) {
+  $items['user/%user/edit']['access callback'] = '_administerusersbyrole_can_edit_user';
+  $items['user/%user/cancel']['access callback'] = '_administerusersbyrole_can_delete_user';
+  $items['admin/people/create']['access arguments'] = array('create users');
+}
+
+/**
+ * Custom access callback for edit user.
+ */
+function _administerusersbyrole_can_edit_user($account) {
+  global $user;
+  
+    if($account->uid == $user->uid)
+        return TRUE;
+  
+    if($account->uid == 1)
+        return FALSE;
+    elseif(user_access('edit users with role '.DRUPAL_AUTHENTICATED_RID))
+        return TRUE;
+  
+    foreach ($account->roles as $rid => $role) {
+        if($rid == DRUPAL_AUTHENTICATED_RID)
+              continue;
+        if(!user_access('edit users with role '. $rid))
+            return FALSE;
+    }
+      
+    return TRUE;
+}
+
+/**
+ * Custom access callback for delete user.
+ */
+function _administerusersbyrole_can_delete_user($account) {
+  
+  if ($account->uid == 1) {
+    return FALSE;
+  }
+  
+  $permitted = TRUE;
+  foreach ($account->roles as $rid => $role) {
+    $permitted = user_access('delete users with role '. $rid);
+    if (!$permitted) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Implements hook_form_user_admin_account_alter().
+ */
+function administerusersbyrole_form_user_admin_account_alter(&$form, &$form_state, $form_id) {
+  
+  // Remove edit links if i don't have access to them. 
+  foreach ($form['accounts']['#options'] as $uid => $fields) {
+    $account = user_load($uid);
+    if (!_administerusersbyrole_can_edit_user($account)) {
+      $form['accounts']['#options'][$uid]['operations'] = '';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_user_profile_form_alter().
+ */
+function administerusersbyrole_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+
+  // Hide delete link if i don't have access.
+  $account = $form['#user'];
+  if (!_administerusersbyrole_can_delete_user($account)) {
+    $form['actions']['cancel']['#access'] = FALSE;
+  }
+}
