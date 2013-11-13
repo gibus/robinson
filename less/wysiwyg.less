@@ -1,0 +1,68 @@
+/* LISIBILITY */
+@import "fonts.less";
+
+*{font-size:14px;}
+div{border: 1px dashed #D4D4D4;}
+p:after, ul:after{content:"¬"; color:red;}
+
+h1:before, h2:before, h3:before, h4:before, h5:before, h6:before{
+	 color:blue; font-weight: normal; font-size:10px; vertical-align: super;
+}
+
+h1:before{content:"h1 ";}
+h2:before{content:"h2 ";}
+h3:before{content:"h3 ";}
+h4:before{content:"h4 ";}
+h5:before{content:"h5 ";}
+h6:before{content:"h6 ";}
+
+
+h2{font-size:24px; .h2;}
+h3{font-size:18px; .h3;}
+h4{font-size:16px; .h4;}
+h5{font-size:14px; .h5;}
+h6{font-size:12px; .h6;}
+
+
+.side-note-4{.h4;}
+.side-note-5{.h5;}
+
+br:after{content:"·"; color:red; border: 1px solid #999;}
+
+/* LAYOUT AND GRAPHICS */
+#full{ width:99%; }
+#demi{ width:47%; }
+#tiers{ width:29%; }
+#quart{ width:23%; }
+#right{ float:right; margin-left:2%; }
+#left{ float:left; margin-right:2%; }
+#center{ display:block; margin:0 auto; }
+
+
+img{height:auto; margin:0.5em 0;}
+p{ .p; border: 1px dashed #848484; }
+div{border: 1px solid #1A1A1A;}
+
+img,p,div{ position:relative;
+	&:before{font-size:10px; color:red; background-color: #1A1A1A; position:absolute; top:0; z-index:3000;}
+		
+	&.full{#full; &:before{content:" full ";}}
+	&.demi{ #demi; margin-right:2%; &:before{content:" demi "; right:0;}}
+	&.tiers{ #tiers; margin-right:2%; &:before{content:" tiers "; right:0;}}
+	&.quart{ #quart; margin-right:2%; &:before{content:" quart "; right:0;}}
+
+	&.demi-left{ #demi; #left; &:before{content:" demi-left "; left:0;}}
+	&.demi-right{ #demi; #right;  &:before{content:" demi-right "; right:0;}}
+	&.demi-center{ #demi; #center;  &:before{content:" demi-denter "; right:0;}}
+
+	&.tiers-left{ #tiers; #left;  &:before{content:" tiers-left "; left:0;}}
+	&.tiers-right{ #tiers; #right;  &:before{content:" tiers-right "; right:0;}}
+	&.tiers-center{ #tiers; #center;  &:before{content:" tiers-center "; right:0;}}
+
+	&.quart-left{ #quart; #left;  &:before{content:" quart-left "; left:0;}}
+	&.quart-right{ #quart; #right;  &:before{content:" quart-right "; right:0;}}
+	&.quart-center{ #quart; #center;  &:before{content:" quart-center "; right:0;}}
+	
+
+	
+}
