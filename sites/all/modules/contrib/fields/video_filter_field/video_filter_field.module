@@ -253,6 +253,8 @@ function theme_video_filter_field_default_formatter($variables) {
  * @see _video_filter_process()
  */
 function video_filter_field_process($text, $video) {
+  if(is_array($text)) return $text;
+    
   $filter = new stdClass(); 
   //$filter->format = ''; 
   //$filter->module = 'video_filter';
@@ -265,7 +267,6 @@ function video_filter_field_process($text, $video) {
     'video_filter_autoplay' => 0,
     'video_filter_related' => 1,
   );
-
     $text = (string)$text; // Make sure $text is a string. 
     if (preg_match_all('/\[video(\:(.+))?( .+)?\]/isU', $text, $matches_code)) {
     foreach ($matches_code[0] as $ci => $code) {
