@@ -52,6 +52,8 @@
 
 
 	<head<?php print $rdf_profile; ?>>
+		<!-- remove the no-js as fast as possible -->
+		<script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
 
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
 		     Remove this if you use the .htaccess -->
