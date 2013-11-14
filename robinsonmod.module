@@ -10,12 +10,24 @@ function robinsonmod_menu() {
     'file' => 'robinsonmod.pages.inc',
   );
 
-  $items['ajax/robinson/thema'] = array(
+  $items['ajax/robinson/thema'] = $base + array(
     'title' => 'ajax thema',
     'page callback' => 'robinsonmod_ajax_thema',
     'page arguments' => array(),
+    'access callback' => true,
     // 'access arguments' => array(''),
   );
 
   return $items;
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function robinsonmod_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['stream'] = array(
+    'label' => t('Stream'),
+    'custom settings' => TRUE,
+  );
 }

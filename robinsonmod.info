@@ -3,9 +3,9 @@ description = module for robinson
 project = "Robinson"
 
 ; Loadable code files
-files[] = robinsonmod.module
-files[] = robinsonmod.pages.inc
 files[] = robinsonmod.class.inc
+files[] = robinsonmod.pages.inc
+files[] = robinsonmod.module
 
 ;dependencies[] = taxonomy
 ;dependencies[] = field
