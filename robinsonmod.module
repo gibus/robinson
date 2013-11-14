@@ -1,0 +1,21 @@
+<?php 
+
+
+/**
+ * Implements hook_menu().
+ */
+function robinsonmod_menu() {
+  $base = array(
+    'type' => MENU_CALLBACK,
+    'file' => 'robinsonmod.pages.inc',
+  );
+
+  $items['ajax/robinson/thema'] = array(
+    'title' => 'ajax thema',
+    'page callback' => 'robinsonmod_ajax_thema',
+    'page arguments' => array(),
+    // 'access arguments' => array(''),
+  );
+
+  return $items;
+}

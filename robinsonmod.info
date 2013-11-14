@@ -1,0 +1,15 @@
+name = Robinson Module
+description = module for robinson
+project = "Robinson"
+
+; Loadable code files
+files[] = robinsonmod.module
+files[] = robinsonmod.pages.inc
+files[] = robinsonmod.class.inc
+
+;dependencies[] = taxonomy
+;dependencies[] = field
+package = gui
+version = "7.x-0.dev"
+core = "7.x"
+
