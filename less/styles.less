@@ -21,19 +21,48 @@ body.no-sidebars #center { width: 100%; }
 #sidebar-second { width: 18%; }
 
 /* general */
-html, body{
-  position:relative;
+html{
+  position:relative; .m(0); .p(0);
+  width:100%; height:100%;
 }
 
-#container{}
+body{
+  position:relative; .m(0); .p(0);
+  width:100%; height:100%;
+}
 
-#header{}
+#container{
+  width:100%; height:100%;
+  overflow: hidden;
+}
 
-#main{} 
+#header{
+  position:fixed: top:0; left:0;
+  text-align: center;
+}
+
+#main{
+  &, &>#center{
+    position:absolute; top:0; left:0; 
+    width:100%; height:100%;
+  }
+
+  #content{
+    .js .front &{display:none;}
+  }
+} 
 
 #content{}
 
-#footer{}
+#footer{
+  z-index:20;
+  position:fixed; bottom:0; left:0;
+  width:100%;
+  text-align: center;
+  .10; color:#1A1A1A;
+  p{.m(0.2em);}
+  a{color:inherit;}
+}
 
 #footer-bottom{ text-align: center;}
 

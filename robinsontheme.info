@@ -20,27 +20,8 @@ stylesheets[all][] = "css/nonsemantic.css"
 
 ;----------// Scripts
 
-scripts[] = "js/script.js"
-
-;----------// Twitter BootStrap (for style view @import in styles.less file)
-
-/!\ i will try for now the CodeKit framework systeme by @importing less and js files directly on compilation
-
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-affix.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-alert.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-button.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-carousel.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-collapse.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-dropdown.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-modal.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-popover.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-scrollspy.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-tab.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-tooltip.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-transition.js"
-;scripts[] = "frameworks/twitter-bootstrap/js/bootstrap-typeahead.js"
-
-
+scripts[] = "js/grid.js"
+scripts[] = "js/script.min.js"
 
 
 ;----------// Regions

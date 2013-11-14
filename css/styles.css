@@ -268,9 +268,56 @@ body.no-sidebars #center {
   width: 18%;
 }
 /* general */
-html,
+html {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 body {
   position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+#container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#header {
+  position: fixed: top:0;
+  left: 0;
+  text-align: center;
+}
+#main,
+#main > #center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.js .front #main #content {
+  display: none;
+}
+#footer {
+  z-index: 20;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  color: #1A1A1A;
+}
+#footer p {
+  margin: 0.2em;
+}
+#footer a {
+  color: inherit;
 }
 #footer-bottom {
   text-align: center;
