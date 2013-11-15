@@ -140,6 +140,7 @@ function _video_embed_field_get_youtube_id($url) {
  * Handler for Youtube videos.
  */
 function video_embed_field_handle_youtube($url, $settings) {
+  global $is_https;
   $output = array();
 
   //Grab the minutes and seconds, and just convert it down to seconds
@@ -163,7 +164,9 @@ function video_embed_field_handle_youtube($url, $settings) {
   $settings['wmode'] = 'opaque';
   $settings_str = _video_embed_code_get_settings_str($settings);
 
-  $output['#markup'] = '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="//www.youtube.com/embed/' . $id . '?' . $settings_str . '" frameborder="0" allowfullscreen></iframe>';
+  $s = ($is_https) ? 's': '';
+
+  $output['#markup'] = '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http:' . $s . '//www.youtube.com/embed/' . $id . '?' . $settings_str . '" frameborder="0" allowfullscreen></iframe>';
 
   return $output;
 }
@@ -371,6 +374,8 @@ function _video_embed_field_get_vimeo_id($url) {
  * Handler for Vimeo videos.
  */
 function video_embed_field_handle_vimeo($url, $settings) {
+  global $is_https;
+
   // Get ID of video from URL
   $id = _video_embed_field_get_vimeo_id($url);
   if (!$id) {
@@ -383,8 +388,10 @@ function video_embed_field_handle_vimeo($url, $settings) {
   $settings['portrait'] = 0;
   $settings_str = _video_embed_code_get_settings_str($settings);
 
+  $s = ($is_https) ? 's': '';
+
   return array(
-    '#markup' => '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="//player.vimeo.com/video/' . $id .
+    '#markup' => '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http' . $s . '://player.vimeo.com/video/' . $id .
                  '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>',
   );
 }
