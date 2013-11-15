@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Thématiques & voisins feature.
+ */
+
+include_once 'themas_and_voisins.features.inc';
