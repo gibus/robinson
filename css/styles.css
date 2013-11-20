@@ -5,35 +5,35 @@
 /*
  * www.g-u-i.net
  */
+.consolas {
+  font-family: "consolas", "inconsolata", Arial, "MS Trebuchet", sans-serif;
+}
 body {
+  font-family: "consolas", "inconsolata", Arial, "MS Trebuchet", sans-serif;
   font-size: 16px;
-  font-family: Arial, "MS Trebuchet", sans-serif;
+  font-weight: 500;
 }
 a {
   color: #007BC2;
   text-decoration: none;
 }
-h1 {
-  font-size: 1.6em;
-}
-h2 {
-  font-size: 1.5em;
-}
-h3 {
-  font-size: 1.4em;
-}
-h4 {
-  font-size: 1.3em;
-}
-h5 {
-  font-size: 1.2em;
-}
-h6 {
-  font-size: 1.1em;
-}
 input {
-  font-family: Arial, "MS Trebuchet", sans-serif;
+  font-family: "consolas", "inconsolata", Arial, "MS Trebuchet", sans-serif;
   font-size: 0.8em;
+}
+#debug-grid {
+  border: 1px solid #000;
+  z-index: 9999999;
+}
+#debug-grid,
+#debug-grid * {
+  position: absolute;
+}
+#debug-grid .cells {
+  border: 1px solid #444444;
+}
+#debug-grid .lines {
+  border: 1px dashed #717171;
 }
 li,
 .item-list ul li {
@@ -239,7 +239,6 @@ table tbody td {
 td.active {
   background-color: transparent;
 }
-/** layout */
 /* sidebars */
 body:not(.no-sidebars) #center,
 #sidebar-first,
@@ -292,6 +291,9 @@ body {
   left: 0;
   text-align: center;
 }
+.js .front #header {
+  display: none;
+}
 #main,
 #main > #center {
   position: absolute;
@@ -302,6 +304,85 @@ body {
 }
 .js .front #main #content {
   display: none;
+}
+#stream-wrapper {
+  cursor: none;
+}
+#stream-wrapper > * {
+  margin: 0;
+  padding: 0;
+  color: #ff2405;
+}
+#stream-wrapper .placed {
+  position: absolute;
+}
+#stream-wrapper #site-name {
+  z-index: 100;
+  width: 341px;
+  height: 64px;
+  background-color: #ff2405;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 2.4;
+}
+#stream-wrapper .thema > * {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+}
+#stream-wrapper .thema h2.thema-title {
+  width: 682px;
+  height: 512px;
+  background-color: #ff2405;
+  color: #fff;
+  display: table;
+}
+#stream-wrapper .thema h2.thema-title span {
+  display: moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  display: table-cell;
+  vertical-align: middle;
+}
+.ie7 #stream-wrapper .thema h2.thema-title span,
+.ie8 #stream-wrapper .thema h2.thema-title span {
+  display: block;
+  float: left;
+}
+#stream-wrapper .thema .content {
+  width: cell_w;
+  display: moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  height: auto;
+  background-color: #fff;
+  color: #ff2405;
+}
+.ie7 #stream-wrapper .thema .content,
+.ie8 #stream-wrapper .thema .content {
+  display: block;
+  float: left;
+}
+#stream-wrapper .thema .voisin.nature {
+  width: 341px;
+  height: 64px;
+}
+#stream-wrapper .thema .voisin.danse-son {
+  width: 341px;
+  height: 64px;
+}
+#stream-wrapper .thema .voisin.lettrage-image {
+  width: 682px;
+  height: 512px;
 }
 #footer {
   z-index: 20;

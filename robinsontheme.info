@@ -10,6 +10,8 @@ engine = "phptemplate"
 
 ;----------// Styles
 stylesheets[all][] = "css/normalize.css"
+stylesheets[all][] = "fonts/inconsolata/inconsolata.css"
+stylesheets[all][] = "fonts/consolas/consolas.css"
 stylesheets[all][] = "css/styles.css"
 ; non-semantic helper classes
 ; Please define your styles before this section.
@@ -20,7 +22,7 @@ stylesheets[all][] = "css/nonsemantic.css"
 
 ;----------// Scripts
 
-scripts[] = "js/grid.js"
+; scripts[] = "js/grid.js"
 scripts[] = "js/script.min.js"
 
 
