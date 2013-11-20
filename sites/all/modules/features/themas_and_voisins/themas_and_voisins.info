@@ -83,6 +83,7 @@ features[variable][] = save_continue_thematique
 features[variable][] = save_continue_voisin
 features[variable][] = user_permissions_thematique
 features[variable][] = user_permissions_voisin
+features[vef_video_styles][] = Stream Thématique
 features_exclude[variable][i18n_node_extended_thematique] = i18n_node_extended_thematique
 features_exclude[variable][i18n_node_options_thematique] = i18n_node_options_thematique
 project path = sites/all/modules/features
