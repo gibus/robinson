@@ -47,17 +47,16 @@ function admin_views_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'views_bulk_operations' => 'views_bulk_operations',
-    'field_voisin_type_1' => 'title',
+    'field_voisin_type_1' => 'field_voisin_type_1',
     'type' => 'title',
     'title' => 'title',
     'edit_node' => 'title',
-    'status' => 'status',
-    'changed' => 'changed',
-    'delete_node' => 'delete_node',
-    'field_voisin_type' => 'field_voisin_type',
     'field_thema_date' => 'field_thema_date',
     'field_ref_thema' => 'field_ref_thema',
     'field_ref_voisin' => 'field_ref_thema',
+    'status' => 'status',
+    'changed' => 'changed',
+    'delete_node' => 'delete_node',
   );
   $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
@@ -92,6 +91,23 @@ function admin_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_thema_date' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_ref_thema' => array(
+      'align' => '',
+      'separator' => '<br />',
+      'empty_column' => 0,
+    ),
+    'field_ref_voisin' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'status' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -111,32 +127,9 @@ function admin_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_voisin_type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_thema_date' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_ref_thema' => array(
-      'align' => '',
-      'separator' => '<br />',
-      'empty_column' => 0,
-    ),
-    'field_ref_voisin' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
   $handler->display->display_options['style_options']['override'] = FALSE;
+  $handler->display->display_options['style_options']['sticky'] = TRUE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
@@ -243,16 +236,22 @@ function admin_views_views_default_views() {
     ),
   );
   /* Field: Content: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'node';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Type */
   $handler->display->display_options['fields']['field_voisin_type_1']['id'] = 'field_voisin_type_1';
   $handler->display->display_options['fields']['field_voisin_type_1']['table'] = 'field_data_field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type_1']['field'] = 'field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type_1']['label'] = '';
+  $handler->display->display_options['fields']['field_voisin_type_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_voisin_type_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_voisin_type_1']['alter']['text'] = ' | [field_voisin_type_1] ([field_voisin_type_1-tid])';
   $handler->display->display_options['fields']['field_voisin_type_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_voisin_type_1']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['type']['alter']['text'] = '[type][field_voisin_type_1]';
+  $handler->display->display_options['fields']['type']['hide_alter_empty'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -369,7 +368,6 @@ function admin_views_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['expose']['items_per_page'] = TRUE;
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = TRUE;
   $handler->display->display_options['path'] = 'admin/content/nodes';
   $handler->display->display_options['menu']['type'] = 'tab';
@@ -445,7 +443,9 @@ function admin_views_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t(' | [field_voisin_type_1] ([field_voisin_type_1-tid])'),
     t('Type'),
+    t('[type][field_voisin_type_1]'),
     t('Title'),
     t('<span class="node-edit">[edit_node]</span>'),
     t('Date de l\'entretien '),
