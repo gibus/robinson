@@ -381,7 +381,14 @@ function themas_and_voisins_strongarm() {
       'region' => 'right',
       'weight' => '1',
       'has_required' => FALSE,
-      'title' => 'Thématiques liés',
+      'title' => 'Est le voisin de ',
+      'hidden' => 0,
+    ),
+    'field_texte' => array(
+      'region' => 'main',
+      'weight' => '5',
+      'has_required' => FALSE,
+      'title' => 'Texte',
       'hidden' => 0,
     ),
   );
