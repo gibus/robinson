@@ -20,3 +20,13 @@ class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
       ->entityCondition('bundle', array('thematique'));
   }
 }
+
+class VoisinEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {  
+  public function __construct() {
+    ////parent::__construct();
+    $this
+      ->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', 1)
+      ->entityCondition('bundle', array('voisin'));
+  }
+}

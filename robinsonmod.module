@@ -18,6 +18,14 @@ function robinsonmod_menu() {
     // 'access arguments' => array(''),
   );
 
+  $items['ajax/robinson/voisin'] = $base + array(
+    'title' => 'ajax voisin',
+    'page callback' => 'robinsonmod_ajax_voisin',
+    'page arguments' => array(),
+    'access callback' => true,
+    // 'access arguments' => array(''),
+  );
+
   return $items;
 }
 
@@ -26,8 +34,43 @@ function robinsonmod_menu() {
  * Implements hook_entity_info_alter().
  */
 function robinsonmod_entity_info_alter(&$entity_info) {
-  $entity_info['node']['view modes']['stream'] = array(
-    'label' => t('Stream'),
-    'custom settings' => TRUE,
+  $base  = array('custom settings' => TRUE);
+
+  $entity_info['node']['view modes']['stream'] = $base + array(
+    'label' => t('Stream')
   );
+  $entity_info['node']['view modes']['voisin_atmosphere'] = $base + array(
+    'label' => t('Voisin Atmosphere')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
+    'label' => t('Voisin contribution image')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
+    'label' => t('Voisin contribution son')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
+    'label' => t('Voisin contribution son')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_txt'] = $base + array(
+    'label' => t('Voisin contribution text')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_video'] = $base + array(
+    'label' => t('Voisin contribution video')
+  );
+  $entity_info['node']['view modes']['voisin_danse_son'] = $base + array(
+    'label' => t('Voisin danse son')
+  );
+  $entity_info['node']['view modes']['voisin_danse_video'] = $base + array(
+    'label' => t('Voisin danse video')
+  );
+  $entity_info['node']['view modes']['voisin_lettrage_image'] = $base + array(
+    'label' => t('Voisin lettrage image')
+  );
+  $entity_info['node']['view modes']['voisin_lettrage_video'] = $base + array(
+    'label' => t('Voisin lettrage video')
+  );
+  $entity_info['node']['view modes']['voisin_nature'] = $base + array(
+    'label' => t('Voisin nature')
+  );
+
 }
