@@ -17,7 +17,6 @@ features[field_base][] = field_prog_element
 features[field_base][] = field_prog_plage
 features[field_instance][] = node-programme-field_prog_element
 features[field_instance][] = node-programme-field_prog_plage
-features[menu_links][] = navigation_programme:node/add/programme
 features[node][] = programme
 features[user_permission][] = create programme content
 features[user_permission][] = delete any programme content
