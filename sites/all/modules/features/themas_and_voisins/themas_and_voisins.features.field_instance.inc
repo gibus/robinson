@@ -115,7 +115,7 @@ function themas_and_voisins_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 5,
+      'weight' => 3,
     ),
   );
 
@@ -123,7 +123,7 @@ function themas_and_voisins_field_default_field_instances() {
   $field_instances['node-thematique-field_thema_date'] = array(
     'bundle' => 'thematique',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'La date de l’entretien permettra par la suite de grouper par séances.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -245,7 +245,7 @@ function themas_and_voisins_field_default_field_instances() {
         'year_range' => '1998:+3',
       ),
       'type' => 'date_select',
-      'weight' => 2,
+      'weight' => 4,
     ),
   );
 
@@ -254,7 +254,7 @@ function themas_and_voisins_field_default_field_instances() {
     'bundle' => 'thematique',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Entrer l\'url de la video ( ex. http://vimeo.com/12345679 )',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -342,7 +342,7 @@ function themas_and_voisins_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_titre__lettrage_',
-    'label' => 'Titre ( lettrage )',
+    'label' => 'Titre video ( lettrage )',
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
@@ -468,7 +468,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'video_embed_field',
       'settings' => array(),
       'type' => 'video_embed_field_video',
-      'weight' => 4,
+      'weight' => 2,
     ),
   );
 
@@ -703,7 +703,7 @@ function themas_and_voisins_field_default_field_instances() {
     'bundle' => 'voisin',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Copier directement le lien vers le son (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
+    'description' => 'Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
 ',
     'display' => array(
       'default' => array(
@@ -910,7 +910,7 @@ function themas_and_voisins_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_texte',
-    'label' => 'Texte',
+    'label' => 'Citation',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -1056,7 +1056,7 @@ function themas_and_voisins_field_default_field_instances() {
     'bundle' => 'voisin',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Les crédits (affiché en fin de programme) peut contenir la mini-biographie de l’auteur dans le cas d’une citation.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1254,12 +1254,13 @@ function themas_and_voisins_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_voisin_type',
-    'label' => 'Type',
-    'required' => FALSE,
+    'label' => 'Type de voisin',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
@@ -1269,16 +1270,18 @@ function themas_and_voisins_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Copier directement le lien vers le son (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
+  t('Citation');
+  t('Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
 ');
   t('Crédits');
   t('Date de l\'entretien ');
   t('Entrer l\'url de la video ( ex. http://vimeo.com/12345679 )');
   t('Est le voisin de ');
+  t('La date de l’entretien permettra par la suite de grouper par séances.');
+  t('Les crédits (affiché en fin de programme) peut contenir la mini-biographie de l’auteur dans le cas d’une citation.');
   t('Son');
-  t('Texte');
-  t('Titre ( lettrage )');
-  t('Type');
+  t('Titre video ( lettrage )');
+  t('Type de voisin');
   t('Video');
   t('Vidéo de l\'entretien');
   t('Voisins');

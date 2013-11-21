@@ -129,7 +129,7 @@ function themas_and_voisins_field_default_field_bases() {
   // Exported field_base: 'field_son'
   $field_bases['field_son'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_son',
@@ -300,6 +300,7 @@ function themas_and_voisins_field_default_field_bases() {
         0 => array(
           'vocabulary' => 'voc_type_voisin',
           'parent' => 0,
+          'depth' => '',
         ),
       ),
       'options_list_callback' => 'i18n_taxonomy_allowed_values',
