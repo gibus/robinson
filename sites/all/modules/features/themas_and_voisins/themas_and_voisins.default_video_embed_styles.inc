@@ -16,8 +16,8 @@ function themas_and_voisins_default_video_embed_styles() {
   $video_embed_style->name = 'Stream Thématique';
   $video_embed_style->data = array(
     'youtube' => array(
-      'width' => '341px',
-      'height' => '256px',
+      'width' => '340px',
+      'height' => '249px',
       'theme' => 'dark',
       'autoplay' => 1,
       'hd' => 1,
@@ -28,8 +28,8 @@ function themas_and_voisins_default_video_embed_styles() {
       'autohide' => '1',
     ),
     'vimeo' => array(
-      'width' => '341px',
-      'height' => '256px',
+      'width' => '340px',
+      'height' => '249px',
       'color' => 'ffffff',
       'portrait' => 0,
       'title' => 0,
@@ -37,7 +37,7 @@ function themas_and_voisins_default_video_embed_styles() {
       'autoplay' => 1,
       'loop' => 0,
     ),
-    'data__active_tab' => 'edit-data-youtube',
+    'data__active_tab' => 'edit-data-vimeo',
   );
   $export['Stream Thématique'] = $video_embed_style;
 
