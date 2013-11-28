@@ -10,84 +10,6 @@
 function admin_views_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: management_main-menu:admin/structure/menu/manage/main-menu
-  $menu_links['management_main-menu:admin/structure/menu/manage/main-menu'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/structure/menu/manage/main-menu',
-    'router_path' => 'admin/structure/menu/manage/%',
-    'link_title' => 'Main menu',
-    'options' => array(
-      'identifier' => 'management_main-menu:admin/structure/menu/manage/main-menu',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'management_menus:admin/structure/menu',
-  );
-  // Exported menu link: management_menus:admin/structure/menu
-  $menu_links['management_menus:admin/structure/menu'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/structure/menu',
-    'router_path' => 'admin/structure/menu',
-    'link_title' => 'Menus',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Add new menus to your site, edit existing menus, and rename and reorganize menu links.',
-      ),
-      'identifier' => 'management_menus:admin/structure/menu',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 1,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'management_structure:admin/structure',
-  );
-  // Exported menu link: management_simplemenu:admin/config/simplemenu
-  $menu_links['management_simplemenu:admin/config/simplemenu'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/config/simplemenu',
-    'router_path' => 'admin/config/simplemenu',
-    'link_title' => 'SimpleMenu',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Select the menu to display.',
-      ),
-      'identifier' => 'management_simplemenu:admin/config/simplemenu',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'management_configuration:admin/config',
-  );
-  // Exported menu link: management_user-menu:admin/structure/menu/manage/user-menu
-  $menu_links['management_user-menu:admin/structure/menu/manage/user-menu'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/structure/menu/manage/user-menu',
-    'router_path' => 'admin/structure/menu/manage/%',
-    'link_title' => 'User menu',
-    'options' => array(
-      'identifier' => 'management_user-menu:admin/structure/menu/manage/user-menu',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'management_menus:admin/structure/menu',
-  );
   // Exported menu link: navigation_:node/%
   $menu_links['navigation_:node/%'] = array(
     'menu_name' => 'navigation',
@@ -162,21 +84,25 @@ function admin_views_menu_default_menu_links() {
     'weight' => -49,
     'customized' => 1,
   );
-  // Exported menu link: navigation_les-pages:http://dev.beta.leprojetrobinson.org/admin/content/nodes?type=page&status=All
-  $menu_links['navigation_les-pages:http://dev.beta.leprojetrobinson.org/admin/content/nodes?type=page&status=All'] = array(
+  // Exported menu link: navigation_les-pages:admin/content/nodes
+  $menu_links['navigation_les-pages:admin/content/nodes'] = array(
     'menu_name' => 'navigation',
-    'link_path' => 'http://dev.beta.leprojetrobinson.org/admin/content/nodes?type=page&status=All',
-    'router_path' => '',
+    'link_path' => 'admin/content/nodes',
+    'router_path' => 'admin/content/nodes',
     'link_title' => 'les pages',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
-      'identifier' => 'navigation_les-pages:http://dev.beta.leprojetrobinson.org/admin/content/nodes?type=page&status=All',
+      'identifier' => 'navigation_les-pages:admin/content/nodes',
+      'query' => array(
+        'type' => 'page',
+        'status' => 'All',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
-    'external' => 1,
+    'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
     'weight' => -48,
@@ -351,15 +277,11 @@ function admin_views_menu_default_menu_links() {
   t('Add content');
   t('Compose tips');
   t('Log out');
-  t('Main menu');
   t('Media');
-  t('Menus');
   t('Page');
   t('Programme');
-  t('SimpleMenu');
   t('Thématique');
   t('User account');
-  t('User menu');
   t('Voisin');
   t('Workflow summary');
   t('dashboard');
