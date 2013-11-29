@@ -23,6 +23,7 @@ stylesheets[all][] = "css/nonsemantic.css"
 ;----------// Scripts
 
 ; scripts[] = "js/grid.js"
+scripts[] = "js/libs/froogaloop.js"
 scripts[] = "js/script.min.js"
 
 

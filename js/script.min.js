@@ -83,83 +83,65 @@ Drupal.behaviors.init_theme = function (context) {
   // http://mikeheavers.com/main/code-item/a_simpler_vimeo_froogaloop_javascript_api_example
   // https://developer.vimeo.com/player/js-api#universal-with-postmessage
   // http://player.vimeo.com/playground
-
+  // http://jsfiddle.net/nerdess/D5fD4/3/
   function listenThemaVideo($thema){
-    var $vimeoIframe = $('iframe', $thema);
-
-    // Listen for messages from the player
-    if (window.addEventListener){
-      window.addEventListener('message', function(e){
-        onMessageReceived($vimeoIframe, e)
-      }, false);
-    }else {
-      window.attachEvent('onmessage', function(e){
-        onMessageReceived($vimeoIframe, e)
-      }, false);
-    }
-  };
-
-  // Handle messages received from the player
-  function onMessageReceived($vimeoIframe, e){
-    try{
-      var data = JSON.parse(e.data);
-      // console.log('onMessageReceived | e', data.event);
-      switch (data.event) {
-        case 'ready':
-          onVideoIsReady($vimeoIframe);
-          break;
-        case 'playProgress':
-          onVideoPlayProgress($vimeoIframe, data.data);
-          break;
-        // case 'pause':
-        //   onVideoPause();
-        //   break;
-        case 'finish':
-          onVideoFinish($vimeoIframe);
-          break;
-      }
-    }catch(e){
-
-    }
-  };
-
-  // function for sending a message to the player
-  function post($vimeoIframe, action, value) {
-      // console.log('POST | action : '+action+' | value : '+value);
-      var  url = $vimeoIframe.attr('src').split('?')[0];
-      var data = { method: action };
-      
-      if (value)
-          data.value = value;
-
-      var jsoned = JSON.stringify(data);
-      
-      $vimeoIframe[0].contentWindow.postMessage(jsoned, url);
-  };
-
-  function onVideoIsReady($vimeoIframe){
-    // console.log('onVideoIsReady', $vimeoIframe);
-    // post($vimeoIframe, 'addEventListener', 'pause');
-    post($vimeoIframe, 'addEventListener', 'finish');
-    post($vimeoIframe, 'addEventListener', 'playProgress');
-    post($vimeoIframe, 'play');
-  };
-
-  function onVideoPlayProgress($vimeoIframe, data){
-    // console.log('onVideoPlayProgress | data = ', data);
-  };
-
-  function onVideoFinish($vimeoIframe){
-    console.log('onVideoFinish', $vimeoIframe);
-    post($vimeoIframe, 'unload');
-    onThemaVideoFinish($vimeoIframe);
-  };
-
-  function onThemaVideoFinish($vimeoIframe){
-    console.log('onThemaVideoFinish');
-    $vimeoIframe.parents('.thema').fadeOut('slow', function() {
-      $(this).remove();
+    var $viframe = $('iframe', $thema);
+    $viframe.load(function(){
+      $viframe.data('stoped', false);
+      $f(this).addEvent('ready', onVimeoReady);
     });
+  };
+
+
+  function onVimeoReady(id) {
+    console.log('onVimeoReady : id = '+id);         
+
+    $f(id)
+      .addEvent('play', onVimeoPlay)
+      .addEvent('playProgress', onVimeoPlayProgress)
+      .addEvent('pause', onVimeoPause)
+      .addEvent('finish', onVimeoFinished);
+    
+    (function(id){
+      setTimeout(function(){$f(id).api('play');}, 5000);
+    }(id));      
+  };  
+
+  function onVimeoPlay(id){
+    console.log('onVimeoPlay : id = '+id);
+  };
+
+  function onVimeoPause(id){
+    console.log('onVimeoPause : id = '+id);
+  };
+
+  function onVimeoPlayProgress(data, id){
+    console.log('onVimeoPlayProgress | id = '+id+' | data = ',data);
+    // var $viframe = $('#'+id);
+    if(data.seconds >= 15){ // && !$viframe.data('stoped')
+      // $viframe.data('stoped', true);
+      $f(id).api('pause');
+      onThemaVideoFinish(id);
+    }
+  };
+
+  function onVimeoFinished(id){
+    console.log('onVimeoFinished | id = '+id);
+    onThemaVideoFinish(id);
+  };
+
+  function onThemaVideoFinish(id){
+    console.log('onThemaVideoFinish | id = '+id);
+    var $viframe = $('#'+id); 
+    $viframe.parents('.content').postAnime();
+  
+    (function(id){
+      setTimeout(function(){
+        console.log('unload '+id);
+        $f(id).api('unload');
+      }, 4000);      
+    }(id));
+
     launchNewThema();
   };
 
