@@ -9,5 +9,9 @@
   hide($content['comments']);
   hide($content['links']);
   print render($content);
+
+  // print render($content['field_video']);
+  // print $title;
+  // print render($content['field_thema_date']);
 ?>
 </section>

@@ -317,9 +317,8 @@ body {
   position: absolute;
 }
 #stream-wrapper #site-name {
-  z-index: 100;
-  width: 341px;
-  height: 64px;
+  width: 340px;
+  height: 62.25px;
   background-color: #ff2405;
   color: #fff;
   text-align: center;
@@ -329,6 +328,31 @@ body {
   font-size: 24px;
   line-height: 2.4;
 }
+#stream-wrapper #site-name.not-anime {
+  visibility: visible;
+  -webkit-transition: all 0s linear;
+  -moz-transition: all 0s linear;
+  -o-transition: all 0s linear;
+  transition: all 0s linear;
+}
+#stream-wrapper #site-name.pre-anime {
+  color: #ff2405;
+}
+#stream-wrapper #site-name.anime {
+  -webkit-transition: all 1s linear;
+  -moz-transition: all 1s linear;
+  -o-transition: all 1s linear;
+  transition: all 1s linear;
+  color: #FFF;
+}
+#stream-wrapper #site-name.post-anime {
+  -webkit-transition: all 10s linear;
+  -moz-transition: all 10s linear;
+  -o-transition: all 10s linear;
+  transition: all 10s linear;
+  background-color: #d8d8d8;
+  opacity: 0.9;
+}
 #stream-wrapper .thema > * {
   margin: 0;
   padding: 0;
@@ -336,13 +360,13 @@ body {
   overflow: hidden;
 }
 #stream-wrapper .thema h2.thema-title {
-  width: 682px;
-  height: 512px;
+  width: 680px;
+  height: 498px;
   background-color: #ff2405;
   color: #fff;
   display: table;
 }
-#stream-wrapper .thema h2.thema-title span {
+#stream-wrapper .thema h2.thema-title span.txt {
   display: moz-inline-stack;
   display: inline-block;
   vertical-align: top;
@@ -351,10 +375,34 @@ body {
   display: table-cell;
   vertical-align: middle;
 }
-.ie7 #stream-wrapper .thema h2.thema-title span,
-.ie8 #stream-wrapper .thema h2.thema-title span {
+.ie7 #stream-wrapper .thema h2.thema-title span.txt,
+.ie8 #stream-wrapper .thema h2.thema-title span.txt {
   display: block;
   float: left;
+}
+#stream-wrapper .thema h2.thema-title.pre-anime span.txt {
+  -webkit-transition: opacity 0 linear;
+  -moz-transition: opacity 0 linear;
+  -o-transition: opacity 0 linear;
+  transition: opacity 0 linear;
+  visibility: hidden;
+  opacity: 0;
+}
+#stream-wrapper .thema h2.thema-title.anime span.txt {
+  -webkit-transition: opacity 1s linear;
+  -moz-transition: opacity 1s linear;
+  -o-transition: opacity 1s linear;
+  transition: opacity 1s linear;
+  visibility: visible;
+  opacity: 1;
+}
+#stream-wrapper .thema h2.thema-title.post-anime {
+  -webkit-transition: all 10s linear;
+  -moz-transition: all 10s linear;
+  -o-transition: all 10s linear;
+  transition: all 10s linear;
+  background-color: #d8d8d8;
+  opacity: 0.9;
 }
 #stream-wrapper .thema .content {
   width: cell_w;
@@ -372,17 +420,83 @@ body {
   display: block;
   float: left;
 }
+#stream-wrapper .thema .content.pre-anime {
+  background-color: #ff2405;
+}
+#stream-wrapper .thema .content.pre-anime > * {
+  -webkit-transition: all 0 linear;
+  -moz-transition: all 0 linear;
+  -o-transition: all 0 linear;
+  transition: all 0 linear;
+  visibility: hidden;
+  opacity: 0;
+}
+#stream-wrapper .thema .content.anime {
+  -webkit-transition: all 2s linear;
+  -moz-transition: all 2s linear;
+  -o-transition: all 2s linear;
+  transition: all 2s linear;
+  background-color: #fff;
+}
+#stream-wrapper .thema .content.anime > * {
+  -webkit-transition: all 2s linear;
+  -moz-transition: all 2s linear;
+  -o-transition: all 2s linear;
+  transition: all 2s linear;
+  visibility: visible;
+  opacity: 1;
+}
+#stream-wrapper .thema .content.post-anime {
+  -webkit-transition: all 5s linear;
+  -moz-transition: all 5s linear;
+  -o-transition: all 5s linear;
+  transition: all 5s linear;
+  background-color: #d8d8d8;
+  opacity: 0.9;
+}
+#stream-wrapper .thema .content.post-anime > * {
+  -webkit-transition: all 5s linear;
+  -moz-transition: all 5s linear;
+  -o-transition: all 5s linear;
+  transition: all 5s linear;
+  opacity: 0;
+}
 #stream-wrapper .thema .voisin.nature {
-  width: 341px;
-  height: 64px;
+  width: 340px;
+  height: 62.25px;
 }
 #stream-wrapper .thema .voisin.danse-son {
-  width: 341px;
-  height: 64px;
+  width: 340px;
+  height: 62.25px;
 }
 #stream-wrapper .thema .voisin.lettrage-image {
-  width: 682px;
-  height: 512px;
+  width: 680px;
+  height: 498px;
+}
+/** Anime */
+.not-anime {
+  -webkit-transition: opacity 0s ease-out;
+  -moz-transition: opacity 0s ease-out;
+  -o-transition: opacity 0s ease-out;
+  transition: opacity 0s ease-out;
+  visibility: hidden;
+  opacity: 0;
+}
+.pre-anime {
+  -webkit-transition: opacity 2s ease-out;
+  -moz-transition: opacity 2s ease-out;
+  -o-transition: opacity 2s ease-out;
+  transition: opacity 2s ease-out;
+  visibility: visible;
+  opacity: 1;
+}
+.post-anime {
+  -webkit-transition: opacity 10s linear;
+  -moz-transition: opacity 10s linear;
+  -o-transition: opacity 10s linear;
+  transition: opacity 10s linear;
+  visibility: visible;
+  opacity: 0.2;
 }
 #footer {
   z-index: 20;

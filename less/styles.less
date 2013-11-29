@@ -18,11 +18,14 @@ body.no-sidebars #center { width: 100%; }
 #sidebar-first { width: 24%; }
 #sidebar-second { width: 18%; }
 
-@cell_w : 341px;
-@cell_h : 256px;
+@cell_w : 340px;
+@cell_h : 249px;
 @line_h : @cell_h/4; 
 
 @orange: #ff2405;
+@postanime-grey:#D8D8D8;
+@postanime-opacity:0.9;
+
 
 /* general */
 html{
@@ -64,12 +67,30 @@ body{
   .placed{position:absolute;}
 
   #site-name{
-    z-index:100;
+    // z-index:100;
     width:@cell_w; height:@line_h;
     background-color: @orange; color:#fff;
     text-align: center; vertical-align: middle; 
     .500; text-transform: uppercase;
     .24; line-height:2.4; 
+
+    &.not-anime{
+      visibility:visible;
+      .transition-simply-prefix(~"all 0s linear");
+    }
+    &.pre-anime{
+      // .transition-simply-prefix(~"all 0s linear");
+      color:@orange;
+    }
+    &.anime{
+      .transition-simply-prefix(~"all 1s linear");
+      color:#FFF;
+    }
+    &.post-anime{
+      .transition-simply-prefix(~"all 10s linear");
+      background-color: @postanime-grey;
+      opacity:@postanime-opacity;
+    }
   }
 
   .thema{
@@ -81,16 +102,73 @@ body{
       width:@cell_w*2; height:@cell_h*2;
       background-color: @orange; color:#fff;
       display:table;
-      span{
+      span.txt{
         .inlineblock(); 
         display:table-cell;
         vertical-align: middle;
+      }
+
+      &.pre-anime{
+        span.txt{
+          .transition-simply-prefix(~"opacity 0 linear");
+          visibility:hidden;
+          opacity:0;
+        }
+      }
+
+      &.anime{
+        span.txt{
+          .transition-simply-prefix(~"opacity 1s linear");
+          visibility:visible;
+          opacity:1;
+        }
+      }
+
+      &.post-anime{
+        .transition-simply-prefix(~"all 10s linear");
+        background-color: @postanime-grey;
+        opacity:@postanime-opacity;
+        // span.txt{
+        //   .transition-simply-prefix(~"opacity 5s linear");
+        //   opacity:0;
+        // }
       }
     }
 
     .content{
       width:cell_w; .inlineblock(); height:auto;
       background-color: #fff; color:@orange;
+
+      &.pre-anime{
+        background-color: @orange;
+        &>*{
+          .transition-simply-prefix(~"all 0 linear");
+          visibility:hidden;
+          opacity:0;
+        }
+      }
+
+      &.anime{
+        .transition-simply-prefix(~"all 2s linear");
+        background-color: #fff;
+        &>*{
+          .transition-simply-prefix(~"all 2s linear");
+          visibility:visible;
+          opacity:1;
+        }
+      }
+
+      &.post-anime{
+        .transition-simply-prefix(~"all 5s linear");
+        background-color: @postanime-grey;
+        opacity:@postanime-opacity;
+        
+        &>*{
+          .transition-simply-prefix(~"all 5s linear");
+          // visibility:visible;
+          opacity:0;
+        }
+      }
     }
 
     .voisin{
@@ -107,6 +185,29 @@ body{
   }
 }
 
+/** Anime */
+
+.not-anime{
+  .transition-simply-prefix(~"opacity 0s ease-out");
+  visibility:hidden;
+  opacity:0;
+}
+
+.pre-anime{
+  .transition-simply-prefix(~"opacity 2s ease-out");
+  visibility:visible;
+  opacity:1;
+}
+
+.anime{
+  
+}
+
+.post-anime{
+  .transition-simply-prefix(~"opacity 10s linear");
+  visibility:visible;
+  opacity:0.2;
+}
 
 #footer{
   z-index:20;

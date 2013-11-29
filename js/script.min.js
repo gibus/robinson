@@ -30,12 +30,17 @@ Drupal.behaviors.init_theme = function (context) {
 
   var _debug = false;
   var _main_display_zone = {w:1024, h:768};
-  var _cell_w = 341, _cell_h = 256, _line_h = _cell_h/4; 
+  var _cell_w = 340, _cell_h = 249, _line_h = _cell_h/4; 
   var _$stream_wrapper = $('<div>').attr('id','stream-wrapper').appendTo('#main');
   var _displayed_themas = [];
+  var _thema_loaded = 0;
 
   function init(){
     initGraphics();
+
+    if($('body').is('.logged-in'))
+      return;
+
     loadThema();
   };
 
@@ -45,7 +50,8 @@ Drupal.behaviors.init_theme = function (context) {
     $('h1', '#header')
       .clone().attr('id', 'site-name')
       .appendTo(_$stream_wrapper)
-      .placeBlock({left:0});
+      .placeBlock({left:0})
+      .notAnime();
   };
 
   function loadThema(){
@@ -59,7 +65,8 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function displayThema(data){
-    var thema_id = data.thema.nid;
+    // var thema_id = data.thema.nid;
+    var thema_id = _thema_loaded = _thema_loaded+1;
 
     $('<div>')
       .attr('id', 'thema-'+thema_id)
@@ -69,8 +76,10 @@ Drupal.behaviors.init_theme = function (context) {
 
     var $thema = $('#thema-'+thema_id, _$stream_wrapper);
 
-    $('.thema-title', $thema).placeBlock({left:1});
-    $('.content', $thema).placeBlock({left:0});
+    $('.thema-title', $thema).placeBlock({left:1}).notAnime();
+    $('.content', $thema).placeBlock({left:0}).notAnime();
+
+    $('#site-name', _$stream_wrapper).placeBlock({left:0});
 
     loadVoisins($thema, data);
     listenThemaVideo($thema);
@@ -147,29 +156,72 @@ Drupal.behaviors.init_theme = function (context) {
 
   function launchNewThema(){
     console.log('launchNewThema');
+
+    // move sitename in front
+    $('#site-name', _$stream_wrapper)
+      .notAnime()
+      .detach()
+      .appendTo(_$stream_wrapper);
+
+    // purge themas in dom
+    $themas = $('.thema', _$stream_wrapper);
+    if($themas.size()>5){
+      // first mask the oldest
+      $themas.eq(0).notAnime();
+      // then remove it from dom after 5sec
+      (function($t){
+        setTimeout(function(){
+          $t.remove();
+        }, 5000);
+      }($themas.eq(0)));
+    }
+
     loadThema();
   };
 
   /* VOISINS */
   function loadVoisins($thema, data){
     console.log('loadVoisin', data);
-    for(index in data.thema.voisins){
-      var voisin_id = data.thema.voisins[index].target_id; 
-      console.log("voisin_id = "+voisin_id);
-      $.getJSON(Drupal.settings.basePath+Drupal.settings.pathPrefix+'ajax/robinson/voisin', 
-      {'id':voisin_id},
-      function(json){
-        // console.log('voisin loaded | json', json);
-        displayVoisin($thema, json);
-      });
+    
+    $thema.data('voisins_loaded', 0);
+     
+    if(data.thema.voisins !== null){
+      $thema.data('voisins_len', data.thema.voisins.length);
+      
+      for(index in data.thema.voisins){
+        var voisin_id = data.thema.voisins[index].target_id; 
+        console.log("voisin_id = "+voisin_id);
+        $.getJSON(Drupal.settings.basePath+Drupal.settings.pathPrefix+'ajax/robinson/voisin', 
+        {'id':voisin_id},
+        function(json){
+          // console.log('voisin loaded | json', json);
+          voisinLoaded($thema, json);
+        });
+      }  
+    }else{
+      $thema.data('voisins_len', 0);
+      voisinLoaded($thema, false);
     }
+  };
+
+  function voisinLoaded($thema, data){
+    var loaded_voisins = $thema.data('voisins_loaded') +1;
+    $thema.data('voisins_loaded', loaded_voisins);
+
+    if(loaded_voisins >= $thema.data('voisins_len'))
+      startAnimeThema($thema);
+    
+    if(data)
+      displayVoisin($thema, data);
   };
 
   function displayVoisin($thema, data){
     console.log('displayVoisin', data);
+  
     $(data.rendered_voisin)
       .appendTo($thema)
-      .placeBlock();
+      .placeBlock()
+      .notAnime();
   };
 
   /* GRID */
@@ -238,7 +290,70 @@ Drupal.behaviors.init_theme = function (context) {
       .addClass('placed');
   };
 
-  
+  /* ANIME */
+
+  function notAnime($elmt){
+    $elmt
+      .addClass("not-anime")
+      .removeClass("pre-anime")
+      .removeClass('anime')
+      .removeClass('post-anime');
+  };
+
+  function preAnime($elmt){
+    $elmt
+      .removeClass("not-anime")
+      .addClass("pre-anime")
+      .removeClass('anime')
+      .removeClass('post-anime');
+   
+   (function($elmt){
+      setTimeout(function(){
+        $elmt.anime();
+      }, 1000 + Math.random()*1000);
+    }($elmt));
+  };
+
+  function anime($elmt){
+    $elmt
+      .removeClass("not-anime")
+      .removeClass('pre-anime')
+      .addClass("anime")
+      .removeClass('post-anime');
+  };
+
+  function postAnime($elmt){
+    $elmt
+      .removeClass("not-anime")
+      .removeClass('pre-anime')
+      .removeClass('anime')
+      .addClass("post-anime");
+  };
+
+  function startAnimeThema($thema){
+    // record all elements to anime
+    var elmts = new Array();
+    elmts.push($('#site-name'));
+    elmts.push($('.thema-title', $thema));
+    elmts.push($('section.content', $thema));
+    $('article.voisin', $thema).each(function(index) {
+      elmts.push($(this));
+    });
+
+    // set delay for animation
+    // function anime
+    for (var i = 0; i < elmts.length; i++) {
+      (function(i, elmts){
+        setTimeout(function(){
+          if(i > 0)
+            if(!elmts[i-1].is('section.content')) elmts[i-1].postAnime();
+          
+          elmts[i].preAnime();
+        }, 3000*i + Math.random()*4000);
+      })(i, elmts);
+    }
+  };
+
   /**
   * ready
   */
@@ -269,6 +384,23 @@ Drupal.behaviors.init_theme = function (context) {
 
   $.fn.placeBlock = function(o) {
     placeBlock(this, o);
+    return this;
+  };
+
+  $.fn.notAnime = function(){
+    notAnime(this);
+    return this;
+  };
+  $.fn.preAnime = function(){
+    preAnime(this);
+    return this;
+  };
+  $.fn.anime = function(){
+    anime(this);
+    return this;
+  };
+  $.fn.postAnime = function(){
+    postAnime(this);
     return this;
   };
 
