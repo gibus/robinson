@@ -15,13 +15,16 @@ function robinsonmod_ajax_thema(){
     }
   }
 
-  # get 10 last already displayed themas
-  $displayed_themas = variable_get('robinsonmod_displayed_themas', array());
-  dsm($displayed_themas);
 
   # get all the thematiques
   $query = new ThemaEntityFieldQuery;
-  $query->entityCondition('entity_id', $displayed_themas, 'NOT IN');
+
+  # get 10 last already displayed themas
+  $displayed_themas = variable_get('robinsonmod_displayed_themas', array());
+  // dsm($displayed_themas);
+  if(count($displayed_themas))
+    $query->entityCondition('entity_id', $displayed_themas, 'NOT IN');
+
   $themas = $query->execute();
   // dsm($themas);
 
