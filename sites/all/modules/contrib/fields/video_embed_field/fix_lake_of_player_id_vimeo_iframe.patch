@@ -1,0 +1,32 @@
+From 8be6039e41e4e0750861acecc6b9e4d2d6e00ebd Mon Sep 17 00:00:00 2001
+From: Bachir Soussi Chiadmi <bachir@g-u-i.net>
+Date: Fri, 29 Nov 2013 16:06:42 +0100
+Subject: [PATCH] patch video_embed_field to get player_id in order to be able
+ to use froogaloop
+
+---
+ .../contrib/fields/video_embed_field/video_embed_field.handlers.inc    | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/sites/all/modules/contrib/fields/video_embed_field/video_embed_field.handlers.inc b/sites/all/modules/contrib/fields/video_embed_field/video_embed_field.handlers.inc
+index 4e637de..88e98f2 100755
+--- a/sites/all/modules/contrib/fields/video_embed_field/video_embed_field.handlers.inc
++++ b/sites/all/modules/contrib/fields/video_embed_field/video_embed_field.handlers.inc
+@@ -386,12 +386,13 @@ function video_embed_field_handle_vimeo($url, $settings) {
+ 
+   // Construct the embed code
+   $settings['portrait'] = 0;
++  $settings['player_id'] = "vimeo-".$id;
+   $settings_str = _video_embed_code_get_settings_str($settings);
+ 
+   $s = ($is_https) ? 's': '';
+ 
+   return array(
+-    '#markup' => '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http' . $s . '://player.vimeo.com/video/' . $id .
++    '#markup' => '<iframe id="vimeo-'.$id.'" width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http' . $s . '://player.vimeo.com/video/' . $id .
+                  '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>',
+   );
+ }
+-- 
+1.8.1.5
+
