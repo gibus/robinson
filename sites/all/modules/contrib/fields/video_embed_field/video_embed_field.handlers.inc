@@ -386,12 +386,13 @@ function video_embed_field_handle_vimeo($url, $settings) {
 
   // Construct the embed code
   $settings['portrait'] = 0;
+  $settings['player_id'] = "vimeo-".$id;
   $settings_str = _video_embed_code_get_settings_str($settings);
 
   $s = ($is_https) ? 's': '';
 
   return array(
-    '#markup' => '<iframe width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http' . $s . '://player.vimeo.com/video/' . $id .
+    '#markup' => '<iframe id="vimeo-'.$id.'" width="' . $settings['width'] . '" height="' . $settings['height'] . '" src="http' . $s . '://player.vimeo.com/video/' . $id .
                  '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>',
   );
 }
