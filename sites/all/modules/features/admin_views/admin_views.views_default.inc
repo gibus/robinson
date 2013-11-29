@@ -261,15 +261,6 @@ function admin_views_views_default_views() {
   );
   $handler->display->display_options['fields']['field_ref_thema']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_ref_thema']['multi_type'] = 'ul';
-  /* Champ: Contenu : Voisins */
-  $handler->display->display_options['fields']['field_ref_voisin']['id'] = 'field_ref_voisin';
-  $handler->display->display_options['fields']['field_ref_voisin']['table'] = 'field_data_field_ref_voisin';
-  $handler->display->display_options['fields']['field_ref_voisin']['field'] = 'field_ref_voisin';
-  $handler->display->display_options['fields']['field_ref_voisin']['settings'] = array(
-    'link' => 0,
-  );
-  $handler->display->display_options['fields']['field_ref_voisin']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_ref_voisin']['multi_type'] = 'ul';
   /* Champ: Contenu : Date de mise à jour */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
