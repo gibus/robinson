@@ -27,6 +27,27 @@ function themas_and_voisins_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'ant_pattern_thematique';
+  $strongarm->value = '';
+  $export['ant_pattern_thematique'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_php_thematique';
+  $strongarm->value = 0;
+  $export['ant_php_thematique'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_thematique';
+  $strongarm->value = '0';
+  $export['ant_thematique'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'content_type_extras_cancel_thematique';
   $strongarm->value = '0';
   $export['content_type_extras_cancel_thematique'] = $strongarm;
