@@ -1,0 +1,92 @@
+/* ------ DISPLAY ------ */
+body.simplemenu-enabled{margin-top:23px;}
+.simplemenu-block{height:23px;position:fixed;top:0;left:0;width:100%;z-index:99999;}
+ul#simplemenu,ul#simplemenu *{margin:0;padding:0;list-style:none;}
+ul#simplemenu{line-height:1.0;position:relative;width:100%;z-index:9999;}
+ul#simplemenu ul{position:absolute;top:-999em;width:14em;font-size:1em;line-height:1em;}
+ul#simplemenu ul li{width:100%;}
+ul#simplemenu a{width:auto;}
+ul#simplemenu li{float:left;position:relative;z-index:99;}
+ul#simplemenu a{display:block;}
+ul#simplemenu li:hover ul,
+ul#simplemenu li.sfHover ul{left:0px;top:30px;}
+ul#simplemenu li:hover li ul,
+ul#simplemenu li.sfHover li ul{top:-999em;}
+ul#simplemenu li li:hover ul,
+ul#simplemenu li li.sfHover ul{left:14em;top:-1px;}
+.superfish li:hover ul,
+.superfish li li:hover ul{top:-999em;}
+ul#simplemenu:after{
+	clear: both;
+	content: '.';
+	display: block;
+	height:0px;
+	overflow:hidden;
+	visibility:hidden;
+	width:0px;
+}
+
+
+/* ------ STYLE ------ */
+ul#simplemenu {
+	background-color:#333;
+	border-bottom: 1px dotted #9A9A9A;
+	box-shadow: 0 0 15px #000000 inset;
+	-moz-box-shadow: 0 0 15px #000000 inset;
+	-webkit-box-shadow: 0 0 15px #000000 inset;
+}
+.simplemenu-block:after{
+	content:'by g.u.i.';
+	color:#fff;
+	font: italic 600 1em 'Baskerville',serif;
+	display:block;
+	position:fixed;
+	top:6px;
+	right:1em;
+	z-index:10000;
+}
+ul#simplemenu li:hover ul,
+ul#simplemenu li.sfHover ul{
+	background:#1a1a1a;
+	border: 1px dotted #9A9A9A;
+	padding: 6px 0;
+}
+ul#simplemenu li:hover ul:before,
+ul#simplemenu li.sfHover ul:before{
+	background:url('bkgd-border.png') 15px 0 no-repeat;
+	content:'';
+	display:block;
+	height:9px;
+	margin-top:-15px;
+	width:100%;
+}
+
+
+
+/* ------ FONT ------ */
+.simplemenu-block{font:normal normal 100 11px/1em 'Monaco','Lucida Console','Consolas',monospace;color:#fff;}
+ul#simplemenu a{color:#fff;margin:4px;padding:2px;text-decoration:none;word-spacing:-.35em;
+	transition: background-color .5s, color .5s;
+	-moz-transition: background-color .5s, color .5s;
+	-o-transition: background-color .5s, color .5s;
+	-webkit-transition: background-color .5s, color .5s;
+}
+ul#simplemenu>li.first a{color:#777;}
+
+ul#simplemenu li.sfHover>a,
+ul#simplemenu a:focus,
+ul#simplemenu a:hover,
+ul#simplemenu a:active{
+	color: #000;
+	background-color:#fff;
+	transition-duration:0s;
+	-moz-transition-duration:0s;
+	-o-transition-duration:0s;
+	-webkit-transition-duration:0s;
+}
+ul#simplemenu>li.first a:focus,
+ul#simplemenu>li.first a:hover,
+ul#simplemenu>li.first a:active{
+	color: #000;
+	background-color:#cc3733;
+}
