@@ -29,7 +29,6 @@ function robinsonmod_menu() {
   return $items;
 }
 
-
 /**
  * Implements hook_entity_info_alter().
  */
@@ -72,5 +71,20 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['voisin_nature'] = $base + array(
     'label' => t('Voisin nature')
   );
+}
 
+/**
+ * Implements hook_video_embed_field_handlers_alter().
+ */
+function robinsonmod_video_embed_field_handlers_alter(&$handlers) {
+  $handlers['vimeo']['function'] = 'robinsonmod_handle_vimeo';
+}
+
+/**
+ * Wrapper function to allow forcing API to be enabled for Vimeo videos.
+ */
+function robinsonmod_handle_vimeo($url, $settings) {
+  // dsm($settings, 'settings');
+  $settings['api'] = 1;
+  return video_embed_field_handle_vimeo($url, $settings);
 }

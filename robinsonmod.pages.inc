@@ -15,14 +15,26 @@ function robinsonmod_ajax_thema(){
     }
   }
 
+  # get 10 last already displayed themas
+  $displayed_themas = variable_get('robinsonmod_displayed_themas', array());
+  dsm($displayed_themas);
+
   # get all the thematiques
   $query = new ThemaEntityFieldQuery;
+  $query->entityCondition('entity_id', $displayed_themas, 'NOT IN');
   $themas = $query->execute();
   // dsm($themas);
 
   # get a random thema
   $thema = $themas['node'][array_rand($themas['node'])];
-  
+
+  $displayed_themas[] = $thema->nid;
+  if(count($displayed_themas) > 10)
+    array_pop($displayed_themas);
+
+  $rep['displayed_themas'] = $displayed_themas;
+  variable_set('robinsonmod_displayed_themas', $displayed_themas);
+
   $thema_node = node_load($thema->nid); 
   // dsm($thema_node, 'thema_node');
   $rep['thema'] = array(
