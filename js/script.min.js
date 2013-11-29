@@ -125,13 +125,11 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function onVimeoPlayProgress(data, id){
-    console.log('onVimeoPlayProgress | id = '+id+' | data = ',data);
-    // var $viframe = $('#'+id);
-    if(data.seconds >= 15){ // && !$viframe.data('stoped')
-      // $viframe.data('stoped', true);
-      $f(id).api('pause');
-      onThemaVideoFinish(id);
-    }
+    // console.log('onVimeoPlayProgress | id = '+id+' | data = ',data);
+    // if(data.seconds >= 15){
+    //   $f(id).api('pause');
+    //   onThemaVideoFinish(id);
+    // }
   };
 
   function onVimeoFinished(id){
