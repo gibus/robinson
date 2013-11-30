@@ -1,5 +1,10 @@
-<?php $voisin_class = str_replace('voisin-', '', str_replace('_', '-', $view_mode)); ?>
-<article class="voisin <?php print $voisin_class; ?>">
+<?php 
+$voisin_classes = array("voisin");
+$voisin_classes[] = "voisin-".$node->nid;
+$voisin_classes[] = str_replace('voisin-', '', str_replace('_', '-', $view_mode)); 
+
+?>
+<article class="<?php print implode(' ', $voisin_classes); ?>">
 <?php
   // dsm($content, 'content');
   hide($content['comments']);

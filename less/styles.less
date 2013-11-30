@@ -23,6 +23,7 @@ body.no-sidebars #center { width: 100%; }
 @line_h : @cell_h/4; 
 
 @orange: #ff2405;
+@bleu:#2F62FF;
 @postanime-grey:#D8D8D8;
 @postanime-opacity:0.9;
 
@@ -106,6 +107,7 @@ body{
         .inlineblock(); 
         display:table-cell;
         vertical-align: middle;
+        .p(1em);
       }
 
       &.pre-anime{
@@ -172,13 +174,46 @@ body{
     }
 
     .voisin{
-      &.nature{
-        width:@cell_w; height:@line_h;
+      &.atmosphere-audio{
+        height:0;
       }
-      &.danse-son{
-        width:@cell_w; height:@line_h;
+      &.atmosphere-video{
+        width:@cell_w*2; height:@cell_h*2;
+        background-color: @bleu;
+        &.post-anime{
+          background-color:@postanime-grey;
+          opacity:@postanime-opacity;
+        }
       }
-      &.lettrage-image{
+      &.atmosphere-image{
+        width:@cell_w*2; height:@cell_h*2;
+      }
+      &.discursif{
+        width:@cell_w*2; height:@cell_h*2;
+      }
+      &.contrib-txt{
+        width:@cell_w;// height:@cell_h*2;
+        background-color: @orange;
+        &.post-anime{
+          background-color:@postanime-grey;
+          opacity:@postanime-opacity;
+        }
+        .field-name-field-text{
+          .p(1em);
+        }
+      }
+      &.contrib-video{
+        width:@cell_w*2; height:@cell_h*2;
+        background-color: @bleu;
+        &.post-anime{
+          background-color:@postanime-grey;
+          opacity:@postanime-opacity;
+        }
+      }
+      &.contrib-son{
+        height:0;
+      }
+      &.contrib-image{
         width:@cell_w*2; height:@cell_h*2;
       }
     }
@@ -188,23 +223,23 @@ body{
 /** Anime */
 
 .not-anime{
-  .transition-simply-prefix(~"opacity 0s ease-out");
+  .transition-simply-prefix(~"all 0s ease-out");
   visibility:hidden;
   opacity:0;
 }
 
 .pre-anime{
-  .transition-simply-prefix(~"opacity 2s ease-out");
+  .transition-simply-prefix(~"all 2s ease-out");
   visibility:visible;
   opacity:1;
 }
 
 .anime{
-  
+  .transition-simply-prefix(~"all 5s ease-out");
 }
 
 .post-anime{
-  .transition-simply-prefix(~"opacity 10s linear");
+  .transition-simply-prefix(~"all 12s linear");
   visibility:visible;
   opacity:0.2;
 }

@@ -101,7 +101,6 @@ Drupal.behaviors.init_theme = function (context) {
     });
   };
 
-
   function onVimeoReady(id) {
     console.log('onVimeoReady : id = '+id);         
 
@@ -218,7 +217,7 @@ Drupal.behaviors.init_theme = function (context) {
   
     $(data.rendered_voisin)
       .appendTo($thema)
-      .placeBlock()
+      .placeBlock()//{left:1}
       .notAnime();
   };
 
@@ -344,7 +343,7 @@ Drupal.behaviors.init_theme = function (context) {
       (function(i, elmts){
         setTimeout(function(){
           if(i > 0)
-            if(!elmts[i-1].is('section.content')) elmts[i-1].postAnime();
+            if(!elmts[i-1].is('section.content') || !elmts[i-1].is('.voisin.*-video')) elmts[i-1].postAnime();
           
           elmts[i].preAnime();
         }, 3000*i + Math.random()*4000);
