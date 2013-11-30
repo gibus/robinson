@@ -34,6 +34,7 @@ Drupal.behaviors.init_theme = function (context) {
   var _$stream_wrapper = $('<div>').attr('id','stream-wrapper').appendTo('#main');
   var _displayed_themas = [];
   var _thema_loaded = 0;
+  var _anime_voisins_ready = 0;
 
   function init(){
     initGraphics();
@@ -97,11 +98,11 @@ Drupal.behaviors.init_theme = function (context) {
     var $viframe = $('iframe', $thema);
     $viframe.load(function(){
       $viframe.data('stoped', false);
-      $f(this).addEvent('ready', onVimeoReady);
+      $f(this).addEvent('ready', onVimeoThemaReady);
     });
   };
 
-  function onVimeoReady(id) {
+  function onVimeoThemaReady(id) {
     console.log('onVimeoReady : id = '+id);         
 
     $f(id)
@@ -112,7 +113,9 @@ Drupal.behaviors.init_theme = function (context) {
     
     (function(id){
       setTimeout(function(){$f(id).api('play');}, 5000);
-    }(id));      
+    }(id));
+
+    startAnimeThema($("#"+id).parents(".thema"));
   };  
 
   function onVimeoPlay(id){
@@ -176,6 +179,31 @@ Drupal.behaviors.init_theme = function (context) {
     loadThema();
   };
 
+  function startAnimeThema($thema){
+    var elmts = new Array();
+    elmts.push($('#site-name'));
+    elmts.push($('.thema-title', $thema));
+    elmts.push($('section.content', $thema));
+
+    // set delay for animation
+    // function anime
+    for (var i = 0; i < elmts.length; i++) {
+      (function(i, elmts, $thema){
+        setTimeout(function(){
+          
+          if(i > 0)
+            if(!elmts[i-1].is('section.content') || !elmts[i-1].is('.voisin.*-video')) elmts[i-1].postAnime();
+          
+          elmts[i].preAnime();
+
+          if(i == elmts.length-1)
+            bufferizeAnimeVoisins($thema);
+
+        }, 3000*i + Math.random()*4000);
+      })(i, elmts, $thema);
+    }
+  };
+
   /* VOISINS */
   function loadVoisins($thema, data){
     console.log('loadVoisin', data);
@@ -206,7 +234,7 @@ Drupal.behaviors.init_theme = function (context) {
     $thema.data('voisins_loaded', loaded_voisins);
 
     if(loaded_voisins >= $thema.data('voisins_len'))
-      startAnimeThema($thema);
+      bufferizeAnimeVoisins($thema);
     
     if(data)
       displayVoisin($thema, data);
@@ -327,12 +355,19 @@ Drupal.behaviors.init_theme = function (context) {
       .addClass("post-anime");
   };
 
-  function startAnimeThema($thema){
+  function bufferizeAnimeVoisins($thema){
+    _anime_voisins_ready ++;
+    if(_anime_voisins_ready == 2){
+      startAnimeVoisins($thema);
+    }
+  };
+
+  function startAnimeVoisins($thema){
     // record all elements to anime
     var elmts = new Array();
-    elmts.push($('#site-name'));
-    elmts.push($('.thema-title', $thema));
-    elmts.push($('section.content', $thema));
+    // elmts.push($('#site-name'));
+    // elmts.push($('.thema-title', $thema));
+    // elmts.push($('section.content', $thema));
     $('article.voisin', $thema).each(function(index) {
       elmts.push($(this));
     });
@@ -346,7 +381,7 @@ Drupal.behaviors.init_theme = function (context) {
             if(!elmts[i-1].is('section.content') || !elmts[i-1].is('.voisin.*-video')) elmts[i-1].postAnime();
           
           elmts[i].preAnime();
-        }, 3000*i + Math.random()*4000);
+        }, 5000*(i+1) + Math.random()*5000);
       })(i, elmts);
     }
   };
