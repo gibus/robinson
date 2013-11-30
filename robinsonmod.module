@@ -38,38 +38,29 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['stream'] = $base + array(
     'label' => t('Stream')
   );
-  $entity_info['node']['view modes']['voisin_atmosphere'] = $base + array(
-    'label' => t('Voisin Atmosphere')
+  $entity_info['node']['view modes']['voisin_atmosphere_audio'] = $base + array(
+    'label' => t('Voisin Atmosphere audio')
   );
-  $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
-    'label' => t('Voisin contribution image')
+  $entity_info['node']['view modes']['voisin_atmosphere_video'] = $base + array(
+    'label' => t('Voisin Atmosphere video')
   );
-  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
-    'label' => t('Voisin contribution son')
+  $entity_info['node']['view modes']['voisin_atmosphere_image'] = $base + array(
+    'label' => t('Voisin Atmosphere image')
   );
-  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
-    'label' => t('Voisin contribution son')
+  $entity_info['node']['view modes']['voisin_discursif'] = $base + array(
+    'label' => t('Voisin Discursif (son)')
   );
   $entity_info['node']['view modes']['voisin_contrib_txt'] = $base + array(
-    'label' => t('Voisin contribution text')
+    'label' => t('Voisin Contribution text')
   );
   $entity_info['node']['view modes']['voisin_contrib_video'] = $base + array(
-    'label' => t('Voisin contribution video')
+    'label' => t('Voisin Contribution video')
   );
-  $entity_info['node']['view modes']['voisin_danse_son'] = $base + array(
-    'label' => t('Voisin danse son')
+  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
+    'label' => t('Voisin Contribution son')
   );
-  $entity_info['node']['view modes']['voisin_danse_video'] = $base + array(
-    'label' => t('Voisin danse video')
-  );
-  $entity_info['node']['view modes']['voisin_lettrage_image'] = $base + array(
-    'label' => t('Voisin lettrage image')
-  );
-  $entity_info['node']['view modes']['voisin_lettrage_video'] = $base + array(
-    'label' => t('Voisin lettrage video')
-  );
-  $entity_info['node']['view modes']['voisin_nature'] = $base + array(
-    'label' => t('Voisin nature')
+  $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
+    'label' => t('Voisin Contribution image')
   );
 }
 

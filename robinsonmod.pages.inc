@@ -40,9 +40,28 @@ function robinsonmod_ajax_thema(){
 
   $thema_node = node_load($thema->nid); 
   // dsm($thema_node, 'thema_node');
+
+  $voisins = $thema_node->field_ref_voisin['und'];
+
+  # add randomly more voisins to fit to 20
+  $min_voisins = 20;
+  if(count($voisins) < $min_voisins){
+    $voisins_query = new VoisinEntityFieldQuery;
+    $all_voisins = $voisins_query->execute();
+    $all_voisins = $all_voisins['node'];
+
+    // for ($i=0; $i < 20; $i++) {
+    while(count($voisins) < $min_voisins){ 
+      shuffle($all_voisins);
+      $rand_voisin = array_shift($all_voisins);
+      $rand_voisin->target_id = $rand_voisin->nid; 
+      $voisins[] = $rand_voisin;
+    }
+  }
+
   $rep['thema'] = array(
     "nid"=>$thema_node->nid,
-    "voisins"=>$thema_node->field_ref_voisin['und']
+    "voisins"=>$voisins
   ); 
   
   $viewmode = "stream";
@@ -91,8 +110,17 @@ function robinsonmod_ajax_voisin(){
     ); 
     
     switch ($type) {
+      case 11:
+        $viewmode = "voisin_atmosphere_son";
+        break;
+      case 7:
+        $viewmode = "voisin_atmosphere_image";
+        break;
       case 5:
-        $viewmode = "voisin_atmosphere";
+        $viewmode = "voisin_atmosphere_video";
+        break;
+      case 6:
+        $viewmode = "voisin_discursif";
         break;
       case 10:
         $viewmode = "voisin_contrib_image";
@@ -105,21 +133,6 @@ function robinsonmod_ajax_voisin(){
         break;
       case 8:
         $viewmode = "voisin_contrib_video";
-        break;
-      case 6:
-        $viewmode = "voisin_danse_son";
-        break;
-      case 4:
-        $viewmode = "voisin_danse_video";
-        break;
-      case 7:
-        $viewmode = "voisin_lettrage_image";
-        break;
-      case 3:
-        $viewmode = "voisin_lettrage_video";
-        break;
-      case 1:
-        $viewmode = "voisin_nature";
         break;
       default:
         $viewmode = "stream";
