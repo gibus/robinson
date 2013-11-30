@@ -10,23 +10,6 @@
 function admin_views_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: navigation_:node/%
-  $menu_links['navigation_:node/%'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'node/%',
-    'router_path' => 'node/%',
-    'link_title' => '',
-    'options' => array(
-      'identifier' => 'navigation_:node/%',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-  );
   // Exported menu link: navigation_add-content:node/add
   $menu_links['navigation_add-content:node/add'] = array(
     'menu_name' => 'navigation',
@@ -44,7 +27,7 @@ function admin_views_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 1,
     'expanded' => 0,
-    'weight' => -46,
+    'weight' => -45,
     'customized' => 1,
   );
   // Exported menu link: navigation_compose-tips:filter/tips
@@ -61,7 +44,7 @@ function admin_views_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -44,
+    'weight' => -43,
     'customized' => 1,
   );
   // Exported menu link: navigation_dashboard:admin/dashboard
@@ -84,31 +67,6 @@ function admin_views_menu_default_menu_links() {
     'weight' => -49,
     'customized' => 1,
   );
-  // Exported menu link: navigation_les-pages:admin/content/nodes
-  $menu_links['navigation_les-pages:admin/content/nodes'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'admin/content/nodes',
-    'router_path' => 'admin/content/nodes',
-    'link_title' => 'les pages',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'navigation_les-pages:admin/content/nodes',
-      'query' => array(
-        'type' => 'page',
-        'status' => 'All',
-      ),
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -48,
-    'customized' => 1,
-    'parent_identifier' => 'navigation_lister-tous-les-contenus:admin/content/nodes',
-  );
   // Exported menu link: navigation_log-out:user/logout
   $menu_links['navigation_log-out:user/logout'] = array(
     'menu_name' => 'navigation',
@@ -127,7 +85,7 @@ function admin_views_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -48,
+    'weight' => -47,
     'customized' => 1,
   );
   // Exported menu link: navigation_media:admin/content/medias
@@ -147,71 +105,8 @@ function admin_views_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -45,
+    'weight' => -44,
     'customized' => 1,
-  );
-  // Exported menu link: navigation_page:node/add/page
-  $menu_links['navigation_page:node/add/page'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'node/add/page',
-    'router_path' => 'node/add/page',
-    'link_title' => 'Page',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Use this content type to add static pages like "about" "contact" etc',
-      ),
-      'identifier' => 'navigation_page:node/add/page',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'navigation_ajouter-du-contenu:node/add',
-  );
-  // Exported menu link: navigation_programme:node/add/programme
-  $menu_links['navigation_programme:node/add/programme'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'node/add/programme',
-    'router_path' => 'node/add/programme',
-    'link_title' => 'Programme',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Une sélection de thématiques diffusé lors d\'un rendez-vous',
-      ),
-      'identifier' => 'navigation_programme:node/add/programme',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'navigation_ajouter-du-contenu:node/add',
-  );
-  // Exported menu link: navigation_thmatique:node/add/thematique
-  $menu_links['navigation_thmatique:node/add/thematique'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'node/add/thematique',
-    'router_path' => 'node/add/thematique',
-    'link_title' => 'Thématique',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Un sujet abordé par Jacqueline Robinson lors d’un interview',
-      ),
-      'identifier' => 'navigation_thmatique:node/add/thematique',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'navigation_ajouter-du-contenu:node/add',
   );
   // Exported menu link: navigation_user-account:user
   $menu_links['navigation_user-account:user'] = array(
@@ -234,27 +129,6 @@ function admin_views_menu_default_menu_links() {
     'weight' => -50,
     'customized' => 1,
   );
-  // Exported menu link: navigation_voisin:node/add/voisin
-  $menu_links['navigation_voisin:node/add/voisin'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'node/add/voisin',
-    'router_path' => 'node/add/voisin',
-    'link_title' => 'Voisin',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Un média lié à une thématique (voisin) ou appelé aléatoirement (atmosphère)',
-      ),
-      'identifier' => 'navigation_voisin:node/add/voisin',
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 0,
-    'parent_identifier' => 'navigation_ajouter-du-contenu:node/add',
-  );
   // Exported menu link: navigation_workflow-summary:workflow
   $menu_links['navigation_workflow-summary:workflow'] = array(
     'menu_name' => 'navigation',
@@ -269,7 +143,7 @@ function admin_views_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -43,
+    'weight' => -42,
     'customized' => 1,
   );
   // Translatables
@@ -278,14 +152,9 @@ function admin_views_menu_default_menu_links() {
   t('Compose tips');
   t('Log out');
   t('Media');
-  t('Page');
-  t('Programme');
-  t('Thématique');
   t('User account');
-  t('Voisin');
   t('Workflow summary');
   t('dashboard');
-  t('les pages');
 
 
   return $menu_links;
