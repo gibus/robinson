@@ -270,7 +270,7 @@ Drupal.behaviors.init_theme = function (context) {
         // if(data.seconds >= 120){
         //   this.videoPause();
         //   this.onVideoFinished(id);
-        }
+        // }
       };
 
       Thema.prototype.videoPlay = function(){
