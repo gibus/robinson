@@ -48,7 +48,7 @@ function robinsonmod_entity_info_alter(&$entity_info) {
     'label' => t('Voisin Atmosphere image')
   );
   $entity_info['node']['view modes']['voisin_discursif'] = $base + array(
-    'label' => t('Voisin Discursif (son)')
+    'label' => t('Voisin Discursif (audio)')
   );
   $entity_info['node']['view modes']['voisin_contrib_txt'] = $base + array(
     'label' => t('Voisin Contribution text')
