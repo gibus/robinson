@@ -14,14 +14,14 @@ function themas_and_voisins_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_thematique';
-  $strongarm->value = 'edit-auto-nodetitle';
+  $strongarm->value = 'edit-submission';
   $export['additional_settings__active_tab_thematique'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_voisin';
-  $strongarm->value = 'edit-extras';
+  $strongarm->value = 'edit-submission';
   $export['additional_settings__active_tab_voisin'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -119,28 +119,28 @@ function themas_and_voisins_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'content_type_extras_save_and_new_button_thematique';
-  $strongarm->value = 'Save and New';
+  $strongarm->value = 'Enregistrer et Nouveau';
   $export['content_type_extras_save_and_new_button_thematique'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'content_type_extras_save_and_new_button_voisin';
-  $strongarm->value = 'Save and New';
+  $strongarm->value = 'Enregistrer et Nouveau';
   $export['content_type_extras_save_and_new_button_voisin'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'content_type_extras_save_and_new_thematique';
-  $strongarm->value = '0';
+  $strongarm->value = '1';
   $export['content_type_extras_save_and_new_thematique'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'content_type_extras_save_and_new_voisin';
-  $strongarm->value = '0';
+  $strongarm->value = '1';
   $export['content_type_extras_save_and_new_voisin'] = $strongarm;
 
   $strongarm = new stdClass();

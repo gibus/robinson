@@ -54,12 +54,14 @@ function admin_views_views_default_views() {
     'title' => 'title',
     'field_thema_date' => 'field_thema_date',
     'field_ref_thema' => 'field_ref_thema',
+    'type' => 'title',
+    'field_voisin_type' => 'title',
+    'field_son' => 'field_son',
+    'field_video' => 'field_son',
     'changed' => 'changed',
     'status' => 'status',
     'edit_node' => 'edit_node',
     'delete_node' => 'edit_node',
-    'type' => 'title',
-    'field_voisin_type' => 'title',
   );
   $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
@@ -87,6 +89,34 @@ function admin_views_views_default_views() {
       'separator' => '<br />',
       'empty_column' => 0,
     ),
+    'type' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '<br />',
+      'empty_column' => 0,
+    ),
+    'field_voisin_type' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_son' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_video' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'changed' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
@@ -107,20 +137,6 @@ function admin_views_views_default_views() {
       'empty_column' => 0,
     ),
     'delete_node' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'type' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '<br />',
-      'empty_column' => 0,
-    ),
-    'field_voisin_type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -263,6 +279,34 @@ function admin_views_views_default_views() {
   );
   $handler->display->display_options['fields']['field_ref_thema']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_ref_thema']['multi_type'] = 'ul';
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['alter']['make_link'] = TRUE;
+  /* Field: Content: Type de voisin */
+  $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Son */
+  $handler->display->display_options['fields']['field_son']['id'] = 'field_son';
+  $handler->display->display_options['fields']['field_son']['table'] = 'field_data_field_son';
+  $handler->display->display_options['fields']['field_son']['field'] = 'field_son';
+  $handler->display->display_options['fields']['field_son']['label'] = 'Son / Video';
+  $handler->display->display_options['fields']['field_son']['click_sort_column'] = 'url';
+  /* Field: Content: Video */
+  $handler->display->display_options['fields']['field_video']['id'] = 'field_video';
+  $handler->display->display_options['fields']['field_video']['table'] = 'field_data_field_video';
+  $handler->display->display_options['fields']['field_video']['field'] = 'field_video';
+  $handler->display->display_options['fields']['field_video']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_video']['alter']['text'] = '<a href="[field_video-video_url]">[field_video-video_url]</a>';
+  $handler->display->display_options['fields']['field_video']['click_sort_column'] = 'video_url';
+  $handler->display->display_options['fields']['field_video']['type'] = 'video_embed_field_thumbnail';
+  $handler->display->display_options['fields']['field_video']['settings'] = array(
+    'image_style' => '',
+    'image_link' => '',
+  );
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -294,16 +338,6 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['delete_node']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['delete_node']['text'] = 'supprimer';
-  /* Field: Content: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'node';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['alter']['make_link'] = TRUE;
-  /* Field: Content: Type de voisin */
-  $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['type'] = 'taxonomy_term_reference_plain';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -475,6 +509,11 @@ function admin_views_views_default_views() {
     t('Title'),
     t('Date de l\'entretien '),
     t('Thématique(s)'),
+    t('Type'),
+    t('Type de voisin'),
+    t('Son / Video'),
+    t('Video'),
+    t('<a href="[field_video-video_url]">[field_video-video_url]</a>'),
     t('Updated date'),
     t('Published'),
     t('<span class="node-edit">[edit_node]</span>'),
@@ -482,8 +521,6 @@ function admin_views_views_default_views() {
     t('Delete link'),
     t('<span class="node-delete">[delete_node]</span>'),
     t('supprimer'),
-    t('Type'),
-    t('Type de voisin'),
     t('Type de voisin (field_voisin_type)'),
     t('Publié'),
     t('Page : all'),

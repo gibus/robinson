@@ -44,6 +44,24 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_atmosphere_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -75,6 +93,12 @@ function programme_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_danse_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_discursif' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -157,6 +181,24 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_atmosphere_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -188,6 +230,12 @@ function programme_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_danse_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_discursif' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
