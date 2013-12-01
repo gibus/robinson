@@ -454,9 +454,12 @@ Drupal.behaviors.init_theme = function (context) {
           case "contrib_audio":
             this.initAudio();
             break;
-          default:
-            this.$.trigger('loaded');            
+          // default:
+            // this.$.trigger('loaded');            
         }
+
+        this.$.trigger('loaded');
+        
       };
 
       Voisin.prototype.initGraphics = function(){
@@ -497,7 +500,7 @@ Drupal.behaviors.init_theme = function (context) {
           .addEvent('pause', function(id){voisin.onVideoPause(id);})
           .addEvent('finish', function(id){voisin.onVideoFinished(id);});
 
-        this.$.trigger('loaded');
+        // this.$.trigger('loaded');
       };
 
       Voisin.prototype.playVideo = function(){
