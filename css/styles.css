@@ -465,14 +465,36 @@ body {
 #stream-wrapper .thema .voisin.atmosphere-audio {
   height: 0;
 }
-#stream-wrapper .thema .voisin.atmosphere-video {
+#stream-wrapper .thema .voisin.atmosphere-video,
+#stream-wrapper .thema .voisin.contrib-video {
   width: 680px;
   height: 498px;
   background-color: #2f62ff;
 }
-#stream-wrapper .thema .voisin.atmosphere-video.post-anime {
+#stream-wrapper .thema .voisin.atmosphere-video.pre-anime .field-name-field-video,
+#stream-wrapper .thema .voisin.contrib-video.pre-anime .field-name-field-video {
+  opacity: 0;
+}
+#stream-wrapper .thema .voisin.atmosphere-video.anime .field-name-field-video,
+#stream-wrapper .thema .voisin.contrib-video.anime .field-name-field-video {
+  -webkit-transition: all 3s ease-out;
+  -moz-transition: all 3s ease-out;
+  -o-transition: all 3s ease-out;
+  transition: all 3s ease-out;
+  opacity: 1;
+}
+#stream-wrapper .thema .voisin.atmosphere-video.post-anime,
+#stream-wrapper .thema .voisin.contrib-video.post-anime {
   background-color: #d8d8d8;
   opacity: 0.9;
+}
+#stream-wrapper .thema .voisin.atmosphere-video.post-anime .field-name-field-video,
+#stream-wrapper .thema .voisin.contrib-video.post-anime .field-name-field-video {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  opacity: 0;
 }
 #stream-wrapper .thema .voisin.atmosphere-image {
   width: 680px;
@@ -492,16 +514,7 @@ body {
 #stream-wrapper .thema .voisin.contrib-txt .field-name-field-texte {
   padding: 1em;
 }
-#stream-wrapper .thema .voisin.contrib-video {
-  width: 680px;
-  height: 498px;
-  background-color: #2f62ff;
-}
-#stream-wrapper .thema .voisin.contrib-video.post-anime {
-  background-color: #d8d8d8;
-  opacity: 0.9;
-}
-#stream-wrapper .thema .voisin.contrib-son {
+#stream-wrapper .thema .voisin.contrib-audio {
   height: 0;
 }
 #stream-wrapper .thema .voisin.contrib-image {

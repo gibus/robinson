@@ -57,7 +57,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function newThema(){
-    console.log("newThema")
+    //console.log("newThema")
     // move sitename in front
     $('#site-name', _$stream_wrapper)
       .notAnime()
@@ -83,7 +83,12 @@ Drupal.behaviors.init_theme = function (context) {
 
     thema.$
       .on('ready', playThema)
-      .on('finished', newThema);
+      // .on('finished', newThema);
+      .on('finished', reload);
+  };
+
+  function reload(){
+    location.reload(true);
   };
 
   function playThema(event){
@@ -95,14 +100,19 @@ Drupal.behaviors.init_theme = function (context) {
   * Thema()
   */
   function Thema(){
-    console.log('- - - - - new Thema - - - - ');
+    //console.log('- - - - - - - - - new Thema - - - - - - - -');
     
-    var thema = this;
+    // var thema = this;
+
     this.$ = $(this);
+    this.anime_voisins_buffer = 0;
+
     /* PROTOTYPES */
     if(typeof Thema.prototype.initialized == "undefined"){
       
       Thema.prototype.ajaxLoad = function(){
+        var thema = this;
+    
         $.getJSON(Drupal.settings.basePath+Drupal.settings.pathPrefix+'ajax/robinson/thema', 
           // {'types':types,'current_path':document.location.href, 'keys':keys, 'searchmode':searchmode},
           function(json){
@@ -111,7 +121,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.ajaxLoaded = function(datas){
-        console.log('Thema :: loaded | datas', datas);
+        //console.log('Thema :: loaded | datas', datas);
 
         this.thema_id = _thema_loaded = _thema_loaded+1;
 
@@ -119,12 +129,14 @@ Drupal.behaviors.init_theme = function (context) {
           this[index] = datas[index];
 
         this.initGraphics();
-        this.loadVoisins();
         this.listenVideo();
+        (function(thema){
+          setTimeout(function(){thema.loadVoisins();}, 10000);
+        }(this));
       };
 
       Thema.prototype.initGraphics = function(){
-        console.log('Thema :: initGraphics');
+        //console.log('Thema :: initGraphics');
         $('<div>')
           .attr('id', 'thema-'+this.thema_id)
           .addClass('thema')
@@ -141,20 +153,27 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.loadVoisins = function(){
-        console.log('Thema :: loadVoisin');
+        //console.log('Thema :: loadVoisin');
         
         this.voisins_loaded = 0;
          
         if(this.list_voisins !== null){
-          this.voisin_len = this.list_voisins.length;
-          this.voisins = {};
-
-          var vid;
+          this.voisins_len = this.list_voisins.length;
+          this.voisins = {
+            flat:[],
+            video:[],
+            audio:[],
+            image:[],
+            txt:[],
+            discursif:[]
+          };
+          
+          var thema = this, voisin, vid;
           for(index in this.list_voisins){
-            var vid = this.list_voisins[index].target_id; 
-            this.voisins[vid] = new Voisin(this, vid);
-            this.voisins[vid].$.on('loaded', function(event) {
-              thema.onVoisinLoaded();
+            vid = this.list_voisins[index].target_id; 
+            voisin = new Voisin(this, vid);
+            voisin.$.on('loaded', function(event) {
+              thema.onVoisinLoaded(this);
             });
           }
 
@@ -164,81 +183,127 @@ Drupal.behaviors.init_theme = function (context) {
         }
       };
 
-      Thema.prototype.onVoisinLoaded = function(){
+      Thema.prototype.onVoisinLoaded = function(voisin){
         this.voisins_loaded ++;
+        //console.log('Thema :: onVoisinLoaded | voisin', voisin);
+
+        this.voisins.flat.push(voisin);
+
+        switch(voisin.viewmode){
+          case "atmosphere_video":
+          case "contrib_video":
+            this.voisins.video.push(voisin);
+            break;
+          case "atmosphere_audio":
+          case "contrib_audio":
+            this.voisins.audio.push(voisin);
+            break;
+          case "atmosphere_image":
+          case "contrib_image":
+            this.voisins.image.push(voisin);
+            break;
+          case "contrib_txt":
+            this.voisins.txt.push(voisin);
+          case "discursif":
+            this.voisins.discursif.push(voisin);
+            break;            
+        }
 
         if(this.voisins_loaded >= this.voisins_len)
           this.bufferizeAnimeVoisins();
       };
-
-      /*
-      https://vimeo.com/forums/topic:37800
-      http://jsfiddle.net/bdougherty/UTt2K/
-      http://kevinchevallier.com/vimeo-froogaloop-ajax/
-      http://juanfra.me/2012/08/flexslider-multiple-videos-v2/
-      http://mikeheavers.com/main/code-item/a_simpler_vimeo_froogaloop_javascript_api_example
-      https://developer.vimeo.com/player/js-api#universal-with-postmessage
-      http://player.vimeo.com/playground
-      http://jsfiddle.net/nerdess/D5fD4/3/
-      */
+    
       Thema.prototype.listenVideo = function(){
+        /*
+        https://vimeo.com/forums/topic:37800
+        http://jsfiddle.net/bdougherty/UTt2K/
+        http://kevinchevallier.com/vimeo-froogaloop-ajax/
+        http://juanfra.me/2012/08/flexslider-multiple-videos-v2/
+        http://mikeheavers.com/main/code-item/a_simpler_vimeo_froogaloop_javascript_api_example
+        https://developer.vimeo.com/player/js-api#universal-with-postmessage
+        http://player.vimeo.com/playground
+        http://jsfiddle.net/nerdess/D5fD4/3/
+        */
+        var thema = this;
         this.$viframe = $('iframe', this.$thema);
         this.$viframe.load(function(){
-          $f(this).addEvent('ready', thema.onVideoReady);
+          $f(this).addEvent('ready', function(id){thema.onVideoReady(id);});
         });
       };
   
       Thema.prototype.onVideoReady = function(id) {
-        console.log('Thema :: onVideoReady : id = '+id);
+        //console.log('Thema :: onVideoReady : id = '+id);
+        // console.log('thema', thema);
+        var thema = this;
+
         this.video_id = id;
 
         $f(id)
-          .addEvent('play', thema.onVideoPlay)
-          .addEvent('playProgress', thema.onVideoPlayProgress)
-          .addEvent('pause', thema.onVideoPause)
-          .addEvent('finish', thema.onVideoFinished);
-        
-        (function(id){
-          setTimeout(function(){$f(id).api('play');}, 5000);
-        }(id));
-
+          .addEvent('play', function(id){thema.onVideoPlay(id);})
+          .addEvent('playProgress', function(data, id){thema.onVideoPlayProgress(data, id);})
+          .addEvent('pause', function(id){thema.onVideoPause(id);})
+          .addEvent('finish', function(id){thema.onVideoFinished(id);});
+  
         this.$.trigger('ready');
       };  
 
       Thema.prototype.onVideoPlay = function(id){
-        console.log('Thema :: onVideoPlay : id = '+id);
+        //console.log('Thema :: onVideoPlay : id = '+id);
       };
 
       Thema.prototype.onVideoPause = function(id){
-        console.log('Thema :: onVideoPause : id = '+id);
+        //console.log('Thema :: onVideoPause : id = '+id);
       };
 
       Thema.prototype.onVideoPlayProgress = function(data, id){
         // console.log('Thema :: onVideoPlayProgress | id = '+id+' | data = ',data);
-        // if(data.seconds >= 15){
-        //   $f(id).api('pause');
-        //   onThemaVideoFinish(id);
-        // }
+        
+        if(typeof this.video_duration == "undefined"){
+          this.video_duration = data.duration;
+          this.bufferizeAnimeVoisins();
+        }
+
+        // wait to know the video duration before launch voisin
+        // if(this.anime_voisins_buffer < 3)
+        //   this.bufferizeAnimeVoisins();
+
+        if(data.seconds >= 120){
+          this.videoPause();
+          this.onVideoFinished(id);
+        }
+      };
+
+      Thema.prototype.videoPlay = function(){
+        $f(this.video_id).api('play');
+      };
+
+      Thema.prototype.videoPause = function(){
+        $f(this.video_id).api('pause');
       };
 
       Thema.prototype.onVideoFinished = function(id){
-        console.log('Thema :: onVideoFinished | id = '+id);
+        //console.log('Thema :: onVideoFinished | id = '+id);
         
         this.$viframe.parents('.content').postAnime();
       
         (function(id){
           setTimeout(function(){
-            console.log('Thema :: unload vimeo '+id);
+            //console.log('Thema :: unload vimeo '+id);
             $f(id).api('unload');
           }, 4000);      
         }(id));
 
-        //launchNewThema();
         this.$.trigger('finished');
       };
 
       Thema.prototype.startAnime = function(){
-        console.log("Thema :: startAnime");
+        //console.log("Thema :: startAnime");
+
+        // (function(id){
+        //   setTimeout(function(){$f(id).api('play');}, 5000);
+        // }(id));
+        
+        this.videoPlay();
 
         var elmts = new Array();
         elmts.push($('.thema-title', this.$thema));
@@ -264,17 +329,80 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.bufferizeAnimeVoisins = function(){
-        this.anime_voisins_ready ++;
-        if(this.anime_voisins_ready == 2){
-          this.startAnimeVoisins($thema);
-        }
+        //console.log('Thema :: bufferizeAnimeVoisins', this.voisins);
+        this.anime_voisins_buffer ++;
+        if(this.anime_voisins_buffer == 3)
+          this.startAnimeVoisins();
       };
 
       Thema.prototype.startAnimeVoisins = function(){
-        // set delay for animation
-        // function anime
-        for (var i = 0; i < this.voisins.length; i++) {
-          this.voisins[i].startAnime(i);
+        //console.log("Thema :: startAnimeVoisins", this.voisins);
+        
+        // txt
+        this.startAnimeTxt();
+        // images
+        this.startAnimeImage();
+        // videos
+        this.startAnimeVideo();
+        // sons
+        this.startAnimeAudio();
+
+        // var i = 0;
+        // for (index in this.voisins.flat) {
+        //   this.voisins.flat[index].startAnime(i);
+        //   i++;
+        // };
+      };
+
+      Thema.prototype.startAnimeTxt = function(){
+        var delay = this.video_duration*1000 / this.voisins.txt.length; 
+        for (index in this.voisins.txt) {
+          (function(thema, delay, index){
+            
+            setTimeout(function(){
+              thema.voisins.txt[index].startAnime();
+            }, delay*index + (-1000+Math.random()*2000));
+
+          }(this, delay, index));
+        }
+      };
+
+      Thema.prototype.startAnimeImage = function(){
+        var delay = this.video_duration*1000 / this.voisins.image.length; 
+        for (index in this.voisins.image) {
+          (function(thema, delay, index){
+            
+            setTimeout(function(){
+              thema.voisins.image[index].startAnime();
+            }, delay*index + (-1000+Math.random()*2000));
+
+          }(this, delay, index));
+        };
+      };
+
+      Thema.prototype.startAnimeVideo = function(){
+        var delay = this.video_duration*1000 / this.voisins.video.length; 
+        for (index in this.voisins.video) {
+          (function(thema, delay, index){
+            
+            setTimeout(function(){
+              thema.voisins.video[index].startAnime();
+            }, delay*index + (-1000+Math.random()*2000));
+
+          }(this, delay, index));
+        };
+      };
+
+      Thema.prototype.startAnimeAudio = function(){
+        var delay = this.video_duration*1000 / this.voisins.audio.length; 
+        for (index in this.voisins.audio) {
+          (function(thema, delay, index){
+            
+            setTimeout(function(){
+              thema.voisins.audio[index].startAnime();
+            }, delay*index + (-1000+Math.random()*2000));
+
+          }(this, delay, index));
         };
       };
 
@@ -289,7 +417,7 @@ Drupal.behaviors.init_theme = function (context) {
   * Voisin()
   */
   function Voisin(thema, nid){
-    console.log('- - - - new Voisin - - - -');
+    // console.log('- - - - new Voisin '+nid+' - - - -');
 
     var voisin = this;
     this.$ = $(this);
@@ -300,14 +428,18 @@ Drupal.behaviors.init_theme = function (context) {
     if(typeof Voisin.prototype.initialized == "undefined"){
 
       Voisin.prototype.ajaxLoad = function(){
+        var voisin = this;
+
         $.getJSON(Drupal.settings.basePath+Drupal.settings.pathPrefix+'ajax/robinson/voisin', 
-          {'id':nid},
+          {'id':this.nid},
           function(json){
             voisin.ajaxLoaded(json);
         });
       };
 
       Voisin.prototype.ajaxLoaded = function(datas){
+        // console.log('Voisin :: ajaxLoaded',datas);
+
         for(index in datas)
           this[index] = datas[index];
 
@@ -321,14 +453,14 @@ Drupal.behaviors.init_theme = function (context) {
           case "atmosphere_audio":
           case "contrib_audio":
             this.initAudio();
-            break;          
+            break;
+          default:
+            this.$.trigger('loaded');            
         }
-
-        this.$.trigger('loaded');
       };
 
       Voisin.prototype.initGraphics = function(){
-        console.log('Voisin :: initGraphics');
+        // console.log('Voisin :: initGraphics '+this.nid, this);
 
         var $voisin = $(this.rendered_voisin)   
           .appendTo(this.thema.$thema)
@@ -347,65 +479,123 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.initVideo = function(){
-        this.$viframe = $('iframe', $voisin);
+        var voisin = this;
+        this.$viframe = $('iframe', this.$voisin);
         this.$viframe.load(function(){
-          $f(this).addEvent('ready', voisin.onVideoReady);
+          $f(this).addEvent('ready', function(id){voisin.onVideoReady(id);});
         });        
       };
 
       Voisin.prototype.onVideoReady = function(id) {
-        console.log('Voisins :: onVideoReady : id = '+id);         
+        //console.log('Voisins :: onVideoReady : id = '+id);         
+        var voisin = this;
         this.video_id = id;
 
         $f(id)
-          .addEvent('play', voisin.onVideoPlay)
-          .addEvent('playProgress', voisin.onVideoPlayProgress)
-          .addEvent('pause', voisin.onVideoPause)
-          .addEvent('finish', voisin.onVideoFinished);
+          .addEvent('play', function(id){voisin.onVideoPlay(id);})
+          .addEvent('playProgress', function(data, id){voisin.onVideoPlayProgress(data, id);})
+          .addEvent('pause', function(id){voisin.onVideoPause(id);})
+          .addEvent('finish', function(id){voisin.onVideoFinished(id);});
+
+        this.$.trigger('loaded');
       };
 
-      Voisin.prototype.playVideo = function($voisin){
-        var $viframe = $('iframe', $voisin);
-        var id = $viframe.attr('id');
+      Voisin.prototype.playVideo = function(){
+        // var $viframe = $('iframe', $voisin);
+        // var id = $viframe.attr('id');
 
-        (function(id){
-          setTimeout(function(){$f(id).api('play');}, 500);
-        }(id));
+        // (function(id){
+          // setTimeout(function(){$f(id).api('play');}, 500);
+        // }(id));
+
+        $f(this.video_id).api('play');
       };
 
-      Voisin.prototype.onVimeoPlay = function(id){
-        console.log('Voisin :: onVimeoPlay : id = '+id);
+      Voisin.prototype.unloadVideo = function(){
+        // var $viframe = $('iframe', $voisin);
+        // var id = $viframe.attr('id');
+
+        // (function(id){
+          // setTimeout(function(){$f(id).api('play');}, 500);
+        // }(id));
+
+        $f(this.video_id).api('unload');
       };
 
-      Voisin.prototype.onVimeoPause = function(id){
-        console.log('Voisin :: onVimeoPause : id = '+id);
+      Voisin.prototype.onVideoPlay = function(id){
+        //console.log('Voisin :: onVideoPlay : id = '+id);
       };
 
-      Voisin.prototype.onVimeoPlayProgress = function(data, id){
-        // console.log('Voisin :: onVimeoPlayProgress | id = '+id+' | data = ',data);
+      Voisin.prototype.onVideoPause = function(id){
+        //console.log('Voisin :: onVideoPause : id = '+id);
+      };
+
+      Voisin.prototype.onVideoPlayProgress = function(data, id){
+        // console.log('Voisin :: onVideoPlayProgress | id = '+id+' | data = ',data);
         // if(data.seconds >= 15){
         //   $f(id).api('pause');
         //   onThemaVideoFinish(id);
         // }
       };
 
-      Voisin.prototype.onVimeoFinished = function(id){
-        console.log('onVimeoFinished | id = '+id);
+      Voisin.prototype.onVideoFinished = function(id){
+        //console.log('Voisin :: onVideoFinished | id = '+id);
         // onVideoFinish(id);
+        this.$.trigger('video_finished');
       };
 
       Voisin.prototype.initAudio = function(){
         // TODO souncloud player
+        this.$.trigger('loaded');
       };
 
-      Voisin.prototype.startAnime = function(){
-        console.log('Voisin :: startAnime | i = '+i);
-        
-        (function(i, voisin){
-          setTimeout(function(){
-            voisin.$voisin.preAnime();
-          }, 5000*(i+1) + Math.random()*5000);
-        })(i, this);
+      Voisin.prototype.startAnime = function(){ // i
+        //console.log('Voisin :: startAnime '+this.viewmode);
+
+        switch(this.viewmode){
+          case "atmosphere_video":
+          case "contrib_video":
+            this.startAnimeVideo();
+            break;
+          case "atmosphere_audio":
+          case "contrib_audio":
+            // this.voisins.audio.push(voisin);
+            break;
+          case "atmosphere_image":
+          case "contrib_image":
+            this.startAnimeImage();
+            break;
+          case "contrib_txt":
+            this.startAnimeTxt();
+          case "discursif":
+            // this.voisins.discursif.push(voisin);
+            break;            
+        }
+      };
+
+      Voisin.prototype.startAnimeTxt = function(){
+        this.$voisin.preAnime();
+        (function(voisin){
+          setTimeout(function(){voisin.$voisin.postAnime()}, 5000+Math.random()*5000);
+        }(this));
+      };
+
+      Voisin.prototype.startAnimeImage = function(){
+        this.$voisin.preAnime();
+        (function(voisin){
+          setTimeout(function(){voisin.$voisin.postAnime()}, 3000+Math.random()*10000);
+        }(this));
+      };
+
+      Voisin.prototype.startAnimeVideo = function(){
+        this.playVideo();
+        this.$voisin.preAnime();
+        (function(voisin){
+          voisin.$.on('video_finished', function(){
+            voisin.videoUnload();
+            voisin.$voisin.postAnime();
+          });  
+        }(this));
       };
 
       Voisin.prototype.initialized = true;
@@ -417,7 +607,7 @@ Drupal.behaviors.init_theme = function (context) {
 
   /* GRID */
   function setupGrid(){
-    console.log('setupGrid');
+    //console.log('setupGrid');
     _main_display_zone.top = ($(window).height() - _main_display_zone.h)/2;
     _main_display_zone.left = ($(window).width() - _main_display_zone.w)/2;
 
@@ -490,6 +680,7 @@ Drupal.behaviors.init_theme = function (context) {
       .removeClass('post-anime');
   };
 
+  // preAnime() is automaticly folllowed by anime()
   function preAnime($elmt){
     $elmt
       .removeClass("not-anime")
