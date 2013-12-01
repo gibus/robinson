@@ -267,9 +267,9 @@ Drupal.behaviors.init_theme = function (context) {
         // if(this.anime_voisins_buffer < 3)
         //   this.bufferizeAnimeVoisins();
 
-        if(data.seconds >= 120){
-          this.videoPause();
-          this.onVideoFinished(id);
+        // if(data.seconds >= 120){
+        //   this.videoPause();
+        //   this.onVideoFinished(id);
         }
       };
 
