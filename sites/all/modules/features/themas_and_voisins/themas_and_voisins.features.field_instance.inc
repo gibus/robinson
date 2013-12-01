@@ -62,6 +62,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -202,6 +208,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -351,6 +363,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -489,6 +507,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -612,6 +636,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -712,6 +742,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -862,6 +898,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -993,6 +1035,13 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
+        'label' => 'hidden',
+        'module' => 'link',
+        'settings' => array(),
+        'type' => 'link_plain',
         'weight' => 0,
       ),
       'voisin_contrib_image' => array(
@@ -1142,6 +1191,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1275,6 +1330,12 @@ function themas_and_voisins_field_default_field_instances() {
           'video_style' => 'voisin',
         ),
         'type' => 'video_embed_field',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'voisin_contrib_image' => array(
@@ -1425,6 +1486,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'hidden',
         'settings' => array(),
@@ -1549,6 +1616,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
