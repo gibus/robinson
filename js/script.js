@@ -454,11 +454,11 @@ Drupal.behaviors.init_theme = function (context) {
           case "contrib_audio":
             this.initAudio();
             break;
-          // default:
-            // this.$.trigger('loaded');            
+          default:
+            this.$.trigger('loaded');            
         }
 
-        this.$.trigger('loaded');
+        // this.$.trigger('loaded');
         
       };
 
@@ -482,6 +482,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.initVideo = function(){
+        console.log("Voisin :: initVideo");
         var voisin = this;
         this.$viframe = $('iframe', this.$voisin);
         this.$viframe.load(function(){
@@ -500,7 +501,7 @@ Drupal.behaviors.init_theme = function (context) {
           .addEvent('pause', function(id){voisin.onVideoPause(id);})
           .addEvent('finish', function(id){voisin.onVideoFinished(id);});
 
-        // this.$.trigger('loaded');
+        this.$.trigger('loaded');
       };
 
       Voisin.prototype.playVideo = function(){
