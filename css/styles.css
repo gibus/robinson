@@ -479,8 +479,7 @@ body {
   height: 498px;
 }
 #stream-wrapper .thema .voisin.discursif {
-  width: 680px;
-  height: 498px;
+  height: 0;
 }
 #stream-wrapper .thema .voisin.contrib-txt {
   width: 340px;
