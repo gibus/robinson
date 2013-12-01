@@ -130,9 +130,9 @@ Drupal.behaviors.init_theme = function (context) {
 
         this.initGraphics();
         this.listenVideo();
-        (function(thema){
-          setTimeout(function(){thema.loadVoisins();}, 10000);
-        }(this));
+        // (function(thema){
+        //   setTimeout(function(){thema.loadVoisins();}, 10000);
+        // }(this));
       };
 
       Thema.prototype.initGraphics = function(){
@@ -243,7 +243,9 @@ Drupal.behaviors.init_theme = function (context) {
           .addEvent('playProgress', function(data, id){thema.onVideoPlayProgress(data, id);})
           .addEvent('pause', function(id){thema.onVideoPause(id);})
           .addEvent('finish', function(id){thema.onVideoFinished(id);});
-  
+        
+        this.loadVoisins();
+
         this.$.trigger('ready');
       };  
 
