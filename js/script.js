@@ -185,7 +185,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Thema.prototype.onVoisinLoaded = function(voisin){
         this.voisins_loaded ++;
-        //console.log('Thema :: onVoisinLoaded | voisin', voisin);
+        console.log('Thema :: onVoisinLoaded | voisin', voisin);
 
         this.voisins.flat.push(voisin);
 
@@ -329,14 +329,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.bufferizeAnimeVoisins = function(){
-        //console.log('Thema :: bufferizeAnimeVoisins', this.voisins);
+        console.log('Thema :: bufferizeAnimeVoisins', this.voisins);
         this.anime_voisins_buffer ++;
         if(this.anime_voisins_buffer == 3)
           this.startAnimeVoisins();
       };
 
       Thema.prototype.startAnimeVoisins = function(){
-        //console.log("Thema :: startAnimeVoisins", this.voisins);
+        console.log("Thema :: startAnimeVoisins", this.voisins);
         
         // txt
         this.startAnimeTxt();
