@@ -156,7 +156,7 @@ Drupal.behaviors.init_theme = function (context) {
         //console.log('Thema :: loadVoisin');
         
         this.voisins_loaded = 0;
-         
+
         if(this.list_voisins !== null){
           this.voisins_len = this.list_voisins.length;
           this.voisins = {
@@ -487,7 +487,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.onVideoReady = function(id) {
-        //console.log('Voisins :: onVideoReady : id = '+id);         
+        console.log('Voisins :: onVideoReady : id = '+id);         
         var voisin = this;
         this.video_id = id;
 
