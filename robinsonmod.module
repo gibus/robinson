@@ -56,8 +56,8 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['voisin_contrib_video'] = $base + array(
     'label' => t('Voisin Contribution video')
   );
-  $entity_info['node']['view modes']['voisin_contrib_son'] = $base + array(
-    'label' => t('Voisin Contribution son')
+  $entity_info['node']['view modes']['voisin_contrib_audio'] = $base + array(
+    'label' => t('Voisin Contribution audio')
   );
   $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
     'label' => t('Voisin Contribution image')

@@ -59,10 +59,8 @@ function robinsonmod_ajax_thema(){
     }
   }
 
-  $rep['thema'] = array(
-    "nid"=>$thema_node->nid,
-    "voisins"=>$voisins
-  ); 
+  $rep['nid'] = $thema_node->nid;
+  $rep["list_voisins"] = $voisins;
   
   $viewmode = "stream";
   $node_view = node_view($thema_node, $viewmode);
@@ -111,7 +109,7 @@ function robinsonmod_ajax_voisin(){
     
     switch ($type) {
       case 11:
-        $viewmode = "voisin_atmosphere_son";
+        $viewmode = "voisin_atmosphere_audio";
         break;
       case 7:
         $viewmode = "voisin_atmosphere_image";
@@ -126,7 +124,7 @@ function robinsonmod_ajax_voisin(){
         $viewmode = "voisin_contrib_image";
         break;
       case 2:
-        $viewmode = "voisin_contrib_son";
+        $viewmode = "voisin_contrib_audio";
         break;
       case 9:
         $viewmode = "voisin_contrib_txt";
@@ -139,6 +137,8 @@ function robinsonmod_ajax_voisin(){
         break;
     }
     
+    $rep['viewmode'] = str_replace('voisin_', '', $viewmode);
+
     $node_view = node_view($voisin_node, $viewmode);
     $rep['rendered_voisin'] =   drupal_render($node_view);
   }
