@@ -44,7 +44,7 @@ function robinsonmod_ajax_thema(){
   $voisins = $thema_node->field_ref_voisin['und'];
 
   # add randomly more voisins to fit to 20
-  $min_voisins = 20;
+  $min_voisins = 10;
   if(count($voisins) < $min_voisins){
     $voisins_query = new VoisinEntityFieldQuery;
     $all_voisins = $voisins_query->execute();
