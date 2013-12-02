@@ -88,7 +88,9 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function reload(){
-    location.reload(true);
+    setTimeout(function(){
+      location.reload(true);  
+    }, 15*1000);
   };
 
   function playThema(event){
@@ -262,6 +264,7 @@ Drupal.behaviors.init_theme = function (context) {
         
         if(typeof this.video_duration == "undefined"){
           this.video_duration = data.duration;
+          this.thema_duration = data.duration + 30;
           this.bufferizeAnimeVoisins();
         }
 
@@ -358,7 +361,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeTxt = function(){
-        var delay = this.video_duration*1000 / this.voisins.txt.length; 
+        var delay = this.thema_duration*1000 / this.voisins.txt.length; 
         for (index in this.voisins.txt) {
           (function(thema, delay, index){
             
@@ -371,7 +374,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeImage = function(){
-        var delay = this.video_duration*1000 / this.voisins.image.length; 
+        var delay = this.thema_duration*1000 / this.voisins.image.length; 
         for (index in this.voisins.image) {
           (function(thema, delay, index){
             
@@ -384,21 +387,22 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeVideo = function(){
-        console.log('startAnimeVideo');
-        // var delay = this.video_duration*1000 / this.voisins.video.length; 
-        // for (index in this.voisins.video) {
-        //   (function(thema, delay, index){
+        console.log('Thema :: startAnimeVideo');
+        var delay = this.thema_duration*1000 / this.voisins.video.length; 
+        for (index in this.voisins.video) {
+          (function(thema, delay, index){
             
-        //     setTimeout(function(){
-        //       thema.voisins.video[index].startAnime();
-        //     }, delay*index + (-1000+Math.random()*2000));
+            setTimeout(function(){
+              thema.voisins.video[index].startAnime();
+            }, delay*index + (-1000+Math.random()*2000));
 
-        //   }(this, delay, index));
-        // };
-        this.voisin_video_index ++;
-        this.voisins.video[this.voisin_video_index].startAnime();
-        var thema = this;
-        this.voisins.video[this.voisin_video_index].$.on('video_finished', function(){thema.startAnimeVideo();});
+          }(this, delay, index));
+        };
+        
+        // this.voisin_video_index ++;
+        // this.voisins.video[this.voisin_video_index].startAnime();
+        // var thema = this;
+        // this.voisins.video[this.voisin_video_index].$.on('video_finished', function(){thema.startAnimeVideo();});
       };
 
       Thema.prototype.startAnimeAudio = function(){

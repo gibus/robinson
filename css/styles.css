@@ -513,6 +513,7 @@ body {
 }
 #stream-wrapper .thema .voisin.contrib-txt .field-name-field-texte {
   padding: 1em;
+  font-size: 24px;
 }
 #stream-wrapper .thema .voisin.contrib-audio {
   height: 0;
