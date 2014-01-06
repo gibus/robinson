@@ -1704,21 +1704,266 @@ function themas_and_voisins_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_discursif'
+  $field_instances['taxonomy_term-voc_type_voisin-field_discursif'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_discursif',
+    'label' => 'Discursif',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_duree_mini'
+  $field_instances['taxonomy_term-voc_type_voisin-field_duree_mini'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => array(
+      0 => array(
+        'value' => 15,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'La durée d\'apparition minimal',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'hms_field',
+        'settings' => array(
+          'format' => 'h:mm',
+          'leading_zero' => TRUE,
+        ),
+        'type' => 'hms_default_formatter',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_duree_mini',
+    'label' => 'Durée mini',
+    'required' => 0,
+    'settings' => array(
+      'default_description' => 1,
+      'format' => 'm:ss',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'hms_field',
+      'settings' => array(),
+      'type' => 'hms_default_widget',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_post_pause'
+  $field_instances['taxonomy_term-voc_type_voisin-field_post_pause'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Un temps de pause arprès la fin du voisin ',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'hms_field',
+        'settings' => array(
+          'format' => 'h:mm',
+          'leading_zero' => TRUE,
+        ),
+        'type' => 'hms_default_formatter',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_post_pause',
+    'label' => 'Attente en fin de diffusion ( min — max )',
+    'required' => 0,
+    'settings' => array(
+      'default_description' => 1,
+      'format' => 'm:ss',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'hms_field',
+      'settings' => array(),
+      'type' => 'hms_default_widget',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_proba'
+  $field_instances['taxonomy_term-voc_type_voisin-field_proba'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => array(
+      0 => array(
+        'value' => 50,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => ' ( n / 100 )',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_proba',
+    'label' => 'Fréquence d\'apparition',
+    'required' => 0,
+    'settings' => array(
+      'max' => 100,
+      'min' => 1,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_taille'
+  $field_instances['taxonomy_term-voc_type_voisin-field_taille'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_taille',
+    'label' => 'Taille ( mini — maxi )',
+    'required' => 0,
+    'settings' => array(
+      'max' => 5,
+      'min' => 1,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-voc_type_voisin-field_type_media'
+  $field_instances['taxonomy_term-voc_type_voisin-field_type_media'] = array(
+    'bundle' => 'voc_type_voisin',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_type_media',
+    'label' => 'Type media',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 1,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
+  t(' ( n / 100 )');
+  t('Attente en fin de diffusion ( min — max )');
   t('Citation');
   t('Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
 ');
   t('Crédits');
   t('Date de l\'entretien ');
+  t('Discursif');
+  t('Durée mini');
   t('Entrer l\'url de la video ( ex. http://vimeo.com/12345679 )');
   t('Est le voisin de ');
+  t('Fréquence d\'apparition');
   t('La date de l’entretien permettra par la suite de grouper par séances.');
+  t('La durée d\'apparition minimal');
   t('Les crédits (affiché en fin de programme) peut contenir la mini-biographie de l’auteur dans le cas d’une citation.');
   t('Son');
+  t('Taille ( mini — maxi )');
   t('Title');
   t('Titre video ( lettrage )');
   t('Type de voisin');
+  t('Type media');
+  t('Un temps de pause arprès la fin du voisin ');
   t('Video');
   t('Vidéo de l\'entretien');
   t('Voisins');

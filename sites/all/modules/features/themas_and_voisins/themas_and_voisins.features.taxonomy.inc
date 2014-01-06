@@ -9,13 +9,23 @@
  */
 function themas_and_voisins_taxonomy_default_vocabularies() {
   return array(
+    'type_de_media' => array(
+      'name' => 'Type de média',
+      'machine_name' => 'type_de_media',
+      'description' => 'Le type de media d\'un voisin',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => -9,
+      'language' => 'und',
+      'i18n_mode' => 0,
+    ),
     'voc_type_voisin' => array(
-      'name' => 'Type de voisin',
+      'name' => 'Comportement',
       'machine_name' => 'voc_type_voisin',
       'description' => '',
       'hierarchy' => 0,
       'module' => 'taxonomy',
-      'weight' => 0,
+      'weight' => -8,
       'language' => 'und',
       'i18n_mode' => 0,
     ),
