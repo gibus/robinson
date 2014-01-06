@@ -1437,6 +1437,104 @@ function themas_and_voisins_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-voisin-field_voinsin_media'
+  $field_instances['node-voisin-field_voinsin_media'] = array(
+    'bundle' => 'voisin',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 7,
+      ),
+      'stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_atmosphere_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_txt' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_video' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_discursif' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_voinsin_media',
+    'label' => 'Type media',
+    'required' => 1,
+    'settings' => array(
+      'behaviors' => array(
+        'taxonomy-index' => array(
+          'status' => TRUE,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'node-voisin-field_voisin_credit'
   $field_instances['node-voisin-field_voisin_credit'] = array(
     'bundle' => 'voisin',
@@ -1568,7 +1666,7 @@ function themas_and_voisins_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -1690,7 +1788,7 @@ function themas_and_voisins_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_voisin_type',
-    'label' => 'Type de voisin',
+    'label' => 'Comportement',
     'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1700,7 +1798,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -1945,6 +2043,7 @@ function themas_and_voisins_field_default_field_instances() {
   t(' ( n / 100 )');
   t('Attente en fin de diffusion ( min — max )');
   t('Citation');
+  t('Comportement');
   t('Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
 ');
   t('Crédits');
@@ -1961,7 +2060,6 @@ function themas_and_voisins_field_default_field_instances() {
   t('Taille ( mini — maxi )');
   t('Title');
   t('Titre video ( lettrage )');
-  t('Type de voisin');
   t('Type media');
   t('Un temps de pause arprès la fin du voisin ');
   t('Video');

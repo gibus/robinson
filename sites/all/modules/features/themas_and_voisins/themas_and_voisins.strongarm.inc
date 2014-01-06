@@ -358,7 +358,7 @@ function themas_and_voisins_strongarm() {
     ),
     'additional_settings' => array(
       'region' => 'main',
-      'weight' => '6',
+      'weight' => '7',
       'has_required' => FALSE,
       'title' => 'Vertical tabs',
       'hidden' => 0,
@@ -372,9 +372,9 @@ function themas_and_voisins_strongarm() {
     ),
     'field_voisin_type' => array(
       'region' => 'main',
-      'weight' => '1',
+      'weight' => '2',
       'has_required' => TRUE,
-      'title' => 'Type de voisin',
+      'title' => 'Comportement',
       'hidden' => 0,
     ),
     'field_voisin_credit' => array(
@@ -386,21 +386,21 @@ function themas_and_voisins_strongarm() {
     ),
     'field_video' => array(
       'region' => 'main',
-      'weight' => '2',
+      'weight' => '3',
       'has_required' => FALSE,
       'title' => 'Video',
       'hidden' => 0,
     ),
     'field_son' => array(
       'region' => 'main',
-      'weight' => '4',
+      'weight' => '5',
       'has_required' => FALSE,
       'title' => 'Son',
       'hidden' => 0,
     ),
     'field_image' => array(
       'region' => 'main',
-      'weight' => '3',
+      'weight' => '4',
       'has_required' => FALSE,
       'title' => 'image',
       'hidden' => 0,
@@ -414,10 +414,16 @@ function themas_and_voisins_strongarm() {
     ),
     'field_texte' => array(
       'region' => 'main',
-      'weight' => '5',
+      'weight' => '6',
       'has_required' => FALSE,
       'title' => 'Citation',
       'hidden' => 0,
+    ),
+    'field_voinsin_media' => array(
+      'region' => 'main',
+      'weight' => '1',
+      'has_required' => TRUE,
+      'title' => 'Type media',
     ),
   );
   $export['nodeformscols_field_placements_voisin_default'] = $strongarm;
