@@ -38,29 +38,43 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['stream'] = $base + array(
     'label' => t('Stream')
   );
+  $entity_info['node']['view modes']['voisin_audio'] = $base + array(
+    'label' => t('Voisin audio')
+  );
+  $entity_info['node']['view modes']['voisin_video'] = $base + array(
+    'label' => t('Voisin video')
+  );
+  $entity_info['node']['view modes']['voisin_image'] = $base + array(
+    'label' => t('Voisin image')
+  );
+  $entity_info['node']['view modes']['voisin_text'] = $base + array(
+    'label' => t('Voisin text')
+  );
+
+  /* these following view modes are deprecated, they should be removed */
   $entity_info['node']['view modes']['voisin_atmosphere_audio'] = $base + array(
-    'label' => t('Voisin Atmosphere audio')
+    'label' => t('Voisin Atmosphere audio (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_atmosphere_video'] = $base + array(
-    'label' => t('Voisin Atmosphere video')
+    'label' => t('Voisin Atmosphere video (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_atmosphere_image'] = $base + array(
-    'label' => t('Voisin Atmosphere image')
+    'label' => t('Voisin Atmosphere image (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_discursif'] = $base + array(
-    'label' => t('Voisin Discursif (audio)')
+    'label' => t('Voisin Discursif (audio) (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_contrib_txt'] = $base + array(
-    'label' => t('Voisin Contribution text')
+    'label' => t('Voisin Contribution text (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_contrib_video'] = $base + array(
-    'label' => t('Voisin Contribution video')
+    'label' => t('Voisin Contribution video (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_contrib_audio'] = $base + array(
-    'label' => t('Voisin Contribution audio')
+    'label' => t('Voisin Contribution audio (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
-    'label' => t('Voisin Contribution image')
+    'label' => t('Voisin Contribution image (deprecated)')
   );
 }
 
