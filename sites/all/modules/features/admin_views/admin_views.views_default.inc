@@ -237,7 +237,7 @@ function admin_views_views_default_views() {
       'label' => '',
     ),
     'action::node_publish_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -265,7 +265,7 @@ function admin_views_views_default_views() {
       'label' => '',
     ),
     'action::node_unpublish_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -455,23 +455,6 @@ function admin_views_views_default_views() {
     3 => 0,
     4 => 0,
   );
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 'All';
-  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
-  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
-  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
-  $handler->display->display_options['filters']['status']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
-    2 => 0,
-    4 => '4',
-    1 => 0,
-    3 => 0,
-  );
 
   /* Display: Page : all */
   $handler = $view->new_display('page', 'Page : all', 'page');
@@ -579,11 +562,11 @@ function admin_views_views_default_views() {
     t('supprimer'),
     t('Type de voisin'),
     t('Type de voisin (field_voisin_type)'),
-    t('Published'),
     t('Page : all'),
     t('more'),
     t('Block'),
     t('Recent Content'),
+    t('Published'),
     t('Language'),
     t('Translate link'),
     t('Traduire'),
