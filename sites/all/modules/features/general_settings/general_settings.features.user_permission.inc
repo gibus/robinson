@@ -33,6 +33,8 @@ function general_settings_user_default_permissions() {
     'name' => 'participate in workflow',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
       'root' => 'root',
     ),
     'module' => 'workflow_admin_ui',
