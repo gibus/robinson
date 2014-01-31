@@ -308,10 +308,10 @@ function themas_and_voisins_strongarm() {
       'hidden' => 0,
     ),
     'actions' => array(
-      'region' => 'main',
-      'weight' => '5',
+      'region' => 'right',
+      'weight' => '2',
       'has_required' => FALSE,
-      'title' => 'Enregistrer',
+      'title' => 'Save',
       'hidden' => 0,
     ),
     'field_thema_date' => array(
@@ -339,7 +339,20 @@ function themas_and_voisins_strongarm() {
       'region' => 'main',
       'weight' => '1',
       'has_required' => FALSE,
-      'title' => 'Titre ( lettrage )',
+      'title' => 'Titre video ( lettrage )',
+      'hidden' => 0,
+    ),
+    'title_field' => array(
+      'region' => 'main',
+      'weight' => '-5',
+      'has_required' => TRUE,
+      'title' => 'Title',
+    ),
+    'workflow' => array(
+      'region' => 'right',
+      'weight' => '1',
+      'has_required' => FALSE,
+      'title' => 'Change Publication state',
       'hidden' => 0,
     ),
   );
@@ -365,9 +378,9 @@ function themas_and_voisins_strongarm() {
     ),
     'actions' => array(
       'region' => 'right',
-      'weight' => '2',
+      'weight' => '3',
       'has_required' => FALSE,
-      'title' => 'Enregistrer',
+      'title' => 'Save',
       'hidden' => 0,
     ),
     'field_voisin_type' => array(
@@ -419,11 +432,18 @@ function themas_and_voisins_strongarm() {
       'title' => 'Citation',
       'hidden' => 0,
     ),
-    'field_voinsin_media' => array(
+    'field_type_media' => array(
       'region' => 'main',
-      'weight' => '1',
+      'weight' => '3',
       'has_required' => TRUE,
       'title' => 'Type media',
+    ),
+    'workflow' => array(
+      'region' => 'right',
+      'weight' => '2',
+      'has_required' => FALSE,
+      'title' => 'Change Publication state',
+      'hidden' => 0,
     ),
   );
   $export['nodeformscols_field_placements_voisin_default'] = $strongarm;
