@@ -443,6 +443,11 @@ function admin_views_views_default_views() {
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    'all' => 'all',
+    2 => '2',
+    3 => '3',
+  );
   $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
   $handler->display->display_options['filters']['sid']['expose']['label'] = 'Publication';
@@ -455,6 +460,7 @@ function admin_views_views_default_views() {
     3 => 0,
     4 => 0,
   );
+  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
 
   /* Display: Page : all */
   $handler = $view->new_display('page', 'Page : all', 'page');
