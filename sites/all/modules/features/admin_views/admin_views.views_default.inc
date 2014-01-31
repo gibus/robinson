@@ -25,8 +25,11 @@ function admin_views_views_default_views() {
   $handler->display->display_options['title'] = 'Contenu';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'plus';
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'administer nodes';
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    4 => '4',
+  );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
@@ -157,45 +160,65 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
     'action::node_assign_owner_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::node_unpublish_action' => array(
+    'action::workflow_vbo_given_state_action' => array(
       'selected' => 1,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::node_unpublish_by_keyword_action' => array(
+    'action::workflow_vbo_next_state_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::node_save_action' => array(
+    'action::views_bulk_operations_delete_item' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::system_send_email_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
     ),
     'action::views_bulk_operations_script_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+    ),
+    'action::node_make_sticky_action' => array(
+      'selected' => 0,
       'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_make_unsticky_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          '_all_' => '_all_',
+        ),
+      ),
     ),
     'action::views_bulk_operations_argument_selector_action' => array(
       'selected' => 0,
@@ -208,45 +231,59 @@ function admin_views_views_default_views() {
     ),
     'action::node_promote_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
     'action::node_publish_action' => array(
       'selected' => 1,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
     'action::node_unpromote_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::node_make_unsticky_action' => array(
+    'action::node_save_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::views_bulk_operations_delete_item' => array(
+    'action::system_send_email_action' => array(
       'selected' => 0,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
-      'postpone_processing' => 0,
     ),
-    'action::node_make_sticky_action' => array(
-      'selected' => 0,
+    'action::node_unpublish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+    ),
+    'action::node_unpublish_by_keyword_action' => array(
+      'selected' => 0,
       'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::pathauto_node_update_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
     ),
   );
   /* Field: Content: Title */
@@ -284,7 +321,7 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['type']['table'] = 'node';
   $handler->display->display_options['fields']['type']['field'] = 'type';
   $handler->display->display_options['fields']['type']['alter']['make_link'] = TRUE;
-  /* Field: Content: Type de voisin */
+  /* Field: Content: Comportement */
   $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
@@ -312,13 +349,11 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
-  /* Field: Content: Published */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'node';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['status']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Field: Workflow: Current state */
+  $handler->display->display_options['fields']['sid']['id'] = 'sid';
+  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['fields']['sid']['field'] = 'sid';
+  $handler->display->display_options['fields']['sid']['label'] = 'Publication';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -378,7 +413,7 @@ function admin_views_views_default_views() {
     'field_voisin_type_tid' => 'field_voisin_type_tid',
     'status' => 0,
   );
-  /* Filter criterion: Content: Type de voisin (field_voisin_type) */
+  /* Filter criterion: Content: Comportement (field_voisin_type) */
   $handler->display->display_options['filters']['field_voisin_type_tid']['id'] = 'field_voisin_type_tid';
   $handler->display->display_options['filters']['field_voisin_type_tid']['table'] = 'field_data_field_voisin_type';
   $handler->display->display_options['filters']['field_voisin_type_tid']['field'] = 'field_voisin_type_tid';
@@ -404,18 +439,39 @@ function admin_views_views_default_views() {
     3 => array(),
   );
   $handler->display->display_options['filters']['field_voisin_type_tid']['vocabulary'] = 'voc_type_voisin';
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Publication';
+  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
+  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 'All';
-  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['status']['expose']['label'] = 'Publié';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
   $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
   $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
   $handler->display->display_options['filters']['status']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => 0,
+    4 => '4',
+    1 => 0,
+    3 => 0,
+  );
 
   /* Display: Page : all */
   $handler = $view->new_display('page', 'Page : all', 'page');
@@ -510,19 +566,20 @@ function admin_views_views_default_views() {
     t('Date de l\'entretien '),
     t('Thématique(s)'),
     t('Type'),
-    t('Type de voisin'),
+    t('Comportement'),
     t('Son / Video'),
     t('Video'),
     t('<a href="[field_video-video_url]">[field_video-video_url]</a>'),
     t('Updated date'),
-    t('Published'),
+    t('Publication'),
     t('<span class="node-edit">[edit_node]</span>'),
     t('Modifier'),
     t('Delete link'),
     t('<span class="node-delete">[delete_node]</span>'),
     t('supprimer'),
+    t('Type de voisin'),
     t('Type de voisin (field_voisin_type)'),
-    t('Publié'),
+    t('Published'),
     t('Page : all'),
     t('more'),
     t('Block'),
