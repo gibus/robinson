@@ -62,6 +62,18 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -104,6 +116,24 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image_1' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_3' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_lettrage_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -117,6 +147,30 @@ function programme_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_nature' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_1' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -199,6 +253,18 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_contrib_audio' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_contrib_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -241,6 +307,24 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image_1' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_3' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_lettrage_image' => array(
         'label' => 'above',
         'settings' => array(),
@@ -254,6 +338,30 @@ function programme_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_nature' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_1' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
