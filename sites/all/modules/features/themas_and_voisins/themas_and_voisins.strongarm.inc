@@ -169,7 +169,10 @@ function themas_and_voisins_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '6',
+        ),
+        'workflow' => array(
+          'weight' => '7',
         ),
       ),
       'display' => array(),

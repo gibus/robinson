@@ -304,20 +304,34 @@ function themas_and_voisins_field_default_field_bases() {
     'type' => 'datestamp',
   );
 
-  // Exported field_base: 'field_titre__lettrage_'
-  $field_bases['field_titre__lettrage_'] = array(
+  // Exported field_base: 'field_titre_lettrage'
+  $field_bases['field_titre_lettrage'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_titre__lettrage_',
-    'foreign keys' => array(),
-    'indexes' => array(),
+    'field_name' => 'field_titre_lettrage',
+    'foreign keys' => array(
+      'fid' => array(
+        'columns' => array(
+          'fid' => 'fid',
+        ),
+        'table' => 'file_managed',
+      ),
+    ),
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
     'locked' => 0,
-    'module' => 'video_embed_field',
-    'settings' => array(),
+    'module' => 'image',
+    'settings' => array(
+      'default_image' => 0,
+      'uri_scheme' => 'public',
+    ),
     'translatable' => 0,
-    'type' => 'video_embed_field',
+    'type' => 'image',
   );
 
   // Exported field_base: 'field_type_media'

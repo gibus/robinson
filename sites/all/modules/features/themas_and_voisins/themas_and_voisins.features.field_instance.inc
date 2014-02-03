@@ -193,7 +193,7 @@ function themas_and_voisins_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -401,41 +401,33 @@ function themas_and_voisins_field_default_field_instances() {
         'year_range' => '1998:+3',
       ),
       'type' => 'date_select',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
-  // Exported field_instance: 'node-thematique-field_titre__lettrage_'
-  $field_instances['node-thematique-field_titre__lettrage_'] = array(
+  // Exported field_instance: 'node-thematique-field_titre_lettrage'
+  $field_instances['node-thematique-field_titre_lettrage'] = array(
     'bundle' => 'thematique',
-    'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Entrer l\'url de la video ( ex. http://vimeo.com/12345679 )',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'video_embed_field',
+        'module' => 'image',
         'settings' => array(
-          'description' => 1,
-          'description_position' => 'bottom',
-          'video_style' => 'normal',
+          'image_link' => '',
+          'image_style' => '',
         ),
-        'type' => 'video_embed_field',
-        'weight' => 4,
+        'type' => 'image',
+        'weight' => 6,
       ),
       'stream' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_atmosphere' => array(
+      'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -477,12 +469,6 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_contrib_son' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
       'voisin_contrib_txt' => array(
         'label' => 'above',
         'settings' => array(),
@@ -490,18 +476,6 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_contrib_video' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'voisin_danse_son' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'voisin_danse_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -526,24 +500,6 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_image_3' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'voisin_lettrage_image' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'voisin_lettrage_video' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'voisin_nature' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -575,20 +531,29 @@ function themas_and_voisins_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_titre__lettrage_',
-    'label' => 'Titre video ( lettrage )',
+    'field_name' => 'field_titre_lettrage',
+    'label' => 'Titre lettrage',
     'required' => 0,
     'settings' => array(
-      'description_field' => 0,
-      'description_length' => 128,
+      'alt_field' => 0,
+      'default_image' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'video_embed_field',
-      'settings' => array(),
-      'type' => 'video_embed_field_video',
-      'weight' => 1,
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 2,
     ),
   );
 
@@ -780,7 +745,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'video_embed_field',
       'settings' => array(),
       'type' => 'video_embed_field_video',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -931,7 +896,7 @@ function themas_and_voisins_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => -5,
+      'weight' => 0,
     ),
   );
 
@@ -2795,7 +2760,7 @@ function themas_and_voisins_field_default_field_instances() {
   t('Son');
   t('Taille ( mini — maxi )');
   t('Title');
-  t('Titre video ( lettrage )');
+  t('Titre lettrage');
   t('Type media');
   t('Un temps de pause arprès la fin du voisin ');
   t('Video');
