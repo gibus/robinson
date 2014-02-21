@@ -175,7 +175,20 @@ function themas_and_voisins_strongarm() {
           'weight' => '7',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'stream' => array(
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'stream' => array(
+            'weight' => '3',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__thematique'] = $strongarm;
@@ -231,6 +244,33 @@ function themas_and_voisins_strongarm() {
       'voisin_nature' => array(
         'custom_settings' => TRUE,
       ),
+      'voisin_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_text' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_discursif' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_audio' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -238,10 +278,58 @@ function themas_and_voisins_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '1',
+          'weight' => '10',
+        ),
+        'workflow' => array(
+          'weight' => '9',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'voisin_video' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_audio' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_image' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_text' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'voisin_video' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_audio' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_image' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_text' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '9',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__voisin'] = $strongarm;
@@ -373,7 +461,7 @@ function themas_and_voisins_strongarm() {
       'title' => 'Titre',
     ),
     'additional_settings' => array(
-      'region' => 'main',
+      'region' => 'footer',
       'weight' => '7',
       'has_required' => FALSE,
       'title' => 'Vertical tabs',
@@ -381,21 +469,21 @@ function themas_and_voisins_strongarm() {
     ),
     'actions' => array(
       'region' => 'right',
-      'weight' => '3',
+      'weight' => '4',
       'has_required' => FALSE,
-      'title' => 'Save',
+      'title' => 'Enregistrer',
       'hidden' => 0,
     ),
     'field_voisin_type' => array(
-      'region' => 'main',
-      'weight' => '2',
+      'region' => 'right',
+      'weight' => '0',
       'has_required' => TRUE,
       'title' => 'Comportement',
       'hidden' => 0,
     ),
     'field_voisin_credit' => array(
       'region' => 'right',
-      'weight' => '1',
+      'weight' => '2',
       'has_required' => FALSE,
       'title' => 'Crédits',
       'hidden' => 0,
@@ -423,7 +511,7 @@ function themas_and_voisins_strongarm() {
     ),
     'field_ref_thema' => array(
       'region' => 'right',
-      'weight' => '0',
+      'weight' => '1',
       'has_required' => FALSE,
       'title' => 'Est le voisin de ',
       'hidden' => 0,
@@ -437,13 +525,13 @@ function themas_and_voisins_strongarm() {
     ),
     'field_type_media' => array(
       'region' => 'main',
-      'weight' => '3',
+      'weight' => '1',
       'has_required' => TRUE,
       'title' => 'Type media',
     ),
     'workflow' => array(
       'region' => 'right',
-      'weight' => '2',
+      'weight' => '3',
       'has_required' => FALSE,
       'title' => 'Change Publication state',
       'hidden' => 0,

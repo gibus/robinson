@@ -30,7 +30,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -116,6 +116,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -153,6 +159,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -315,6 +327,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -352,6 +370,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -425,7 +449,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -487,6 +511,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -506,6 +536,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -670,6 +706,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -707,6 +749,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -835,6 +883,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -854,6 +908,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -907,10 +967,14 @@ function themas_and_voisins_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 3,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1126,7 +1190,7 @@ function themas_and_voisins_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 7,
+      'weight' => 4,
     ),
   );
 
@@ -1141,7 +1205,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 8,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1322,7 +1386,7 @@ function themas_and_voisins_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 9,
+      'weight' => 7,
     ),
   );
 
@@ -1335,10 +1399,11 @@ function themas_and_voisins_field_default_field_instances() {
 ',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
+        'module' => 'link',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
+        'type' => 'link_absolute',
+        'weight' => 2,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1539,7 +1604,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 6,
+      'weight' => 3,
     ),
   );
 
@@ -1551,11 +1616,11 @@ function themas_and_voisins_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 4,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1737,7 +1802,7 @@ function themas_and_voisins_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 10,
+      'weight' => 6,
     ),
   );
 
@@ -1749,11 +1814,11 @@ function themas_and_voisins_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'i18n_taxonomy',
+        'label' => 'inline',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'i18n_taxonomy_term_reference_link',
-        'weight' => 8,
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 0,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1821,6 +1886,12 @@ function themas_and_voisins_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'voisin_image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'voisin_image_1' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1840,6 +1911,12 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_text' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -1876,7 +1953,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 1,
     ),
   );
 
@@ -1888,10 +1965,15 @@ function themas_and_voisins_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 2,
+        'label' => 'hidden',
+        'module' => 'video_embed_field',
+        'settings' => array(
+          'description' => 1,
+          'description_position' => 'bottom',
+          'video_style' => 'Stream Thématique',
+        ),
+        'type' => 'video_embed_field',
+        'weight' => 1,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2115,7 +2197,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'video_embed_field',
       'settings' => array(),
       'type' => 'video_embed_field_video',
-      'weight' => 8,
+      'weight' => 5,
     ),
   );
 
@@ -2130,7 +2212,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 7,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2310,7 +2392,7 @@ function themas_and_voisins_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 5,
+      'weight' => 8,
     ),
   );
 
@@ -2325,7 +2407,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2502,7 +2584,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 2,
     ),
   );
 
