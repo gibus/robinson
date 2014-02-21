@@ -62,6 +62,7 @@ function admin_views_views_default_views() {
     'field_voisin_type' => 'title',
     'field_son' => 'field_son',
     'field_video' => 'field_son',
+    'field_image' => 'field_son',
     'changed' => 'changed',
     'sid' => 'sid',
     'edit_node' => 'edit_node',
@@ -124,6 +125,11 @@ function admin_views_views_default_views() {
     'field_video' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_image' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -294,14 +300,38 @@ function admin_views_views_default_views() {
       'label' => '',
     ),
   );
+  /* Champ: Contenu : Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['alter']['make_link'] = TRUE;
   /* Champ: Contenu : Titre */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<b>[type]</b> : [title]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Champ: Champ : Type media */
+  $handler->display->display_options['fields']['field_type_media']['id'] = 'field_type_media';
+  $handler->display->display_options['fields']['field_type_media']['table'] = 'field_data_field_type_media';
+  $handler->display->display_options['fields']['field_type_media']['field'] = 'field_type_media';
+  $handler->display->display_options['fields']['field_type_media']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_type_media']['alter']['text'] = '<b>Media</b> : [field_type_media]';
+  $handler->display->display_options['fields']['field_type_media']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_type_media']['type'] = 'taxonomy_term_reference_plain';
+  /* Champ: Contenu : Comportement */
+  $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
+  $handler->display->display_options['fields']['field_voisin_type']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_voisin_type']['alter']['text'] = '<b>Comportement</b> : [field_voisin_type]';
+  $handler->display->display_options['fields']['field_voisin_type']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_voisin_type']['type'] = 'taxonomy_term_reference_plain';
   /* Champ: Contenu : Date de l'entretien  */
   $handler->display->display_options['fields']['field_thema_date']['id'] = 'field_thema_date';
   $handler->display->display_options['fields']['field_thema_date']['table'] = 'field_data_field_thema_date';
@@ -324,39 +354,37 @@ function admin_views_views_default_views() {
   );
   $handler->display->display_options['fields']['field_ref_thema']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_ref_thema']['multi_type'] = 'ul';
-  /* Champ: Contenu : Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'node';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['alter']['make_link'] = TRUE;
-  /* Champ: Champ : Type media */
-  $handler->display->display_options['fields']['field_type_media']['id'] = 'field_type_media';
-  $handler->display->display_options['fields']['field_type_media']['table'] = 'field_data_field_type_media';
-  $handler->display->display_options['fields']['field_type_media']['field'] = 'field_type_media';
-  $handler->display->display_options['fields']['field_type_media']['type'] = 'taxonomy_term_reference_plain';
-  /* Champ: Contenu : Comportement */
-  $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
-  $handler->display->display_options['fields']['field_voisin_type']['type'] = 'taxonomy_term_reference_plain';
   /* Champ: Contenu : Son */
   $handler->display->display_options['fields']['field_son']['id'] = 'field_son';
   $handler->display->display_options['fields']['field_son']['table'] = 'field_data_field_son';
   $handler->display->display_options['fields']['field_son']['field'] = 'field_son';
-  $handler->display->display_options['fields']['field_son']['label'] = 'Son / Video';
+  $handler->display->display_options['fields']['field_son']['label'] = 'Son / Video / Image';
   $handler->display->display_options['fields']['field_son']['click_sort_column'] = 'url';
   /* Champ: Contenu : Vidéo de l'entretien */
   $handler->display->display_options['fields']['field_video']['id'] = 'field_video';
   $handler->display->display_options['fields']['field_video']['table'] = 'field_data_field_video';
   $handler->display->display_options['fields']['field_video']['field'] = 'field_video';
+  $handler->display->display_options['fields']['field_video']['label'] = 'Vidéo';
   $handler->display->display_options['fields']['field_video']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_video']['alter']['text'] = '<a href="[field_video-video_url]">[field_video-video_url]</a>';
   $handler->display->display_options['fields']['field_video']['click_sort_column'] = 'video_url';
   $handler->display->display_options['fields']['field_video']['type'] = 'video_embed_field_thumbnail';
   $handler->display->display_options['fields']['field_video']['settings'] = array(
-    'image_style' => '',
+    'image_style' => 'thumbnail',
     'image_link' => '',
   );
+  /* Champ: Contenu : image */
+  $handler->display->display_options['fields']['field_image']['id'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['table'] = 'field_data_field_image';
+  $handler->display->display_options['fields']['field_image']['field'] = 'field_image';
+  $handler->display->display_options['fields']['field_image']['label'] = '';
+  $handler->display->display_options['fields']['field_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_image']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['field_image']['delta_offset'] = '0';
   /* Champ: Contenu : Date de mise à jour */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -585,14 +613,17 @@ function admin_views_views_default_views() {
     t('‹ précédent'),
     t('suivant ›'),
     t('dernier »'),
+    t('Type'),
     t('Titre'),
+    t('<b>[type]</b> : [title]'),
+    t('Type media'),
+    t('<b>Media</b> : [field_type_media]'),
+    t('Comportement'),
+    t('<b>Comportement</b> : [field_voisin_type]'),
     t('Date de l\'entretien '),
     t('Thématique(s)'),
-    t('Type'),
-    t('Type media'),
-    t('Comportement'),
-    t('Son / Video'),
-    t('Vidéo de l\'entretien'),
+    t('Son / Video / Image'),
+    t('Vidéo'),
     t('<a href="[field_video-video_url]">[field_video-video_url]</a>'),
     t('Date de mise à jour'),
     t('Publication'),
