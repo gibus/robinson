@@ -1190,7 +1190,7 @@ function themas_and_voisins_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 4,
+      'weight' => 13,
     ),
   );
 
@@ -1386,7 +1386,7 @@ function themas_and_voisins_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 7,
+      'weight' => 3,
     ),
   );
 
@@ -1604,7 +1604,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 3,
+      'weight' => 12,
     ),
   );
 
@@ -1802,7 +1802,7 @@ function themas_and_voisins_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 6,
+      'weight' => 15,
     ),
   );
 
@@ -1953,7 +1953,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 1,
+      'weight' => 11,
     ),
   );
 
@@ -2197,7 +2197,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'video_embed_field',
       'settings' => array(),
       'type' => 'video_embed_field_video',
-      'weight' => 5,
+      'weight' => 14,
     ),
   );
 
@@ -2392,7 +2392,7 @@ function themas_and_voisins_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 4,
     ),
   );
 
@@ -2584,7 +2584,7 @@ function themas_and_voisins_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 4,
     ),
   );
 

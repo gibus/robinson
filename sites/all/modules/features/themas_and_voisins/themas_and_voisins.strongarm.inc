@@ -160,6 +160,18 @@ function themas_and_voisins_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'default_field_group';
+  $strongarm->value = array(
+    'group_contenu|node|voisin|form' => TRUE,
+    'group_annexes|node|voisin|form' => FALSE,
+    'group_media|node|voisin|form' => FALSE,
+    'group_htabs|node|voisin|form' => FALSE,
+  );
+  $export['default_field_group'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__thematique';
   $strongarm->value = array(
     'view_modes' => array(),
@@ -278,10 +290,10 @@ function themas_and_voisins_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '10',
+          'weight' => '6',
         ),
         'workflow' => array(
-          'weight' => '9',
+          'weight' => '5',
         ),
       ),
       'display' => array(
