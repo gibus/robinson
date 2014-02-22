@@ -77,7 +77,6 @@ ul.primary,
   border-collapse: collapse;
   padding: 0 0 0 1em;
   /* LTR */
-
   white-space: nowrap;
   list-style: none;
   margin: 5px;
@@ -98,7 +97,6 @@ ul.primary li a,
   height: auto;
   margin-right: 0.5em;
   /* LTR */
-
   padding: 0 1em;
   text-decoration: none;
   -moz-border-radius-topleft: 5px;
@@ -129,7 +127,6 @@ ul.secondary li {
   padding: 0 1em;
   border-right: 1px solid #ccc;
   /* LTR */
-
 }
 ul.secondary a {
   padding: 0;
@@ -168,13 +165,11 @@ ul.secondary a.active {
 form:not( #views-ui-config-item-form ) .form-item {
   position: relative;
   /*    padding:9px;*/
-
 }
 form:not( #views-ui-config-item-form ) .form-item .description {
   position: absolute;
   bottom: 140%;
   /*    right:-15px;*/
-
   z-index: 5;
   left: 50%;
   color: #1A1A1A;
@@ -190,7 +185,6 @@ form:not(  #views-ui-config-item-form ) .form-item:hover {
   z-index: 1;
   height: auto;
   /* Fix for flicker in IE7 */
-
 }
 form:not(  #views-ui-config-item-form ) .form-item:hover > .description {
   display: block;
@@ -376,11 +370,6 @@ body {
   vertical-align: middle;
   padding: 1em;
 }
-.ie7 #stream-wrapper .thema h2.thema-title span.txt,
-.ie8 #stream-wrapper .thema h2.thema-title span.txt {
-  display: block;
-  float: left;
-}
 #stream-wrapper .thema h2.thema-title.pre-anime span.txt {
   -webkit-transition: opacity 0 linear;
   -moz-transition: opacity 0 linear;
@@ -415,11 +404,6 @@ body {
   height: auto;
   background-color: #fff;
   color: #ff2405;
-}
-.ie7 #stream-wrapper .thema .content,
-.ie8 #stream-wrapper .thema .content {
-  display: block;
-  float: left;
 }
 #stream-wrapper .thema .content.pre-anime {
   background-color: #ff2405;
@@ -462,65 +446,50 @@ body {
   transition: all 5s linear;
   opacity: 0;
 }
-#stream-wrapper .thema .voisin.atmosphere-audio {
+#stream-wrapper .thema .voisin.audio {
   height: 0;
 }
-#stream-wrapper .thema .voisin.atmosphere-video,
-#stream-wrapper .thema .voisin.contrib-video {
+#stream-wrapper .thema .voisin.video {
   width: 680px;
   height: 498px;
   background-color: #ff2405;
 }
-#stream-wrapper .thema .voisin.atmosphere-video.pre-anime .field-name-field-video,
-#stream-wrapper .thema .voisin.contrib-video.pre-anime .field-name-field-video {
+#stream-wrapper .thema .voisin.video.pre-anime .field-name-field-video {
   opacity: 0;
 }
-#stream-wrapper .thema .voisin.atmosphere-video.anime .field-name-field-video,
-#stream-wrapper .thema .voisin.contrib-video.anime .field-name-field-video {
+#stream-wrapper .thema .voisin.video.anime .field-name-field-video {
   -webkit-transition: all 3s ease-out;
   -moz-transition: all 3s ease-out;
   -o-transition: all 3s ease-out;
   transition: all 3s ease-out;
   opacity: 1;
 }
-#stream-wrapper .thema .voisin.atmosphere-video.post-anime,
-#stream-wrapper .thema .voisin.contrib-video.post-anime {
+#stream-wrapper .thema .voisin.video.post-anime {
   background-color: #d8d8d8;
   opacity: 0.9;
 }
-#stream-wrapper .thema .voisin.atmosphere-video.post-anime .field-name-field-video,
-#stream-wrapper .thema .voisin.contrib-video.post-anime .field-name-field-video {
+#stream-wrapper .thema .voisin.video.post-anime .field-name-field-video {
   -webkit-transition: all 1s ease-out;
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
   transition: all 1s ease-out;
   opacity: 0;
 }
-#stream-wrapper .thema .voisin.atmosphere-image {
+#stream-wrapper .thema .voisin.image {
   width: 680px;
   height: 498px;
 }
-#stream-wrapper .thema .voisin.discursif {
-  height: 0;
-}
-#stream-wrapper .thema .voisin.contrib-txt {
+#stream-wrapper .thema .voisin.text {
   width: 340px;
   background-color: #ff2405;
 }
-#stream-wrapper .thema .voisin.contrib-txt.post-anime {
+#stream-wrapper .thema .voisin.text.post-anime {
   background-color: #d8d8d8;
   opacity: 0.9;
 }
-#stream-wrapper .thema .voisin.contrib-txt .field-name-field-texte {
+#stream-wrapper .thema .voisin.text .field-name-field-texte {
   padding: 1em;
   font-size: 24px;
-}
-#stream-wrapper .thema .voisin.contrib-audio {
-  height: 0;
-}
-#stream-wrapper .thema .voisin.contrib-image {
-  width: 680px;
-  height: 498px;
 }
 /** Anime */
 .not-anime {

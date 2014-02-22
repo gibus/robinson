@@ -174,10 +174,10 @@ body{
     }
 
     .voisin{
-      &.atmosphere-audio{
+      &.audio{
         height:0;
       }
-      &.atmosphere-video, &.contrib-video{
+      &.video{
         width:@cell_w*2; height:@cell_h*2;
         background-color: @orange;
         &.pre-anime{
@@ -200,13 +200,10 @@ body{
           }
         }
       }
-      &.atmosphere-image{
+      &.image{
         width:@cell_w*2; height:@cell_h*2;
       }
-      &.discursif{
-        height:0;
-      }
-      &.contrib-txt{
+      &.text{
         width:@cell_w;// height:@cell_h*2;
         background-color: @orange;
         &.post-anime{
@@ -217,20 +214,7 @@ body{
           .p(1em); .24;
         }
       }
-      // &.contrib-video{
-      //   width:@cell_w*2; height:@cell_h*2;
-      //   background-color: @bleu;
-      //   &.post-anime{
-      //     background-color:@postanime-grey;
-      //     opacity:@postanime-opacity;
-      //   }
-      // }
-      &.contrib-audio{
-        height:0;
-      }
-      &.contrib-image{
-        width:@cell_w*2; height:@cell_h*2;
-      }
+      
     }
   }
 }

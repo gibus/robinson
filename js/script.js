@@ -191,24 +191,18 @@ Drupal.behaviors.init_theme = function (context) {
 
         this.voisins.flat.push(voisin);
 
-        switch(voisin.viewmode){
-          case "atmosphere_video":
-          case "contrib_video":
+        switch(voisin.media_type){
+          case "video":
             this.voisins.video.push(voisin);
             break;
-          case "atmosphere_audio":
-          case "contrib_audio":
+          case "audio":
             this.voisins.audio.push(voisin);
             break;
-          case "atmosphere_image":
-          case "contrib_image":
+          case "image":
             this.voisins.image.push(voisin);
             break;
-          case "contrib_txt":
+          case "text":
             this.voisins.txt.push(voisin);
-          case "discursif":
-            this.voisins.discursif.push(voisin);
-            break;            
         }
 
         if(this.voisins_loaded >= this.voisins_len)
@@ -454,25 +448,43 @@ Drupal.behaviors.init_theme = function (context) {
 
         for(index in datas)
           this[index] = datas[index];
-
         
-        switch(this.viewmode){
-          case "atmosphere_video":
-          case "contrib_video":
-            // this.initVideo();
-            break;
-          case "atmosphere_audio":
-          case "contrib_audio":
-            // this.initAudio();
-            break;
-          default:
-            // this.initGraphics();
-        }
+        // switch(this.viewmode){
+        //   case "video":
+        //     this.initVideo();
+        //     break;
+        //   case "audio":
+        //     // this.initAudio();
+        //     break;
+        //   default:
+        //     this.initGraphics();
+        // }
 
         this.$.trigger('loaded');
-        
       };
 
+      Voisin.prototype.startAnime = function(){ // i
+        console.log('Voisin :: startAnime '+this.media_type);
+
+        switch(this.media_type){
+          case "video":
+            this.initVideo();
+            break;
+          case "audio":
+            // this.voisins.audio.push(voisin);
+            break;
+          case "image":
+            this.startAnimeImage();
+            break;
+          case "text":
+            this.startAnimeTxt();
+            break;
+        }
+      };
+
+      /**
+      * common init graphics
+      */
       Voisin.prototype.initGraphics = function(){
         // console.log('Voisin :: initGraphics '+this.nid, this);
 
@@ -482,13 +494,16 @@ Drupal.behaviors.init_theme = function (context) {
 
         this.$voisin = $voisin;
 
-        if(!$voisin.is('.discuscif') && !$voisin.is('.atmosphere-audio') && !$voisin.is('.contrib-son')){
+        if(!$voisin.is('.voisin_audio')){
           $voisin.placeBlock();
         }else{
           $voisin.css('top', -1000);  
         }
       };
 
+      /**
+      * video
+      */
       Voisin.prototype.initVideo = function(){
         console.log("Voisin :: initVideo");
 
@@ -559,36 +574,17 @@ Drupal.behaviors.init_theme = function (context) {
         this.$.trigger('video_finished');
       };
 
+      /**
+      * audio
+      */
       Voisin.prototype.initAudio = function(){
         // TODO souncloud player
         this.$.trigger('loaded');
       };
 
-      Voisin.prototype.startAnime = function(){ // i
-        //console.log('Voisin :: startAnime '+this.viewmode);
-
-        switch(this.viewmode){
-          case "atmosphere_video":
-          case "contrib_video":
-            // this.startAnimeVideo();
-            this.initVideo();
-            break;
-          case "atmosphere_audio":
-          case "contrib_audio":
-            // this.voisins.audio.push(voisin);
-            break;
-          case "atmosphere_image":
-          case "contrib_image":
-            this.startAnimeImage();
-            break;
-          case "contrib_txt":
-            this.startAnimeTxt();
-          case "discursif":
-            // this.voisins.discursif.push(voisin);
-            break;            
-        }
-      };
-
+      /**
+      * text
+      */
       Voisin.prototype.startAnimeTxt = function(){
         this.initGraphics();
         this.$voisin.preAnime();
@@ -597,6 +593,9 @@ Drupal.behaviors.init_theme = function (context) {
         }(this));
       };
 
+      /**
+      * image
+      */
       Voisin.prototype.startAnimeImage = function(){
         this.initGraphics();
         this.$voisin.preAnime();
@@ -629,7 +628,6 @@ Drupal.behaviors.init_theme = function (context) {
     //console.log('setupGrid');
     _main_display_zone.top = ($(window).height() - _main_display_zone.h)/2;
     _main_display_zone.left = ($(window).width() - _main_display_zone.w)/2;
-
 
     if(_debug) drawDebugGrid();
   };
