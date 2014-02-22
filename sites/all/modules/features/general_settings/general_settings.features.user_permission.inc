@@ -40,6 +40,34 @@ function general_settings_user_default_permissions() {
     'module' => 'workflow_views',
   );
 
+  // Exported permission: 'add terms in tags'.
+  $permissions['add terms in tags'] = array(
+    'name' => 'add terms in tags',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy_access_fix',
+  );
+
+  // Exported permission: 'add terms in type_de_media'.
+  $permissions['add terms in type_de_media'] = array(
+    'name' => 'add terms in type_de_media',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy_access_fix',
+  );
+
+  // Exported permission: 'add terms in voc_type_voisin'.
+  $permissions['add terms in voc_type_voisin'] = array(
+    'name' => 'add terms in voc_type_voisin',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy_access_fix',
+  );
+
   // Exported permission: 'administer content type defaults'.
   $permissions['administer content type defaults'] = array(
     'name' => 'administer content type defaults',
@@ -63,6 +91,15 @@ function general_settings_user_default_permissions() {
       'root' => 'root',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'administer taxonomy'.
+  $permissions['administer taxonomy'] = array(
+    'name' => 'administer taxonomy',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
   );
 
   // Exported permission: 'administer workflow'.
@@ -91,6 +128,62 @@ function general_settings_user_default_permissions() {
       'root' => 'root',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete terms in tags'.
+  $permissions['delete terms in tags'] = array(
+    'name' => 'delete terms in tags',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in type_de_media'.
+  $permissions['delete terms in type_de_media'] = array(
+    'name' => 'delete terms in type_de_media',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in voc_type_voisin'.
+  $permissions['delete terms in voc_type_voisin'] = array(
+    'name' => 'delete terms in voc_type_voisin',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in tags'.
+  $permissions['edit terms in tags'] = array(
+    'name' => 'edit terms in tags',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in type_de_media'.
+  $permissions['edit terms in type_de_media'] = array(
+    'name' => 'edit terms in type_de_media',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in voc_type_voisin'.
+  $permissions['edit terms in voc_type_voisin'] = array(
+    'name' => 'edit terms in voc_type_voisin',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy',
   );
 
   // Exported permission: 'override content type title display'.
