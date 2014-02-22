@@ -40,6 +40,16 @@ function general_settings_user_default_permissions() {
     'module' => 'workflow_views',
   );
 
+  // Exported permission: 'add terms in comportement'.
+  $permissions['add terms in comportement'] = array(
+    'name' => 'add terms in comportement',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'root' => 'root',
+    ),
+    'module' => 'taxonomy_access_fix',
+  );
+
   // Exported permission: 'add terms in tags'.
   $permissions['add terms in tags'] = array(
     'name' => 'add terms in tags',
@@ -62,7 +72,6 @@ function general_settings_user_default_permissions() {
   $permissions['add terms in voc_type_voisin'] = array(
     'name' => 'add terms in voc_type_voisin',
     'roles' => array(
-      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'taxonomy_access_fix',
@@ -152,7 +161,6 @@ function general_settings_user_default_permissions() {
   $permissions['delete terms in voc_type_voisin'] = array(
     'name' => 'delete terms in voc_type_voisin',
     'roles' => array(
-      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'taxonomy',
@@ -180,7 +188,6 @@ function general_settings_user_default_permissions() {
   $permissions['edit terms in voc_type_voisin'] = array(
     'name' => 'edit terms in voc_type_voisin',
     'roles' => array(
-      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'taxonomy',
