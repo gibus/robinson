@@ -971,10 +971,10 @@ function themas_and_voisins_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
-          'image_style' => '',
+          'image_style' => 'large',
         ),
         'type' => 'image',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1403,7 +1403,7 @@ function themas_and_voisins_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_absolute',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1620,7 +1620,7 @@ function themas_and_voisins_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1970,10 +1970,10 @@ function themas_and_voisins_field_default_field_instances() {
         'settings' => array(
           'description' => 1,
           'description_position' => 'bottom',
-          'video_style' => 'Stream Thématique',
+          'video_style' => 'normal',
         ),
         'type' => 'video_embed_field',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2404,10 +2404,11 @@ function themas_and_voisins_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 1,
       ),
       'stream' => array(
         'label' => 'above',
