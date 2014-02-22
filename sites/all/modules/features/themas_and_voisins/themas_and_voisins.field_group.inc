@@ -18,7 +18,7 @@ function themas_and_voisins_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'voisin';
   $field_group->mode = 'form';
-  $field_group->parent_name = '_add_new_group';
+  $field_group->parent_name = 'group_htabs';
   $field_group->data = array(
     'label' => 'annexes',
     'weight' => '3',
@@ -72,7 +72,7 @@ function themas_and_voisins_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'voisin';
   $field_group->mode = 'form';
-  $field_group->parent_name = '_add_new_group';
+  $field_group->parent_name = 'group_htabs';
   $field_group->data = array(
     'label' => 'media',
     'weight' => '2',

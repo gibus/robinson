@@ -166,6 +166,11 @@ function themas_and_voisins_strongarm() {
     'group_annexes|node|voisin|form' => FALSE,
     'group_media|node|voisin|form' => FALSE,
     'group_htabs|node|voisin|form' => FALSE,
+    'group_htabs|taxonomy_term|voc_type_voisin|form' => FALSE,
+    'group_general|taxonomy_term|voc_type_voisin|form' => FALSE,
+    'group_tailles_et_positions|taxonomy_term|voc_type_voisin|form' => FALSE,
+    'group_temps|taxonomy_term|voc_type_voisin|form' => FALSE,
+    'group_divers|taxonomy_term|voc_type_voisin|form' => FALSE,
   );
   $export['default_field_group'] = $strongarm;
 
@@ -290,10 +295,10 @@ function themas_and_voisins_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '5',
         ),
         'workflow' => array(
-          'weight' => '5',
+          'weight' => '4',
         ),
       ),
       'display' => array(
@@ -488,28 +493,28 @@ function themas_and_voisins_strongarm() {
     ),
     'additional_settings' => array(
       'region' => 'footer',
-      'weight' => '7',
+      'weight' => '1',
       'has_required' => FALSE,
       'title' => 'Vertical tabs',
       'hidden' => 0,
     ),
     'actions' => array(
       'region' => 'right',
-      'weight' => '4',
+      'weight' => '5',
       'has_required' => FALSE,
       'title' => 'Enregistrer',
       'hidden' => 0,
     ),
     'field_voisin_type' => array(
-      'region' => 'right',
+      'region' => 'footer',
       'weight' => '0',
       'has_required' => TRUE,
-      'title' => 'Comportement',
+      'title' => 'Type de voisin (deprecated)',
       'hidden' => 0,
     ),
     'field_voisin_credit' => array(
       'region' => 'right',
-      'weight' => '2',
+      'weight' => '3',
       'has_required' => FALSE,
       'title' => 'Crédits',
       'hidden' => 0,
@@ -537,7 +542,7 @@ function themas_and_voisins_strongarm() {
     ),
     'field_ref_thema' => array(
       'region' => 'right',
-      'weight' => '1',
+      'weight' => '2',
       'has_required' => FALSE,
       'title' => 'Est le voisin de ',
       'hidden' => 0,
@@ -557,9 +562,16 @@ function themas_and_voisins_strongarm() {
     ),
     'workflow' => array(
       'region' => 'right',
-      'weight' => '3',
+      'weight' => '4',
       'has_required' => FALSE,
       'title' => 'Change Publication state',
+      'hidden' => 0,
+    ),
+    'field_comportement' => array(
+      'region' => 'right',
+      'weight' => '0',
+      'has_required' => FALSE,
+      'title' => 'Comportement',
       'hidden' => 0,
     ),
   );
