@@ -30,6 +30,47 @@ function admin_views_menu_default_menu_links() {
     'weight' => -45,
     'customized' => 1,
   );
+  // Exported menu link: navigation_ajouter-un-comportement:http://dev.leprojetrobinson.org/admin/structure/taxonomy/comportement/add
+  $menu_links['navigation_ajouter-un-comportement:http://dev.leprojetrobinson.org/admin/structure/taxonomy/comportement/add'] = array(
+    'menu_name' => 'navigation',
+    'link_path' => 'http://dev.leprojetrobinson.org/admin/structure/taxonomy/comportement/add',
+    'router_path' => '',
+    'link_title' => 'Ajouter un comportement',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'navigation_ajouter-un-comportement:http://dev.leprojetrobinson.org/admin/structure/taxonomy/comportement/add',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'parent_identifier' => 'navigation_comportements:admin/structure/taxonomy/comportement',
+  );
+  // Exported menu link: navigation_comportements:admin/structure/taxonomy/comportement
+  $menu_links['navigation_comportements:admin/structure/taxonomy/comportement'] = array(
+    'menu_name' => 'navigation',
+    'link_path' => 'admin/structure/taxonomy/comportement',
+    'router_path' => 'admin/structure/taxonomy/%',
+    'link_title' => 'Comportements',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'navigation_comportements:admin/structure/taxonomy/comportement',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+  );
   // Exported menu link: navigation_compose-tips:filter/tips
   $menu_links['navigation_compose-tips:filter/tips'] = array(
     'menu_name' => 'navigation',
@@ -149,6 +190,8 @@ function admin_views_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Add content');
+  t('Ajouter un comportement');
+  t('Comportements');
   t('Compose tips');
   t('Log out');
   t('Media');

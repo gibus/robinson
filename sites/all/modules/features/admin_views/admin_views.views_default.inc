@@ -57,6 +57,7 @@ function admin_views_views_default_views() {
     'type' => 'title',
     'title' => 'title',
     'field_type_media' => 'title',
+    'field_comportement' => 'title',
     'field_voisin_type' => 'title',
     'field_thema_date' => 'field_thema_date',
     'field_ref_thema' => 'field_ref_thema',
@@ -90,6 +91,11 @@ function admin_views_views_default_views() {
       'empty_column' => 0,
     ),
     'field_type_media' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_comportement' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -325,11 +331,19 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['field_type_media']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_type_media']['type'] = 'taxonomy_term_reference_plain';
   /* Champ: Contenu : Comportement */
+  $handler->display->display_options['fields']['field_comportement']['id'] = 'field_comportement';
+  $handler->display->display_options['fields']['field_comportement']['table'] = 'field_data_field_comportement';
+  $handler->display->display_options['fields']['field_comportement']['field'] = 'field_comportement';
+  $handler->display->display_options['fields']['field_comportement']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_comportement']['alter']['text'] = '<b>Comportement</b> : [field_comportement]';
+  $handler->display->display_options['fields']['field_comportement']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_comportement']['type'] = 'taxonomy_term_reference_plain';
+  /* Champ: Contenu : Type de voisin (deprecated) */
   $handler->display->display_options['fields']['field_voisin_type']['id'] = 'field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type']['table'] = 'field_data_field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type']['field'] = 'field_voisin_type';
   $handler->display->display_options['fields']['field_voisin_type']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_voisin_type']['alter']['text'] = '<b>Comportement</b> : [field_voisin_type]';
+  $handler->display->display_options['fields']['field_voisin_type']['alter']['text'] = '<b>Type de voisin (deprecated)</b> : [field_voisin_type]';
   $handler->display->display_options['fields']['field_voisin_type']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_voisin_type']['type'] = 'taxonomy_term_reference_plain';
   /* Champ: Contenu : Date de l'entretien  */
@@ -360,7 +374,7 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['field_son']['field'] = 'field_son';
   $handler->display->display_options['fields']['field_son']['label'] = 'Son / Video / Image';
   $handler->display->display_options['fields']['field_son']['click_sort_column'] = 'url';
-  /* Champ: Contenu : Vidéo de l'entretien */
+  /* Champ: Contenu : Video */
   $handler->display->display_options['fields']['field_video']['id'] = 'field_video';
   $handler->display->display_options['fields']['field_video']['table'] = 'field_data_field_video';
   $handler->display->display_options['fields']['field_video']['field'] = 'field_video';
@@ -474,7 +488,7 @@ function admin_views_views_default_views() {
   );
   $handler->display->display_options['filters']['field_type_media_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_type_media_tid']['vocabulary'] = 'type_de_media';
-  /* Critère de filtrage: Contenu : Comportement (field_voisin_type) */
+  /* Critère de filtrage: Contenu : Type de voisin (deprecated) (field_voisin_type) */
   $handler->display->display_options['filters']['field_voisin_type_tid']['id'] = 'field_voisin_type_tid';
   $handler->display->display_options['filters']['field_voisin_type_tid']['table'] = 'field_data_field_voisin_type';
   $handler->display->display_options['filters']['field_voisin_type_tid']['field'] = 'field_voisin_type_tid';
@@ -619,7 +633,9 @@ function admin_views_views_default_views() {
     t('Type media'),
     t('<b>Media</b> : [field_type_media]'),
     t('Comportement'),
-    t('<b>Comportement</b> : [field_voisin_type]'),
+    t('<b>Comportement</b> : [field_comportement]'),
+    t('Type de voisin (deprecated)'),
+    t('<b>Type de voisin (deprecated)</b> : [field_voisin_type]'),
     t('Date de l\'entretien '),
     t('Thématique(s)'),
     t('Son / Video / Image'),
