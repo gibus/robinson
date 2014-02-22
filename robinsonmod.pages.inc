@@ -93,7 +93,7 @@ function robinsonmod_ajax_voisin(){
     $rep['$_GET'] = $_GET;
   
   if(!isset($_GET['id'])){
-    $rep['error'] = "noid";
+    $rep['error'] = "no id (need nid to load node)";
   }else{
 
     $voisin_node = node_load($_GET['id']); 
@@ -101,46 +101,35 @@ function robinsonmod_ajax_voisin(){
     if($debug)
       $rep['voisin_node'] = $voisin_node;  
 
-    $type = $voisin_node->field_voisin_type['und'][0]['tid'];
+    $media_type = $voisin_node->field_type_media['und'][0]['tid'];
     $rep['voisin'] = array(
       "nid"=>$voisin_node->nid,
-      "type"=>$type,
+      // "media_type"=>$media_type,
     ); 
     
-    switch ($type) {
-      case 11:
-        $viewmode = "voisin_atmosphere_audio";
+    switch ($media_type) {
+      case 12: #video
+        $viewmode = "voisin_video";
         break;
-      case 7:
-        $viewmode = "voisin_atmosphere_image";
+      case 13: #image
+        $viewmode = "voisin_image";
         break;
-      case 5:
-        $viewmode = "voisin_atmosphere_video";
+      case 14: #son
+        $viewmode = "voisin_audio";
         break;
-      case 6:
-        $viewmode = "voisin_discursif";
-        break;
-      case 10:
-        $viewmode = "voisin_contrib_image";
-        break;
-      case 2:
-        $viewmode = "voisin_contrib_audio";
-        break;
-      case 9:
-        $viewmode = "voisin_contrib_txt";
-        break;
-      case 8:
-        $viewmode = "voisin_contrib_video";
+      case 15: #texte
+        $viewmode = "voisin_text";
         break;
       default:
         $viewmode = "stream";
         break;
     }
     
-    $rep['viewmode'] = str_replace('voisin_', '', $viewmode);
+    $rep['viewmode'] = $viewmode;
+    $rep['media_type'] = str_replace('voisin_', '', $viewmode);
 
     $node_view = node_view($voisin_node, $viewmode);
-    $rep['rendered_voisin'] =   drupal_render($node_view);
+    $rep['rendered_voisin'] = drupal_render($node_view);
   }
 
 
