@@ -963,7 +963,11 @@ function themas_and_voisins_field_default_field_instances() {
   // Exported field_instance: 'node-voisin-field_comportement'
   $field_instances['node-voisin-field_comportement'] = array(
     'bundle' => 'voisin',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 16,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1067,7 +1071,7 @@ function themas_and_voisins_field_default_field_instances() {
     'options_limit_fields' => array(
       'field_type_media' => 'field_type_media',
     ),
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
