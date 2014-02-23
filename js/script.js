@@ -132,6 +132,10 @@ Drupal.behaviors.init_theme = function (context) {
 
         this.initGraphics();
         this.listenVideo();
+        
+        // this.loadVoisins(); // this is just for debuging purpose, dont forget to comment it
+
+
         // (function(thema){
         //   setTimeout(function(){thema.loadVoisins();}, 10000);
         // }(this));
@@ -187,7 +191,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Thema.prototype.onVoisinLoaded = function(voisin){
         this.voisins_loaded ++;
-        console.log('Thema :: onVoisinLoaded | voisin', voisin);
+        //console.log('Thema :: onVoisinLoaded | '+voisin.media_type, voisin);
 
         this.voisins.flat.push(voisin);
 
@@ -229,7 +233,7 @@ Drupal.behaviors.init_theme = function (context) {
   
       Thema.prototype.onVideoReady = function(id) {
         //console.log('Thema :: onVideoReady : id = '+id);
-        // console.log('thema', thema);
+        //console.log('thema', thema);
         var thema = this;
 
         this.video_id = id;
@@ -328,14 +332,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.bufferizeAnimeVoisins = function(){
-        console.log('Thema :: bufferizeAnimeVoisins', this.voisins);
+        //console.log('Thema :: bufferizeAnimeVoisins', this.voisins);
         this.anime_voisins_buffer ++;
         if(this.anime_voisins_buffer == 3)
           this.startAnimeVoisins();
       };
 
       Thema.prototype.startAnimeVoisins = function(){
-        console.log("Thema :: startAnimeVoisins", this.voisins);
+        //console.log("Thema :: startAnimeVoisins", this.voisins);
         
         // txt
         this.startAnimeTxt();
@@ -355,6 +359,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeTxt = function(){
+        //console.log('Thema :: startAnimeTxt');
         var delay = this.thema_duration*1000 / this.voisins.txt.length; 
         for (index in this.voisins.txt) {
           (function(thema, delay, index){
@@ -368,6 +373,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeImage = function(){
+        //console.log('Thema :: startAnimeImage');
         var delay = this.thema_duration*1000 / this.voisins.image.length; 
         for (index in this.voisins.image) {
           (function(thema, delay, index){
@@ -381,7 +387,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeVideo = function(){
-        console.log('Thema :: startAnimeVideo');
+        //console.log('Thema :: startAnimeVideo');
         var delay = this.thema_duration*1000 / this.voisins.video.length; 
         for (index in this.voisins.video) {
           (function(thema, delay, index){
@@ -400,6 +406,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnimeAudio = function(){
+        //console.log('Thema :: startAnimeAudio');
         var delay = this.video_duration*1000 / this.voisins.audio.length; 
         for (index in this.voisins.audio) {
           (function(thema, delay, index){
@@ -416,14 +423,13 @@ Drupal.behaviors.init_theme = function (context) {
     }
 
     this.ajaxLoad();
-
   }; // Thema
 
   /**
   * Voisin()
   */
   function Voisin(thema, nid){
-    // console.log('- - - - new Voisin '+nid+' - - - -');
+    //console.log('- - - - new Voisin '+nid+' - - - -');
 
     var voisin = this;
     this.$ = $(this);
@@ -449,66 +455,113 @@ Drupal.behaviors.init_theme = function (context) {
         for(index in datas)
           this[index] = datas[index];
         
-        // switch(this.viewmode){
-        //   case "video":
-        //     this.initVideo();
-        //     break;
-        //   case "audio":
-        //     // this.initAudio();
-        //     break;
-        //   default:
-        //     this.initGraphics();
-        // }
+        this.parseComportement();
 
         this.$.trigger('loaded');
       };
 
-      Voisin.prototype.startAnime = function(){ // i
-        console.log('Voisin :: startAnime '+this.media_type);
+      Voisin.prototype.parseComportement = function(){
+        // console.log("Voisin :: parseComportement ", this.comportement);
+        // field_discursif              "0"
+        // field_duree_sec_minmax       "5/120"
+        // field_pause_apres_le_voisin  "0/0"
+        // field_proba                  "50"
+        // field_taille_minmax          "1/3"
 
-        switch(this.media_type){
-          case "video":
-            this.initVideo();
-            break;
-          case "audio":
-            // this.voisins.audio.push(voisin);
-            break;
-          case "image":
-            this.startAnimeImage();
-            break;
-          case "text":
-            this.startAnimeTxt();
-            break;
+        this.discursif = parseInt(this.comportement.field_discursif) == 1;
+        this.proba = parseInt(this.comportement.field_proba);
+
+        var d = this.comportement.field_duree_sec_minmax.match(/(\d{1,3})\/(\d{1,3})/i);
+        // console.log("d", d);
+        this.duree = {
+          min:d[1],
+          max:d[2]
         }
+
+        d = this.comportement.field_pause_apres_le_voisin.match(/(\d{1,3})\/(\d{1,3})/i);
+        // console.log("d", d);
+        this.pauseafter = {
+          min:d[1],
+          max:d[2]
+        }
+
+        d = this.comportement.field_taille_minmax.match(/(\d{1})\/(\d{1})/i);
+        // console.log("d", d);
+        this.taille = {
+          min:d[1],
+          max:d[2]
+        }
+        
+        // console.log("voisin :: ", this);
+      };
+
+      Voisin.prototype.start = function(){ // i
+        //console.log('Voisin :: start '+this.media_type);
+
+        if(typeof this['start'+this.media_type] == 'function')
+          this['init'+this.media_type].call(this, event);
       };
 
       /**
-      * common init graphics
+      * common init
+      * html
       */
-      Voisin.prototype.initGraphics = function(){
-        // console.log('Voisin :: initGraphics '+this.nid, this);
+      Voisin.prototype.initcommons = function(){
+        //console.log('Voisin :: initGraphics '+this.nid, this);
 
         var $voisin = $(this.rendered_voisin)   
           .appendTo(this.thema.$thema)
           .notAnime();
 
         this.$voisin = $voisin;
+      };
 
-        if(!$voisin.is('.voisin_audio')){
-          $voisin.placeBlock();
-        }else{
-          $voisin.css('top', -1000);  
-        }
+      Voisin.prototype.setSize = function(){
+        this.$voisin.width(_cell_w * parseInt(this.taille.min + Math.random()*(this.taille.max-this.taille.min)));
+      };
+
+      /**
+      * text
+      */
+      Voisin.prototype.starttext = function(){
+        //console.log("Voisin :: starttext", this);
+        this.initcommons();
+        this.setsize();
+        this.$voisin.placeBlock();
+        this.$voisin.preAnime();
+
+      };
+
+      /**
+      * image
+      */
+      Voisin.prototype.startimage = function(){
+        //console.log("Voisin :: startimage", this);
+        this.initcommons();
+        this.$voisin.placeBlock();
+        this.$voisin.preAnime();
+        
+      };
+
+      /**
+      * audio
+      */
+      Voisin.prototype.startaudio = function(){
+        //console.log("Voisin :: startaudio", this);
+        // TODO souncloud player
+        this.$voisin.css('top', -1000);
       };
 
       /**
       * video
       */
-      Voisin.prototype.initVideo = function(){
-        console.log("Voisin :: initVideo");
+      Voisin.prototype.startvideo = function(){
+        //console.log("Voisin :: startvideo", this);
 
-        this.initGraphics();
+        this.initcommons();
+        this.$voisin.placeBlock();
         
+
         var voisin = this;
         this.$viframe = $('iframe', this.$voisin);
         this.$viframe.load(function(){
@@ -517,7 +570,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.onVideoReady = function(id) {
-        console.log('Voisins :: onVideoReady : id = '+id);         
+        //console.log('Voisins :: onVideoReady : id = '+id);         
         var voisin = this;
         this.video_id = id;
 
@@ -528,6 +581,17 @@ Drupal.behaviors.init_theme = function (context) {
           .addEvent('finish', function(id){voisin.onVideoFinished(id);});
 
         this.startAnimeVideo();
+      };
+
+      Voisin.prototype.startAnimeVideo = function(){
+        this.playVideo();
+        this.$voisin.preAnime();
+        (function(voisin){
+          voisin.$.on('video_finished', function(){
+            voisin.unloadVideo();
+            voisin.$voisin.postAnime();
+          });  
+        }(this));
       };
 
       Voisin.prototype.playVideo = function(){
@@ -561,7 +625,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.onVideoPlayProgress = function(data, id){
-        // console.log('Voisin :: onVideoPlayProgress | id = '+id+' | data = ',data);
+        //console.log('Voisin :: onVideoPlayProgress | id = '+id+' | data = ',data);
         // if(data.seconds >= 15){
         //   $f(id).api('pause');
         //   onThemaVideoFinish(id);
@@ -569,51 +633,9 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.onVideoFinished = function(id){
-        console.log('Voisin :: onVideoFinished | id = '+id);
+        //console.log('Voisin :: onVideoFinished | id = '+id);
         // onVideoFinish(id);
         this.$.trigger('video_finished');
-      };
-
-      /**
-      * audio
-      */
-      Voisin.prototype.initAudio = function(){
-        // TODO souncloud player
-        this.$.trigger('loaded');
-      };
-
-      /**
-      * text
-      */
-      Voisin.prototype.startAnimeTxt = function(){
-        this.initGraphics();
-        this.$voisin.preAnime();
-        (function(voisin){
-          setTimeout(function(){voisin.$voisin.postAnime()}, 5000+Math.random()*5000);
-        }(this));
-      };
-
-      /**
-      * image
-      */
-      Voisin.prototype.startAnimeImage = function(){
-        this.initGraphics();
-        this.$voisin.preAnime();
-        (function(voisin){
-          setTimeout(function(){voisin.$voisin.postAnime()}, 3000+Math.random()*10000);
-        }(this));
-      };
-
-      Voisin.prototype.startAnimeVideo = function(){
-        
-        this.playVideo();
-        this.$voisin.preAnime();
-        (function(voisin){
-          voisin.$.on('video_finished', function(){
-            voisin.unloadVideo();
-            voisin.$voisin.postAnime();
-          });  
-        }(this));
       };
 
       Voisin.prototype.initialized = true;
@@ -667,11 +689,11 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function placeBlock($elmt, opts){
-    // console.log('placeBlock', $elmt);
+    //console.log('placeBlock', $elmt);
     var defaults = {top:"rand",left:"rand"};   
     var options = $.extend({}, defaults, opts);
     
-    // console.log('options', options);  
+    //console.log('options', options);  
     var top_free_cells = Math.floor((_main_display_zone.h - $elmt.innerHeight() +_line_h)/_line_h);
     var top_cell = options.top == 'rand' ? Math.floor(Math.random()*(top_free_cells)) : options.top;
     var top = _main_display_zone.top + top_cell*_line_h;
