@@ -8,6 +8,7 @@ dependencies[] = features
 dependencies[] = field_validation_extras
 dependencies[] = node
 dependencies[] = strongarm
+dependencies[] = taxonomy
 dependencies[] = taxonomy_access_fix
 dependencies[] = workflow
 dependencies[] = workflow_access
