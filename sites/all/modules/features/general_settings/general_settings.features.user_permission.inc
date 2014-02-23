@@ -93,6 +93,15 @@ function general_settings_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'administer dependencies'.
+  $permissions['administer dependencies'] = array(
+    'name' => 'administer dependencies',
+    'roles' => array(
+      'root' => 'root',
+    ),
+    'module' => 'conditional_fields',
+  );
+
   // Exported permission: 'administer nodes'.
   $permissions['administer nodes'] = array(
     'name' => 'administer nodes',
