@@ -124,9 +124,36 @@ function robinsonmod_ajax_voisin(){
         $viewmode = "stream";
         break;
     }
-    
-    $rep['viewmode'] = $viewmode;
     $rep['media_type'] = str_replace('voisin_', '', $viewmode);
+    
+    # flatenize comportement
+    $comportement_tid = $voisin_node->field_comportement['und'][0]['tid'];
+    $comportement_term = taxonomy_term_load($comportement_tid);
+    foreach ($comportement_term as $key => $value) {
+      if(strpos($key, "field_") === 0 && is_array($value)){
+        $comportement[$key] = $value['und'][0]['value'];
+      }else{
+        $comportement[$key] = $value;
+      }
+    }
+    $rep['comportement'] = $comportement;
+
+    // VIDEO & IMAGES : change viewmode for size for images and videos (one viewmode by size 1,2,3)
+    if(in_array($media_type, array(12,13))){
+      preg_match('/(\d{1})\/(\d{1})/', $comportement['field_taille_minmax'], $matches);
+      $Tminmax = array(
+        "min" => $matches[1],
+        "max" => $matches[2],
+      );
+      // $rep['tminmax'] = $Tminmax;
+      $taille = round(rand($Tminmax['min'], $Tminmax['max']));
+      $rep['ttttaille'] = $taille;
+      $taille = $taille < 1 ? 1 : $taille > 3 ? 3 : $taille;
+      $viewmode .= "_t".$taille;
+    }
+    
+    # record viewmode and render node
+    $rep['viewmode'] = $viewmode;
 
     $node_view = node_view($voisin_node, $viewmode);
     $rep['rendered_voisin'] = drupal_render($node_view);

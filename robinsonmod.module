@@ -42,10 +42,28 @@ function robinsonmod_entity_info_alter(&$entity_info) {
     'label' => t('Voisin audio')
   );
   $entity_info['node']['view modes']['voisin_video'] = $base + array(
-    'label' => t('Voisin video')
+    'label' => t('Voisin video (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t1'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes)')
   );
   $entity_info['node']['view modes']['voisin_image'] = $base + array(
-    'label' => t('Voisin image')
+    'label' => t('Voisin image (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t1'] = $base + array(
+    'label' => t('Voisin image taille 1 (1 colonne)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t2'] = $base + array(
+    'label' => t('Voisin image taille 2 (2 colonnes)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t3'] = $base + array(
+    'label' => t('Voisin image taille 3 (3 colonnes)')
   );
   $entity_info['node']['view modes']['voisin_text'] = $base + array(
     'label' => t('Voisin text')
