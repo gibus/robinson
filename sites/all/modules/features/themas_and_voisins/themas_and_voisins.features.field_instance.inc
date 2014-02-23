@@ -976,7 +976,7 @@ function themas_and_voisins_field_default_field_instances() {
         'module' => 'i18n_taxonomy',
         'settings' => array(),
         'type' => 'i18n_taxonomy_term_reference_link',
-        'weight' => 9,
+        'weight' => 1,
       ),
       'stream' => array(
         'label' => 'above',
@@ -1329,7 +1329,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2336,7 +2336,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'stream' => array(
         'label' => 'above',
@@ -2529,10 +2529,9 @@ function themas_and_voisins_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_plain',
-        'weight' => 1,
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'stream' => array(
         'label' => 'above',
