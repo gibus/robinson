@@ -323,6 +323,30 @@ function themas_and_voisins_strongarm() {
             'weight' => '7',
             'visible' => FALSE,
           ),
+          'voisin_video_t1' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_video_t2' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_video_t3' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t1' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t2' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t3' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
         ),
         'workflow' => array(
           'voisin_video' => array(
@@ -343,6 +367,30 @@ function themas_and_voisins_strongarm() {
           ),
           'default' => array(
             'weight' => '10',
+            'visible' => FALSE,
+          ),
+          'voisin_video_t1' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_video_t2' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_video_t3' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t1' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t2' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+          'voisin_image_t3' => array(
+            'weight' => '99',
             'visible' => FALSE,
           ),
         ),

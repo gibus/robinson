@@ -58,11 +58,11 @@ function themas_and_voisins_image_default_styles() {
   // Exported image style: voisin_1.
   $styles['voisin_1'] = array(
     'name' => 'voisin_1',
-    'label' => 'voisin 1 340x249',
+    'label' => 'voisin 3 1020',
     'effects' => array(
-      2 => array(
-        'label' => 'Scale',
-        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+      1 => array(
+        'label' => 'Echelle',
+        'help' => 'La mise à l\'échelle maintiendra les proportions originales de l\'image. Si une seule dimension est précisée, l\'autre dimension sera calculée automatiquement.',
         'effect callback' => 'image_scale_effect',
         'dimensions callback' => 'image_scale_dimensions',
         'form callback' => 'image_scale_form',
@@ -70,8 +70,8 @@ function themas_and_voisins_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => 340,
-          'height' => 249,
+          'width' => 680,
+          'height' => '',
           'upscale' => 0,
         ),
         'weight' => 1,
@@ -82,11 +82,11 @@ function themas_and_voisins_image_default_styles() {
   // Exported image style: voisin_2.
   $styles['voisin_2'] = array(
     'name' => 'voisin_2',
-    'label' => 'voisin 2 680x498',
+    'label' => 'voisin 2 680',
     'effects' => array(
-      1 => array(
-        'label' => 'Scale',
-        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+      2 => array(
+        'label' => 'Echelle',
+        'help' => 'La mise à l\'échelle maintiendra les proportions originales de l\'image. Si une seule dimension est précisée, l\'autre dimension sera calculée automatiquement.',
         'effect callback' => 'image_scale_effect',
         'dimensions callback' => 'image_scale_dimensions',
         'form callback' => 'image_scale_form',
@@ -95,7 +95,7 @@ function themas_and_voisins_image_default_styles() {
         'name' => 'image_scale',
         'data' => array(
           'width' => 680,
-          'height' => 498,
+          'height' => '',
           'upscale' => 0,
         ),
         'weight' => 1,
@@ -106,11 +106,11 @@ function themas_and_voisins_image_default_styles() {
   // Exported image style: voisin_3.
   $styles['voisin_3'] = array(
     'name' => 'voisin_3',
-    'label' => 'voisin 3 1020x747',
+    'label' => 'voisin 1 340',
     'effects' => array(
       3 => array(
-        'label' => 'Scale',
-        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'label' => 'Echelle',
+        'help' => 'La mise à l\'échelle maintiendra les proportions originales de l\'image. Si une seule dimension est précisée, l\'autre dimension sera calculée automatiquement.',
         'effect callback' => 'image_scale_effect',
         'dimensions callback' => 'image_scale_dimensions',
         'form callback' => 'image_scale_form',
@@ -118,8 +118,8 @@ function themas_and_voisins_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => 1020,
-          'height' => 747,
+          'width' => 340,
+          'height' => '',
           'upscale' => 0,
         ),
         'weight' => 1,

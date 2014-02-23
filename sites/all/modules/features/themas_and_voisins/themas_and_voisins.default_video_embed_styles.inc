@@ -78,8 +78,8 @@ function themas_and_voisins_default_video_embed_styles() {
   $video_embed_style->name = 'voisin_1';
   $video_embed_style->data = array(
     'youtube' => array(
-      'width' => '680px',
-      'height' => '498px',
+      'width' => '340px',
+      'height' => '248px',
       'theme' => 'light',
       'autoplay' => 0,
       'hd' => 1,
@@ -99,7 +99,7 @@ function themas_and_voisins_default_video_embed_styles() {
       'autoplay' => 0,
       'loop' => 0,
     ),
-    'data__active_tab' => 'edit-data-vimeo',
+    'data__active_tab' => 'edit-data-youtube',
   );
   $export['voisin_1'] = $video_embed_style;
 
@@ -121,7 +121,7 @@ function themas_and_voisins_default_video_embed_styles() {
       'autohide' => '2',
     ),
     'vimeo' => array(
-      'width' => '380px',
+      'width' => '680px',
       'height' => '498px',
       'color' => 'ffffff',
       'portrait' => 0,
@@ -140,8 +140,8 @@ function themas_and_voisins_default_video_embed_styles() {
   $video_embed_style->name = 'voisin_3';
   $video_embed_style->data = array(
     'youtube' => array(
-      'width' => '680px',
-      'height' => '498px',
+      'width' => '1020px',
+      'height' => '747px',
       'theme' => 'light',
       'autoplay' => 0,
       'hd' => 1,
@@ -153,7 +153,7 @@ function themas_and_voisins_default_video_embed_styles() {
     ),
     'vimeo' => array(
       'width' => '1020px',
-      'height' => '746px',
+      'height' => '747px',
       'color' => 'ffffff',
       'portrait' => 0,
       'title' => 0,
