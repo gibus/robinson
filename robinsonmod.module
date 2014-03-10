@@ -10,6 +10,14 @@ function robinsonmod_menu() {
     'file' => 'robinsonmod.pages.inc',
   );
 
+  $items['ajax/robinson/getcontent'] = $base + array(
+    'title' => 'ajax get content',
+    'page callback' => 'robinsonmod_ajax_getcontent',
+    'page arguments' => array(),
+    'access callback' => true,
+    // 'access arguments' => array(''),
+  );
+
   $items['ajax/robinson/thema'] = $base + array(
     'title' => 'ajax thema',
     'page callback' => 'robinsonmod_ajax_thema',
@@ -111,3 +119,213 @@ function robinsonmod_handle_vimeo($url, $settings) {
   $settings['api'] = 1;
   return video_embed_field_handle_vimeo($url, $settings);
 }
+
+function rodinsonmod_checkPrograme(&$rep){
+  robinsonmod_randomThema($rep);
+}
+
+function robinsonmod_randomThema(&$rep){
+
+  # get all the thematiques
+  $query = new ThemaEntityFieldQuery;
+
+  # get 10 last already displayed themas
+  // $displayed_themas = variable_get('robinsonmod_displayed_themas', array());
+  # TODO : record displayed thema on session
+  // $displayed_themas = session_cache_get('robinsonmod_displayed_themas');
+  // dsm($displayed_themas);
+  
+  if(isset($rep['displayed_themas']))
+    $query->entityCondition('entity_id', $rep['displayed_themas'], 'NOT IN');
+
+  $themas = $query->execute();
+  // dsm($themas);
+
+  # get a random thema
+  $thema = $themas['node'][array_rand($themas['node'])];
+
+  // $displayed_themas[] = $thema->nid;
+  // if(count($displayed_themas) > 10)
+  //   array_pop($displayed_themas);
+
+  // $rep['displayed_themas'] = $displayed_themas;
+  // variable_set('robinsonmod_displayed_themas', $displayed_themas);
+  // session_cache_set('robinsonmod_displayed_themas', $displayed_themas);
+
+  $rep['mode'] = "random";
+  $rep['thema'] = $thema;
+}
+
+function robinsonmod_renderVoisin($nid, $debug = false){
+  $voisin_node = node_load($nid); 
+
+  $voisin = array("nid"=>$voisin_node->nid); 
+    
+  if($debug)
+    $voisin['node'] = $voisin_node;  
+
+  $media_type_tid = $voisin_node->field_type_media['und'][0]['tid'];
+  
+  switch ($media_type_tid) {
+    case 12: #video
+      $media_type = "video";
+      break;
+    case 13: #image
+      $media_type = "image";
+      break;
+    case 14: #son
+      $media_type = "audio";
+      break;
+    case 15: #texte
+      $media_type = "text";
+      break;
+  }
+  $voisin['media_type'] = $media_type;
+  
+  $viewmode = "voisin_".$media_type;
+
+  # flatenize comportement
+  $comportement_tid = $voisin_node->field_comportement['und'][0]['tid'];
+  $voisin['comportement'] = $comp = robinsonmod_getFlatenizedComportement($comportement_tid);
+
+  // VIDEO & IMAGES : change viewmode for size for images and videos (one viewmode by size 1,2,3)
+  if(in_array($media_type, array("video", "image"))){
+    $viewmode .= "_t".$comp["taille"];
+  }
+
+  # record viewmode and render node
+  $voisin['viewmode'] = $viewmode;
+  
+  # get space  
+  $voisin['space'] = robinsonmod_getVoisinSpace($voisin);
+
+  $node_view = node_view($voisin_node, $viewmode);
+  $voisin['rendered'] = drupal_render($node_view);
+
+  return $voisin;
+}
+
+/**
+* helpers
+*/
+function robinsonmod_getAllThemas(){
+  $all_themas = &drupal_static(__FUNCTION__);
+  if (!isset($all_themas)) {
+    if ($cache = cache_get('robinsonmod_all_themas')) {
+      $all_themas = $cache->data;
+    }
+    else {
+      $themas_query = new ThemaEntityFieldQuery;
+      $themas_results = $voisins_query->execute();
+      $all_themas = $themas_results['node'];
+      cache_set('robinsonmod_all_voisins', $all_themas, 'cache', time() + 60*60*1);
+    }
+  }
+  return $all_themas;
+}
+
+function robinsonmod_getAllVoisins(){
+  $all_voisins = &drupal_static(__FUNCTION__);
+  if (!isset($all_voisins)) {
+    if ($cache = cache_get('robinsonmod_all_voisins')) {
+      $all_voisins = $cache->data;
+    }
+    else {
+      $voisins_query = new VoisinEntityFieldQuery;
+      $voisins_results = $voisins_query->execute();
+      $all_voisins = $voisins_results['node'];
+      cache_set('robinsonmod_all_voisins', $all_voisins, 'cache', time() + 60*60*1);
+    }
+  }
+  return $all_voisins;
+}
+
+function robinsonmod_getAllVoisinsBySpace(){
+  // $all_voisins_by_space = &drupal_static(__FUNCTION__);
+  // if (!isset($all_voisins_by_space)) {
+  //   if ($cache = cache_get('robinsonmod_all_voisins_by_space')) {
+  //     $all_voisins_by_space = $cache->data;
+  //   }
+  //   else {
+      $all_voisins = robinsonmod_getAllVoisins();
+      foreach ($all_voisins as $nid => $voisin) {
+        $rendered_voisin = robinsonmod_renderVoisin($nid);
+        $space = $rendered_voisin['space'];
+        $all_voisins_by_space[$space][$nid] = $rendered_voisin; 
+      }
+  //     cache_set('robinsonmod_all_voisins_by_space', $all_voisins_by_space, 'cache', time() + 60*60*1);
+  //   }
+  // }
+  return $all_voisins_by_space;
+}
+
+function robinsonmod_getVoisinSpace($voisin){
+  $space = 0;
+  $comp = $voisin["comportement"];
+  switch ($voisin["media_type"]) {
+    case "video":
+      $space = 3*$comp['taille'];
+      break;
+    case "image":
+      $space = 3*$comp['taille'];//*$comp["duree"];
+      break;
+    case "audio":
+      $space = 1;
+      break;
+    case "text":
+    default:
+      $space = 2*$comp['taille'];
+      break;
+  }
+
+  return $space;
+}
+
+function robinsonmod_getFlatenizedComportement($tid){
+  $term = (array)taxonomy_term_load($tid);
+  foreach ($term as $key => $value) {
+    if(strpos($key, "field_") === 0 && is_array($value)){
+      $term[$key] = $value['und'][0]['value'];
+    }
+    else{
+      $term[$key] = $value;
+    }
+  }
+
+  $comp["tid"] = intval($tid);
+  $comp["name"] = $term->name;
+  $comp["discursif"] = intval($term["field_discursif"]) == 1;
+  $comp["proba"] = intval($term["field_proba"]);
+  
+  $fields = array(
+    array(
+      'name'=>"field_duree_sec_minmax",
+      'shortname'=>'duree',
+      'exp'=>'/(\d{1,3})\/(\d{1,3})/'),
+    array(
+      'name'=>"field_pause_apres_le_voisin",
+      'shortname'=>'pause',
+      'exp'=>'/(\d{1,3})\/(\d{1,3})/'),
+    array(
+      'name'=>"field_taille_minmax", 
+      'shortname'=>'taille', 
+      'exp'=>'/(\d{1})\/(\d{1})/'),
+  );
+
+  foreach ($fields as $field) {
+    preg_match($field['exp'], $term[$field['name']], $matches);
+    $comp[$field["shortname"]."_minmax"] = $minmax = array(
+      "min" => intval($matches[1]),
+      "max" => intval($matches[2]),
+    );
+    $val = round(rand($minmax['min'], $minmax['max']));
+    $comp[$field["shortname"]] = $val;
+  }
+  
+  return $comp;
+}
+
+
+
+
+
