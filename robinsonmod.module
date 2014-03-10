@@ -251,7 +251,8 @@ function robinsonmod_getAllVoisinsBySpace(){
       foreach ($all_voisins as $nid => $voisin) {
         $rendered_voisin = robinsonmod_renderVoisin($nid);
         $space = $rendered_voisin['space'];
-        $all_voisins_by_space[$space][$nid] = $rendered_voisin; 
+        $media_type = $rendered_voisin['media_type'];
+        $all_voisins_by_space[$space][$media_type][$nid] = $rendered_voisin; 
       }
   //     cache_set('robinsonmod_all_voisins_by_space', $all_voisins_by_space, 'cache', time() + 60*60*1);
   //   }
@@ -274,7 +275,7 @@ function robinsonmod_getVoisinSpace($voisin){
       break;
     case "text":
     default:
-      $space = 2*$comp['taille'];
+      $space = 3*$comp['taille'];
       break;
   }
 
