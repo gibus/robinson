@@ -277,7 +277,7 @@ function themas_and_voisins_field_default_field_instances() {
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -518,10 +518,14 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 6,
       ),
       'stream' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => 'voisin_2',
+        ),
+        'type' => 'image',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -956,10 +960,9 @@ function themas_and_voisins_field_default_field_instances() {
       ),
       'stream' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_plain',
-        'weight' => 1,
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1819,7 +1822,7 @@ function themas_and_voisins_field_default_field_instances() {
     'bundle' => 'voisin',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
+    'description' => 'Copier le lien "share" de soundcloud <a href="http://help.soundcloud.com/customer/portal/articles/243682" target="_blank">voir ici</a>.
 ',
     'display' => array(
       'default' => array(
@@ -1871,7 +1874,7 @@ function themas_and_voisins_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'link',
         'settings' => array(),
-        'type' => 'link_absolute',
+        'type' => 'link_label',
         'weight' => 0,
       ),
       'voisin_contrib_audio' => array(
@@ -3679,7 +3682,7 @@ minimum 1, maximum 3',
   t('Attente en fin de diffusion ( min — max )');
   t('Citation');
   t('Comportement');
-  t('Copier directement le lien vers le soundcloud (ex. https://soundcloud.com/comedybangbang/251-amber-tamblyn-todd-glass).
+  t('Copier le lien "share" de soundcloud <a href="http://help.soundcloud.com/customer/portal/articles/243682" target="_blank">voir ici</a>.
 ');
   t('Crédits');
   t('Date de l\'entretien ');
