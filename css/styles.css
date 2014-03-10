@@ -305,7 +305,7 @@ body {
 #stream-wrapper > * {
   margin: 0;
   padding: 0;
-  color: #ff2405;
+  color: #a31705;
 }
 #stream-wrapper .placed {
   position: absolute;
@@ -313,7 +313,7 @@ body {
 #stream-wrapper #site-name {
   width: 340px;
   height: 62.25px;
-  background-color: #ff2405;
+  background-color: #a31705;
   color: #fff;
   text-align: center;
   vertical-align: middle;
@@ -330,7 +330,7 @@ body {
   transition: all 0s linear;
 }
 #stream-wrapper #site-name.pre-anime {
-  color: #ff2405;
+  color: #a31705;
 }
 #stream-wrapper #site-name.anime {
   -webkit-transition: all 1s linear;
@@ -356,7 +356,7 @@ body {
 #stream-wrapper .thema h2.thema-title {
   width: 680px;
   height: 498px;
-  background-color: #ff2405;
+  background-color: #a31705;
   color: #fff;
   display: table;
 }
@@ -403,10 +403,10 @@ body {
   *display: inline;
   height: auto;
   background-color: #fff;
-  color: #ff2405;
+  color: #a31705;
 }
 #stream-wrapper .thema .content.pre-anime {
-  background-color: #ff2405;
+  background-color: #a31705;
 }
 #stream-wrapper .thema .content.pre-anime > * {
   -webkit-transition: all 0 linear;
@@ -452,7 +452,7 @@ body {
 #stream-wrapper .thema .voisin.video {
   width: 680px;
   height: 498px;
-  background-color: #ff2405;
+  background-color: #a31705;
 }
 #stream-wrapper .thema .voisin.video.pre-anime .field-name-field-video {
   opacity: 0;
@@ -481,7 +481,7 @@ body {
 }
 #stream-wrapper .thema .voisin.text {
   width: 340px;
-  background-color: #ff2405;
+  background-color: #a31705;
 }
 #stream-wrapper .thema .voisin.text.post-anime {
   background-color: #d8d8d8;
