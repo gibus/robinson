@@ -305,6 +305,12 @@ body {
 #stream-wrapper > * {
   margin: 0;
   padding: 0;
+  color: #00c624;
+}
+.random-mode #stream-wrapper > * {
+  color: #00c624;
+}
+.programe-mode #stream-wrapper > * {
   color: #a31705;
 }
 #stream-wrapper .placed {
@@ -313,7 +319,7 @@ body {
 #stream-wrapper #site-name {
   width: 340px;
   height: 62.25px;
-  background-color: #a31705;
+  background-color: #00c624;
   color: #fff;
   text-align: center;
   vertical-align: middle;
@@ -321,6 +327,12 @@ body {
   text-transform: uppercase;
   font-size: 24px;
   line-height: 2.4;
+}
+.random-mode #stream-wrapper #site-name {
+  background-color: #00c624;
+}
+.programe-mode #stream-wrapper #site-name {
+  background-color: #a31705;
 }
 #stream-wrapper #site-name.not-anime {
   visibility: visible;
@@ -330,6 +342,12 @@ body {
   transition: all 0s linear;
 }
 #stream-wrapper #site-name.pre-anime {
+  color: #00c624;
+}
+.random-mode #stream-wrapper #site-name.pre-anime {
+  color: #00c624;
+}
+.programe-mode #stream-wrapper #site-name.pre-anime {
   color: #a31705;
 }
 #stream-wrapper #site-name.anime {
@@ -356,9 +374,15 @@ body {
 #stream-wrapper .thema h2.thema-title {
   width: 680px;
   height: 498px;
-  background-color: #a31705;
+  background-color: #00c624;
   color: #fff;
   display: table;
+}
+.random-mode #stream-wrapper .thema h2.thema-title {
+  background-color: #00c624;
+}
+.programe-mode #stream-wrapper .thema h2.thema-title {
+  background-color: #a31705;
 }
 #stream-wrapper .thema h2.thema-title span.txt {
   display: moz-inline-stack;
@@ -403,9 +427,21 @@ body {
   *display: inline;
   height: auto;
   background-color: #fff;
+  color: #00c624;
+}
+.random-mode #stream-wrapper .thema .content {
+  color: #00c624;
+}
+.programe-mode #stream-wrapper .thema .content {
   color: #a31705;
 }
 #stream-wrapper .thema .content.pre-anime {
+  background-color: #00c624;
+}
+.random-mode #stream-wrapper .thema .content.pre-anime {
+  background-color: #00c624;
+}
+.programe-mode #stream-wrapper .thema .content.pre-anime {
   background-color: #a31705;
 }
 #stream-wrapper .thema .content.pre-anime > * {
@@ -452,6 +488,12 @@ body {
 #stream-wrapper .thema .voisin.video {
   width: 680px;
   height: 498px;
+  background-color: #00c624;
+}
+.random-mode #stream-wrapper .thema .voisin.video {
+  background-color: #00c624;
+}
+.programe-mode #stream-wrapper .thema .voisin.video {
   background-color: #a31705;
 }
 #stream-wrapper .thema .voisin.video.pre-anime .field-name-field-video {
@@ -481,6 +523,12 @@ body {
 }
 #stream-wrapper .thema .voisin.text {
   width: 340px;
+  background-color: #00c624;
+}
+.random-mode #stream-wrapper .thema .voisin.text {
+  background-color: #00c624;
+}
+.programe-mode #stream-wrapper .thema .voisin.text {
   background-color: #a31705;
 }
 #stream-wrapper .thema .voisin.text.post-anime {

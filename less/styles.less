@@ -28,7 +28,16 @@ body.no-sidebars #center { width: 100%; }
 @postanime-grey:#D8D8D8;
 @postanime-opacity:0.9;
 
-
+.colored(){
+  color:@vert;
+  .random-mode &{ color:@vert; }
+  .programe-mode &{ color:@rouge; }
+}
+.bgcolored(){
+  background-color:@vert;
+  .random-mode &{ background-color:@vert; }
+  .programe-mode &{ background-color:@rouge; }
+}
 
 /* general */
 html{
@@ -65,14 +74,14 @@ body{
 
 #stream-wrapper{
   cursor: none;
-  &>*{.m(0); .p(0); color:@rouge;}
+  &>*{.m(0); .p(0); .colored; }
 
   .placed{position:absolute;}
 
   #site-name{
     // z-index:100;
     width:@cell_w; height:@line_h;
-    background-color: @rouge; color:#fff;
+    .bgcolored; color:#fff;
     text-align: center; vertical-align: middle; 
     .500; text-transform: uppercase;
     .24; line-height:2.4; 
@@ -83,7 +92,7 @@ body{
     }
     &.pre-anime{
       // .transition-simply-prefix(~"all 0s linear");
-      color:@rouge;
+      .colored;
     }
     &.anime{
       .transition-simply-prefix(~"all 1s linear");
@@ -103,7 +112,7 @@ body{
     
     h2.thema-title{
       width:@cell_w*2; height:@cell_h*2;
-      background-color: @rouge; color:#fff;
+      .bgcolored; color:#fff;
       display:table;
       span.txt{
         .inlineblock(); 
@@ -141,10 +150,10 @@ body{
 
     .content{
       width:cell_w; .inlineblock(); height:auto;
-      background-color: #fff; color:@rouge;
+      background-color: #fff; .colored;
 
       &.pre-anime{
-        background-color: @rouge;
+        .bgcolored;
         &>*{
           .transition-simply-prefix(~"all 0 linear");
           visibility:hidden;
@@ -181,7 +190,7 @@ body{
       }
       &.video{
         width:@cell_w*2; height:@cell_h*2;
-        background-color: @rouge;
+        .bgcolored;
         &.pre-anime{
           .field-name-field-video{
             opacity:0;
@@ -207,7 +216,7 @@ body{
       }
       &.text{
         width:@cell_w;// height:@cell_h*2;
-        background-color: @rouge;
+        .bgcolored;
         &.post-anime{
           background-color:@postanime-grey;
           opacity:@postanime-opacity;

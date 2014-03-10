@@ -43,14 +43,14 @@ Drupal.behaviors.init_theme = function (context) {
   function init(){
     _ajax_base_path = Drupal.settings.basePath+Drupal.settings.pathPrefix;
 
-    initGraphics();
-
     if($('body').is('.logged-in'))
       return;
 
-    getContent();
+    initSoundCloud();
+    initKeyboardShortcuts();
+    initGraphics();
 
-    // newThema();
+    getContent();
   };
 
   function initGraphics(){
@@ -61,6 +61,31 @@ Drupal.behaviors.init_theme = function (context) {
       .appendTo(_$stream_wrapper)
       .placeBlock({left:0})
       .notAnime();
+  };
+
+  function initSoundCloud(){
+    SC.initialize({
+      client_id: '705d246367c9a149b1450c8b069a504a'
+    });
+    // initiate auth popup
+    // SC.connect(function() {
+    //   SC.get('/me', function(me) { 
+    //     console.log('Hello, ' + me.username); 
+    //   });
+    // });
+  };
+
+  function initKeyboardShortcuts(){
+
+    // $(document)
+    //   .bind('keydown', 'Alt+Shift+s:',shortcut_focusSearchField);
+      // .bind('keydown', 'Alt+4',shortcut_viewmodeFull)
+      // .bind('keydown', 'space',shortcut_togglePreview)
+      // .bind('keydown', 'esc',shortcut_closeModaleContent)
+      // .bind('keydown', 'up',shortcut_onUpArrow)
+      // .bind('keydown', 'right',shortcut_onRightArrow)
+      // .bind('keydown', 'down',shortcut_onDownArrow)
+      // .bind('keydown', 'left',shortcut_onLeftArrow);
   };
 
   function getContent(){
@@ -143,10 +168,10 @@ Drupal.behaviors.init_theme = function (context) {
     switch(_play_mode){
       case "random":
         _displayed_themas.push(this.nid);
-        getContent();
+        // getContent();
         break;
       case "programe":
-        programeNextSequence();
+        // programeNextSequence();
         break;
     }
   };
@@ -243,6 +268,11 @@ Drupal.behaviors.init_theme = function (context) {
           .addEvent('pause', function(id){thema.onVideoPause(id);})
           .addEvent('finish', function(id){thema.onVideoFinished(id);});
 
+        this.videoVolume = 1;
+        $(document)
+          .bind('keydown', 's', function(){thema.onVideoToggleSound();});
+        // this.onVideoToggleSound();
+
         this.$.trigger('ready');
 
         this.startAnime();
@@ -283,14 +313,6 @@ Drupal.behaviors.init_theme = function (context) {
         }
       };
 
-      Thema.prototype.videoPlay = function(){
-        $f(this.video_id).api('play');
-      };
-
-      Thema.prototype.videoPause = function(){
-        $f(this.video_id).api('pause');
-      };
-
       Thema.prototype.onVideoFinished = function(id){
         //console.log('Thema :: onVideoFinished | id = '+id);
         
@@ -304,6 +326,25 @@ Drupal.behaviors.init_theme = function (context) {
         }(id));
 
         this.$.trigger('finished');
+      };
+
+      Thema.prototype.onVideoToggleSound = function(){
+        console.log('Thema :: onVideoToggleSound');
+        if(this.videoVolume){
+          $f(this.video_id).api('setVolume', 0);
+          this.videoVolume = 0;
+        }else{
+          $f(this.video_id).api('setVolume', 1);
+          this.videoVolume = 1;
+        }
+      };
+
+      Thema.prototype.videoPlay = function(){
+        $f(this.video_id).api('play');
+      };
+
+      Thema.prototype.videoPause = function(){
+        $f(this.video_id).api('pause');
       };
 
       Thema.prototype.startAnime = function(){
@@ -324,7 +365,6 @@ Drupal.behaviors.init_theme = function (context) {
             thema.ready_for_voisins = true;
           }, 5000*thema.$thema.children().size());
         }(this));
-
       };
 
       Thema.prototype.impulseVoisins = function(){
@@ -335,6 +375,7 @@ Drupal.behaviors.init_theme = function (context) {
           var voisin = new Voisin({thema:this});
           voisin.$
             .bind('loaded', function(event){thema.onVoisinLoaded(this, event)})
+            .bind('aborted', function(event){thema.onVoisinAborted(this, event)})
             .bind('finished', function(event){thema.onVoisinFinished(this, event)});
         }
       };
@@ -345,11 +386,21 @@ Drupal.behaviors.init_theme = function (context) {
         this.played_voisins.push(voisin);
         this.played_voisinsnids.push(voisin.nid);
         this.loading_voisin = false;
+        if(voisin.media_type == "audio")
+          this.is_playing_audio = true;
+      };
+
+      Thema.prototype.onVoisinAborted = function(voisin, event){
+        console.log('Thema :: onVoisinAborted');
+        this.loading_voisin = false;
       };
 
       Thema.prototype.onVoisinFinished = function(voisin, event){
         // console.log("Thema :: onVideoFinished : voisin", voisin);
         this.availablespace += voisin.space;
+        if(voisin.media_type == "audio")
+          this.is_playing_audio = false;
+
       };
 
       Thema.prototype.initialized = true;
@@ -374,7 +425,7 @@ Drupal.behaviors.init_theme = function (context) {
     if(typeof Voisin.prototype.initialized == "undefined"){
 
       Voisin.prototype.ajaxLoad = function(){
-        console.log('Voisin :: ajaxload : this', this);
+        console.log('Voisin :: ajaxload');// : this', this);
         var voisin = this;
         var params;
         if(this.nid){
@@ -384,7 +435,8 @@ Drupal.behaviors.init_theme = function (context) {
             nid                 :this.thema.nid, 
             voisins_list        :this.thema.voisins_list, 
             played_voisins_nids :this.thema.played_voisinsnids,
-            availablespace      :this.thema.availablespace
+            availablespace      :this.thema.availablespace,
+            is_playing_audio    :this.thema.is_playing_audio  
           }};
         }
 
@@ -396,16 +448,22 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.ajaxLoaded = function(datas){
-        // console.log('Voisin :: ajaxLoaded',datas);
+        console.log('Voisin :: ajaxLoaded',datas);
 
-        for(index in datas.voisin)
-          this[index] = datas.voisin[index];
+        if(datas.voisin){
+          for(index in datas.voisin)
+            this[index] = datas.voisin[index];
+  
+          // this.parseComportement();
+
+          this.$.trigger('loaded');
+
+          this.start();
+        }else{
+          this.$.trigger('aborted');
+        }
         
-        // this.parseComportement();
-
-        this.$.trigger('loaded');
-
-        this.start();
+        
       };
 
       // not used any more
@@ -448,7 +506,7 @@ Drupal.behaviors.init_theme = function (context) {
       // };
 
       Voisin.prototype.start = function(){
-        console.log('Voisin :: start : media_type = '+this.media_type);
+        // console.log('Voisin :: start : media_type = '+this.media_type);
 
         if(typeof this['start'+this.media_type] == 'function')
           this['start'+this.media_type].call(this);
@@ -490,7 +548,7 @@ Drupal.behaviors.init_theme = function (context) {
       * text
       */
       Voisin.prototype.starttext = function(){
-        console.log("Voisin :: starttext", this);
+        console.log("Voisin :: start : text", this);
         this.initCommons();
         this.setSize();
         this.$voisin.placeBlock();
@@ -502,7 +560,7 @@ Drupal.behaviors.init_theme = function (context) {
       * image
       */
       Voisin.prototype.startimage = function(){
-        console.log("Voisin :: startimage", this);
+        console.log("Voisin :: start : image", this);
         this.initCommons();
         this.$voisin.placeBlock();
         this.$voisin.preAnime();
@@ -513,21 +571,53 @@ Drupal.behaviors.init_theme = function (context) {
       * audio
       */
       Voisin.prototype.startaudio = function(){
-        console.log("Voisin :: startaudio", this);
+        console.log("Voisin :: start : audio", this);
         this.initCommons();
         this.setupSoundCloudPlayer();
         this.$voisin.css('top', -1000);
       };
 
       Voisin.prototype.setupSoundCloudPlayer = function(){
+        // http://developers.soundcloud.com/docs#resolving
+        // http://developers.soundcloud.com/docs/api/sdks#javascript
+        // console.log('Voisin :: setupSoundCloudPlayer');
+        var voisin = this;
 
+        var $a = $('a[href^="https://soundcloud.com"]:first');
+        var url = $a.attr('href');//.replace('https://', ''); 
+        // var url = "https://soundcloud.com/fanfare-bleme/feuilles-et-tv/s-FaDA4";
+        // console.log('Voisin :: SC : track url',url);
+        SC.get('/resolve', { url: url }, function(track) {
+          // console.log("Voisin :: SC resolved : track", track);          
+          
+          if(typeof track.id == "undefined")
+            return;
+
+          SC.stream(track.stream_url, {
+            autoPlay:true,
+            autoLoad:true,
+            onplay:function(){voisin.onSoundPlay();},
+            onfinish:function(){voisin.onSoundFinish();},
+          },function(sound){
+            voisin.sound = sound;
+          });
+        });
+      };
+
+      Voisin.prototype.onSoundPlay = function(){
+        // console.log('Voisin :: onSoundPlay : sound',this.sound);
+      };
+
+      Voisin.prototype.onSoundFinish = function(){
+        console.log('Voisin :: onSoundFinish');
+        this.endAnime();
       };
 
       /**
       * video
       */
       Voisin.prototype.startvideo = function(){
-        console.log("Voisin :: startvideo", this);
+        console.log("Voisin :: start : video", this);
 
         this.initCommons();
         this.$voisin.placeBlock();

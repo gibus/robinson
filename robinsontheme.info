@@ -24,6 +24,8 @@ stylesheets[all][] = "css/nonsemantic.css"
 
 ; scripts[] = "js/grid.js"
 scripts[] = "js/libs/froogaloop.js"
+scripts[] = "js/libs/soundcloud-sdk.js"
+scripts[] = "js/libs/jquery.hotkeys.js"
 scripts[] = "js/script.min.js"
 
 
