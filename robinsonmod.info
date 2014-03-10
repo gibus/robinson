@@ -7,8 +7,10 @@ files[] = robinsonmod.class.inc
 files[] = robinsonmod.pages.inc
 files[] = robinsonmod.module
 
-;dependencies[] = taxonomy
-;dependencies[] = field
+dependencies[] = taxonomy
+dependencies[] = field
+dependencies[] = session_cache
+
 package = gui
 version = "7.x-0.dev"
 core = "7.x"
