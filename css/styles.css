@@ -393,8 +393,10 @@ body {
   display: table-cell;
   vertical-align: middle;
   padding: 1em;
+  display: none;
 }
-#stream-wrapper .thema h2.thema-title.pre-anime span.txt {
+#stream-wrapper .thema h2.thema-title.pre-anime span.txt,
+#stream-wrapper .thema h2.thema-title.pre-anime .field-name-field-titre-lettrage {
   -webkit-transition: opacity 0 linear;
   -moz-transition: opacity 0 linear;
   -o-transition: opacity 0 linear;
@@ -402,7 +404,7 @@ body {
   visibility: hidden;
   opacity: 0;
 }
-#stream-wrapper .thema h2.thema-title.anime span.txt {
+#stream-wrapper .thema h2.thema-title.anime span.txt .field-name-field-titre-lettrage {
   -webkit-transition: opacity 1s linear;
   -moz-transition: opacity 1s linear;
   -o-transition: opacity 1s linear;

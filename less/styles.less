@@ -119,10 +119,11 @@ body{
         display:table-cell;
         vertical-align: middle;
         .p(1em);
+        display:none;
       }
 
       &.pre-anime{
-        span.txt{
+        span.txt, .field-name-field-titre-lettrage{
           .transition-simply-prefix(~"opacity 0 linear");
           visibility:hidden;
           opacity:0;
@@ -130,7 +131,7 @@ body{
       }
 
       &.anime{
-        span.txt{
+        span.txt .field-name-field-titre-lettrage{
           .transition-simply-prefix(~"opacity 1s linear");
           visibility:visible;
           opacity:1;
@@ -147,6 +148,8 @@ body{
         // }
       }
     }
+
+
 
     .content{
       width:cell_w; .inlineblock(); height:auto;
