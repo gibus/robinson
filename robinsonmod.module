@@ -52,14 +52,35 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['voisin_video'] = $base + array(
     'label' => t('Voisin video (deprecated)')
   );
+  $entity_info['node']['view modes']['voisin_video_t1_16_9'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne) 16/9')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2_16_9'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes) 16/9')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3_16_9'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes) 16/9')
+  );  
+  $entity_info['node']['view modes']['voisin_video_t1_4_3'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne) 4/3')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2_4_3'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes) 4/3')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3_4_3'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes) 4/3')
+  );
+
+  //  (deprecated) - - - - - - - - - - - - - - - - - - - - 
+
   $entity_info['node']['view modes']['voisin_video_t1'] = $base + array(
-    'label' => t('Voisin video taille 1 (1 colonne)')
+    'label' => t('Voisin video taille 1 (1 colonne) (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_video_t2'] = $base + array(
-    'label' => t('Voisin video taille 2 (2 colonnes)')
+    'label' => t('Voisin video taille 2 (2 colonnes) (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_video_t3'] = $base + array(
-    'label' => t('Voisin video taille 3 (3 colonnes)')
+    'label' => t('Voisin video taille 3 (3 colonnes) (deprecated)')
   );
   $entity_info['node']['view modes']['voisin_image'] = $base + array(
     'label' => t('Voisin image (deprecated)')
@@ -218,6 +239,10 @@ function robinsonmod_renderVoisin($nid, $debug = false){
   // VIDEO & IMAGES : change viewmode for size for images and videos (one viewmode by size 1,2,3)
   if(in_array($media_type, array("video", "image"))){
     $viewmode .= "_t".$comp["taille"];
+  }
+  
+  if($media_type == "video"){
+    $viewmode .= "_".$voisin_node->field_format_video['und'][0]['value'];
   }
 
   # record viewmode and render node
