@@ -31,12 +31,12 @@ body.no-sidebars #center { width: 100%; }
 .colored(){
   color:@vert;
   .random-mode &{ color:@vert; }
-  .programe-mode &{ color:@rouge; }
+  .program-mode &{ color:@rouge; }
 }
 .bgcolored(){
   background-color:@vert;
   .random-mode &{ background-color:@vert; }
-  .programe-mode &{ background-color:@rouge; }
+  .program-mode &{ background-color:@rouge; }
 }
 
 /* general */
@@ -113,13 +113,19 @@ body{
     h2.thema-title{
       width:@cell_w*2; height:@cell_h*2;
       .bgcolored; color:#fff;
-      display:table;
+      // display:table;
       span.txt{
-        .inlineblock(); 
-        display:table-cell;
-        vertical-align: middle;
-        .p(1em);
+        // .inlineblock(); 
+        // display:table-cell;
+        // vertical-align: middle;
+        // .p(1em);
         display:none;
+      }
+
+      .field-name-field-titre-lettrage{
+        &, *{
+          width:100%; height:auto;
+        }
       }
 
       &.pre-anime{
