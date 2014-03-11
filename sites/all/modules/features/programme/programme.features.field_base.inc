@@ -44,7 +44,6 @@ function programme_field_default_field_bases() {
           'type' => 'none',
         ),
         'target_bundles' => array(
-          'programme' => 'programme',
           'thematique' => 'thematique',
           'voisin' => 'voisin',
         ),

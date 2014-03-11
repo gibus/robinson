@@ -11,6 +11,9 @@ function programme_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "corresponding_entity_references" && $api == "default_corresponding_entity_references_presets") {
     return array("version" => "1");
   }
+  if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -24,7 +27,7 @@ function programme_node_info() {
     'programme' => array(
       'name' => t('Programme'),
       'base' => 'node_content',
-      'description' => t('Une sélection de thématiques diffusé lors d\'un rendez-vous'),
+      'description' => t('Une sélection de thématiques et voisins diffusés lors d\'un rendez-vous.'),
       'has_title' => '1',
       'title_label' => t('Titre'),
       'help' => '',

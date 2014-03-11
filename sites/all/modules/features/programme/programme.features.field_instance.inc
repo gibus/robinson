@@ -116,19 +116,25 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_1' => array(
+      'voisin_image' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_2' => array(
+      'voisin_image_t1' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_3' => array(
+      'voisin_image_t2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_t3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -158,19 +164,25 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_1' => array(
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_2' => array(
+      'voisin_video_t1' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_3' => array(
+      'voisin_video_t2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_t3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -180,7 +192,7 @@ function programme_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_prog_element',
     'label' => 'Séquences',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -307,19 +319,25 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_1' => array(
+      'voisin_image' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_2' => array(
+      'voisin_image_t1' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_image_3' => array(
+      'voisin_image_t2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_image_t3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -349,19 +367,25 @@ function programme_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_1' => array(
+      'voisin_video' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_2' => array(
+      'voisin_video_t1' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'voisin_video_3' => array(
+      'voisin_video_t2' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'voisin_video_t3' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -393,7 +417,7 @@ function programme_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 3,
+      'weight' => 10,
     ),
   );
 

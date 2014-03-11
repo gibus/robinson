@@ -14,6 +14,7 @@ function programme_user_default_permissions() {
   $permissions['create programme content'] = array(
     'name' => 'create programme content',
     'roles' => array(
+      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'node',
@@ -23,6 +24,7 @@ function programme_user_default_permissions() {
   $permissions['delete any programme content'] = array(
     'name' => 'delete any programme content',
     'roles' => array(
+      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'node',
@@ -32,6 +34,7 @@ function programme_user_default_permissions() {
   $permissions['delete own programme content'] = array(
     'name' => 'delete own programme content',
     'roles' => array(
+      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'node',
@@ -41,6 +44,7 @@ function programme_user_default_permissions() {
   $permissions['edit any programme content'] = array(
     'name' => 'edit any programme content',
     'roles' => array(
+      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'node',
@@ -50,6 +54,7 @@ function programme_user_default_permissions() {
   $permissions['edit own programme content'] = array(
     'name' => 'edit own programme content',
     'roles' => array(
+      'administrator' => 'administrator',
       'root' => 'root',
     ),
     'module' => 'node',
