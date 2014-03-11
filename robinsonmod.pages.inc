@@ -31,9 +31,7 @@ function robinsonmod_ajax_getcontent(){
   }else{
     drupal_json_output($rep);  
   }
-
 }
-
 
 function robinsonmod_ajax_thema(){
   $debug = true;
@@ -110,13 +108,19 @@ function robinsonmod_ajax_voisin(){
 
     $voisins = array();
     foreach ($all_voisins_by_space as $space => $voisins_by_media) {
-      if($space <= $thema["availablespace"]){
-        foreach ($voisins_by_media as $media => $vs) {
-          if($media == "audio" && $thema["is_playing_audio"])
-            continue;
+      # filter voisin by space
+      if($space > $thema["availablespace"])
+        continue;
 
-          $voisins += $vs;
-        }
+      foreach ($voisins_by_media as $media => $voisins_by_discursif) {
+        # remove audio voisin if already one audio is playing
+        if($media == "audio" && $thema["is_playing_audio"])
+          continue;
+
+        foreach ($voisins_by_discursif as $d => $vs)
+          # remove discursif voisins since we are on a thema
+          if($d == "no-discursif")
+            $voisins += $vs;
       }
     }
 
@@ -127,11 +131,7 @@ function robinsonmod_ajax_voisin(){
       foreach ($thema['played_voisins_nids'] as $nid)
         unset($voisins[$nid]);
 
-    if(count($voisins)){
-      $rep["voisin"] = $voisins[array_rand($voisins)];  
-    }else{
-      $rep["voisin"] = 0;
-    }
+    $rep["voisin"] = count($voisins) ? $voisins[array_rand($voisins)] : 0;
     
   }
 

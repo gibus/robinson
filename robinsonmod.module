@@ -121,7 +121,34 @@ function robinsonmod_handle_vimeo($url, $settings) {
 }
 
 function rodinsonmod_checkPrograme(&$rep){
-  robinsonmod_randomThema($rep);
+  $rep['mode'] = "program";
+    # get all the thematiques
+  $query = new ProgramEntityFieldQuery;
+  $progs = $query->execute();
+
+  if(count($progs['node']) && false){
+    // $prog = $progs['node'][array_rand($progs['node'])];
+    $prog = array_pop($progs['node']);
+    // $rep['prog'] = $prog;
+    
+    $prog_node = node_load($prog->nid);
+    // $rep["prog_node"] = $prog_node;
+
+    foreach ($prog_node->field_prog_element['und'] as $ref) {
+      $result = db_query('SELECT n.type FROM {node} n WHERE n.nid = :nid', array(':nid' => $ref["target_id"]));
+      foreach($result as $record)
+        $type = $record->type;
+      
+      $rep['sequence'][] = array(
+        "nid"   => $ref["target_id"],
+        "type"  => $type
+      );
+    }
+
+    $rep['sequence_length'] = count($prog_node->field_prog_element['und']);
+  }else{
+    robinsonmod_randomThema($rep);
+  }
 }
 
 function robinsonmod_randomThema(&$rep){
@@ -250,9 +277,10 @@ function robinsonmod_getAllVoisinsBySpace(){
       $all_voisins = robinsonmod_getAllVoisins();
       foreach ($all_voisins as $nid => $voisin) {
         $rendered_voisin = robinsonmod_renderVoisin($nid);
-        $space = $rendered_voisin['space'];
+        $space      = $rendered_voisin['space'];
         $media_type = $rendered_voisin['media_type'];
-        $all_voisins_by_space[$space][$media_type][$nid] = $rendered_voisin; 
+        $discursif  = $rendered_voisin['comportement']['discursif'] ? "discursif" : "no-discursif";
+        $all_voisins_by_space[$space][$media_type][$discursif][$nid] = $rendered_voisin; 
       }
   //     cache_set('robinsonmod_all_voisins_by_space', $all_voisins_by_space, 'cache', time() + 60*60*1);
   //   }
