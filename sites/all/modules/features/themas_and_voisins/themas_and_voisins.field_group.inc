@@ -51,8 +51,8 @@ function themas_and_voisins_field_group_info() {
     'label' => 'htabs',
     'weight' => '1',
     'children' => array(
-      0 => 'group_media',
-      1 => 'group_annexes',
+      0 => 'group_annexes',
+      1 => 'group_media',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -82,6 +82,7 @@ function themas_and_voisins_field_group_info() {
       2 => 'field_video',
       3 => 'field_texte',
       4 => 'field_type_media',
+      5 => 'field_format_video',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
