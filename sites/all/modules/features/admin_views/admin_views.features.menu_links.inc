@@ -49,7 +49,7 @@ function admin_views_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 0,
     'customized' => 1,
-    'parent_identifier' => 'navigation_:admin/structure/taxonomy/comportement',
+    'parent_identifier' => 'navigation_comportements:admin/structure/taxonomy/comportement',
   );
   // Exported menu link: navigation_comportements:admin/structure/taxonomy/comportement
   $menu_links['navigation_comportements:admin/structure/taxonomy/comportement'] = array(
