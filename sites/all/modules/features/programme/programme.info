@@ -49,6 +49,7 @@ features[variable][] = menu_parent_programme
 features[variable][] = node_options_programme
 features[variable][] = node_preview_programme
 features[variable][] = node_submitted_programme
+features[variable][] = nodeformscols_field_placements_programme_default
 features[variable][] = save_continue_programme
 features[variable][] = user_permissions_programme
 features_exclude[dependencies][themas_and_voisins] = themas_and_voisins
