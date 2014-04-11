@@ -27,7 +27,7 @@ function programme_node_info() {
     'programme' => array(
       'name' => t('Programme'),
       'base' => 'node_content',
-      'description' => t('Une sélection de thématiques et voisins diffusés lors d\'un rendez-vous.'),
+      'description' => t('Une sélection de thématiques diffusé lors d\'un rendez-vous'),
       'has_title' => '1',
       'title_label' => t('Titre'),
       'help' => '',

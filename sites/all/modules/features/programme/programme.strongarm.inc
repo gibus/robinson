@@ -14,7 +14,7 @@ function programme_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_programme';
-  $strongarm->value = 'edit-auto-nodetitle';
+  $strongarm->value = 'edit-extras';
   $export['additional_settings__active_tab_programme'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -106,10 +106,7 @@ function programme_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
-        ),
-        'workflow' => array(
-          'weight' => '4',
+          'weight' => '1',
         ),
       ),
       'display' => array(),
