@@ -182,14 +182,102 @@ function themas_and_voisins_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__thematique';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'stream' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t1' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t2' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_text' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_discursif' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_txt' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '5',
         ),
         'workflow' => array(
           'weight' => '7',
@@ -201,10 +289,18 @@ function themas_and_voisins_strongarm() {
             'weight' => '5',
             'visible' => FALSE,
           ),
+          'default' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
         ),
         'workflow' => array(
           'stream' => array(
             'weight' => '4',
+            'visible' => FALSE,
+          ),
+          'default' => array(
+            'weight' => '99',
             'visible' => FALSE,
           ),
         ),
@@ -309,6 +405,24 @@ function themas_and_voisins_strongarm() {
       'voisin_image_t3' => array(
         'custom_settings' => TRUE,
       ),
+      'voisin_video_t1_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -316,7 +430,7 @@ function themas_and_voisins_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '6',
         ),
         'workflow' => array(
           'weight' => '4',
@@ -548,9 +662,9 @@ function themas_and_voisins_strongarm() {
     ),
     'actions' => array(
       'region' => 'right',
-      'weight' => '2',
+      'weight' => '3',
       'has_required' => FALSE,
-      'title' => 'Save',
+      'title' => 'Enregistrer',
       'hidden' => 0,
     ),
     'field_thema_date' => array(
@@ -574,13 +688,6 @@ function themas_and_voisins_strongarm() {
       'title' => 'Voisins',
       'hidden' => 0,
     ),
-    'field_titre__lettrage_' => array(
-      'region' => 'main',
-      'weight' => '1',
-      'has_required' => FALSE,
-      'title' => 'Titre video ( lettrage )',
-      'hidden' => 0,
-    ),
     'title_field' => array(
       'region' => 'main',
       'weight' => '-5',
@@ -589,9 +696,23 @@ function themas_and_voisins_strongarm() {
     ),
     'workflow' => array(
       'region' => 'right',
-      'weight' => '1',
+      'weight' => '2',
       'has_required' => FALSE,
       'title' => 'Change Publication state',
+      'hidden' => 0,
+    ),
+    'field_titre_lettrage' => array(
+      'region' => 'main',
+      'weight' => '1',
+      'has_required' => FALSE,
+      'title' => 'Titre lettrage',
+      'hidden' => 0,
+    ),
+    'field_memo' => array(
+      'region' => 'right',
+      'weight' => '1',
+      'has_required' => FALSE,
+      'title' => 'Mémo',
       'hidden' => 0,
     ),
   );
@@ -625,13 +746,13 @@ function themas_and_voisins_strongarm() {
     'field_voisin_type' => array(
       'region' => 'footer',
       'weight' => '0',
-      'has_required' => TRUE,
+      'has_required' => FALSE,
       'title' => 'Type de voisin (deprecated)',
       'hidden' => 0,
     ),
     'field_voisin_credit' => array(
       'region' => 'right',
-      'weight' => '3',
+      'weight' => '2',
       'has_required' => FALSE,
       'title' => 'Crédits',
       'hidden' => 0,
@@ -659,7 +780,7 @@ function themas_and_voisins_strongarm() {
     ),
     'field_ref_thema' => array(
       'region' => 'right',
-      'weight' => '2',
+      'weight' => '1',
       'has_required' => FALSE,
       'title' => 'Est le voisin de ',
       'hidden' => 0,
@@ -687,8 +808,22 @@ function themas_and_voisins_strongarm() {
     'field_comportement' => array(
       'region' => 'right',
       'weight' => '0',
-      'has_required' => FALSE,
+      'has_required' => TRUE,
       'title' => 'Comportement',
+      'hidden' => 0,
+    ),
+    'field_format_video' => array(
+      'region' => 'main',
+      'weight' => '14',
+      'has_required' => FALSE,
+      'title' => 'format video',
+      'hidden' => 0,
+    ),
+    'field_memo' => array(
+      'region' => 'right',
+      'weight' => '3',
+      'has_required' => FALSE,
+      'title' => 'Mémo',
       'hidden' => 0,
     ),
   );

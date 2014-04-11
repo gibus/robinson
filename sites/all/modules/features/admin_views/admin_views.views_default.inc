@@ -419,7 +419,7 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['field_son']['field'] = 'field_son';
   $handler->display->display_options['fields']['field_son']['label'] = 'Son / Video / Image';
   $handler->display->display_options['fields']['field_son']['click_sort_column'] = 'url';
-  /* Champ: Contenu : Vidéo de l'entretien */
+  /* Champ: Contenu : Video */
   $handler->display->display_options['fields']['field_video']['id'] = 'field_video';
   $handler->display->display_options['fields']['field_video']['table'] = 'field_data_field_video';
   $handler->display->display_options['fields']['field_video']['field'] = 'field_video';
@@ -473,6 +473,10 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['delete_node']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['delete_node']['text'] = 'supprimer';
+  /* Champ: Contenu : Mémo */
+  $handler->display->display_options['fields']['field_memo']['id'] = 'field_memo';
+  $handler->display->display_options['fields']['field_memo']['table'] = 'field_data_field_memo';
+  $handler->display->display_options['fields']['field_memo']['field'] = 'field_memo';
   /* Critère de filtrage: Contenu : Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -600,6 +604,22 @@ function admin_views_views_default_views() {
     4 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
+  /* Critère de filtrage: Contenu : Mémo (field_memo) */
+  $handler->display->display_options['filters']['field_memo_value']['id'] = 'field_memo_value';
+  $handler->display->display_options['filters']['field_memo_value']['table'] = 'field_data_field_memo';
+  $handler->display->display_options['filters']['field_memo_value']['field'] = 'field_memo_value';
+  $handler->display->display_options['filters']['field_memo_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_memo_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_memo_value']['expose']['operator_id'] = 'field_memo_value_op';
+  $handler->display->display_options['filters']['field_memo_value']['expose']['label'] = 'Mémo';
+  $handler->display->display_options['filters']['field_memo_value']['expose']['operator'] = 'field_memo_value_op';
+  $handler->display->display_options['filters']['field_memo_value']['expose']['identifier'] = 'field_memo_value';
+  $handler->display->display_options['filters']['field_memo_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+  );
 
   /* Display: Page : all */
   $handler = $view->new_display('page', 'Page : all', 'page');
@@ -714,6 +734,7 @@ function admin_views_views_default_views() {
     t('Lien de suppression'),
     t('<span class="node-delete">[delete_node]</span>'),
     t('supprimer'),
+    t('Mémo'),
     t('Type de media'),
     t('type de voisin (deprecated)'),
     t('Type de voisin (field_voisin_type)'),

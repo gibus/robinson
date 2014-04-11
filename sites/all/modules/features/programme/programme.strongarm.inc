@@ -99,17 +99,121 @@ function programme_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__programme';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'stream' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_16_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3_4_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t1' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t2' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_video_t3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t1' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t2' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_image_t3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_text' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_atmosphere_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_discursif' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_txt' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_video' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_audio' => array(
+        'custom_settings' => TRUE,
+      ),
+      'voisin_contrib_image' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '1',
+          'weight' => '2',
+        ),
+        'workflow' => array(
+          'weight' => '4',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__programme'] = $strongarm;

@@ -50,8 +50,8 @@ function programme_field_group_info() {
     'label' => 'htabs',
     'weight' => '1',
     'children' => array(
-      0 => 'group_sequence',
-      1 => 'group_dates',
+      0 => 'group_dates',
+      1 => 'group_sequence',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
