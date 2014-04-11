@@ -60,7 +60,7 @@ function themas_and_voisins_conditional_fields_default_fields() {
         ),
       ),
       'element_edit' => array(
-        1 => 1,
+        1 => 0,
         3 => 0,
       ),
       'element_edit_per_role' => 0,
@@ -144,7 +144,7 @@ function themas_and_voisins_conditional_fields_default_fields() {
         ),
       ),
       'element_edit' => array(
-        1 => 1,
+        1 => 0,
         3 => 0,
       ),
       'element_edit_per_role' => 0,
@@ -228,7 +228,7 @@ function themas_and_voisins_conditional_fields_default_fields() {
         ),
       ),
       'element_edit' => array(
-        1 => 1,
+        1 => 0,
         3 => 0,
       ),
       'element_edit_per_role' => 0,
@@ -312,7 +312,7 @@ function themas_and_voisins_conditional_fields_default_fields() {
         ),
       ),
       'element_edit' => array(
-        1 => 1,
+        1 => 0,
         3 => 0,
       ),
       'element_edit_per_role' => 0,
@@ -396,7 +396,7 @@ function themas_and_voisins_conditional_fields_default_fields() {
         ),
       ),
       'element_edit' => array(
-        1 => 1,
+        1 => 0,
         3 => 0,
       ),
       'element_edit_per_role' => 0,

@@ -3957,7 +3957,7 @@ function themas_and_voisins_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_voisin_type',
     'label' => 'Type de voisin (deprecated)',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
