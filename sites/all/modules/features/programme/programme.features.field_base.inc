@@ -78,7 +78,7 @@ function programme_field_default_field_bases() {
       ),
       'repeat' => 1,
       'timezone_db' => 'UTC',
-      'todate' => '',
+      'todate' => 'required',
       'tz_handling' => 'user',
     ),
     'translatable' => 0,
