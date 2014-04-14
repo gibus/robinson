@@ -143,17 +143,35 @@ function robinsonmod_handle_vimeo($url, $settings) {
 
 function rodinsonmod_checkPrograme(&$rep){
   $rep['mode'] = "program";
-    # get all the thematiques
+  
   $query = new ProgramEntityFieldQuery;
-  $progs = $query->execute();
 
-  if(count($progs['node']) && false){
-    // $prog = $progs['node'][array_rand($progs['node'])];
-    $prog = array_pop($progs['node']);
-    // $rep['prog'] = $prog;
+  $now = $rep['currentTime'];
+  $query
+    ->fieldCondition('field_prog_plage', 'value', $now, '<')
+    // ->fieldCondition('field_date', 'value', array('2011-03-01', '2011-03-31'), 'BETWEEN')
+    ->fieldCondition('field_prog_plage', 'value2', $now, '>')
+    ->fieldOrderBy('field_prog_plage', 'value', 'ASC');
+    // ->range(0,1);
+
+  $results = $query->execute();
+
+  foreach ($results['node'] as $nid => $value) {
+    $p = node_load($nid);
+    $fd = field_get_items('node', $p, 'field_prog_plage');
     
-    $prog_node = node_load($prog->nid);
-    // $rep["prog_node"] = $prog_node;
+    foreach ($fd as $i => $values) {
+      if($values['value'] < $now && $values['value2'] > $now){
+        $progs[] = $p;
+        break;
+      }
+    }
+  }
+  // $rep['progs'] = $progs;
+
+  if(count($progs)){
+    $prog_node = array_pop($progs);
+    // $rep['prog'] = $prog;
 
     foreach ($prog_node->field_prog_element['und'] as $ref) {
       $result = db_query('SELECT n.type FROM {node} n WHERE n.nid = :nid', array(':nid' => $ref["target_id"]));

@@ -18,8 +18,8 @@ function robinsonmod_ajax_getcontent(){
     $rep['$_GET'] = $_GET;
   
   $rep['displayed_thema'] = $_GET['displayed_thema'];
-
   if(isset($_GET['currentTime'])){
+    $rep['currentTime'] = $_GET['currentTime'];
     rodinsonmod_checkPrograme($rep);
   }else{
     robinsonmod_randomThema($rep);
