@@ -371,24 +371,6 @@ body {
   background-color: #d8d8d8;
   opacity: 0.9;
 }
-#stream-wrapper .site-name {
-  width: 340px;
-  height: 62.25px;
-  background-color: #00c624;
-  color: #fff;
-  text-align: center;
-  vertical-align: middle;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 24px;
-  line-height: 2.4;
-}
-.random-mode #stream-wrapper .site-name {
-  background-color: #00c624;
-}
-.program-mode #stream-wrapper .site-name {
-  background-color: #a31705;
-}
 #stream-wrapper .thema > * {
   margin: 0;
   padding: 0;
@@ -456,6 +438,32 @@ body {
 }
 .program-mode #stream-wrapper .thema .content {
   color: #a31705;
+}
+#stream-wrapper .thema .content .field-name-field-video {
+  height: 249px;
+}
+#stream-wrapper .thema .content .field-name-field-thema-date {
+  width: 340px;
+  height: 62.25px;
+}
+#stream-wrapper .thema .content .site-name {
+  width: 340px;
+  height: 62.25px;
+  background-color: #00c624;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 2.4;
+  margin: 0;
+}
+.random-mode #stream-wrapper .thema .content .site-name {
+  background-color: #00c624;
+}
+.program-mode #stream-wrapper .thema .content .site-name {
+  background-color: #a31705;
 }
 #stream-wrapper .thema .content.pre-anime {
   background-color: #00c624;
@@ -618,4 +626,29 @@ body {
 #footer ul.menu li {
   display: inline-block;
   vertical-align: top;
+}
+#bord-time {
+  position: absolute;
+  width: 100%;
+  height: 249px;
+  top: 0;
+  left: 0;
+}
+#bord-time .bord-time {
+  height: 100%;
+  width: 50px;
+  position: absolute;
+  background-color: #00c624;
+}
+.random-mode #bord-time .bord-time {
+  background-color: #00c624;
+}
+.program-mode #bord-time .bord-time {
+  background-color: #a31705;
+}
+#bord-time .bord-time.bord-time-left {
+  left: 0;
+}
+#bord-time .bord-time.bord-time-right {
+  right: 0;
 }

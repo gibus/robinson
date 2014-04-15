@@ -111,15 +111,7 @@ body{
     }
   }
 
-  .site-name{
-    // z-index:100;
-    width:@cell_w; height:@line_h;
-    .bgcolored; color:#fff;
-    text-align: center; vertical-align: middle; 
-    .500; text-transform: uppercase;
-    .24; line-height:2.4; 
-  }
-
+  
   .thema{
     // position:absolute; width:100%; height:100%; top:0; left:0;
 
@@ -170,11 +162,28 @@ body{
       }
     }
 
-
-
     .content{
       width:cell_w; .inlineblock(); height:auto;
       background-color: #fff; .colored;
+
+      .field-name-field-video{
+        height:@line_h*4;
+      }
+
+      .field-name-field-thema-date{
+        width:@cell_w; height:@line_h;
+      }
+
+      .site-name{
+        // z-index:100;
+        width:@cell_w; height:@line_h;
+        .bgcolored; color:#fff;
+        text-align: center; vertical-align: middle; 
+        .500; text-transform: uppercase;
+        .24; line-height:2.4; 
+        .m(0);
+      }
+
 
       &.pre-anime{
         .bgcolored;
@@ -294,4 +303,26 @@ body{
 #content-top ul.menu li, 
 #content-bottom ul.menu li, 
 #footer ul.menu li{display:inline-block; vertical-align:top; }
+
+#bord-time{
+  position:absolute;
+  width:100%;
+  height:@line_h*4;
+  top:0; left:0;
+  .bord-time{
+    height: 100%;
+    width:50px;
+    position:absolute;
+    .bgcolored;
+
+    &.bord-time-left{
+      left:0;
+    }
+    &.bord-time-right{
+      right:0;
+    }
+  }
+}
+
+
 

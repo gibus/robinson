@@ -28,9 +28,9 @@ Drupal.behaviors.init_theme = function (context) {
 
 (function($) {
 
-  var _debug = false;
+  var _debug = window.location.host.match(/^dev/gi) != null ? true : false;
   var _ajax_base_path;
-  var _main_display_zone = {w:1024, h:768};
+  var _main_display_zone = {};// = {w:1024, h:768};
   var _cell_w = 340, _cell_h = 249, _line_h = _cell_h/4; 
   var _$stream_wrapper = $('<div>').attr('id','stream-wrapper').appendTo('#main');
   var _play_mode;
@@ -44,6 +44,8 @@ Drupal.behaviors.init_theme = function (context) {
   var _displayed_themas = [];
   var _thema_loaded = 0;
   var _anime_voisins_ready = 0;
+
+  var _$bordTime;
 
   function init(){
     _ajax_base_path = Drupal.settings.basePath+Drupal.settings.pathPrefix;
@@ -60,7 +62,7 @@ Drupal.behaviors.init_theme = function (context) {
 
   function initGraphics(){
     $('<div>').attr('id','no-interaction').appendTo('#main');
-
+    setupBordTime();
     setupGrid();
 
     // $('h1', '#header')
@@ -96,10 +98,10 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function getContent(){
-    console.log('getcontent');
+    //console.log('getcontent');
     var dateObject = new Date();
     var currentTime = Math.round(dateObject.getTime()/1000);
-    console.log('currentTime = '+currentTime);
+    //console.log('currentTime = '+currentTime);
 
 
     $.getJSON(_ajax_base_path+'ajax/robinson/getcontent', 
@@ -109,7 +111,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function contentLoaded(json){
-    console.log("contentLoaded", json);
+    //console.log("contentLoaded", json);
 
     _play_mode = json.mode;
     
@@ -125,12 +127,12 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function playRandom(json){
-    console.log('playRandom', json);
+    //console.log('playRandom', json);
     newThema(json.thema.nid);
   };
 
   function playProgram(json){
-    console.log("playProgram", json);
+    //console.log("playProgram", json);
     _prog_sequence = json.sequence;
     _prog_sequence_length = json.sequence_length;
     _prog_cur_seq_index = -1;
@@ -141,7 +143,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function programNextSequence(){
-    console.log('program_next_sequence');
+    //console.log('program_next_sequence');
     _prog_cur_seq_index ++;
 
     if(_prog_sequence[_prog_cur_seq_index]){
@@ -162,7 +164,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function newThema(nid){
-    console.log("newThema");
+    //console.log("newThema");
     // move sitename in front
     $('#site-name', _$stream_wrapper)
       .notAnime()
@@ -194,7 +196,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
   
   function newVoisin(nid){
-    console.log("newVoisin");
+    //console.log("newVoisin");
 
     // create voisin
     var voisin = new Voisin({nid:nid});
@@ -210,7 +212,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function onItemFinished(event){
-    console.log("onItemFinished :: _play_mode = "+ _play_mode);
+    //console.log("onItemFinished :: _play_mode = "+ _play_mode);
 
     $(document).unbind('keydown');
 
@@ -258,7 +260,7 @@ Drupal.behaviors.init_theme = function (context) {
     if(typeof Thema.prototype.initialized == "undefined"){
       
       Thema.prototype.ajaxLoad = function(){
-        console.log('Thema :: ajaxload');
+        //console.log('Thema :: ajaxload');
         var thema = this;
     
         $.getJSON(_ajax_base_path+'ajax/robinson/thema', 
@@ -269,7 +271,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.ajaxLoaded = function(datas){
-        console.log('Thema :: loaded | datas', datas);
+        //console.log('Thema :: loaded | datas', datas);
 
         this.thema_id = _thema_loaded = _thema_loaded+1;
 
@@ -290,17 +292,17 @@ Drupal.behaviors.init_theme = function (context) {
 
         this.$thema = $('#thema-'+this.thema_id, _$stream_wrapper);
 
-        $('.thema-title', this.$thema).placeBlock({left:1}).notAnime();
+        $('.thema-title', this.$thema).placeBlock({left:1, centred:true}).notAnime();
         $('.content', this.$thema)
           .append($('h1', '#header').clone().addClass('site-name'))
-          .placeBlock({left:0}).notAnime();
+          .placeBlock({left:0, centred:true}).notAnime();
 
         // TODO this should go out of Thema
-        $('#site-name', _$stream_wrapper).placeBlock({left:0});
+        // $('#site-name', _$stream_wrapper).placeBlock({left:0});
       };
     
       Thema.prototype.listenVideo = function(){
-        console.log('Thema :: listenVideo');
+        //console.log('Thema :: listenVideo');
         /*
         https://vimeo.com/forums/topic:37800
         http://jsfiddle.net/bdougherty/UTt2K/
@@ -383,7 +385,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.onVideoToggleSound = function(){
-        console.log('Thema :: onVideoToggleSound');
+        //console.log('Thema :: onVideoToggleSound');
         if(this.videoVolume){
           $f(this.video_id).api('setVolume', 0);
           this.videoVolume = 0;
@@ -406,7 +408,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.startAnime = function(){
-        console.log("Thema :: startAnime");
+        //console.log("Thema :: startAnime");
         
         this.$thema.children().each(function(i){
           (function(e, i){
@@ -426,7 +428,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.endThema = function(){
-        console.log('endThema');
+        //console.log('endThema');
         this.$viframe.parents('.content').postAnime();
         this.videoStop();
         this.videoUnload();
@@ -440,7 +442,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Thema.prototype.impulseVoisins = function(){
         if(this.ready_for_voisins && this.availablespace && !this.loading_voisin){
-          console.log('Thema :: impulseVoisins : availablespace : '+this.availablespace);
+          //console.log('Thema :: impulseVoisins : availablespace : '+this.availablespace);
 
           this.loading_voisin = true;
           var thema = this;
@@ -521,7 +523,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.ajaxLoaded = function(datas){
-        console.log('Voisin :: ajaxLoaded',datas);
+        //console.log('Voisin :: ajaxLoaded',datas);
         // console.log('Voisin :: children : '+$(datas.voisin.rendered).find('article.voisin').children().size());
 
         if( datas.voisin ){
@@ -606,12 +608,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.setSize = function(){
+        var size = _cell_w * this.comportement.taille;
+        //console.log('Voisin :: setSize : '+size);
         // this.$voisin.width(_cell_w * parseInt(this.taille.min + Math.random()*(this.taille.max-this.taille.min)));
-        this.$voisin.width(_cell_w * this.comportement.taille);
+        this.$voisin.width(size);
       };
 
       Voisin.prototype.setDuree = function(){
-        console.log('Voisin :: setDuree');
+        //console.log('Voisin :: setDuree');
         (function(voisin){
           setTimeout(function(){
             voisin.endAnime();
@@ -620,7 +624,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.endAnime = function(){
-        console.log('Voisin :: endAnime');
+        //console.log('Voisin :: endAnime');
         if(this.is_playing){
           this.is_playing = false;
           switch(this.media_type){
@@ -640,11 +644,11 @@ Drupal.behaviors.init_theme = function (context) {
       * text
       */
       Voisin.prototype.starttext = function(){
-        console.log("Voisin :: start : text", this);
+        //console.log("Voisin :: start : text", this);
         this.initCommons();
         this.setSize();
-        var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock({left:left}).preAnime();
+        // var left = this.comportement.taille == 3 ? 0 : 1;
+        this.$voisin.placeBlock().preAnime();
         this.setDuree();
       };
 
@@ -652,10 +656,11 @@ Drupal.behaviors.init_theme = function (context) {
       * image
       */
       Voisin.prototype.startimage = function(){
-        console.log("Voisin :: start : image", this);
+        //console.log("Voisin :: start : image", this);
         this.initCommons();
-        var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock({left:left}).preAnime();
+        this.setSize();
+        // var left = this.comportement.taille == 3 ? 0 : 1;
+        this.$voisin.placeBlock().preAnime();
         this.setDuree();
       };
 
@@ -663,7 +668,7 @@ Drupal.behaviors.init_theme = function (context) {
       * audio
       */
       Voisin.prototype.startaudio = function(){
-        console.log("Voisin :: start : audio", this);
+        //console.log("Voisin :: start : audio", this);
         this.initCommons();
         this.setupSoundCloudPlayer();
         this.$voisin.css('top', -1000);
@@ -683,13 +688,13 @@ Drupal.behaviors.init_theme = function (context) {
         SC.get('/resolve', { url: url }, function(track, error) {
 
           if(error){
-            console.warn("Voisin :: SC resolving error", error);          
+            //console.warn("Voisin :: SC resolving error", error);          
             voisin.endAnime();
           }else{
-            console.log("Voisin :: SC resolved : track", track);          
+            //console.log("Voisin :: SC resolved : track", track);          
             
             if(!track.streamable){
-              console.warn("Voisin :: SC : not streamable : "+track.permalink_url);
+              //console.warn("Voisin :: SC : not streamable : "+track.permalink_url);
               voisin.endAnime();
             }else{
               SC.stream(track.stream_url, {
@@ -698,7 +703,7 @@ Drupal.behaviors.init_theme = function (context) {
                 onplay:function(){voisin.onSoundPlay();},
                 onfinish:function(){voisin.onSoundFinish();},
               },function(sound){
-                console.log('Voisin :: SC stream callback');
+                //console.log('Voisin :: SC stream callback');
                 voisin.sound = sound;
               });
             }
@@ -710,16 +715,16 @@ Drupal.behaviors.init_theme = function (context) {
         try{
           this.sound.stop();
         }catch(error){
-          console.warn('Voisin :: SC : stopSound()', error);
+          //console.warn('Voisin :: SC : stopSound()', error);
         }
       };
 
       Voisin.prototype.onSoundPlay = function(){
-        console.log('Voisin :: onSoundPlay : sound',this.sound);
+        //console.log('Voisin :: onSoundPlay : sound',this.sound);
       };
 
       Voisin.prototype.onSoundFinish = function(){
-        console.log('Voisin :: onSoundFinish');
+        //console.log('Voisin :: onSoundFinish');
         this.endAnime();
       };
 
@@ -727,11 +732,12 @@ Drupal.behaviors.init_theme = function (context) {
       * video
       */
       Voisin.prototype.startvideo = function(){
-        console.log("Voisin :: start : video", this);
+        //console.log("Voisin :: start : video", this);
 
         this.initCommons();
-        var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock({left:left});
+        this.setSize();
+        // var left = this.comportement.taille == 3 ? 0 : 1;
+        this.$voisin.placeBlock();
 
         var voisin = this;
         this.$viframe = $('iframe', this.$voisin);
@@ -741,7 +747,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.onVideoReady = function(id) {
-        console.log('Voisins :: onVideoReady : id = '+id);         
+        //console.log('Voisins :: onVideoReady : id = '+id);         
         var voisin = this;
         this.video_id = id;
         this.video_visible = false;
@@ -822,9 +828,55 @@ Drupal.behaviors.init_theme = function (context) {
     this.ajaxLoad();
   }; // Voisins
 
+  /* BORD TIME */
+  function setupBordTime(){
+    //console.group("setupBordTime");
+    _$bordTime = $('<div>').attr('id', 'bord-time').appendTo('body');
+    _$bordTime
+      .append($('<div>').addClass('bord-time').addClass('bord-time-left'))
+      .append($('<div>').addClass('bord-time').addClass('bord-time-right'));
+
+    moveBordTime();
+    setInterval(function(){
+      moveBordTime();
+    }, 1000);
+
+    //console.groupEnd();
+  };
+
+  function moveBordTime(){
+    //console.group('moveBordTime');
+    var date = new Date();
+    var hs = date.getHours();
+    var mns = date.getMinutes();
+    //console.log('hours = '+hs+' | minutes = '+mns);
+
+    var daymns = 24*60;
+    var top = ((hs*60+mns)/daymns) * ($(window).height() - _$bordTime.height());
+    //console.log('top = '+top);
+
+    _$bordTime.css('top', top);
+
+    //console.groupEnd();
+  };
 
   /* GRID */
   function setupGrid(){
+
+    var h_cells = Math.floor(($(window).height()-100) / _cell_h);
+    var w_cells = Math.floor(($(window).width()-100) / _cell_w);
+
+    h_cells = h_cells % 2 ? h_cells: h_cells-1;
+    w_cells = w_cells % 2 ? w_cells: w_cells-1;
+
+    // console.log('h_cells : '+h_cells+' | w_cells = '+w_cells);
+
+    _main_display_zone.h_cells = h_cells;
+    _main_display_zone.w_cells = w_cells;
+
+    _main_display_zone.h = h_cells*_cell_h;
+    _main_display_zone.w = w_cells*_cell_w;
+
     //console.log('setupGrid');
     _main_display_zone.top = ($(window).height() - _main_display_zone.h)/2;
     _main_display_zone.left = ($(window).width() - _main_display_zone.w)/2;
@@ -842,21 +894,8 @@ Drupal.behaviors.init_theme = function (context) {
       "height":_main_display_zone.h-2
     });
 
-    $('<div>').addClass('cells').css({
-      "top":-1,
-      "left":_cell_w-1,
-      "width":_cell_w-2,
-      "height":_main_display_zone.h-2
-    }).appendTo($g);
 
-    $('<div>').addClass('cells').css({
-      "top":_cell_h-1,
-      "left":-1,
-      "width":_main_display_zone.w-2,
-      "height":_cell_h-2
-    }).appendTo($g);
-
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < _main_display_zone.h_cells*2; i++) {
       $('<div>').addClass('lines').css({
         "top":_line_h+(_line_h*2)*i -1,
         "left":-1,
@@ -864,28 +903,106 @@ Drupal.behaviors.init_theme = function (context) {
         "height":_line_h-2
       }).appendTo($g);      
     };
+
+    for(var l = 0; l < _main_display_zone.h_cells; l++){
+      for(var c = 0; c < _main_display_zone.w_cells; c++){
+        $('<div>').addClass('cells').css({
+          "top":_cell_h*l-1,
+          "left":_cell_w*c-1,
+          "width":_cell_w-2,
+          "height":_cell_h-2
+        }).appendTo($g);        
+      }      
+    }
+
+    // $('<div>').addClass('cells').css({
+    //   "top":-1,
+    //   "left":_cell_w-1,
+    //   "width":_cell_w-2,
+    //   "height":_main_display_zone.h-2
+    // }).appendTo($g);
+
+    // $('<div>').addClass('cells').css({
+    //   "top":_cell_h-1,
+    //   "left":-1,
+    //   "width":_main_display_zone.w-2,
+    //   "height":_cell_h-2
+    // }).appendTo($g);
+
+    // for (var i = 0; i < 6; i++) {
+    //   $('<div>').addClass('lines').css({
+    //     "top":_line_h+(_line_h*2)*i -1,
+    //     "left":-1,
+    //     "width":_main_display_zone.w-2,
+    //     "height":_line_h-2
+    //   }).appendTo($g);      
+    // };
   };
 
   function placeBlock($elmt, opts){
-    //console.log('placeBlock', $elmt);
-    var defaults = {top:"rand",left:"rand"};   
+    //console.group('placeBlock', $elmt);
+    var defaults = {top:"rand",left:"rand", centred:false};   
     var options = $.extend({}, defaults, opts);
+    //console.log("options", options);
+
+    // VERTICAL - - - - - - - - - - - - - - - -
+    // var top_free_cells = Math.floor((_main_display_zone.h - $elmt.innerHeight() +_line_h)/_line_h);
+    // var top_cell = options.top == 'rand' ? Math.floor(Math.random()*(top_free_cells)) : options.top;
+    // var top = _main_display_zone.top + top_cell*_line_h;
+
+    // get the free cells to display, depending on centred or not
+    var top_free_cells = options.centred
+      ? Math.floor( (3*_cell_h - $elmt.height() +_line_h )/_line_h)
+      : Math.floor( (_main_display_zone.h_cells*_cell_h - $elmt.height() +_line_h )/_line_h);
     
-    //console.log('options', options);  
-    var top_free_cells = Math.floor((_main_display_zone.h - $elmt.innerHeight() +_line_h)/_line_h);
-    var top_cell = options.top == 'rand' ? Math.floor(Math.random()*(top_free_cells)) : options.top;
+    // pace the block
+    var top_cell = options.top == 'rand' 
+      ? Math.floor(Math.random()*(top_free_cells)) 
+      : options.top;
+    
+    // get the decalage for centred display
+    var top_center_cells = (_main_display_zone.h_cells-3)/2;
+    
+    // decal the block depending on centred or not
+    top_cell = options.centred
+      ? top_cell + top_center_cells
+      : top_cell;
+
     var top = _main_display_zone.top + top_cell*_line_h;
 
-    var left_free_cells = Math.floor((_main_display_zone.w - $elmt.width() + _cell_w)/_cell_w);
-    var left_cell = options.left == 'rand' ? Math.floor(Math.random()*(left_free_cells)) : options.left;
+    // HORIZONTAL - - - - - - - - - - - - - - - -
+    // get the free cells to display, depending on centred or not
+    var left_free_cells = options.centred
+      ? Math.floor( (3*_cell_w - $elmt.width() )/_cell_w)
+      : Math.floor( ( _main_display_zone.w_cells*_cell_w - $elmt.width() )/_cell_w);
+    
+    //console.log('main zone w : '+_main_display_zone.w_cells*_cell_w);
+    //console.log('$elmt width : '+$elmt.width());
+    //console.log('left_free_cells : '+left_free_cells);
+
+    // place the block
+    var left_cell = options.left == 'rand' 
+      ? Math.floor(Math.random()*(left_free_cells)) 
+      : options.left;
+    
+    // get the decalage for centred display
+    var left_center_cells = (_main_display_zone.w_cells-3)/2;
+    
+    // decal the block depending on centred or not
+    left_cell = options.centred
+      ? left_cell + left_center_cells
+      : left_cell;
+
     var left = _main_display_zone.left + left_cell*_cell_w;
 
+    // apply result to $element
     $elmt
       .css({
         "top":top+'px',
         "left":left+'px',
       })
       .addClass('placed');
+    //console.groupEnd();
   };
 
   /* ANIME */
