@@ -2192,7 +2192,7 @@ function themas_and_voisins_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_image',
     'label' => 'image',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
@@ -2933,7 +2933,7 @@ function themas_and_voisins_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_son',
     'label' => 'Son',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'attributes' => array(
         'class' => '',
@@ -3217,7 +3217,7 @@ function themas_and_voisins_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_texte',
     'label' => 'Citation',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'text_processing' => 1,
       'user_register_form' => FALSE,
@@ -3802,7 +3802,7 @@ function themas_and_voisins_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_video',
     'label' => 'Video',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'description_field' => 0,
       'description_length' => 128,
