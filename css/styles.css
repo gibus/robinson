@@ -639,6 +639,10 @@ body {
   width: 50px;
   position: absolute;
   background-color: #00c624;
+  -webkit-opacity: 0.3;
+  -khtml-opacity: 0.3;
+  -moz-opacity: 0.3;
+  opacity: 0.3;
 }
 .random-mode #bord-time .bord-time {
   background-color: #00c624;
