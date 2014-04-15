@@ -3755,7 +3755,7 @@ function themas_and_voisins_field_default_field_instances() {
         'weight' => 0,
       ),
       'voisin_video_t2_16_9' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'video_embed_field',
         'settings' => array(
           'description' => 1,
