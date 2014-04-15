@@ -225,6 +225,9 @@ function robinsonmod_randomThema(&$rep){
 function robinsonmod_renderVoisin($nid, $debug = false){
   $voisin_node = node_load($nid); 
 
+  if(!$voisin_node)
+    return;
+
   $voisin = array("nid"=>$voisin_node->nid); 
     
   if($debug)
@@ -260,7 +263,8 @@ function robinsonmod_renderVoisin($nid, $debug = false){
   }
   
   if($media_type == "video"){
-    $viewmode .= "_".$voisin_node->field_format_video['und'][0]['value'];
+    $field_format = $voisin_node->field_format_video;
+    $viewmode .= "_".(isset($field_format['und'][0]['value']) ? $field_format['und'][0]['value'] : "16_9");
   }
 
   # record viewmode and render node
