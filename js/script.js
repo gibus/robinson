@@ -628,9 +628,9 @@ Drupal.behaviors.init_theme = function (context) {
         if(this.is_playing){
           this.is_playing = false;
           switch(this.media_type){
-            // case "video":
-            //   this.unloadVideo();
-            //   break;
+            case "video":
+              this.unloadVideo();
+              break;
             case "audio":
               this.stopSound();
               break;
@@ -778,14 +778,20 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.unloadVideo = function(){
+        console.log('Voisin :: unloadVideo');
         // var $viframe = $('iframe', $voisin);
         // var id = $viframe.attr('id');
 
-        // (function(id){
-          // setTimeout(function(){$f(id).api('play');}, 500);
-        // }(id));
+        // $f(this.video_id).api('unload');
+        voisin = this;
 
-        $f(this.video_id).api('unload');
+        (function(voisin){
+          setTimeout(function(){
+            console.log('Voisin :: remove video');
+            voisin.$viframe.remove();
+          }, 5000);
+        }(voisin));
+
       };
 
       Voisin.prototype.onVideoPlay = function(id){
@@ -804,14 +810,15 @@ Drupal.behaviors.init_theme = function (context) {
           if(data.seconds > r && data.seconds < (r+1)){
             this.video_visible = true;
             this.$voisin.preAnime();
-          }    
+          }
         }else{
-          if((data.duration - data.seconds) < r){
+          if((data.duration - data.seconds) < r*2){
+          // if(data.seconds > 10){
             this.video_visible = false;
             this.endAnime();
-          }  
+          }
         }
-        
+
       };
 
       Voisin.prototype.onVideoFinished = function(id){

@@ -284,7 +284,14 @@ body{
 .post-anime{
   .transition-simply-prefix(~"all 12s linear");
   visibility:visible;
-  opacity:0.2;
+
+  //&.voisin-media-14{} // audio
+
+  &.voisin-media-12{
+    .transition-simply-prefix(~"all 3s linear");
+    opacity:0;
+  } // video
+
 }
 
 #footer{
