@@ -1,4 +1,4 @@
-/** 
+/**
  * Primary Drupal Styles
  * Author: g-u-i.net
  */
@@ -20,7 +20,7 @@ body.no-sidebars #center { width: 100%; }
 
 @cell_w : 340px;
 @cell_h : 249px;
-@line_h : @cell_h/4; 
+@line_h : @cell_h/4;
 
 @rouge:#A31705;
 @bleu:#1922FB;
@@ -63,7 +63,7 @@ body{
 
 #main{
   &, &>#center{
-    position:absolute; top:0; left:0; 
+    position:absolute; top:0; left:0;
     width:100%; height:100%;
   }
 
@@ -76,7 +76,7 @@ body{
     z-index:999;
     width:100%; height:100%;
   }
-} 
+}
 
 #stream-wrapper{
   cursor: none;
@@ -88,9 +88,9 @@ body{
     // z-index:100;
     width:@cell_w; height:@line_h;
     .bgcolored; color:#fff;
-    text-align: center; vertical-align: middle; 
+    text-align: center; vertical-align: middle;
     .500; text-transform: uppercase;
-    .24; line-height:2.4; 
+    .24; line-height:2.4;
 
     &.not-anime{
       visibility:visible;
@@ -111,18 +111,18 @@ body{
     }
   }
 
-  
+
   .thema{
     // position:absolute; width:100%; height:100%; top:0; left:0;
 
     &>*{.m(0); .p(0); color:#fff; overflow:hidden;}
-    
+
     h2.thema-title{
       width:@cell_w*2; height:@cell_h*2;
       .bgcolored; color:#fff;
       // display:table;
       span.txt{
-        // .inlineblock(); 
+        // .inlineblock();
         // display:table-cell;
         // vertical-align: middle;
         // .p(1em);
@@ -178,9 +178,9 @@ body{
         // z-index:100;
         width:@cell_w; height:@line_h;
         .bgcolored; color:#fff;
-        text-align: center; vertical-align: middle; 
+        text-align: center; vertical-align: middle;
         .500; text-transform: uppercase;
-        .24; line-height:2.4; 
+        .24; line-height:2.4;
         .m(0);
       }
 
@@ -208,7 +208,7 @@ body{
         .transition-simply-prefix(~"all 5s linear");
         background-color: @postanime-grey;
         opacity:@postanime-opacity;
-        
+
         &>*{
           .transition-simply-prefix(~"all 5s linear");
           // visibility:visible;
@@ -258,7 +258,7 @@ body{
           .p(1em); .24;
         }
       }
-      
+
     }
   }
 }
@@ -306,9 +306,9 @@ body{
 
 #footer-bottom{ text-align: center;}
 
-#header ul.menu li, 
-#content-top ul.menu li, 
-#content-bottom ul.menu li, 
+#header ul.menu li,
+#content-top ul.menu li,
+#content-bottom ul.menu li,
 #footer ul.menu li{display:inline-block; vertical-align:top; }
 
 #bord-time{
