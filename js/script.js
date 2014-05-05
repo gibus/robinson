@@ -380,7 +380,6 @@ Drupal.behaviors.init_theme = function (context) {
 
       Thema.prototype.onVideoFinished = function(id){
         //console.log('Thema :: onVideoFinished | id = '+id);
-        $f(this.video_id).api('unload');
         this.endThema();
       };
 
@@ -404,7 +403,15 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.videoUnload = function(){
-        $f(this.video_id).api('unload');
+        // $f(this.video_id).api('unload');
+        var thema = this;
+
+        (function(thema){
+          setTimeout(function(){
+            console.log('Thema :: remove video');
+            thema.$viframe.remove();
+          }, 5000);
+        }(thema));
       };
 
       Thema.prototype.startAnime = function(){
@@ -778,12 +785,12 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Voisin.prototype.unloadVideo = function(){
-        console.log('Voisin :: unloadVideo');
+        // console.log('Voisin :: unloadVideo');
         // var $viframe = $('iframe', $voisin);
         // var id = $viframe.attr('id');
 
         // $f(this.video_id).api('unload');
-        voisin = this;
+        var voisin = this;
 
         (function(voisin){
           setTimeout(function(){
@@ -791,7 +798,6 @@ Drupal.behaviors.init_theme = function (context) {
             voisin.$viframe.remove();
           }, 5000);
         }(voisin));
-
       };
 
       Voisin.prototype.onVideoPlay = function(id){
@@ -818,7 +824,6 @@ Drupal.behaviors.init_theme = function (context) {
             this.endAnime();
           }
         }
-
       };
 
       Voisin.prototype.onVideoFinished = function(id){
