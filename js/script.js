@@ -655,7 +655,7 @@ Drupal.behaviors.init_theme = function (context) {
         this.initCommons();
         this.setSize();
         // var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock().preAnime();
+        this.$voisin.placeBlock({w_cell:this.comportement.taille}).preAnime();
         this.setDuree();
       };
 
@@ -667,7 +667,7 @@ Drupal.behaviors.init_theme = function (context) {
         this.initCommons();
         this.setSize();
         // var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock().preAnime();
+        this.$voisin.placeBlock({w_cell:this.comportement.taille}).preAnime();
         this.setDuree();
       };
 
@@ -744,7 +744,7 @@ Drupal.behaviors.init_theme = function (context) {
         this.initCommons();
         this.setSize();
         // var left = this.comportement.taille == 3 ? 0 : 1;
-        this.$voisin.placeBlock();
+        this.$voisin.placeBlock({w_cell:this.comportement.taille});
 
         var voisin = this;
         this.$viframe = $('iframe', this.$voisin);
@@ -819,7 +819,7 @@ Drupal.behaviors.init_theme = function (context) {
           }
         }else{
           if((data.duration - data.seconds) < r*2){
-          // if(data.seconds > 10){
+          // if(data.seconds > (r+1)+5){
             this.video_visible = false;
             this.endAnime();
           }
@@ -883,15 +883,21 @@ Drupal.behaviors.init_theme = function (context) {
 
     // console.log('h_cells : '+h_cells+' | w_cells = '+w_cells);
 
-    _main_display_zone.h_cells = h_cells;
-    _main_display_zone.w_cells = w_cells;
+    // set the main display zone width and height on cell
+    _display_zone.h_cells = h_cells;
+    _display_zone.w_cells = w_cells;
 
-    _main_display_zone.h = h_cells*_cell_h;
-    _main_display_zone.w = w_cells*_cell_w;
+    // set the main display zone width and height on pixels
+    _display_zone.h = h_cells*_cell_h;
+    _display_zone.w = w_cells*_cell_w;
 
-    //console.log('setupGrid');
-    _main_display_zone.top = ($(window).height() - _main_display_zone.h)/2;
-    _main_display_zone.left = ($(window).width() - _main_display_zone.w)/2;
+    // set the main display zone position on pixels
+    _display_zone.top = ($(window).height() - _display_zone.h)/2;
+    _display_zone.left = ($(window).width() - _display_zone.w)/2;
+
+    // set the left and top position for centre display in cell
+    _display_zone.center_left_cell = (_display_zone.w_cells-3)/2;
+    _display_zone.center_top_cell = (_display_zone.h_cells-3)/2;
 
     if(_debug) drawDebugGrid();
   };
@@ -900,24 +906,24 @@ Drupal.behaviors.init_theme = function (context) {
     var $g = $('<div>').attr('id','debug-grid').appendTo('body');
 
     $g.css({
-      "top":_main_display_zone.top,
-      "left":_main_display_zone.left,
-      "width":_main_display_zone.w-2,
-      "height":_main_display_zone.h-2
+      "top":_display_zone.top,
+      "left":_display_zone.left,
+      "width":_display_zone.w-2,
+      "height":_display_zone.h-2
     });
 
 
-    for (var i = 0; i < _main_display_zone.h_cells*2; i++) {
+    for (var i = 0; i < _display_zone.h_cells*2; i++) {
       $('<div>').addClass('lines').css({
         "top":_line_h+(_line_h*2)*i -1,
         "left":-1,
-        "width":_main_display_zone.w-2,
+        "width":_display_zone.w-2,
         "height":_line_h-2
       }).appendTo($g);
     };
 
-    for(var l = 0; l < _main_display_zone.h_cells; l++){
-      for(var c = 0; c < _main_display_zone.w_cells; c++){
+    for(var l = 0; l < _display_zone.h_cells; l++){
+      for(var c = 0; c < _display_zone.w_cells; c++){
         $('<div>').addClass('cells').css({
           "top":_cell_h*l-1,
           "left":_cell_w*c-1,
@@ -931,13 +937,13 @@ Drupal.behaviors.init_theme = function (context) {
     //   "top":-1,
     //   "left":_cell_w-1,
     //   "width":_cell_w-2,
-    //   "height":_main_display_zone.h-2
+    //   "height":_display_zone.h-2
     // }).appendTo($g);
 
     // $('<div>').addClass('cells').css({
     //   "top":_cell_h-1,
     //   "left":-1,
-    //   "width":_main_display_zone.w-2,
+    //   "width":_display_zone.w-2,
     //   "height":_cell_h-2
     // }).appendTo($g);
 
@@ -945,7 +951,7 @@ Drupal.behaviors.init_theme = function (context) {
     //   $('<div>').addClass('lines').css({
     //     "top":_line_h+(_line_h*2)*i -1,
     //     "left":-1,
-    //     "width":_main_display_zone.w-2,
+    //     "width":_display_zone.w-2,
     //     "height":_line_h-2
     //   }).appendTo($g);
     // };
@@ -955,57 +961,85 @@ Drupal.behaviors.init_theme = function (context) {
     //console.group('placeBlock', $elmt);
     var defaults = {top:"rand",left:"rand", centred:false};
     var options = $.extend({}, defaults, opts);
+    var top_cell, left_cell;
     //console.log("options", options);
 
     // VERTICAL - - - - - - - - - - - - - - - -
-    // var top_free_cells = Math.floor((_main_display_zone.h - $elmt.innerHeight() +_line_h)/_line_h);
-    // var top_cell = options.top == 'rand' ? Math.floor(Math.random()*(top_free_cells)) : options.top;
-    // var top = _main_display_zone.top + top_cell*_line_h;
+    if(options.top == "rand"){
+      // get the free cells to display, depending on centred or not
+      var top_free_cells = options.centred
+        ? Math.floor( (3*_cell_h - $elmt.height() +_line_h )/_line_h)
+        : Math.floor( (_display_zone.h_cells*_cell_h - $elmt.height() +_line_h )/_line_h);
 
-    // get the free cells to display, depending on centred or not
-    var top_free_cells = options.centred
-      ? Math.floor( (3*_cell_h - $elmt.height() +_line_h )/_line_h)
-      : Math.floor( (_main_display_zone.h_cells*_cell_h - $elmt.height() +_line_h )/_line_h);
-
-    // pace the block
-    var top_cell = options.top == 'rand'
-      ? Math.floor(Math.random()*(top_free_cells))
-      : options.top;
-
-    // get the decalage for centred display
-    var top_center_cells = (_main_display_zone.h_cells-3)/2;
+      var top_cell = Math.floor(Math.random()*(top_free_cells));
+    }else{
+      top_cell = options.top;
+    }
 
     // decal the block depending on centred or not
     top_cell = options.centred
-      ? top_cell + top_center_cells
+      ? top_cell + _display_zone.center_top_cell
       : top_cell;
 
-    var top = _main_display_zone.top + top_cell*_line_h;
+    var top = _display_zone.top + top_cell*_line_h;
 
     // HORIZONTAL - - - - - - - - - - - - - - - -
-    // get the free cells to display, depending on centred or not
-    var left_free_cells = options.centred
-      ? Math.floor( (3*_cell_w - $elmt.width() )/_cell_w)
-      : Math.floor( ( _main_display_zone.w_cells*_cell_w - $elmt.width() )/_cell_w);
+    var elmt_w_cell = options.w_cell ? options.w_cell : Math.floor($elmt.width()/_cell_w);
+    if(options.left == "rand"){
+      // get the free cells to display, depending on centred or not
+      var left_free_cells = options.centred
+        // ? Math.floor( (3*_cell_w - $elmt.width() )/_cell_w)
+        // : Math.floor( ( _display_zone.w_cells*_cell_w - $elmt.width() )/_cell_w);
+        ? 3 - elmt_w_cell
+        : _display_zone.w_cells - elmt_w_cell;
 
-    //console.log('main zone w : '+_main_display_zone.w_cells*_cell_w);
-    //console.log('$elmt width : '+$elmt.width());
-    //console.log('left_free_cells : '+left_free_cells);
 
-    // place the block
-    var left_cell = options.left == 'rand'
-      ? Math.floor(Math.random()*(left_free_cells))
-      : options.left;
+      var left_cell = Math.floor(Math.random()*(left_free_cells));
 
-    // get the decalage for centred display
-    var left_center_cells = (_main_display_zone.w_cells-3)/2;
+      // if(!options.centred){
+      //   console.info('- - -');
+      //   console.info('- - -');
+      //   console.info('_display_zone.center_left_cell = '+_display_zone.center_left_cell);
+      //   console.info('elmt_w_cell = '+elmt_w_cell);
+      //   console.info('first left_cell = '+left_cell);
+      //   console.info('-');
+      //   console.info('elmnt is on the left : ', left_cell <= _display_zone.center_left_cell+1);
+      //   console.info('elmt cover the column 1 of center : ', elmt_w_cell >= (_display_zone.center_left_cell+1-left_cell));
+      //   console.info('elmt width is less than 3 column and there is free marges : ', ((elmt_w_cell == 3 && _display_zone.center_left_cell > 0) || elmt_w_cell < 3));
+      //   console.info('-');
+      // }
+
+      // avoid to cover the column 1 in center zone
+      left_cell = options.centred
+        // if centred
+        ? left_cell == 0 && elmt_w_cell < 3
+          ? left_cell + 1
+          : left_cell
+        // if not centred (more complicated)
+        // if elmt is on the left or on the column 1 of center zone
+        // and if elmt cover the column 1
+        // and if elmt width is less than 3 column and marge are not null
+        // so move the elemnt to the right of column 1 of center zone
+        : left_cell <= _display_zone.center_left_cell+1
+          && elmt_w_cell >= (_display_zone.center_left_cell+1-left_cell)
+          && ((elmt_w_cell == 3 && _display_zone.center_left_cell > 0) || elmt_w_cell < 3)
+          ? left_cell = _display_zone.center_left_cell+1+Math.floor(Math.random()*(_display_zone.center_left_cell+3-elmt_w_cell))
+          : left_cell;
+
+      // if(!options.centred){
+      //   console.info('second left_cell = '+left_cell);
+      // }
+
+    }else{
+      var left_cell = options.left;
+    }
 
     // decal the block depending on centred or not
     left_cell = options.centred
-      ? left_cell + left_center_cells
+      ? left_cell + _display_zone.center_left_cell
       : left_cell;
 
-    var left = _main_display_zone.left + left_cell*_cell_w;
+    var left = _display_zone.left + left_cell*_cell_w;
 
     // apply result to $element
     $elmt
