@@ -516,17 +516,6 @@ body {
   height: 0;
   overflow: hidden;
 }
-#stream-wrapper .thema .voisin.video {
-  width: 680px;
-  height: 510px;
-  background-color: #00c624;
-}
-.random-mode #stream-wrapper .thema .voisin.video {
-  background-color: #00c624;
-}
-.program-mode #stream-wrapper .thema .voisin.video {
-  background-color: #a31705;
-}
 #stream-wrapper .thema .voisin.video.pre-anime .field-name-field-video {
   opacity: 0;
 }
@@ -548,9 +537,28 @@ body {
   transition: all 1s ease-out;
   opacity: 0;
 }
-#stream-wrapper .thema .voisin.image {
-  width: 680px;
-  height: 510px;
+#stream-wrapper .thema .voisin.image img {
+  width: 100%;
+}
+#stream-wrapper .thema .voisin.image.pre-anime .field-name-field-image {
+  opacity: 0;
+}
+#stream-wrapper .thema .voisin.image.anime .field-name-field-image {
+  -webkit-transition: all 3s ease-out;
+  -moz-transition: all 3s ease-out;
+  -o-transition: all 3s ease-out;
+  transition: all 3s ease-out;
+  opacity: 1;
+}
+#stream-wrapper .thema .voisin.image.post-anime {
+  opacity: 0.9;
+}
+#stream-wrapper .thema .voisin.image.post-anime .field-name-field-image {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  opacity: 0;
 }
 #stream-wrapper .thema .voisin.text {
   width: 340px;
