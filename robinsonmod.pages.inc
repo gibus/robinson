@@ -1,4 +1,4 @@
-<?php 
+<?php
 function robinsonmod_ajax_getcontent(){
   $debug = true;
   $json = true;
@@ -16,7 +16,7 @@ function robinsonmod_ajax_getcontent(){
 
   if($debug)
     $rep['$_GET'] = $_GET;
-  
+
   $rep['displayed_thema'] = $_GET['displayed_thema'];
   if(isset($_GET['currentTime'])){
     $rep['currentTime'] = $_GET['currentTime'];
@@ -29,7 +29,7 @@ function robinsonmod_ajax_getcontent(){
     dsm($rep, 'rep');
     return "debug display";
   }else{
-    drupal_json_output($rep);  
+    drupal_json_output($rep);
   }
 }
 
@@ -48,21 +48,21 @@ function robinsonmod_ajax_thema(){
     }
   }
 
-  
+
   if($debug)
     $rep['$_GET'] = $_GET;
-  
+
   if(!isset($_GET['thema_nid'])){
     $rep['error'] = "no id (we need thema nid to load voisin node)";
   }else{
 
-    
-    $thema_node = node_load($_GET['thema_nid']); 
+
+    $thema_node = node_load($_GET['thema_nid']);
     // dsm($thema_node, 'thema_node');
-    
+
     $voisins = $thema_node->field_ref_voisin['und'];
     $rep["voisins_list"] = $voisins;
-    
+
     $viewmode = "stream";
     $node_view = node_view($thema_node, $viewmode);
     $rep['rendered_thema'] =   drupal_render($node_view);
@@ -72,7 +72,7 @@ function robinsonmod_ajax_thema(){
     dsm($rep, 'rep');
     return "debug display";
   }else{
-    drupal_json_output($rep);  
+    drupal_json_output($rep);
   }
 }
 
@@ -93,12 +93,12 @@ function robinsonmod_ajax_voisin(){
 
   if($debug)
     $rep['$_GET'] = $_GET;
-  
+
   if(isset($_GET['voisin'])){
     $rep["voisin"] = robinsonmod_renderVoisin($_GET['voisin']['nid']);
 
   }else if(isset($_GET['thema'])){
-    
+
     $thema = $_GET['thema'];
     $rep['thema'] = $thema;
 
@@ -132,13 +132,13 @@ function robinsonmod_ajax_voisin(){
         unset($voisins[$nid]);
 
     $rep["voisin"] = count($voisins) ? $voisins[array_rand($voisins)] : 0;
-    
+
   }
 
   if (!$json) {
     dsm($rep, 'rep');
     return "debug display";
   }else{
-    drupal_json_output($rep);  
+    drupal_json_output($rep);
   }
 }

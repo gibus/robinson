@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 /**
@@ -60,7 +60,7 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   );
   $entity_info['node']['view modes']['voisin_video_t3_16_9'] = $base + array(
     'label' => t('Voisin video taille 3 (3 colonnes) 16/9')
-  );  
+  );
   $entity_info['node']['view modes']['voisin_video_t1_4_3'] = $base + array(
     'label' => t('Voisin video taille 1 (1 colonne) 4/3')
   );
@@ -71,7 +71,7 @@ function robinsonmod_entity_info_alter(&$entity_info) {
     'label' => t('Voisin video taille 3 (3 colonnes) 4/3')
   );
 
-  //  (deprecated) - - - - - - - - - - - - - - - - - - - - 
+  //  (deprecated) - - - - - - - - - - - - - - - - - - - -
 
   $entity_info['node']['view modes']['voisin_video_t1'] = $base + array(
     'label' => t('Voisin video taille 1 (1 colonne) (deprecated)')
@@ -143,7 +143,7 @@ function robinsonmod_handle_vimeo($url, $settings) {
 
 function rodinsonmod_checkPrograme(&$rep){
   $rep['mode'] = "program";
-  
+
   $query = new ProgramEntityFieldQuery;
 
   $now = $rep['currentTime'];
@@ -159,7 +159,7 @@ function rodinsonmod_checkPrograme(&$rep){
   foreach ($results['node'] as $nid => $value) {
     $p = node_load($nid);
     $fd = field_get_items('node', $p, 'field_prog_plage');
-    
+
     foreach ($fd as $i => $values) {
       if($values['value'] < $now && $values['value2'] > $now){
         $progs[] = $p;
@@ -177,7 +177,7 @@ function rodinsonmod_checkPrograme(&$rep){
       $result = db_query('SELECT n.type FROM {node} n WHERE n.nid = :nid', array(':nid' => $ref["target_id"]));
       foreach($result as $record)
         $type = $record->type;
-      
+
       $rep['sequence'][] = array(
         "nid"   => $ref["target_id"],
         "type"  => $type
@@ -200,7 +200,7 @@ function robinsonmod_randomThema(&$rep){
   # TODO : record displayed thema on session
   // $displayed_themas = session_cache_get('robinsonmod_displayed_themas');
   // dsm($displayed_themas);
-  
+
   if(isset($rep['displayed_themas']))
     $query->entityCondition('entity_id', $rep['displayed_themas'], 'NOT IN');
 
@@ -223,18 +223,18 @@ function robinsonmod_randomThema(&$rep){
 }
 
 function robinsonmod_renderVoisin($nid, $debug = false){
-  $voisin_node = node_load($nid); 
+  $voisin_node = node_load($nid);
 
   if(!$voisin_node)
     return;
 
-  $voisin = array("nid"=>$voisin_node->nid); 
-    
+  $voisin = array("nid"=>$voisin_node->nid);
+
   if($debug)
-    $voisin['node'] = $voisin_node;  
+    $voisin['node'] = $voisin_node;
 
   $media_type_tid = $voisin_node->field_type_media['und'][0]['tid'];
-  
+
   switch ($media_type_tid) {
     case 12: #video
       $media_type = "video";
@@ -250,7 +250,7 @@ function robinsonmod_renderVoisin($nid, $debug = false){
       break;
   }
   $voisin['media_type'] = $media_type;
-  
+
   $viewmode = "voisin_".$media_type;
 
   # flatenize comportement
@@ -261,7 +261,7 @@ function robinsonmod_renderVoisin($nid, $debug = false){
   if(in_array($media_type, array("video", "image"))){
     $viewmode .= "_t".$comp["taille"];
   }
-  
+
   if($media_type == "video"){
     $field_format = $voisin_node->field_format_video;
     $viewmode .= "_".(isset($field_format['und'][0]['value']) ? $field_format['und'][0]['value'] : "16_9");
@@ -269,8 +269,8 @@ function robinsonmod_renderVoisin($nid, $debug = false){
 
   # record viewmode and render node
   $voisin['viewmode'] = $viewmode;
-  
-  # get space  
+
+  # get space
   $voisin['space'] = robinsonmod_getVoisinSpace($voisin);
 
   $node_view = node_view($voisin_node, $viewmode);
@@ -327,7 +327,7 @@ function robinsonmod_getAllVoisinsBySpace(){
         $space      = $rendered_voisin['space'];
         $media_type = $rendered_voisin['media_type'];
         $discursif  = $rendered_voisin['comportement']['discursif'] ? "discursif" : "no-discursif";
-        $all_voisins_by_space[$space][$media_type][$discursif][$nid] = $rendered_voisin; 
+        $all_voisins_by_space[$space][$media_type][$discursif][$nid] = $rendered_voisin;
       }
   //     cache_set('robinsonmod_all_voisins_by_space', $all_voisins_by_space, 'cache', time() + 60*60*1);
   //   }
@@ -372,7 +372,7 @@ function robinsonmod_getFlatenizedComportement($tid){
   $comp["name"] = $term->name;
   $comp["discursif"] = intval($term["field_discursif"]) == 1;
   $comp["proba"] = intval($term["field_proba"]);
-  
+
   $fields = array(
     array(
       'name'=>"field_duree_sec_minmax",
@@ -383,8 +383,8 @@ function robinsonmod_getFlatenizedComportement($tid){
       'shortname'=>'pause',
       'exp'=>'/(\d{1,3})\/(\d{1,3})/'),
     array(
-      'name'=>"field_taille_minmax", 
-      'shortname'=>'taille', 
+      'name'=>"field_taille_minmax",
+      'shortname'=>'taille',
       'exp'=>'/(\d{1})\/(\d{1})/'),
   );
 
@@ -397,7 +397,7 @@ function robinsonmod_getFlatenizedComportement($tid){
     $val = round(rand($minmax['min'], $minmax['max']));
     $comp[$field["shortname"]] = $val;
   }
-  
+
   return $comp;
 }
 

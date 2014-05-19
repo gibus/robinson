@@ -1,7 +1,7 @@
-<?php 
+<?php
 
-class NodeEntityFieldQuery extends EntityFieldQuery {  
-  public function __construct() {    
+class NodeEntityFieldQuery extends EntityFieldQuery {
+  public function __construct() {
     // //parent::__construct();
 //    global $language;
     $this
@@ -11,7 +11,7 @@ class NodeEntityFieldQuery extends EntityFieldQuery {
   }
 }
 
-class ProgramEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {  
+class ProgramEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
     ////parent::__construct();
     $this
@@ -21,7 +21,7 @@ class ProgramEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   }
 }
 
-class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {  
+class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
     ////parent::__construct();
     $this
@@ -31,7 +31,7 @@ class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   }
 }
 
-class VoisinEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {  
+class VoisinEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
     ////parent::__construct();
     $this
