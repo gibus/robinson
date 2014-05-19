@@ -324,7 +324,7 @@ body {
 }
 #stream-wrapper #site-name {
   width: 340px;
-  height: 62.25px;
+  height: 63.75px;
   background-color: #00c624;
   color: #fff;
   text-align: center;
@@ -379,7 +379,7 @@ body {
 }
 #stream-wrapper .thema h2.thema-title {
   width: 680px;
-  height: 498px;
+  height: 510px;
   background-color: #00c624;
   color: #fff;
 }
@@ -440,15 +440,15 @@ body {
   color: #a31705;
 }
 #stream-wrapper .thema .content .field-name-field-video {
-  height: 249px;
+  height: 255px;
 }
 #stream-wrapper .thema .content .field-name-field-thema-date {
   width: 340px;
-  height: 62.25px;
+  height: 63.75px;
 }
 #stream-wrapper .thema .content .site-name {
   width: 340px;
-  height: 62.25px;
+  height: 63.75px;
   background-color: #00c624;
   color: #fff;
   text-align: center;
@@ -518,7 +518,7 @@ body {
 }
 #stream-wrapper .thema .voisin.video {
   width: 680px;
-  height: 498px;
+  height: 510px;
   background-color: #00c624;
 }
 .random-mode #stream-wrapper .thema .voisin.video {
@@ -550,7 +550,7 @@ body {
 }
 #stream-wrapper .thema .voisin.image {
   width: 680px;
-  height: 498px;
+  height: 510px;
 }
 #stream-wrapper .thema .voisin.text {
   width: 340px;
@@ -636,7 +636,7 @@ body {
 #bord-time {
   position: absolute;
   width: 100%;
-  height: 249px;
+  height: 255px;
   top: 0;
   left: 0;
 }

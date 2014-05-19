@@ -30,8 +30,8 @@ Drupal.behaviors.init_theme = function (context) {
 
   var _debug = window.location.host.match(/^dev/gi) != null ? true : false;
   var _ajax_base_path;
-  var _main_display_zone = {};// = {w:1024, h:768};
-  var _cell_w = 340, _cell_h = 249, _line_h = _cell_h/4;
+  var _display_zone = {};// = {w:1024, h:768};
+  var _cell_w = 340, _cell_h = 255, _line_h = _cell_h/4; // _cell_h = 249
   var _$stream_wrapper = $('<div>').attr('id','stream-wrapper').appendTo('#main');
   var _play_mode;
 
