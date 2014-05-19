@@ -117,6 +117,9 @@ function robinsonmod_ajax_voisin(){
         if($media == "audio" && $thema["is_playing_audio"])
           continue;
 
+        // if($media != "image")
+        //   continue;
+
         foreach ($voisins_by_discursif as $d => $vs)
           # remove discursif voisins since we are on a thema
           if($d == "no-discursif")
