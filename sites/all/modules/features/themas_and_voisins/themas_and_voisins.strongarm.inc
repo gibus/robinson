@@ -286,7 +286,7 @@ function themas_and_voisins_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'stream' => array(
-            'weight' => '5',
+            'weight' => '6',
             'visible' => FALSE,
           ),
           'default' => array(
@@ -296,7 +296,7 @@ function themas_and_voisins_strongarm() {
         ),
         'workflow' => array(
           'stream' => array(
-            'weight' => '4',
+            'weight' => '5',
             'visible' => FALSE,
           ),
           'default' => array(
