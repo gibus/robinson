@@ -39,13 +39,16 @@ function robinsonmod_menu() {
     'page callback' => 'robinsonmod_rendez_vous_getcontent',
     // 'page arguments' => array(FALSE),
     'access callback' => true,
-    // 'menu_name' => 'main-menu',
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
   );
 
   $items['ressources'] = $base + array(
     'title' => 'Ressources',
     'page callback' => 'robinsonmod_ressources_getcontent',
     'access callback' => true,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
