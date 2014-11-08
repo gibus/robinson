@@ -151,7 +151,7 @@ function robinsonmod_theme($existing, $type, $theme, $path) {
   return array(
     'robinsonmod_rendez_vous' => array(
       'variables' => array(
-        'data' => []
+        'data' => array()
       ),
       'template' => 'inc/robinsonmod-rendez-vous',
     ),
@@ -164,7 +164,7 @@ function robinsonmod_theme($existing, $type, $theme, $path) {
     ),
     'robinsonmod_ressources' => array(
       'variables' => array(
-        'data' => []
+        'data' => array()
       ),
       'template' => 'inc/robinsonmod-ressources',
     ),
