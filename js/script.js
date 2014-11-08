@@ -1101,7 +1101,9 @@ Drupal.behaviors.init_theme = function (context) {
   /**
   * ready
   */
-  $(document).ready(init);
+  var is_root = location.pathname == "/";
+  if( is_root )
+    $(document).ready(init);
 
 
   /**
