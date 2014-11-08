@@ -1,7 +1,7 @@
 <?php //dsm($node,'$node'); ?>
 <?php //dsm($date,'$date'); ?>
 
-<? if ($node): ?>
+<?php if ($node): ?>
 <h2 class="page-subtitle"><?= $node->title ?></h2>
 
 <div class="row">
@@ -20,13 +20,13 @@
     $field_description = field_view_field('node', $node, 'field_description', array("label"=>"hidden"));
     ?>
 
-    <? if ($date): ?>
+    <?php if ($date): ?>
     <h4 class="date"><?= timestampDay( $date ); ?></h4>
-    <? endif ?>
+    <?php endif ?>
     <h5 class="hours"><?= $start ?> - <?= $end ?></h5>
     <?= render( $field_description ) ?>
 
   </article>
 
 </div>
-<? endif ?>
+<?php endif ?>
