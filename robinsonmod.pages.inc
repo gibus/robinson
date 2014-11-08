@@ -169,7 +169,7 @@ function robinsonmod_rendez_vous_getAll(){
     ->execute();
 
   // -- create an array with one cell per day for the period.
-  $data = [];
+  $data = array();
 
   if (isset($entities['node'])) :
 
@@ -222,7 +222,7 @@ function robinsonmod_ressources_getAll(){
     ->propertyCondition('status', 1)
     ->execute();
 
-  $data = [];
+  $data = array();
 
   if (isset($entities['node'])) :
 
