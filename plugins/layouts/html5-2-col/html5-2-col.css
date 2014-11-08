@@ -1,4 +1,0 @@
-.panel-html5-2col{width:100%;}
-.panel-html5-2col>*{float:left;width:50%;}
-.panel-html5-2col>.article{clear:both;}
-.clear-after:after{clear:both;content:'';display:block;height:0px;overflow:hidden;visibility:hidden;width:0px;}

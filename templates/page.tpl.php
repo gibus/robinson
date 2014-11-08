@@ -4,6 +4,9 @@
  * @file
  * Default theme implementation to display a single Drupal page.
  *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.tpl.php template in this directory.
+ *
  * Available variables:
  *
  * General utility variables:
@@ -64,112 +67,78 @@
  * @see template_preprocess()
  * @see template_preprocess_page()
  * @see template_process()
+ * @see html.tpl.php
+ *
+ * @ingroup themeable
  */
 ?>
-<header id="header">
-  <hgroup class="logo">
-  <?php
-	if ($site_title) {
-  	print $site_title;
-	}
-  ?>
-  </hgroup>		
+    <header id="header" class="row">
 
-	<?php if ($page['headerblock_left'] || $page['headerblock_middle'] || $page['headerblock_right']): ?>
-		<div id="header-blocks">
-			<?php print render($page['headerblock_left']); ?>
-			<?php print render($page['headerblock_middle']); ?>
-			<?php print render($page['headerblock_right']); ?>
-    </div>
-	<?php endif; ?>
-	
-	<?php if ($breadcrumb): ?>
-    <section id="breadcrumb"><?php print $breadcrumb; ?></section>
-  <?php endif; ?>
-  
-	
-</header> 
-<!-- /header -->		 		
+      <div class="col-sm-5 col-md-4">
 
-
-
-<div id="main">
-      
-
-    <?php if ($method == 0 || $method == 2): ?>
-      <?php print render($page['sidebar_first']); ?>	       	
-    <?php endif; ?>	 					
-
-    <?php if ($method == 2): ?>
-      <?php print render($page['sidebar_second']) ?>
-    <?php endif; ?>
-
-		<?php if(isset($page['sidebar_first']) || isset($page['sidebar_second'])): ?>
-		<section id="center">	
-		<?php endif; ?>
-
-				<?php if ($primary_local_tasks || $secondary_local_tasks || $action_links): ?>
-          <div id="tasks">
-            <?php if ($primary_local_tasks): ?>
-              <ul class="tabs primary"><?php print render($primary_local_tasks); ?></ul>
-            <?php endif; ?>
-            <?php if ($secondary_local_tasks): ?>
-              <ul class="tabs secondary"><?php print render($secondary_local_tasks); ?></ul>
-            <?php endif; ?>
-            <?php if ($action_links = render($action_links)): ?>
-              <ul class="action-links"><?php print $action_links; ?></ul>
-            <?php endif; ?>
-          </div>
+        <?php if ($logo): ?>
+        <a href="<?= $front_page; ?>" title="<?= t('Home'); ?>" rel="home" id="logo">
+          <img src="<?= $logo; ?>" alt="<?= t('Home'); ?>" />
+        </a>
         <?php endif; ?>
 
-				<?php if ($show_messages && $messages): print $messages; endif; ?>
+        <?php if ($site_name): ?>
+        <h1 id="site-title">
+          <a href="<?= $front_page; ?>" title="<?= t('Home'); ?>" rel="home" id="logo">
+            <?= $site_name ?>
+          </a>
+        </h1>
+        <?php endif; ?>
 
+        <?php if ($site_slogan): ?>
+        <h2 id="site-slogan"><?= $site_slogan ?></h2>
+        <?php endif; ?>
 
-				<?php print render($page['help']); ?>
-
-				<?php print render($page['content_top']); ?>
-
-				<section id="content">
-					<?php if($title): ?><h1 class="page-title"><?php print $title ?></h1><?php endif; ?>
-					<?php print render($page['content']); ?>
-				</section>
-
-				<?php print render($page['content_bottom']); ?>
-				
-
-		<?php if(isset($page['sidebar_first']) || isset($page['sidebar_second'])): ?>
-		</section>
-		<?php endif; ?>
-		    <!-- /center -->					
-         
-         
-    <?php if ($method == 1): ?>
-      <?php print render($page['sidebar_first']); ?>
-    <?php endif; ?>	 					
-         
-    <?php if ($method == 0 || $method == 1): ?>
-      <?php print render($page['sidebar_second']) ?>
-    <?php endif; ?>
-          
-</div><!-- /main -->	
-    		 			
-		
-<footer id="footer">
-		
-		<?php print render($page['footer_top']); ?>
-
-		<?php if ($page['footer_left'] || $page['footer_middle_left'] || $page['footer_middle_right'] || $page['footer_right']): ?> 	        
-      <div class="footer-block">					
-				
-				<?php print render($page['footer_left']); ?>
-				<?php print render($page['footer_middle-left']); ?>
-				<?php print render($page['footer_midle-right']); ?>
-				<?php print render($page['footer_right']); ?>
+        <?= render($page['header']); ?>
 
       </div>
-		<?php endif; ?>
 
-		<?php print render($page['footer_bottom']); ?> 		
-</footer> 
-<!-- /footer -->	
+      <nav id="navigation" class="col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-4" role="navigation">
+        <ul class="nav navbar-nav">
+          <?php if ($main_menu): ?>
+          <li class="dropdown">
+            <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+              <?= t('informations') ?> <span class="caret"></span>
+            </button>
+            <!-- <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/">
+              <?= t('informations') ?> <span class="caret"></span>
+            </a> -->
+            <?= theme('links__system_main_menu', array('links' => $main_menu, 'attributes' => array('id' => 'main-menu', 'class' => array('dropdown-menu'), 'role' => 'menu'))); ?>
+          </li>
+          <?php endif; ?>
+          <?php if ($secondary_menu): ?>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= t('Secondary menu') ?> <span class="caret"></span></a>
+            <?= theme('links__system_secondary_menu', array('links' => $secondary_menu, 'attributes' => array('id' => 'secondary-menu', 'class' => array('nav', 'navbar-nav')))); ?>
+          </li>
+          <?php endif; ?>
+        </ul>
+      </nav> <!-- /#navigation -->
 
+    </header><!-- /#header -->
+
+    <?php if ($show_messages && $messages): print $messages; endif; ?>
+    <?= render($page['help']); ?>
+
+    <?php if ($breadcrumb): ?>
+    <nav id="breadcrumb" role="breadcrumb"><?= $breadcrumb; ?></nav>
+    <?php endif; ?>
+
+    <section id="content">
+
+      <?php if($title): ?><h1 class="page-title"><?= $title ?></h1><?php endif; ?>
+
+      <?= render($page['content']); ?>
+
+    </section><!-- /#content -->
+
+    <footer id="footer">
+
+      <?= render($page['footer']); ?>
+
+    </footer><!-- /#footer -->

@@ -1,60 +1,40 @@
 <?php
 
+/* Put Breadcrumbs in a ol li structure */
+function robinsontheme_breadcrumb($vars) {
 
+  // dsm($vars,'$vars in *robinsonthememeta_breadcrumb*');
 
-/**
- * Returns HTML for an image field formatter.
- *
- * @param $variables
- *   An associative array containing:
- *   - item: Associative array of image data, which may include "uri", "alt",
- *     "width", "height", "title" and "attributes".
- *   - image_style: An optional image style.
- *   - path: An array containing the link 'path' and link 'options'.
- *
- * @ingroup themeable
- */
-function robinsontheme_image_formatter($variables) {
-  $item = $variables['item'];
-  $image = array(
-    'path' => $item['uri'],
-  );
+  if ( !empty($vars['breadcrumb']) ) {
 
-  if (array_key_exists('alt', $item)) {
-    $image['alt'] = $item['alt'];
+    $output = '<ol class="breadcrumb">';
+
+    // Optional: Add the site name to the front of the stack.
+    if (!empty($vars['prepend'])) {
+      $site_name = empty($vars['breadcrumb']) ? '<li class="active">'. check_plain(variable_get('site_name', '')) .'</li>' : l(variable_get('site_name', ''), '<front>', array('purl' => array('disabled' => TRUE)));
+      array_unshift($vars['breadcrumb'], $site_name);
+    }
+
+    foreach ($vars['breadcrumb'] as $link)
+      $output .= "<li>$link</li>";
+
+    // Add current page onto the end.
+    if (!drupal_is_front_page()) {
+      $item = menu_get_item();
+      $end = end($vars['breadcrumb']);
+      if ($end && strip_tags($end) !== $item['title']) {
+        if ( count($item['page_arguments']) == 0 ) :
+          $output .= '<li class="active">' . check_plain($item['title']) . '</li>';
+        else:
+          $output .= '<li>' . l($item['title'],$item['path']) . '</li>';
+        endif;
+      }
+    }
+
+    $output .= '</ol>';
+
+    return $output;
+
   }
 
-  if (isset($item['attributes'])) {
-    $image['attributes'] = $item['attributes'];
-  }
-
- if (isset($item['width']) && isset($item['height'])) {
-   $image['width'] = $item['width'];
-   $image['height'] = $item['height'];
- }
-
-  // Do not output an empty 'title' attribute.
-  if (isset($item['title']) && drupal_strlen($item['title']) > 0) {
-    $image['title'] = $item['title'];
-  }
-
-  if ($variables['image_style']) {
-    $image['style_name'] = $variables['image_style'];
-    $output = theme('image_style', $image);
-  }
-  else {
-    $output = theme('image', $image);
-  }
-
-  // The link path and link options are both optional, but for the options to be
-  // processed, the link path must at least be an empty string.
-  if (isset($variables['path']['path'])) {
-    $path = $variables['path']['path'];
-    $options = isset($variables['path']['options']) ? $variables['path']['options'] : array();
-    // When displaying an image inside a link, the html option must be TRUE.
-    $options['html'] = TRUE;
-    $output = l($output, $path, $options);
-  }
-
-  return $output;
 }

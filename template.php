@@ -2,7 +2,7 @@
 
 /**
  * @file template.php
- * 
+ *
  */
 
 /**
@@ -16,9 +16,6 @@ function robinsontheme_theme() {
       'arguments' => array('form' => NULL, 'key' => 'robinsontheme'),
     ),
   );
-
-  # Include the theme settings.
-  include($path .'/inc/template.theme-settings.inc');
 }
 
 /**
@@ -34,7 +31,7 @@ function robinsontheme_theme() {
  */
 function robinsontheme_preprocess(&$vars, $hook) {
 	global $theme, $theme_info, $user, $language;
-	
+
   $vars['is_admin'] = in_array('admin', $user->roles);
   $vars['logged_in'] = ($user->uid > 0) ? TRUE : FALSE;
   $vars['theme_path'] = base_path() . path_to_theme() .'/';
@@ -56,6 +53,3 @@ include_once($path .'/inc/template.custom-functions.inc');
 
 # Include theme overrides.
 include_once($path .'/inc/template.theme-overrides.inc');
-
-# Include some jQuery.
-//  include_once(drupal_get_path('theme', 'robinsontheme') .'/inc/template.theme-js.inc');

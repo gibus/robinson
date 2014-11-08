@@ -1,6 +1,6 @@
-<article id="node-<?= $node->nid; ?>" class="<?= $classes; ?>"<?= $attributes; ?>>
+<article id="node-<?= $node->nid; ?>" class="<?= $classes; ?> view-mode-<?= $view_mode ?>"<?= $attributes; ?>>
 
-  <div class="content <?= $content_classes; ?>"<?= $content_attributes; ?>>
+  <div class="content"<?= $content_attributes; ?>>
     <?php
       // We hide the comments and links now so that we can render them later.
       hide($content['comments']);
