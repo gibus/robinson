@@ -145,3 +145,95 @@ function robinsonmod_ajax_voisin(){
     drupal_json_output($rep);
   }
 }
+
+/* RENDEZ-VOUS */
+function robinsonmod_rendez_vous_getcontent($arg=FALSE,$arg2=FALSE){
+  // dsm($arg,'$arg');
+  $ret = preg_match('/\d+/', $arg) ? robinsonmod_rendez_vous_getNode($arg,$arg2) : robinsonmod_rendez_vous_getAll();
+  return $ret;
+}
+
+function robinsonmod_rendez_vous_getAll(){
+  $query = new EntityFieldQuery();
+
+  // $starttime = time();
+  // $endtime   = strtotime( "+1 month", $starttime );
+  $starttime = '1401621300';
+  $endtime   = strtotime( "+15 day", $starttime );
+
+  $entities = $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('programme'))
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_prog_plage', 'value', array($starttime, $endtime), 'BETWEEN')
+    ->execute();
+
+  // -- create an array with one cell per day for the period.
+  $data = [];
+
+  if (isset($entities['node'])) :
+
+    $weight = 0;
+    $nodes = entity_load('node', array_keys($entities['node']));
+
+    /* // -- activate this part of the code to display the empty days.
+    $i = $starttime;
+    while ( $i <= $endtime) :
+      $day = timestampDay($i);
+      $data[$day] = [];
+      $i = strtotime( "+1 day", $i );
+    endwhile;*/
+
+    // -- save node(s) for each day.
+    foreach ($nodes as $node) :
+      $fieldvalues = field_get_items('node', $node, 'field_prog_plage');
+      foreach ($fieldvalues as $fieldvalue)
+        if( $fieldvalue['value'] >= $starttime && $fieldvalue['value'] <= $endtime ) :
+          $day = timestampDay($fieldvalue['value']);
+          $data[$day][] = $node;
+        endif;
+    endforeach;
+
+    // dsm($data,'$data in *robinsonmod_rendez_vous_getcontent*');
+
+  endif;
+
+  return theme('robinsonmod_rendez_vous', array('data' => $data) );
+}
+
+function robinsonmod_rendez_vous_getNode($nid,$date){
+  $node = node_load($nid);
+  return theme('robinsonmod_rendez_vous_node', array('node' => $node, 'date' => $date));
+}
+
+/* RESSOURCES */
+function robinsonmod_ressources_getcontent($arg=FALSE){
+  // dsm($arg,'$arg');
+  $ret = preg_match('/\d+/', $arg) ? robinsonmod_ressources_getNode($arg) : robinsonmod_ressources_getAll();
+  return $ret;
+}
+
+function robinsonmod_ressources_getAll(){
+  $query = new EntityFieldQuery();
+
+  $entities = $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('thematique'))
+    ->propertyCondition('status', 1)
+    ->execute();
+
+  $data = [];
+
+  if (isset($entities['node'])) :
+
+    $data = entity_load('node', array_keys($entities['node']));
+
+  endif;
+
+  return theme('robinsonmod_ressources', array('data' => $data) );
+}
+
+function robinsonmod_ressources_getNode($nid){
+  $node = node_load($nid);
+  return theme('robinsonmod_ressources_node', array('node' => $node));
+}

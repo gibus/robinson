@@ -34,6 +34,20 @@ function robinsonmod_menu() {
     // 'access arguments' => array(''),
   );
 
+  $items['rendez-vous'] = $base + array(
+    'title' => 'Rendez-vous',
+    'page callback' => 'robinsonmod_rendez_vous_getcontent',
+    // 'page arguments' => array(FALSE),
+    'access callback' => true,
+    // 'menu_name' => 'main-menu',
+  );
+
+  $items['ressources'] = $base + array(
+    'title' => 'Ressources',
+    'page callback' => 'robinsonmod_ressources_getcontent',
+    'access callback' => true,
+  );
+
   return $items;
 }
 
@@ -70,6 +84,10 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['voisin_video_t3_4_3'] = $base + array(
     'label' => t('Voisin video taille 3 (3 colonnes) 4/3')
   );
+  $entity_info['node']['view modes']['rendez_vous'] = $base + array(
+    'label' => t('Rendez-vous')
+  );
+
 
   //  (deprecated) - - - - - - - - - - - - - - - - - - - -
 
@@ -122,6 +140,40 @@ function robinsonmod_entity_info_alter(&$entity_info) {
   );
   $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
     'label' => t('Voisin Contribution image (deprecated)')
+  );
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function robinsonmod_theme($existing, $type, $theme, $path) {
+  return array(
+    'robinsonmod_rendez_vous' => array(
+      'variables' => array(
+        'data' => []
+      ),
+      'template' => 'inc/robinsonmod-rendez-vous',
+    ),
+    'robinsonmod_rendez_vous_node' => array(
+      'variables' => array(
+        'node' => FALSE,
+        'date' => FALSE
+      ),
+      'template' => 'inc/robinsonmod-rendez-vous-node',
+    ),
+    'robinsonmod_ressources' => array(
+      'variables' => array(
+        'data' => []
+      ),
+      'template' => 'inc/robinsonmod-ressources',
+    ),
+    'robinsonmod_ressources_node' => array(
+      'variables' => array(
+        'node' => FALSE
+      ),
+      'template' => 'inc/robinsonmod-ressources-node',
+    ),
   );
 }
 
@@ -401,6 +453,12 @@ function robinsonmod_getFlatenizedComportement($tid){
   return $comp;
 }
 
+function timestampDay($timestamp, $returnform = FALSE) {
+  $ret = format_date( $timestamp, 'custom', 'l j F' );
+  if( $returnform )
+    $ret = strtotime($ret);
+  return $ret;
+}
 
 
 
