@@ -2,7 +2,7 @@
 
 name = "robinsontheme"
 description = "Drupal theme for leprojetrobinson.org, by Julien"
-version = "7.x-0.1"
+version = "7.x-0.2"
 core = "7.x"
 engine = "phptemplate"
 
