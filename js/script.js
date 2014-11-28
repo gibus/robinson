@@ -231,7 +231,7 @@ Drupal.behaviors.init_theme = function (context) {
       Thema.prototype.initGraphics = function(){
         // console.log('Thema :: initGraphics');
 
-        $('.thema').remove();
+        $('> *', _$stream_wrapper).remove();
 
         $('<div>')
           .attr('id', 'thema-'+this.thema_id)
@@ -543,6 +543,7 @@ Drupal.behaviors.init_theme = function (context) {
             .appendTo(this.thema.$thema)
             .notAnime();
         }else{
+//************************************************************ LOOK HERE: why outsite thema?????
           $('<div>')
             .attr('id', 'voisin-'+this.nid)
             .addClass('voisin')
@@ -562,10 +563,10 @@ Drupal.behaviors.init_theme = function (context) {
           var img_h = parseInt($img.attr('height'));
           var img_w = parseInt($img.attr('width'));
           var h = w*img_h/img_w;
-          $img.width(w).height(h);
+          // $img.width(w).height(h);
         }
 
-        this.$voisin.width(w);
+        // this.$voisin.width(w);
       };
 
       Voisin.prototype.setDuree = function(){
@@ -1055,11 +1056,11 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   $.fn.center = function () {
-    this.css("position","absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
-                                                $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
-                                                $(window).scrollLeft()) + "px");
+    // this.css("position","absolute");
+    // this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+                                                // $(window).scrollTop()) + "px");
+    // this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+                                                // $(window).scrollLeft()) + "px");
     return this;
   };
 
