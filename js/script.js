@@ -50,7 +50,8 @@ Drupal.behaviors.init_theme = function (context) {
   function init(){
     _ajax_base_path = Drupal.settings.basePath+Drupal.settings.pathPrefix;
 
-    if($('body').is('.logged-in') && !$('body').is('.front'))
+
+    if( !$('body').is('.front') )
       return;
 
     initGraphics();
