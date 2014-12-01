@@ -1,7 +1,7 @@
 <?php
 
-dsm("2");
-dsm($vars);
+// dsm("3");
+// dsm($vars);
 
 $vars['theme_hook_suggestions'][] = 'node__'.$vars['view_mode'];
 $vars['theme_hook_suggestions'][] = 'node__' . $vars['type'] . '__' . $vars['view_mode'];
@@ -53,13 +53,13 @@ if ($col != null && $col < 3) {
 
   $colMd  = $col * $ratioMd;
   $offset = $ratioMd * mt_rand(1, ($gridColumnsMd-$col));
-  $content_classes[] = 'col-md-offset-'.$offset;
-  $content_classes[] = 'col-md-'.$colMd;
+  // $content_classes[] = 'col-md-offset-'.$offset;
+  // $content_classes[] = 'col-md-'.$colMd;
 
   $colLg  = $col * $ratioLg;
   $offset = $ratioLg * mt_rand(1, ($gridColumnsLg-$col));
-  $content_classes[] = 'col-lg-offset-'.$offset;
-  $content_classes[] = 'col-lg-'.$colLg;
+  // $content_classes[] = 'col-lg-offset-'.$offset;
+  // $content_classes[] = 'col-lg-'.$colLg;
 
   $vars['content_classes'] = implode(' ', $content_classes);
 }else if( $col == 3 ) {

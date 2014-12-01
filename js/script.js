@@ -793,8 +793,7 @@ Drupal.behaviors.init_theme = function (context) {
     //console.group("setupBordTime");
     _$bordTime = $('<div>').attr('id', 'bord-time').appendTo('body');
     _$bordTime
-      .append($('<div>').addClass('bord-time').addClass('bord-time-left'))
-      .append($('<div>').addClass('bord-time').addClass('bord-time-right'));
+      .append($('<div>').addClass('container'));
 
     moveBordTime();
     setInterval(function(){

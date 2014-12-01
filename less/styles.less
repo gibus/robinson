@@ -201,6 +201,9 @@ section#content {
 }
 
 #stream-wrapper {
+  position: relative;
+  z-index: -1;
+
   // position: absolute;
   // top: 0; left: 0; right: 0;
 
@@ -259,18 +262,15 @@ section#content {
 }
 
 #bord-time {
-  position: fixed; right: 0; bottom: 0; left: 0; z-index: -1;
+  position: fixed; right: 0; bottom: 0; left: 0; z-index: -2;
   height: 20%;
-  .bord-time {
-    background-color: @brand-success;
+  background-color: @brand-success;
+  .container {
+    background-color: @body-bg;
     height: 100%; padding: 0 !important;
-    width: 4%;
-    float: left;
-    body.program-mode & { background-color: @brand-danger; }
   }
-  .bord-time-right {
-    .pull-right;
-  }
+
+  body.program-mode & { background-color: @brand-danger; }
 }
 
 
