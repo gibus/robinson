@@ -156,10 +156,10 @@ function robinsonmod_rendez_vous_getcontent($arg=FALSE,$arg2=FALSE){
 function robinsonmod_rendez_vous_getAll(){
   $query = new EntityFieldQuery();
 
-  // $starttime = time();
-  // $endtime   = strtotime( "+1 month", $starttime );
-  $starttime = '1401621300';
-  $endtime   = strtotime( "+15 day", $starttime );
+  $starttime = time();
+  $endtime   = strtotime( "+1 month", $starttime );
+  // $starttime = '1401621300';
+  // $endtime   = strtotime( "+15 day", $starttime );
 
   $entities = $query
     ->entityCondition('entity_type', 'node')
