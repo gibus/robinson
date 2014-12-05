@@ -129,7 +129,7 @@
     <nav id="breadcrumb" role="breadcrumb"><?= $breadcrumb; ?></nav>
     <?php endif; ?>
 
-    <section id="content">
+    <section id="main">
 
       <?php if($title): ?><h1 class="page-title"><?= $title ?></h1><?php endif; ?>
 
