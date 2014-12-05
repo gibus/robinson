@@ -404,7 +404,8 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.impulseVoisins = function(){
-        if(this.ready_for_voisins && this.availablespace && !this.loading_voisin){
+        // if(this.ready_for_voisins && this.availablespace && !this.loading_voisin){
+        if(this.ready_for_voisins && !this.loading_voisin){
           //console.log('Thema :: impulseVoisins : availablespace : '+this.availablespace);
 
           this.loading_voisin = true;
