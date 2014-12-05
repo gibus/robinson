@@ -365,7 +365,7 @@ Drupal.behaviors.init_theme = function (context) {
         (function(thema){
           setTimeout(function(){
             //console.log('Thema :: remove video');
-            thema.$viframe.remove();
+            // thema.$viframe.remove();
           }, 5000);
         }(thema));
       };
@@ -703,7 +703,7 @@ Drupal.behaviors.init_theme = function (context) {
         (function(voisin){
           setTimeout(function(){
             // console.info('Voisin :: remove video');
-            voisin.$viframe.remove();
+            // voisin.$viframe.remove();
           }, 5000);
         }(voisin));
       };
