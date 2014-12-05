@@ -8,6 +8,11 @@ header#header {
   #site-title {
     text-transform: uppercase;
     background-color: @brand-success;
+
+    body.program-mode & {
+      background-color: @brand-danger;
+    }
+
     a {
       color:white; text-decoration: none;
     }
@@ -201,61 +206,55 @@ section#content {
 }
 
 #stream-wrapper {
+
   position: relative;
-  z-index: -1;
+  // z-index: -1;
 
-  // position: absolute;
-  // top: 0; left: 0; right: 0;
-
-  .field-item img { background-color: @gray-lighter; display: block; width: 50%; height: auto; }
+  .field-item
+    img { background-color: @gray-lighter; display: block; width: 50%; height: auto; }
 
   .thema {
-    // position: absolute;
-    // top: 0; left: 0; right: 0; bottom:0;
-    // background-color: white;
-    // border: 3px solid red; background-color: rgba(255, 200, 200, 0.7);
 
     .node {
-      // position: absolute;
-      // bottom: 0; left: 0; right: 0;
+
     }
 
     .node-thematique {
-      iframe { max-width: 100%; }
-      .field-type-video-embed-field {
-        .embed-responsive; .embed-responsive-4by3;
-        .field-items {
-          .embed-responsive-item;
-        }
-      }
       img { width: 100%; height: 100%; }
+      .player {
+        // Modifier class for 4:3 aspect ratio
+        padding-bottom: 75%;
+      }
     }
 
     .node-voisin {
       overflow: hidden;
-      iframe { max-width: 100%; }
+    }
 
-      &.view-mode-voisin_video_t1_16_9,
-      &.view-mode-voisin_video_t2_16_9,
-      &.view-mode-voisin_video_t3_16_9 {
-        .field-type-video-embed-field {
-          .embed-responsive; .embed-responsive-16by9;
-          .field-items {
-            .embed-responsive-item;
-          }
-        }
-      }
+  }
 
-      &.view-mode-voisin_video_t1_4_3,
-      &.view-mode-voisin_video_t2_4_3,
-      &.view-mode-voisin_video_t3_4_3 {
-        .field-type-video-embed-field {
-          .embed-responsive; .embed-responsive-4by3;
-          .field-items {
-            .embed-responsive-item;
-          }
-        }
-      }
+  .player {
+    .embed-responsive();
+    iframe {
+      .embed-responsive-item();
+      .scale(1.03); // 4:3 cause small black border on top and bottom. This is a working dirty fix that nobody will notice.
+    }
+  }
+
+  .view-mode-voisin_video_t1_16_9,
+  .view-mode-voisin_video_t2_16_9,
+  .view-mode-voisin_video_t3_16_9 {
+    .player {
+      // Modifier class for 16:9 aspect ratio
+      padding-bottom: 56.25%;
+    }
+  }
+  .view-mode-voisin_video_t1_4_3,
+  .view-mode-voisin_video_t2_4_3,
+  .view-mode-voisin_video_t3_4_3 {
+    .player {
+      // Modifier class for 4:3 aspect ratio
+      padding-bottom: 75%;
     }
   }
 
@@ -264,13 +263,15 @@ section#content {
 #bord-time {
   position: fixed; right: 0; bottom: 0; left: 0; z-index: -2;
   height: 20%;
-  background-color: @brand-success;
+  box-shadow: (2*@grid-gutter-width) 0px 0px 0px @brand-success inset, (-2*@grid-gutter-width) 0px 0px 0px @brand-success inset;
   .container {
     background-color: @body-bg;
     height: 100%; padding: 0 !important;
   }
 
-  body.program-mode & { background-color: @brand-danger; }
+  body.program-mode & {
+    box-shadow: (2*@grid-gutter-width) 0px 0px 0px @brand-danger inset, (-2*@grid-gutter-width) 0px 0px 0px @brand-danger inset;
+  }
 }
 
 

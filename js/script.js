@@ -39,7 +39,7 @@ Drupal.behaviors.init_theme = function (context) {
   var _prog_sequence_length = 0;
   var _prog_cur_seq_index = -1;
 
-  var _themas = [];
+  var _themas  = [];
   var _voisins = [];
   var _displayed_themas = [];
   var _thema_loaded = 0;
@@ -64,18 +64,16 @@ Drupal.behaviors.init_theme = function (context) {
     // console.log('initGraphics');
 
     setupBordTime();
-    setupGrid();
+    // setupGrid();
 
   };
 
   function getContent(){
 
-    console.log('getContent');
+    console.log('1. getContent');
 
     var dateObject = new Date();
     var currentTime = Math.round(dateObject.getTime()/1000);
-
-    console.log('currentTime = '+currentTime);
 
     $.getJSON(_ajax_base_path+'ajax/robinson/getcontent',
       {currentTime:currentTime, displayed_themas:_displayed_themas},
@@ -85,12 +83,11 @@ Drupal.behaviors.init_theme = function (context) {
 
   function contentLoaded(json){
 
-    // console.log("contentLoaded", json);
+    console.log("2. contentLoaded", json);
 
     _play_mode = json.mode;
 
-    $('body').removeClass('random-mode, program-mode');
-    $('body').addClass(_play_mode+'-mode');
+    $('body').removeClass('random-mode, program-mode').addClass(_play_mode+'-mode');
 
     switch(_play_mode){
       case 'random':
@@ -102,12 +99,12 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function playRandom(json){
-    console.log('playRandom', json);
+    console.log('3.0. playRandom');
     newThema(json.thema.nid);
   };
 
   function playProgram(json){
-    console.log("playProgram", json);
+    console.log("3.1. playProgram");
     _prog_sequence = json.sequence;
     _prog_sequence_length = json.sequence_length;
     _prog_cur_seq_index = -1;
@@ -191,7 +188,7 @@ Drupal.behaviors.init_theme = function (context) {
   * Thema()
   */
   function Thema(nid){
-    console.log('- - - - - - - - - new Thema - - - - - - - -', nid);
+    console.log('- - - - - - - - - new Thema ('+nid+')- - - - - - - -');
 
     // var thema = this;
     this.$ = $(this);
@@ -207,7 +204,7 @@ Drupal.behaviors.init_theme = function (context) {
     if(typeof Thema.prototype.initialized == "undefined"){
 
       Thema.prototype.ajaxLoad = function(){
-        console.log('Thema :: ajaxload');
+        // console.log('Thema :: ajaxload');
         var thema = this;
 
         $.getJSON(_ajax_base_path+'ajax/robinson/thema',
@@ -388,6 +385,8 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Thema.prototype.impulseVoisins = function(){
+        console.log('impulseVoisins');
+
         if(this.ready_for_voisins && this.availablespace && !this.loading_voisin){
           //console.log('Thema :: impulseVoisins : availablespace : '+this.availablespace);
 
@@ -544,7 +543,7 @@ Drupal.behaviors.init_theme = function (context) {
             .appendTo(this.thema.$thema)
             .notAnime();
         }else{
-//************************************************************ LOOK HERE: why outsite thema?????
+//************************************************************ LOOK HERE: why it’s place outsite thema?????
           $('<div>')
             .attr('id', 'voisin-'+this.nid)
             .addClass('voisin')
