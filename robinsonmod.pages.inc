@@ -1,5 +1,5 @@
 <?php
-function robinsonmod_ajax_getcontent(){
+function robinsonmod_ajax_getcontent() {
   $debug = true;
   $json = true;
   $rep = array();
@@ -146,6 +146,208 @@ function robinsonmod_ajax_voisin(){
   }
 }
 
+/* TV SHOW */
+function robinsonmod_tv_show_giveMeATheme(){
+
+  $opt = $_GET;
+  $query = new ProgramEntityFieldQuery();
+
+  $starttime = time();
+
+  $entities = $query
+    ->fieldCondition('field_prog_plage', 'value', $starttime, '<')
+    ->fieldCondition('field_prog_plage', 'value2', $starttime, '>')
+    ->execute();
+
+  $ret = isset($entities['node']) ? robinsonmod_tv_show_program($entities) : robinsonmod_tv_show_random($opt);
+
+  // return $ret;
+  return drupal_json_output($ret);
+
+}
+
+function robinsonmod_tv_show_program($entities){
+
+  // -- create an array contains datas.
+  $data = array();
+  $data['mode'] = 'program';
+
+  // -- get node nid.
+  $entity = $entities['node'][0];
+  $data["nid"] = $entity->nid;
+
+  return $data;
+
+}
+
+function robinsonmod_tv_show_random($opt = array()){
+
+  $query = new ThemaEntityFieldQuery();
+
+  // -- create an array contains datas.
+  $data = array();
+  $data['mode'] = 'random';
+
+  // -- exclude played theme.
+  if( isset($opt['loaded']) )
+    $query->entityCondition('entity_id', $opt['loaded'], 'NOT IN');
+
+  $entities = $query
+    ->addTag('random')
+    ->range(0, 1)
+    ->execute();
+
+  if( isset($entities['node']) ) :
+    // -- get node nid.
+    $entity = array_pop($entities['node']);
+    $data["nid"] = $entity->nid;
+
+  endif;
+
+  return $data;
+
+}
+
+function robinsonmod_tv_show_giveMeANeighbour(){
+
+  $opt = $_GET;
+
+  // == Step 1. Get discursive terms that we don’t want.
+  $query = new EntityFieldQuery() ;
+  $terms = $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->entityCondition('bundle', 'comportement')
+    ->fieldCondition('field_discursif', 'value', 1, '=')
+    ->execute();
+
+  foreach ($terms['taxonomy_term'] as $tid => $term)
+    $opt['discursive_tids'][] = $tid;
+
+  // == Step 2. Get nids.
+  $query = new VoisinEntityFieldQuery();
+
+  // -- create an array contains datas.
+  $data = array();
+  $n = 20; // number of voisins wanted.
+
+  if( isset($opt['voisins_nids']) ) :
+    $data["nids"] = $opt['voisins_nids'];
+    $query->entityCondition('entity_id', $opt['voisins_nids'], 'NOT IN');
+    $n -= count($data["nids"]);
+  endif;
+
+  $entities = $query
+    ->fieldCondition('field_comportement', 'tid', $opt['discursive_tids'], 'NOT IN')
+    ->addTag('random')
+    ->range(0, $n)
+    ->execute();
+
+  if( isset($entities['node']) ) :
+
+    // -- get nodes nid.
+    foreach ($entities['node'] as $nid => $node)
+      $data["nids"][] = $nid;
+
+  endif;
+
+  // dsm($data,'$data');
+
+  return drupal_json_output($data);
+
+}
+
+function robinsonmod_tv_show_nodeLoad(){
+
+  $opt = $_GET;
+  $nid = $opt['nid']?:null;
+
+  if( $nid ):
+    $node = node_load($nid);
+    $data['type'] = $node->type;
+
+    switch ($node->type) {
+      case 'programme':
+        $ret = robinsonmod_tv_show_nodeLoad_programme($node);
+        $data = array_merge($data,$ret);
+        break;
+      case 'thematique':
+        $ret = robinsonmod_tv_show_nodeLoad_thematique($node);
+        $data = array_merge($data,$ret);
+        break;
+      case 'voisin':
+        $ret = robinsonmod_tv_show_nodeLoad_voisin($node);
+        $data = array_merge($data,$ret);
+        break;
+    }
+
+  else:
+    $data = false;
+  endif;
+
+  return drupal_json_output($data);
+  // return $data;
+
+}
+
+function robinsonmod_tv_show_nodeLoad_programme($node){
+  $ret['html'] = theme('robinsonmod_tv_theme', array('node' => $node));
+  return $ret;
+}
+
+function robinsonmod_tv_show_nodeLoad_thematique($node){
+  $ret['html'] = theme('robinsonmod_tv_theme', array('node' => $node));
+  $voisins = field_get_items('node', $node, 'field_ref_voisin');
+  foreach ($voisins as $voisin)
+    $ret['voisins_nids'][] = $voisin['target_id'];
+  return $ret;
+}
+
+function robinsonmod_tv_show_nodeLoad_voisin($node){
+  $field_comportement = field_get_items('node', $node, 'field_comportement');
+  $comportement = taxonomy_term_load($field_comportement[0]['tid']);
+  $field_type_media = field_get_items('node', $node, 'field_type_media');
+  $mediatype = taxonomy_term_load($field_type_media[0]['tid']);
+
+  // Get size
+  $field_size = field_get_items('taxonomy_term', $comportement, 'field_taille_minmax');
+  $size = field_view_value('taxonomy_term', $comportement, 'field_taille_minmax', $field_size[0]);
+  $size = render($size);
+  preg_match_all('/\d+/', $size, $sizes);
+  if( isset($sizes[0]) ):
+    $min = min($sizes[0]);
+    $max = max($sizes[0]);
+    $size = rand($min,$max);
+  else:
+    $size = 1;
+  endif;
+
+  // Get media type
+  $type = $mediatype->name;
+
+  // Get duration
+  if( $type == 'photo' || $type == 'texte' ):
+    $field_duree_sec_minmax = field_get_items('taxonomy_term', $comportement, 'field_duree_sec_minmax');
+    $duration = field_view_value('taxonomy_term', $comportement, 'field_duree_sec_minmax', $field_duree_sec_minmax[0]);
+    $duration = render($duration);
+    preg_match_all('/\d+/', $duration, $durations);
+    if( isset($durations[0]) ):
+      $min = min($durations[0]);
+      $max = max($durations[0]);
+      $duration = rand($min,$max);
+    else:
+      $duration = 10;
+    endif;
+  else:
+    $duration = null;
+  endif;
+
+  $ret['duration'] = $duration;
+  $ret['mediatype'] = $type;
+  $ret['html'] = theme('robinsonmod_tv_voisin', array('node' => $node, 'size' => $size));
+  return $ret;
+}
+
+
 /* RENDEZ-VOUS */
 function robinsonmod_rendez_vous_getcontent($arg=FALSE,$arg2=FALSE){
   // dsm($arg,'$arg');
@@ -154,7 +356,7 @@ function robinsonmod_rendez_vous_getcontent($arg=FALSE,$arg2=FALSE){
 }
 
 function robinsonmod_rendez_vous_getAll(){
-  $query = new EntityFieldQuery();
+  $query = new ProgramEntityFieldQuery();
 
   $starttime = time();
   $endtime   = strtotime( "+1 month", $starttime );
@@ -162,9 +364,6 @@ function robinsonmod_rendez_vous_getAll(){
   // $endtime   = strtotime( "+15 day", $starttime );
 
   $entities = $query
-    ->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', array('programme'))
-    ->propertyCondition('status', 1)
     ->fieldCondition('field_prog_plage', 'value', array($starttime, $endtime), 'BETWEEN')
     ->execute();
 
@@ -173,7 +372,6 @@ function robinsonmod_rendez_vous_getAll(){
 
   if (isset($entities['node'])) :
 
-    $weight = 0;
     $nodes = entity_load('node', array_keys($entities['node']));
 
     /* // -- activate this part of the code to display the empty days.

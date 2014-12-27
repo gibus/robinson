@@ -37,7 +37,6 @@ function robinsonmod_menu() {
   $items['rendez-vous'] = $base + array(
     'title' => 'Rendez-vous',
     'page callback' => 'robinsonmod_rendez_vous_getcontent',
-    // 'page arguments' => array(FALSE),
     'access callback' => true,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
@@ -49,6 +48,27 @@ function robinsonmod_menu() {
     'access callback' => true,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['ajax/tv-show/give-me-a-theme'] = $base + array(
+    'title' => 'Get TVcontent by ajax request',
+    'page callback' => 'robinsonmod_tv_show_giveMeATheme',
+    'page arguments' => array(),
+    'access callback' => true,
+  );
+
+  $items['ajax/tv-show/node-load'] = $base + array(
+    'title' => 'Get TV node by ajax request',
+    'page callback' => 'robinsonmod_tv_show_nodeLoad',
+    'page arguments' => array(),
+    'access callback' => true,
+  );
+
+  $items['ajax/tv-show/give-me-a-neighbour'] = $base + array(
+    'title' => 'Get TVcontent by ajax request',
+    'page callback' => 'robinsonmod_tv_show_giveMeANeighbour',
+    'page arguments' => array(),
+    'access callback' => true,
   );
 
   return $items;
@@ -152,33 +172,53 @@ function robinsonmod_entity_info_alter(&$entity_info) {
  */
 function robinsonmod_theme($existing, $type, $theme, $path) {
   return array(
+    'robinsonmod_tv_theme' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-tv-theme',
+    ),
+    'robinsonmod_tv_voisin' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-tv-voisin',
+    ),
     'robinsonmod_rendez_vous' => array(
       'variables' => array(
         'data' => array()
       ),
-      'template' => 'inc/robinsonmod-rendez-vous',
+      'template' => 'tpl/robinsonmod-rendez-vous',
     ),
     'robinsonmod_rendez_vous_node' => array(
       'variables' => array(
         'node' => FALSE,
         'date' => FALSE
       ),
-      'template' => 'inc/robinsonmod-rendez-vous-node',
+      'template' => 'tpl/robinsonmod-rendez-vous-node',
     ),
     'robinsonmod_ressources' => array(
       'variables' => array(
         'data' => array()
       ),
-      'template' => 'inc/robinsonmod-ressources',
+      'template' => 'tpl/robinsonmod-ressources',
     ),
     'robinsonmod_ressources_node' => array(
       'variables' => array(
         'node' => FALSE
       ),
-      'template' => 'inc/robinsonmod-ressources-node',
+      'template' => 'tpl/robinsonmod-ressources-node',
     ),
   );
 }
+
+/**
+ * Implementation of hook_query_TAG_alter
+ */
+function robinsonmod_query_random_alter($query) {
+  $query->orderRandom();
+}
+
 
 /**
  * Implements hook_video_embed_field_handlers_alter().
