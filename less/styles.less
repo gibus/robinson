@@ -44,21 +44,19 @@ nav#breadcrumb {
   }
 }
 
-section#main {
+main#main {
 
-  > .row {
+  * {
+    font-size:@font-size-base;
+  }
 
-    * {
-      font-size:@font-size-base;
-    }
+  .item-list {
 
-    .item-list {
-
-      h3.item-title:last-child {
-        &:after { font-family: @font-family-base; }
-      }
+    h3.item-title:last-child {
+      &:after { font-family: @font-family-base; }
     }
   }
+
 }
 
 
@@ -113,7 +111,7 @@ nav#breadcrumb {
   }
 }
 
-section#main {
+body.not-front main#main {
 
   // position: relative; z-index: 0;
   margin-bottom:4*@grid-gutter-width;
@@ -205,18 +203,179 @@ section#main {
 
 }
 
-body.random-mode,
-body.program-mode {
-  section#main {
-    & > .page-title,
-    & > .node-page { display: none; }
+
+body.front main#main {
+
+  // THEMES
+  .theme {
+
+    article {
+      h2 { margin-botom: 0; }
+      h3 { margin: 0; }
+    }
+
+    .embed-responsive {
+      iframe {
+        .scale(1.03);
+      }
+    }
+
   }
+
+  // animations
+  .theme {
+    opacity: 0;
+    article figure {
+      opacity: 0;
+      background-color: @brand-success;
+      color: @brand-success;
+    }
+    article figure iframe {
+      opacity: 0;
+    }
+    aside figure {
+      background-color: @brand-success;
+    }
+    aside figure img { }
+
+    &.show-lpr {
+      opacity: 1;
+      .transition(opacity 2s linear);
+      article figure {
+        opacity: 1;
+        .transition(opacity 2s 5s linear);
+      }
+      article figure iframe { }
+      aside figure { }
+      aside figure img { }
+    }
+
+    &.shown-lpr {
+      article figure {
+        background-color: transparent;
+        .transition(background-color 5s linear);
+      }
+      article figure iframe {
+        opacity: 1;
+        .transition(opacity 5s linear);
+      }
+      aside figure { }
+      aside figure img { }
+    }
+
+    &.hide-lpr {
+      opacity: 0;
+      .transition(opacity 60s linear);
+      article figure {
+        background-color: @gray-light;
+        color: @gray-light;
+        .transition(~'background-color 5s linear, color 5s linear');
+      }
+      article figure iframe {
+        opacity: 0;
+        .transition(opacity 5s linear);
+      }
+      aside figure {
+        background-color: @gray-light;
+        .transition(background-color 2s 5s linear);
+      }
+      aside figure img {
+        opacity: 0;
+        .transition(opacity 5s 5s linear);
+      }
+    }
+
+    &.hidden-lpr {
+      display: none;
+      article figure        { }
+      article figure iframe { }
+      aside figure          { }
+      aside figure img      { }
+    }
+
+  }
+
+  // --end THEME
+
+  // NEIGHBOUR
+  .neighbour {
+
+    .embed-responsive {
+      iframe {
+        .scale(1.03);
+      }
+    }
+
+  }
+
+  // animations
+  .neighbour {
+    opacity: 0;
+    article {
+      figure, .jumbotron {
+        background-color: @gray-light;
+        iframe, img, p {
+          opacity: 0;
+        }
+      }
+    }
+
+    &.show-lpr {
+      opacity: 1;
+      .transition(opacity 2s linear);
+      article {
+        figure, .jumbotron {
+          iframe, img, p { }
+        }
+      }
+    }
+
+    &.shown-lpr {
+      article {
+        figure, .jumbotron {
+          iframe, img, p {
+            opacity: 1;
+            .transition(opacity 5s linear);
+          }
+        }
+      }
+    }
+
+    &.hide-lpr {
+      opacity: 0;
+      .transition(opacity 10s linear);
+      article {
+        figure, .jumbotron {
+          iframe, img, p {
+            opacity: 0;
+            .transition(opacity 5s linear);
+          }
+        }
+      }
+    }
+
+    &.hidden-lpr {
+      display: none;
+      article {
+        figure, .jumbotron {
+          iframe, img, p { }
+        }
+      }
+    }
+
+  }
+
+  // -- end NEIGHBOUR
+
+
+
 }
 
+/*
 #stream-wrapper {
 
   position: relative;
-  z-index: -1;
+  // z-index: -1;
 
   .field-item
     img { background-color: @gray-lighter; display: block; width: 50%; height: auto; }
@@ -267,6 +426,7 @@ body.program-mode {
   }
 
 }
+*/
 
 #bord-time {
   position: fixed; right: 0; bottom: 0; left: 0; z-index: -2;
@@ -286,17 +446,29 @@ body.program-mode {
 /* =Development
 -----------------------------------------------------------------------------*/
 
-#dev  { position: fixed; bottom:@grid-gutter-width; width: 100%; }
+#dev {
 
-#size { font-size: 10px; }
+  position: fixed; bottom:@grid-gutter-width; width: 100%;
+  visibility: hidden; z-index: -1;
 
-@media (max-width: @screen-xs-max)                                 { #size:after { content:"Phones (-xs)"; }         }
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) { #size:after { content:"Tablets (-sm)"; }        }
-@media (min-width: @screen-md-min) and (max-width: @screen-md-max) { #size:after { content:"Desktops (-md)"; }       }
-@media (min-width: @screen-lg-min)                                 { #size:after { content:"Large Desktops (-lg)"; } }
-@media (orientation: landscape) { #size:before { content:"Landscape, "; } }
-@media (orientation: portrait)  { #size:before { content:"Portrait, ";  } }
+  #size { font-size: 10px; }
 
-#dev .row              { text-align: center; font-size: 10px; margin-bottom:0 !important; }
-#dev .row > div        { background-color: rgba(0, 255, 255, 0.3); box-shadow: 0 0 0 1px #0FF; }
-#dev .row > div > *    { background-color: rgba(255, 255, 255, 0.7); overflow: hidden; min-height: 13px; }
+  @media (max-width: @screen-xs-max)                                 { #size:after { content:"Phones (-xs)"; }         }
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) { #size:after { content:"Tablets (-sm)"; }        }
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) { #size:after { content:"Desktops (-md)"; }       }
+  @media (min-width: @screen-lg-min)                                 { #size:after { content:"Large Desktops (-lg)"; } }
+  @media (orientation: landscape) { #size:before { content:"Landscape, "; } }
+  @media (orientation: portrait)  { #size:before { content:"Portrait, ";  } }
+
+  .row              { text-align: center; font-size: 10px; margin-bottom:0 !important; }
+  .row > div        { background-color: rgba(0, 255, 255, 0.3); box-shadow: 0 0 0 1px #0FF; }
+  .row > div > *    { background-color: rgba(255, 255, 255, 0.7); overflow: hidden; min-height: 13px; }
+
+  body.dev & { visibility: visible; z-index: 1000; }
+}
+
+.seek {
+  position: fixed; top: @grid-gutter-width; left: @grid-gutter-width;
+  visibility: hidden; z-index: -1;
+  body.dev & { visibility: visible; z-index: 1000; }
+}

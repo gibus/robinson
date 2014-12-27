@@ -129,13 +129,13 @@
     <nav id="breadcrumb" role="breadcrumb"><?= $breadcrumb; ?></nav>
     <?php endif; ?>
 
-    <section id="main">
+    <main id="main">
 
       <?php if($title): ?><h1 class="page-title"><?= $title ?></h1><?php endif; ?>
 
       <?= render($page['content']); ?>
 
-    </section><!-- /#content -->
+    </main><!-- /#main -->
 
     <footer id="footer">
 
