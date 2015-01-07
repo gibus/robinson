@@ -185,8 +185,8 @@ Drupal.behaviors.init_theme = function (context) {
         $(this.id + ' iframe')
           .one('load', function(event){
 
-            console.log( 'THEME :: iframe =', $(this) );
-            console.log( 'THEME :: theme.id', theme.id );
+            console.log( 'Theme :: iframe =', $(this) );
+            console.log( 'Theme :: theme.id', theme.id );
 
             var iframe = $(this)[0];
             var player = $f(iframe);
@@ -269,24 +269,24 @@ Drupal.behaviors.init_theme = function (context) {
 
 
       Theme.prototype.vimeoStart = function() {
-        console.log('THEME :: Start vimeo playing');
+        console.log('Theme :: Start vimeo playing');
         this.vimeo.$player.api("play");
       };
 
       Theme.prototype.vimeoPlay = function(id) {
-        console.log("THEME :: VIMEO ---> [Play]",id);
+        console.log("Theme :: vimeo ---> [Play]",id);
       }
 
       Theme.prototype.vimeoPause = function(id) {
-        console.log("THEME :: VIMEO ---> [Pause]",id);
+        console.log("Theme :: vimeo ---> [Pause]",id);
       }
 
       Theme.prototype.vimeoFinish = function(id) {
-        console.log("THEME :: VIMEO ---> [Finish]");
+        console.log("Theme :: vimeo ---> [Finish]");
       }
 
       Theme.prototype.vimeoPlayProgress = function(data, id) {
-        // console.log("THEME :: VIMEO ---> " + data.seconds + 's played');
+        // console.log("Theme :: vimeo ---> " + data.seconds + 's played');
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-theme');
       }
@@ -327,30 +327,26 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbourhood.prototype.events = function() {
 
         this.$
-          .on('show-lpr-neighbourhood',          this.show )
+          .on('show-lpr-neighbourhood',          this.invocNeighbour )
           .one('loaded-lpr-neighbourhood-watch', this.neighbourLoaded )
           .one('hide-lpr-neighbourhood-watch',   this.neighbourHide )
           .one('hide-lpr-neighbourhood',         this.hide );
       };
 
-      Neighbourhood.prototype.show = function() {
-        var neighbourhood = this;
+      Neighbourhood.prototype.invocNeighbour = function() {
 
-        // console.log('Neighbourhood invoc Neighbour',this.called);
+        console.log('Neighbourhood :: invoc neighbour');//,this.called);
         // console.log('this.nids',this.nids);
 
+        var neighbourhood = this;
+
         if( this.called < 4 ) {
-        // if( this.called < 1 ) {
           var nid = this.nids.shift();
           var neighbour = new Neighbour(nid,this.container);
           this.neighbours.push(neighbour);
           this.called ++;
         }
 
-        clearTimeout(this.timer);
-        this.timer = setTimeout(function(){
-          neighbourhood.$.trigger('show-lpr-neighbourhood');
-        }, 20000);
       };
 
       Neighbourhood.prototype.hide = function() {
@@ -375,6 +371,12 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbourhood.prototype.neighbourHide = function(event,nid) {
         console.log('Neighbourhood :: neighbour Hide');
         this.called --;
+        // queue the neighbours, when one finish, invoc a new one
+        this.$.trigger('show-lpr-neighbourhood');
+        // clearTimeout(this.timer);
+        // this.timer = setTimeout(function(){
+        //   neighbourhood.$.trigger('show-lpr-neighbourhood');
+        // }, 20000);
       };
 
     }// - end prototypes
@@ -421,7 +423,7 @@ Drupal.behaviors.init_theme = function (context) {
         this.append();
         this.events();
 
-        // WHen it’s loaded, inform the Neighbourhood.
+        // When it’s loaded, inform the Neighbourhood.
         _Neighbourhood.$.trigger( 'loaded-lpr-neighbourhood-watch', this.nid );
       };
 
@@ -451,8 +453,8 @@ Drupal.behaviors.init_theme = function (context) {
           $(this.id + ' iframe')
             .one('load', function(event){
 
-              // console.log( 'NEIGHBOUR :: iframe =', $(this) );
-              // console.log( 'NEIGHBOUR :: neighbour.id', neighbour.id );
+              // console.log( 'Neighbour :: iframe =', $(this) );
+              // console.log( 'Neighbour :: neighbour.id', neighbour.id );
 
               var iframe = $(this)[0];
               var player = $f(iframe);
@@ -468,6 +470,11 @@ Drupal.behaviors.init_theme = function (context) {
                 neighbour.$.trigger('show-lpr-neighbour');
                 neighbour.$.trigger('play-lpr-neighbourVimeo');
               });
+
+              // start a countdown on load, if the vimeo not playing in the 5s, ask for hidding it.
+              neighbour.vimeo.clinicalDeath = setTimeout(function(){
+                neighbour.$.trigger('hide-lpr-neighbour');
+              },5000);
 
             });
 
@@ -528,35 +535,36 @@ Drupal.behaviors.init_theme = function (context) {
 
 
       Neighbour.prototype.vimeoStart = function() {
-        console.log('NEIGHBOUR :: Start vimeo playing',this.id);
+        console.log('Neighbour :: Start vimeo playing',this.id);
         this.vimeo.$player.api("play");
       };
 
       Neighbour.prototype.vimeoPlay = function(id) {
-        console.log("NEIGHBOUR :: VIMEO ---> [Play]",id);
+        console.log("Neighbour :: vimeo ---> [Play]",id);
         // check if a neighbour replay after stoping,
         //cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
       }
 
       Neighbour.prototype.vimeoPause = function(id) {
-        console.log("NEIGHBOUR :: VIMEO ---> [Pause]",id);
+        console.log("Neighbour :: vimeo ---> [Pause]",id);
         // check if a neighbour stop playing for too long,
         // which is probably not good. In this case, we hide it.
         var neighbour = this;
         this.vimeo.clinicalDeath = setTimeout(function(){
-          console.log("NEIGHBOUR :: VIMEO ---> [clinical death]",id);
+          console.log("Neighbour :: vimeo ---> [clinical death]",id);
           neighbour.$.trigger('hide-lpr-neighbour');
         },5000);
       }
 
       Neighbour.prototype.vimeoFinish = function(id) {
-        console.log("NEIGHBOUR :: VIMEO ---> [Finish]",id);
+        console.log("Neighbour :: vimeo ---> [Finish]",id);
+        clearTimeout(this.vimeo.clinicalDeath);
       }
 
       Neighbour.prototype.vimeoPlayProgress = function(data, id) {
-        // console.log("NEIGHBOUR :: VIMEO ---> " + data.seconds + 's played');
-        // console.log("NEIGHBOUR :: VIMEO in vimeoPlayProgress; this = ", this);
+        // console.log("Neighbour :: vimeo ---> " + data.seconds + 's played');
+        // console.log("Neighbour :: vimeo in vimeoPlayProgress; this = ", this);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-neighbour');
       }
