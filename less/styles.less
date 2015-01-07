@@ -67,6 +67,8 @@ main#main {
 
 html, body, body > .container { height: 100%; position: relative; }
 
+body { overflow-y: scroll; }
+
 header#header {
 
   margin-bottom: @grid-gutter-width;
@@ -89,6 +91,7 @@ header#header {
       }
     }
   }
+
 }
 
 nav#breadcrumb {
@@ -203,15 +206,71 @@ body.not-front main#main {
 
 }
 
+body.front {
+
+  header#header {
+    margin-bottom: 0;
+  }
+
+  .row {
+    margin-left: 0; margin-right: 0;
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1,
+    .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2,
+    .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3,
+    .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4,
+    .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5,
+    .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+    .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7,
+    .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8,
+    .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+    .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10,
+    .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11,
+    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+      padding-left: 0; padding-right: 0;
+    }
+    .col-offset-top--1 {
+      margin-top: -6.25%; // correspond to 1/4 height of 4/3 column. (trust me)
+    }
+    .col-offset-top-1 {
+      margin-top: 6.25%; // correspond to 1/4 height of 4/3 column. (trust me)
+    }
+    .col-offset-top-2 {
+      margin-top: 12.5%; // correspond to half height of 4/3 column. (trust me)
+    }
+    .col-offset-top-1 {
+      margin-top: 18.75%; // correspond to 3/4 height of 4/3 column. (trust me)
+    }
+    .col-offset-top-4 {
+      margin-top: 25%; // correspond to plain height of 4/3 column. (trust me)
+    }
+  }
+}
 
 body.front main#main {
+
+  position: relative;
+  z-index: -1;
+
+  @media (min-width: @screen-md-min) {
+    .container-theme {
+
+      position: absolute;
+      top: 0; right: 0; left: 0;
+
+      .row {
+        position: absolute;
+        top: 0; right: 0; left: 0;
+      }
+
+    }
+  }
 
   // THEMES
   .theme {
 
     article {
       h2 { margin-botom: 0; }
-      h3 { margin: 0; }
+      h3 { margin-top: 0; }
     }
 
     .embed-responsive {
@@ -225,6 +284,7 @@ body.front main#main {
   // animations
   .theme {
     opacity: 0;
+    article { background-color: @body-bg; }
     article figure {
       opacity: 0;
       background-color: @brand-success;
@@ -445,7 +505,6 @@ body.front main#main {
 
 /* =Development
 -----------------------------------------------------------------------------*/
-
 #dev {
 
   position: fixed; bottom:@grid-gutter-width; width: 100%;
@@ -472,3 +531,42 @@ body.front main#main {
   visibility: hidden; z-index: -1;
   body.dev & { visibility: visible; z-index: 1000; }
 }
+
+#dev2 {
+
+  position: fixed; top:120px; width: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  visibility: hidden; z-index: -1;
+
+  .row {
+
+    > div {
+
+      .ratio {
+        position: relative;
+        width: 100%;
+        padding-bottom: (3/4)*100%; // 4:3 ratio
+        box-shadow: 0 0 0 1px #F00 inset;
+
+        > .in {
+          position: absolute;
+          top: 0; right: 0; bottom: 0; left: 0;
+          box-shadow: 0 0 0 1px #0FF;
+
+          > .ligne {
+            height: 25%;
+            box-shadow: 0 0 0 1px #F0F inset;
+          }
+        }
+
+      }
+
+    }
+
+  }
+
+  body.dev & { visibility: visible; z-index: 1000; }
+
+}
+
+body.dev.front main#main { z-index: 0; }

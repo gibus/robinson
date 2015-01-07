@@ -84,6 +84,38 @@
     </div>
   </div>
 
+  <div id="dev2">
+    <div class="container">
+      <? $hidden = ['hidden-xs ','hidden-sm ','hidden-md ','hidden-lg '] ?>
+      <? $n      = 3 ?>
+
+      <? foreach (range('A', 'C') as $i) : ?>
+      <div class="row">
+
+        <? for ($j=0; $j < $n; $j++) : ?>
+        <?
+          $class = "";
+          if($j > 0) $class .= $hidden[0];
+          if($j > 1) $class .= $hidden[1];
+          if($j > 2) $class .= $hidden[2];
+        ?>
+        <div class="col-xs-12 col-sm-4 <?= $class ?>">
+          <div class="ratio">
+            <div class="in">
+              <? for ($k=0; $k < 4; $k++) : ?>
+              <? $ligne = $i ."-". ($j+1) ."-". ($k+1) ?>
+              <div class="ligne ligne-<?= $ligne ?>"><?= $ligne ?></div>
+              <? endfor ?>
+            </div>
+          </div>
+        </div>
+        <? endfor ?>
+
+      </div>
+      <? endforeach ?>
+    </div>
+  </div>
+
   <!-- Javascript at the bottom for fast page loading -->
   <?= $scripts; ?>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.

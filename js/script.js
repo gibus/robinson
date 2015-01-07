@@ -38,7 +38,7 @@ Drupal.behaviors.init_theme = function (context) {
   var _loaded = [];
   var _mode = "";
   var _Theme;
-  var _Neighborhood;
+  var _Neighbourhood;
 
 
   /**
@@ -68,9 +68,7 @@ Drupal.behaviors.init_theme = function (context) {
   }
 
   function setupEvent() {
-
-    $(window).on('theme-lpr-nid-recovered', themeNidRecovered);
-
+    $(window).on('theme-lpr-nid-recovered',   themeNidRecovered);
   }
 
   function getContent() {
@@ -84,10 +82,11 @@ Drupal.behaviors.init_theme = function (context) {
     $(window).trigger('theme-lpr-nid-recovered', data.nid );
   }
 
-  /* =LOAD */
+  /* =load */
   function themeNidRecovered(event,nid) {
     $('body').removeClass("random-mode program-mode").addClass(_mode+'-mode');
     _Theme = new Theme(nid);
+    _Theme.$.one('hide-lpr-theme', getContent);
   }
 
   /* =BORD TIME */
@@ -117,11 +116,11 @@ Drupal.behaviors.init_theme = function (context) {
   -----------------------------------------------------------------------------*/
   function Theme(nid) {
 
-    this.$ = $(this);
-    this.nid = 300;//212;//nid;
-    this.id = "#theme-"+this.nid
+    this.$ =         $(this);
+    this.nid =       nid;//300;//212;
+    this.id =        "#theme-"+this.nid
     this.container = "#container-theme-"+this.nid
-    this.html = 'empty';
+    this.html =      'empty';
     this.vimeo = {
       iframe : null,
       $player : null,
@@ -141,7 +140,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.nodeLoaded = function(data) {
-        console.log('Theme :: Loaded',data);
+        console.log('Theme :: Loaded');//,data);
 
         // Save datas
         this.html = data.html;
@@ -154,7 +153,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.neighbours = function() {
-        _Neighborhood = new Neighborhood(this.voisins.nids,this.container);
+        _Neighbourhood = new Neighbourhood(this.voisins.nids,this.container);
       }
 
       Theme.prototype.append = function() {
@@ -163,6 +162,7 @@ Drupal.behaviors.init_theme = function (context) {
         _$main.append(
           $('<div>')
             .attr('id', this.container.replace('#',''))
+            .addClass('container-theme')
             .append(
               $(this.html)
                 .attr('id', this.id.replace('#',''))
@@ -180,11 +180,47 @@ Drupal.behaviors.init_theme = function (context) {
           .one('shown-lpr-theme',  this.shown )
           .one('hide-lpr-theme',   this.hide )
           .one('hidden-lpr-theme', this.hidden )
-          .one('play-lpr-vimeo',   this.vimeoPlay );
+          .one('play-lpr-vimeo',   this.vimeoStart );
 
-        $(this.id + ' iframe').load(function() {
-          $f(this).addEvent('ready', function(id){ theme.vimeoInit(id); });
-        });
+        $(this.id + ' iframe')
+          .one('load', function(event){
+
+            console.log( 'THEME :: iframe =', $(this) );
+            console.log( 'THEME :: theme.id', theme.id );
+
+            var iframe = $(this)[0];
+            var player = $f(iframe);
+            theme.vimeo.$player = player;
+
+            // When the player is ready, add listeners for pause, finish, and playProgress
+            player.addEvent('ready', function() {
+              player.addEvent('play',         function(id) { theme.vimeoPlay(id)   });
+              player.addEvent('pause',        function(id) { theme.vimeoPause(id)  });
+              player.addEvent('finish',       function(id) { theme.vimeoFinish(id) });
+              player.addEvent('playProgress', function(data, id) { theme.vimeoPlayProgress(data, id) });
+
+              theme.$.trigger('show-lpr-theme');
+              theme.$.trigger('play-lpr-vimeo');
+            });
+
+            // DEV
+            // ajout d’un bouton pour aller 10s avant la fin de la vidéo.
+            $(theme.id).on('click', '.seek', function(event) {
+              event.preventDefault();
+              /* Act on the event */
+              theme.vimeo.$player.api('getDuration', function (value, player_id) {
+                console.log('Theme :: duration',value);
+                theme.vimeo.$player.api('seekTo', (value-10));
+              });
+            });
+            $(theme.id).prepend(
+              $('<button>')
+                .addClass('seek btn btn-default')
+                .html('Goto end -10s')
+            );
+            //end dev
+
+          });
 
       }
 
@@ -204,8 +240,8 @@ Drupal.behaviors.init_theme = function (context) {
         $(this.id)
           .addClass('shown-lpr');
 
-        // Theme is displayed, active Neighborhood.
-        _Neighborhood.$.trigger('show-lpr-neighborhood');
+        // Theme is displayed, active Neighbourhood.
+        _Neighbourhood.$.trigger('show-lpr-neighbourhood');
       };
 
       Theme.prototype.hide = function(event) {
@@ -216,78 +252,41 @@ Drupal.behaviors.init_theme = function (context) {
           .one('bsTransitionEnd', function(event) {
             theme.$.trigger('hidden-lpr-theme');
           });
+
+        // Theme is hide, desactive Neighbourhood.
+        _Neighbourhood.$.trigger('hide-lpr-neighbourhood');
       };
 
       Theme.prototype.hidden = function(event) {
         console.log('Theme :: hidden');
-        $(this.id).addClass('hidden-lpr');
-      };
-
-
-
-
-      Theme.prototype.vimeoInit = function(id) {
-        console.log('Theme :: vimeo init',id);
-
-        this.vimeo.iframe  = $('#'+id)[0];
-        this.vimeo.$player = $f(this.vimeo.iframe);
-        this.vimeo.status  = $('.status');
-
-        this.vimeoEvents();
-
-        // DEV
-        // ajout d’un bouton pour aller 10s avant la fin de la vidéo.
         var theme = this;
-        $(this.id).on('click', '.seek', function(event) {
-          event.preventDefault();
-          /* Act on the event */
-          theme.vimeo.$player.api('getDuration', function (value, player_id) {
-            console.log('Theme :: duration',value);
-            theme.vimeo.$player.api('seekTo', (value-10));
-          });
-        });
-        $(this.id).prepend(
-          $('<button>')
-            .addClass('seek btn btn-default')
-            .html('Goto end -10s')
-        );
-        //end dev
-
+        $(this.id)
+          .addClass('hidden-lpr')
+          .remove();
+        this.$.off();
       };
 
-      Theme.prototype.vimeoEvents = function() {
 
-        var theme = this;
 
-        this.vimeo.status.text('ready');
-
-        this.vimeo.$player
-          .addEvent('pause',        function(id)     { theme.vimeoPause(id) })
-          .addEvent('finish',       function(id)     { theme.vimeoFinish(id) })
-          .addEvent('playProgress', function(data,id){ theme.vimeoPlayProgress(data,id) });
-
-        this.$.trigger('show-lpr-theme');
-        this.$.trigger('play-lpr-vimeo');
-      };
-
-      Theme.prototype.vimeoPlay = function(id) {
-        console.log('Theme :: vimeo Play');
+      Theme.prototype.vimeoStart = function() {
+        console.log('THEME :: Start vimeo playing');
         this.vimeo.$player.api("play");
       };
 
+      Theme.prototype.vimeoPlay = function(id) {
+        console.log("THEME :: VIMEO ---> [Play]",id);
+      }
+
       Theme.prototype.vimeoPause = function(id) {
-        console.log('Theme :: vimeo Pause');
-        this.vimeo.status.text('paused');
-      };
+        console.log("THEME :: VIMEO ---> [Pause]",id);
+      }
 
       Theme.prototype.vimeoFinish = function(id) {
-        console.log('Theme :: vimeo Finish');
-        this.vimeo.status.text('finished');
-      };
+        console.log("THEME :: VIMEO ---> [Finish]");
+      }
 
-      Theme.prototype.vimeoPlayProgress = function(data,id) {
-        // console.log("vimeo PlayProgress", data);
-        this.vimeo.status.text(data.seconds + 's played');
+      Theme.prototype.vimeoPlayProgress = function(data, id) {
+        // console.log("THEME :: VIMEO ---> " + data.seconds + 's played');
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-theme');
       }
@@ -300,64 +299,81 @@ Drupal.behaviors.init_theme = function (context) {
 
   /* =NEIGHBORHOOD
   -----------------------------------------------------------------------------*/
-  function Neighborhood(nids,container) {
+  function Neighbourhood(nids,container) {
 
-    this.$ =      $(this);
-    this.nids =   nids;
-    this.container = container;
-    this.called = 0;
-    this.loaded = [];
-    this.timer =  null;
-
+    this.$ =          $(this);
+    this.nids =       nids;
+    this.container =  container;
+    this.called =     0;
+    this.neighbours = [];
+    this.timer =      null;
 
     /* PROTOTYPES */
-    if(typeof Neighborhood.prototype.initialized == "undefined"){
+    if(typeof Neighbourhood.prototype.initialized == "undefined"){
 
-      Neighborhood.prototype.init = function() {
-        var neighborhood = this;
-        $.getJSON(_ajax_base_path+'ajax/tv-show/give-me-a-neighbour', {'voisins_nids': this.nids}, function(data){ neighborhood.nodeLoaded(data); } );
+      Neighbourhood.prototype.init = function() {
+        var neighbourhood = this;
+        $.getJSON(_ajax_base_path+'ajax/tv-show/give-me-a-neighbour', {'voisins_nids': this.nids}, function(data){ neighbourhood.nodeLoaded(data); } );
       };
 
-      Neighborhood.prototype.nodeLoaded = function(data) {
-        console.log('Neighborhood :: Loaded',data);
+      Neighbourhood.prototype.nodeLoaded = function(data) {
+        console.log('Neighbourhood :: Loaded');//,data);
         this.nids = data.nids;
 
         // Init actions.
         this.events();
       };
 
-      Neighborhood.prototype.events = function() {
+      Neighbourhood.prototype.events = function() {
 
         this.$
-          .on('show-lpr-neighborhood', this.show )
-          .one('loaded-lpr-neighborhood-watch', this.neighbourLoaded )
-          .one('hide-lpr-neighborhood-watch',   this.neighbourHide );
+          .on('show-lpr-neighbourhood',          this.show )
+          .one('loaded-lpr-neighbourhood-watch', this.neighbourLoaded )
+          .one('hide-lpr-neighbourhood-watch',   this.neighbourHide )
+          .one('hide-lpr-neighbourhood',         this.hide );
       };
 
-      Neighborhood.prototype.show = function() {
-        var neighborhood = this;
+      Neighbourhood.prototype.show = function() {
+        var neighbourhood = this;
 
-        console.log('Neighborhood invoc Neighbour',this.called);
-        console.log('this.nids',this.nids);
+        // console.log('Neighbourhood invoc Neighbour',this.called);
+        // console.log('this.nids',this.nids);
 
         if( this.called < 4 ) {
+        // if( this.called < 1 ) {
           var nid = this.nids.shift();
           var neighbour = new Neighbour(nid,this.container);
+          this.neighbours.push(neighbour);
           this.called ++;
         }
 
         clearTimeout(this.timer);
         this.timer = setTimeout(function(){
-          neighborhood.$.trigger('show-lpr-neighborhood');
+          neighbourhood.$.trigger('show-lpr-neighbourhood');
         }, 20000);
       };
 
-      Neighborhood.prototype.neighbourLoaded = function(event,nid) {
-        console.log('Neighborhood :: neighbour Loaded');
+      Neighbourhood.prototype.hide = function() {
+        // console.log('Neighbourhood revoc Neighbour', this.called);
+        // console.log('this.nids',this.nids);
+
+        this.$.off();
+
+        // Revoc all Neighbours
+        for (var i = 0; i < this.neighbours.length; i++) {
+          console.log("this.neighbours[]["+i+"]");
+          this.neighbours[i].request.abort(); // abort the ajax request if neighbour hasn’t finish to load.
+          this.neighbours[i].$.trigger('hide-lpr-neighbour'); // hide him
+        };
+
       };
 
-      Neighborhood.prototype.neighbourHide = function(event,nid) {
-        console.log('Neighborhood :: neighbour Hide');
+      Neighbourhood.prototype.neighbourLoaded = function(event,nid) {
+        console.log('Neighbourhood :: neighbour Loaded');
+      };
+
+      Neighbourhood.prototype.neighbourHide = function(event,nid) {
+        console.log('Neighbourhood :: neighbour Hide');
         this.called --;
       };
 
@@ -365,7 +381,7 @@ Drupal.behaviors.init_theme = function (context) {
 
     this.init();
 
-  }// - end Neighborhood
+  }// - end Neighbourhood
 
   /* =NEIGHBOUR
   -----------------------------------------------------------------------------*/
@@ -381,18 +397,20 @@ Drupal.behaviors.init_theme = function (context) {
       iframe: null,
       $player: null,
       status: null,
+      clinicalDeath: null,
     };
+    this.request;
 
     /* PROTOTYPES */
     if(typeof Neighbour.prototype.initialized == "undefined"){
 
       Neighbour.prototype.nodeLoad = function() {
         var neighbour = this;
-        $.getJSON(_ajax_base_path+'ajax/tv-show/node-load', {'nid':neighbour.nid}, function(data){ neighbour.nodeLoaded(data); } );
+        this.request = $.getJSON(_ajax_base_path+'ajax/tv-show/node-load', {'nid':neighbour.nid}, function(data){ neighbour.nodeLoaded(data); } );
       };
 
       Neighbour.prototype.nodeLoaded = function(data) {
-        console.log('Neighbour :: Loaded',data);
+        console.log('Neighbour :: Loaded');//,data);
 
         // Save datas
         this.html = data.html;
@@ -403,8 +421,8 @@ Drupal.behaviors.init_theme = function (context) {
         this.append();
         this.events();
 
-        // WHen it’s loaded, inform the Neighborhood.
-        _Neighborhood.$.trigger( 'loaded-lpr-neighborhood-watch', this.nid );
+        // WHen it’s loaded, inform the Neighbourhood.
+        _Neighbourhood.$.trigger( 'loaded-lpr-neighbourhood-watch', this.nid );
       };
 
       Neighbour.prototype.append = function() {
@@ -422,16 +440,37 @@ Drupal.behaviors.init_theme = function (context) {
         var neighbour = this;
 
         this.$
-          .one('show-lpr-neighbour',   this.show )
-          .one('shown-lpr-neighbour',  this.shown )
-          .one('hide-lpr-neighbour',   this.hide )
-          .one('hidden-lpr-neighbour', this.hidden )
-          .one('play-lpr-neighbourVimeo', this.vimeoPlay );
+          .one('show-lpr-neighbour',      this.show )
+          .one('shown-lpr-neighbour',     this.shown )
+          .one('hide-lpr-neighbour',      this.hide )
+          .one('hidden-lpr-neighbour',    this.hidden )
+          .one('play-lpr-neighbourVimeo', this.vimeoStart );
 
         if( $(this.id + ' iframe').length > 0 ) {
-          $(this.id + ' iframe').load(function() {
-            $f(this).addEvent('ready', function(id){ neighbour.vimeoInit(id); });
-          });
+
+          $(this.id + ' iframe')
+            .one('load', function(event){
+
+              // console.log( 'NEIGHBOUR :: iframe =', $(this) );
+              // console.log( 'NEIGHBOUR :: neighbour.id', neighbour.id );
+
+              var iframe = $(this)[0];
+              var player = $f(iframe);
+              neighbour.vimeo.$player = player;
+
+              // When the player is ready, add listeners for pause, finish, and playProgress
+              player.addEvent('ready', function() {
+                player.addEvent('play',         function(id) { neighbour.vimeoPlay(id)   });
+                player.addEvent('pause',        function(id) { neighbour.vimeoPause(id)  });
+                player.addEvent('finish',       function(id) { neighbour.vimeoFinish(id) });
+                player.addEvent('playProgress', function(data, id) { neighbour.vimeoPlayProgress(data, id) });
+
+                neighbour.$.trigger('show-lpr-neighbour');
+                neighbour.$.trigger('play-lpr-neighbourVimeo');
+              });
+
+            });
+
         } else {
           setTimeout(function(){
             neighbour.$.trigger('show-lpr-neighbour');
@@ -441,7 +480,7 @@ Drupal.behaviors.init_theme = function (context) {
       }
 
       Neighbour.prototype.show = function(event) {
-        console.log('Neighbour :: show');
+        console.log('Neighbour :: show',this.id);
         var neighbour = this;
         $(this.id)
           .addClass('show-lpr')
@@ -451,7 +490,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.shown = function(event) {
-        console.log('Neighbour :: shown');
+        console.log('Neighbour :: shown',this.id);
         var neighbour = this;
 
         $(this.id)
@@ -466,7 +505,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.hide = function(event) {
-        console.log('Neighbour :: hide');
+        console.log('Neighbour :: hide',this.id);
         var neighbour = this;
         $(this.id)
           .addClass('hide-lpr')
@@ -474,61 +513,50 @@ Drupal.behaviors.init_theme = function (context) {
             neighbour.$.trigger('hidden-lpr-neighbour');
           });
 
-        // When it’s hidding, inform the Neighborhood.
-        _Neighborhood.$.trigger( 'hide-lpr-neighborhood-watch', this.nid );
+        // When it’s hidding, inform the Neighbourhood.
+        _Neighbourhood.$.trigger( 'hide-lpr-neighbourhood-watch', this.nid );
       };
 
       Neighbour.prototype.hidden = function(event) {
-        console.log('Neighbour :: hidden');
-        $(this.id).addClass('hidden-lpr');
+        console.log('Neighbour :: hidden',this.id);
+        $(this.id)
+          .addClass('hidden-lpr')
+          .remove();
+        this.$.off();
       };
 
 
 
-
-      Neighbour.prototype.vimeoInit = function(id) {
-        console.log('Neighbour :: vimeo init',id);
-
-        this.vimeo.iframe  = $('#'+id)[0];
-        this.vimeo.$player = $f(this.vimeo.iframe);
-        this.vimeo.status  = $('.status');
-
-        this.vimeoEvents();
-
-      };
-
-      Neighbour.prototype.vimeoEvents = function() {
-
-        var neighbour = this;
-
-        this.vimeo.status.text('ready');
-
-        this.vimeo.$player
-          .addEvent('pause',        function(id)     { neighbour.vimeoPause(id) })
-          .addEvent('finish',       function(id)     { neighbour.vimeoFinish(id) })
-          .addEvent('playProgress', function(data,id){ neighbour.vimeoPlayProgress(data,id) });
-
-        this.$.trigger('show-lpr-neighbour');
-        this.$.trigger('play-lpr-neighbourVimeo');
-      };
-
-      Neighbour.prototype.vimeoPlay = function(id) {
-        console.log('Neighbour :: vimeo Play');
+      Neighbour.prototype.vimeoStart = function() {
+        console.log('NEIGHBOUR :: Start vimeo playing',this.id);
         this.vimeo.$player.api("play");
       };
 
+      Neighbour.prototype.vimeoPlay = function(id) {
+        console.log("NEIGHBOUR :: VIMEO ---> [Play]",id);
+        // check if a neighbour replay after stoping,
+        //cancel the countdown to clinical death.
+        clearTimeout(this.vimeo.clinicalDeath);
+      }
+
       Neighbour.prototype.vimeoPause = function(id) {
-        console.log('Neighbour :: vimeo Pause');
-        this.vimeo.status.text('paused');
-      };
+        console.log("NEIGHBOUR :: VIMEO ---> [Pause]",id);
+        // check if a neighbour stop playing for too long,
+        // which is probably not good. In this case, we hide it.
+        var neighbour = this;
+        this.vimeo.clinicalDeath = setTimeout(function(){
+          console.log("NEIGHBOUR :: VIMEO ---> [clinical death]",id);
+          neighbour.$.trigger('hide-lpr-neighbour');
+        },5000);
+      }
 
       Neighbour.prototype.vimeoFinish = function(id) {
-        console.log('Neighbour :: vimeo Finish');
-        this.vimeo.status.text('finished');
-      };
+        console.log("NEIGHBOUR :: VIMEO ---> [Finish]",id);
+      }
 
-      Neighbour.prototype.vimeoPlayProgress = function(data,id) {
-        this.vimeo.status.text(data.seconds + 's played');
+      Neighbour.prototype.vimeoPlayProgress = function(data, id) {
+        // console.log("NEIGHBOUR :: VIMEO ---> " + data.seconds + 's played');
+        // console.log("NEIGHBOUR :: VIMEO in vimeoPlayProgress; this = ", this);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-neighbour');
       }
