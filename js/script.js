@@ -301,12 +301,13 @@ Drupal.behaviors.init_theme = function (context) {
   -----------------------------------------------------------------------------*/
   function Neighbourhood(nids,container) {
 
-    this.$ =          $(this);
-    this.nids =       nids;
-    this.container =  container;
-    this.called =     0;
-    this.neighbours = [];
-    this.timer =      null;
+    this.$ =                $(this);
+    this.nids =             nids;
+    this.container =        container;
+    this.called =           0;
+    this.currentNeighbour = null;
+    this.neighbours =       [];
+    this.timer =            null;
 
     /* PROTOTYPES */
     if(typeof Neighbourhood.prototype.initialized == "undefined"){
@@ -342,8 +343,8 @@ Drupal.behaviors.init_theme = function (context) {
 
         if( this.called < 4 ) {
           var nid = this.nids.shift();
-          var neighbour = new Neighbour(nid,this.container);
-          this.neighbours.push(neighbour);
+          this.currentNeighbour = new Neighbour(nid,this.container);
+          this.neighbours.push(this.currentNeighbour);
           this.called ++;
         }
 
@@ -369,14 +370,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbourhood.prototype.neighbourHide = function(event,nid) {
-        console.log('Neighbourhood :: neighbour Hide');
+        console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour);
+        var neighbourhood = this;
         this.called --;
-        // queue the neighbours, when one finish, invoc a new one
-        this.$.trigger('show-lpr-neighbourhood');
         // clearTimeout(this.timer);
         // this.timer = setTimeout(function(){
+        //   // queue the neighbours, when one finish, invoc a new one
         //   neighbourhood.$.trigger('show-lpr-neighbourhood');
-        // }, 20000);
+        // }, this.currentNeighbour.delay*1000 );
       };
 
     }// - end prototypes
@@ -395,6 +396,7 @@ Drupal.behaviors.init_theme = function (context) {
     this.container = container;
     this.html =      'empty';
     this.duration =  null;
+    this.delay =     null;
     this.vimeo = {
       iframe: null,
       $player: null,
@@ -412,12 +414,13 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.nodeLoaded = function(data) {
-        console.log('Neighbour :: Loaded');//,data);
+        console.log('Neighbour :: Loaded',data);
 
         // Save datas
-        this.html = data.html;
-        this.duration = data.duration;
+        this.html =      data.html;
+        this.duration =  data.duration;
         this.mediatype = data.mediatype;
+        this.delay =     data.delay;
 
         // Init actions.
         this.append();
