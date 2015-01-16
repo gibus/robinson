@@ -237,6 +237,8 @@ Drupal.behaviors.init_theme = function (context) {
           .one('bsTransitionEnd', function(event) {
             theme.$.trigger('shown-lpr-theme');
           });
+
+        forceElementInViewport(this.id);
       };
 
       Theme.prototype.shown = function(event) {
@@ -506,6 +508,9 @@ Drupal.behaviors.init_theme = function (context) {
           .one('bsTransitionEnd', function(event) {
             neighbour.$.trigger('shown-lpr-neighbour');
           });
+
+        forceElementInViewport(this.id);
+
       };
 
       Neighbour.prototype.shown = function(event) {
@@ -527,7 +532,9 @@ Drupal.behaviors.init_theme = function (context) {
         console.log('Neighbour :: hide',this.id);
         var neighbour = this;
 
-        neighbour.vimeo.$player.removeEvent('pause');
+        if( neighbour.vimeo.$player ) {
+          neighbour.vimeo.$player.removeEvent('pause');
+        }
 
         $(this.id)
           .addClass('hide-lpr')
@@ -611,5 +618,24 @@ Drupal.behaviors.init_theme = function (context) {
       }
     }
   });
+
+  function forceElementInViewport(id) {
+    var $el = $('.node',$(id));
+    var rect = $el[0].getBoundingClientRect();
+    if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
+      console.log("[forceElementInViewport]", $el.attr('class'));
+      if( $el.hasClass('col-offset-top-1') ) {
+        var n = 1;
+        var nn = 0;
+      } else {
+        var cl = $el.attr('class');
+        var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
+        var nn = Math.floor(Math.random() * n);
+      }
+      $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
+      if( nn > 0 )
+        forceElementInViewport(id);
+    }
+  }
 
 })(jQuery);
