@@ -68,7 +68,9 @@ Drupal.behaviors.init_theme = function (context) {
   }
 
   function setupEvent() {
-    $(window).on('theme-lpr-nid-recovered',   themeNidRecovered);
+
+    $(window).on('theme-lpr-nid-recovered', themeNidRecovered);
+
   }
 
   function getContent() {
@@ -76,7 +78,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function success(data) {
-    console.log("this is a theme:", data);
+    console.log("This is a theme:", data);
     _loaded.push(data.nid);
     _mode = data.mode;
     $(window).trigger('theme-lpr-nid-recovered', data.nid );
@@ -115,6 +117,8 @@ Drupal.behaviors.init_theme = function (context) {
   /* =THEME
   -----------------------------------------------------------------------------*/
   function Theme(nid) {
+
+    console.log(" - - - - - - - - - New Theme - - - - - - - - - ");
 
     this.$ =         $(this);
     this.nid =       nid;//300;//212;
@@ -247,6 +251,9 @@ Drupal.behaviors.init_theme = function (context) {
       Theme.prototype.hide = function(event) {
         console.log('Theme :: hide');
         var theme = this;
+
+        theme.vimeo.$player.removeEvent('pause');
+
         $(this.id)
           .addClass('hide-lpr')
           .one('bsTransitionEnd', function(event) {
@@ -279,6 +286,8 @@ Drupal.behaviors.init_theme = function (context) {
 
       Theme.prototype.vimeoPause = function(id) {
         console.log("Theme :: vimeo ---> [Pause]",id);
+        // force video playing.
+        this.vimeo.$player.api("play");
       }
 
       Theme.prototype.vimeoFinish = function(id) {
@@ -318,7 +327,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbourhood.prototype.nodeLoaded = function(data) {
-        console.log('Neighbourhood :: Loaded');//,data);
+        console.log('Neighbourhood :: Loaded',data);
         this.nids = data.nids;
 
         // Init actions.
@@ -328,10 +337,10 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbourhood.prototype.events = function() {
 
         this.$
-          .on('show-lpr-neighbourhood',          this.invocNeighbour )
-          .one('loaded-lpr-neighbourhood-watch', this.neighbourLoaded )
-          .one('hide-lpr-neighbourhood-watch',   this.neighbourHide )
-          .one('hide-lpr-neighbourhood',         this.hide );
+          .on('show-lpr-neighbourhood',         this.invocNeighbour )
+          .on('loaded-lpr-neighbourhood-watch', this.neighbourLoaded )
+          .on('hide-lpr-neighbourhood-watch',   this.neighbourHide )
+          .one('hide-lpr-neighbourhood', this.hide );
       };
 
       Neighbourhood.prototype.invocNeighbour = function() {
@@ -370,14 +379,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbourhood.prototype.neighbourHide = function(event,nid) {
-        console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour);
+        console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour.nid);
         var neighbourhood = this;
         this.called --;
-        // clearTimeout(this.timer);
-        // this.timer = setTimeout(function(){
-        //   // queue the neighbours, when one finish, invoc a new one
-        //   neighbourhood.$.trigger('show-lpr-neighbourhood');
-        // }, this.currentNeighbour.delay*1000 );
+        clearTimeout(this.timer);
+        this.timer = setTimeout(function(){
+          // queue the neighbours, when one finish, invoc a new one
+          neighbourhood.$.trigger('show-lpr-neighbourhood');
+        }, this.currentNeighbour.delay*1000 );
       };
 
     }// - end prototypes
@@ -517,6 +526,9 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbour.prototype.hide = function(event) {
         console.log('Neighbour :: hide',this.id);
         var neighbour = this;
+
+        neighbour.vimeo.$player.removeEvent('pause');
+
         $(this.id)
           .addClass('hide-lpr')
           .one('bsTransitionEnd', function(event) {
@@ -551,6 +563,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Neighbour.prototype.vimeoPause = function(id) {
         console.log("Neighbour :: vimeo ---> [Pause]",id);
+
         // check if a neighbour stop playing for too long,
         // which is probably not good. In this case, we hide it.
         var neighbour = this;
