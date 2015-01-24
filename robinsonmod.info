@@ -12,6 +12,6 @@ dependencies[] = field
 dependencies[] = session_cache
 
 package = gui
-version = "7.x-0.dev"
+version = "7.x-1"
 core = "7.x"
 
