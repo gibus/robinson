@@ -188,7 +188,8 @@ function robinsonmod_tv_show_program($entities){
 
   // Get id of field_prog_plage
   $opt = array();
-  $opt['field_id'] = field_info_field('field_prog_plage')['id'];
+  $fi = field_info_field('field_prog_plage');
+  $opt['field_id'] = $fi['id'];
 
   // Attach a field of selected id only to get value for it
   field_attach_load('node', $entities['node'], FIELD_LOAD_CURRENT, $opt);
@@ -205,7 +206,8 @@ function robinsonmod_tv_show_program($entities){
 
         // Get id of field_prog_element
         $opt = array();
-        $opt['field_id'] = field_info_field('field_prog_element')['id'];
+        $fi = field_info_field('field_prog_element');
+        $opt['field_id'] = $fi['id'];
 
         // Attach a field of selected id only to get value for it
         field_attach_load('node', $entities['node'], FIELD_LOAD_CURRENT, $opt);
