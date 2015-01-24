@@ -159,7 +159,11 @@ function robinsonmod_tv_show_giveMeATheme(){
     ->fieldCondition('field_prog_plage', 'value2', $starttime, '>')
     ->execute();
 
-  $ret = isset($entities['node']) ? robinsonmod_tv_show_program($entities) : robinsonmod_tv_show_random($opt);
+  if( isset($entities['node']) )
+    $ret = robinsonmod_tv_show_program($entities);
+
+  if( !$ret )
+    $ret = robinsonmod_tv_show_random($opt);
 
   // return $ret;
   return drupal_json_output($ret);
@@ -168,15 +172,69 @@ function robinsonmod_tv_show_giveMeATheme(){
 
 function robinsonmod_tv_show_program($entities){
 
+  dsm($entities['node'],'$entities[\'node\']');
+
   // -- create an array contains datas.
   $data = array();
   $data['mode'] = 'program';
 
+  // -- 1. if no date repeat : (superfast)
   // -- get node nid.
-  $entity = $entities['node'][0];
-  $data["nid"] = $entity->nid;
+  // $entity = reset($entities['node']); // return the first element in array.
+  // $data["nid"] = $entity->nid;
 
-  return $data;
+  // -- 2. if date repeat possible : (superdirty)
+  // -- Load “field_prog_plage” values
+
+  // Get id of field_prog_plage
+  $opt = array();
+  $opt['field_id'] = field_info_field('field_prog_plage')['id'];
+
+  // Attach a field of selected id only to get value for it
+  field_attach_load('node', $entities['node'], FIELD_LOAD_CURRENT, $opt);
+
+  // Check every “field_prog_plage” values.
+  foreach ($entities['node'] as $nid => $node) {
+
+    $field_prog_plage = field_get_items('node', $node, 'field_prog_plage');
+
+    foreach ($field_prog_plage as $key => $field) {
+      if ( $field['value'] < time() && time() < $field['value2'] ) {
+
+        $data["nid"] = $nid;
+
+        // Get id of field_prog_element
+        $opt = array();
+        $opt['field_id'] = field_info_field('field_prog_element')['id'];
+
+        // Attach a field of selected id only to get value for it
+        field_attach_load('node', $entities['node'], FIELD_LOAD_CURRENT, $opt);
+
+        // Check every “field_prog_element” values.
+        $field_prog_element = field_get_items('node', $node, 'field_prog_element');
+
+        foreach ($field_prog_element as $key => $field) {
+
+          // Get type info from related sequences.
+          $query = new EntityFieldQuery() ;
+          $relEntities = $query
+            ->entityCondition('entity_type', 'node')
+            ->propertyCondition('status', 1)
+            ->entityCondition('bundle', array('voisin','thematique'))
+            ->entityCondition('entity_id', $field["target_id"], '=')
+            ->execute();
+
+          $relNode = reset($relEntities['node']); // return the first element in array.
+
+          $data["nids"][] = array('nid'=>$field["target_id"], 'ctype'=>$relNode->type);
+        }
+
+        return $data;
+      }
+    }
+  }
+
+  return false;
 
 }
 
@@ -314,11 +372,40 @@ function robinsonmod_tv_show_nodeLoad_voisin($node){
   $size = render($size);
   preg_match_all('/\d+/', $size, $sizes);
   if( isset($sizes[0]) ):
+
     $min = min($sizes[0]);
     $max = max($sizes[0]);
-    $size = rand($min,$max);
+
+    if ($min == $max) :
+      $size = $max;
+    elseif ($min == 1 && $max == 2) :
+      $size = getRandomWeightedElement(array("1"=>75,"2"=>25));
+    elseif ($min == 1 && $max == 3) :
+      $size = getRandomWeightedElement(array("1"=>55,"2"=>40,"3"=>5));
+    elseif ($min == 2 && $max == 3) :
+      $size = getRandomWeightedElement(array("2"=>90,"3"=>10));
+    endif;
+
+    $size = (int)$size;
+
   else:
     $size = 1;
+  endif;
+
+  $spaceleft = 3-$size;
+  $offset = $size < 3 ? mt_rand(1,$spaceleft) : 0;
+
+  // Get delay after voisin
+  $field_delay = field_get_items('taxonomy_term', $comportement, 'field_pause_apres_le_voisin');
+  $delay = field_view_value('taxonomy_term', $comportement, 'field_pause_apres_le_voisin', $field_delay[0]);
+    /* TODO > get min max delay, random on it, and pass the result to js. */
+  preg_match_all('/\d+/', $delay, $delays);
+  if( isset($delays[0]) ):
+    $min = min($delays[0]);
+    $max = max($delays[0]);
+    $delay = $min==$max? $min : mt_rand($min,$max);
+  else:
+    $delay = 0;
   endif;
 
   // Get media type
@@ -333,7 +420,7 @@ function robinsonmod_tv_show_nodeLoad_voisin($node){
     if( isset($durations[0]) ):
       $min = min($durations[0]);
       $max = max($durations[0]);
-      $duration = rand($min,$max);
+      $duration = mt_rand($min,$max);
     else:
       $duration = 10;
     endif;
@@ -341,9 +428,10 @@ function robinsonmod_tv_show_nodeLoad_voisin($node){
     $duration = null;
   endif;
 
-  $ret['duration'] = $duration;
+  $ret['duration'] =  $duration;
   $ret['mediatype'] = $type;
-  $ret['html'] = theme('robinsonmod_tv_voisin', array('node' => $node, 'size' => $size));
+  $ret['delay'] =     $delay;
+  $ret['html'] =      theme('robinsonmod_tv_voisin', array('node' => $node, 'size' => $size, 'offset' => $offset));
   return $ret;
 }
 
@@ -358,7 +446,7 @@ function robinsonmod_rendez_vous_getcontent($arg=FALSE,$arg2=FALSE){
 function robinsonmod_rendez_vous_getAll(){
   $query = new ProgramEntityFieldQuery();
 
-  $starttime = time();
+  $starttime = strtotime("today"); //time();
   $endtime   = strtotime( "+1 month", $starttime );
   // $starttime = '1401621300';
   // $endtime   = strtotime( "+15 day", $starttime );
@@ -434,4 +522,35 @@ function robinsonmod_ressources_getAll(){
 function robinsonmod_ressources_getNode($nid){
   $node = node_load($nid);
   return theme('robinsonmod_ressources_node', array('node' => $node));
+}
+
+/**
+ * getRandomWeightedElement()
+ * Utility function for getting random values with weighting.
+ * Pass in an associative array, such as array('A'=>5, 'B'=>45, 'C'=>50)
+ * An array like this means that "A" has a 5% chance of being selected, "B" 45%, and "C" 50%.
+ * The return value is the array key, A, B, or C in this case.  Note that the values assigned
+ * do not have to be percentages.  The values are simply relative to each other.  If one value
+ * weight was 2, and the other weight of 1, the value with the weight of 2 has about a 66%
+ * chance of being selected.  Also note that weights should be integers.
+ *
+ * @param array $weightedValues
+ */
+function getRandomWeightedElement(array $weightedValues) {
+  $rand = mt_rand(1, (int) array_sum($weightedValues));
+
+  foreach ($weightedValues as $key => $value) {
+    $rand -= $value;
+    if ($rand <= 0) {
+      return $key;
+    }
+  }
+}
+
+
+function td($timestamp) {
+  $date = new DateTime();
+  $date->setTimestamp($timestamp);
+  $ret = $date->format('U = Y-m-d H:i:s');
+  return $ret;
 }

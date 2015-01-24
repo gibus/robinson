@@ -1,7 +1,8 @@
 <?php if ($node): ?>
+<?php $offsetTop = mt_rand(0,9); ?>
 <div class="row">
 
-  <article class="node node-<?= $node->nid ?> node-<?= $node->type ?> col-xs-12 col-md-4">
+  <article class="node node-<?= $node->nid ?> node-<?= $node->type ?> col-xs-12 col-md-4 col-offset-top-<?= $offsetTop ?>">
     <figure>
       <div class="embed-responsive embed-responsive-4by3">
         <? $field_video = field_get_items('node', $node, 'field_video'); ?>
