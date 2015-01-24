@@ -86,13 +86,13 @@
 
   <div id="dev2">
     <div class="container">
-      <? $hidden = ['hidden-xs ','hidden-sm ','hidden-md ','hidden-lg '] ?>
-      <? $n      = 3 ?>
+      <?php $hidden = array('hidden-xs ','hidden-sm ','hidden-md ','hidden-lg ') ?>
+      <?php $n      = 3 ?>
 
-      <? foreach (range('A', 'C') as $i) : ?>
+      <?php foreach (range('A', 'C') as $i) : ?>
       <div class="row">
 
-        <? for ($j=0; $j < $n; $j++) : ?>
+        <?php for ($j=0; $j < $n; $j++) : ?>
         <?
           $class = "";
           if($j > 0) $class .= $hidden[0];
@@ -102,17 +102,17 @@
         <div class="col-xs-12 col-sm-4 <?= $class ?>">
           <div class="ratio">
             <div class="in">
-              <? for ($k=0; $k < 4; $k++) : ?>
-              <? $ligne = $i ."-". ($j+1) ."-". ($k+1) ?>
+              <?php for ($k=0; $k < 4; $k++) : ?>
+              <?php $ligne = $i ."-". ($j+1) ."-". ($k+1) ?>
               <div class="ligne ligne-<?= $ligne ?>"><?= $ligne ?></div>
-              <? endfor ?>
+              <?php endfor ?>
             </div>
           </div>
         </div>
-        <? endfor ?>
+        <?php endfor ?>
 
       </div>
-      <? endforeach ?>
+      <?php endforeach ?>
     </div>
   </div>
 
