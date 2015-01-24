@@ -257,7 +257,8 @@ body.front main#main {
   z-index: -1;
 
   @media (min-width: @screen-md-min) {
-    .container-theme {
+    .container-theme,
+    .container-prog {
 
       position: absolute;
       top: 0; right: 0; left: 0;
@@ -268,6 +269,9 @@ body.front main#main {
       }
 
     }
+
+    .container-theme { z-index: -2; }
+    .container-prog  { z-index: -1; }
   }
 
   // THEMES
@@ -346,7 +350,7 @@ body.front main#main {
       }
       aside figure img {
         opacity: 0;
-        .transition(opacity 5s 5s linear);
+        .transition(opacity 5s 20s linear);
       }
     }
 

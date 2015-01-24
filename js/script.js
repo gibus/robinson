@@ -37,8 +37,7 @@ Drupal.behaviors.init_theme = function (context) {
   var _ajax_base_path;
   var _loaded = [];
   var _mode = "";
-  var _Theme;
-  var _Neighbourhood;
+  var _Content; // could be a theme or a program.
 
 
   /**
@@ -70,25 +69,64 @@ Drupal.behaviors.init_theme = function (context) {
   function setupEvent() {
 
     $(window).on('theme-lpr-nid-recovered', themeNidRecovered);
+    $(window).on('program-lpr-nid-recovered', programNidsRecovered);
 
   }
 
   function getContent() {
+
     $.getJSON(_ajax_base_path+'ajax/tv-show/give-me-a-theme', {loaded: _loaded}, success);
+
   };
 
   function success(data) {
     console.log("This is a theme:", data);
-    _loaded.push(data.nid);
-    _mode = data.mode;
-    $(window).trigger('theme-lpr-nid-recovered', data.nid );
+    if( data.nid ) {
+      _loaded.push(data.nid);
+      _mode = data.mode;
+
+      $('body')
+        .removeClass("random-mode program-mode")
+        .addClass(_mode+'-mode');
+
+      if( _mode == "random" )
+        $(window).trigger('theme-lpr-nid-recovered', data.nid );
+      else
+        $(window).trigger('program-lpr-nid-recovered', data );
+
+    } else {
+      console.log("Hoops. No Nid came in.");
+    }
+  }
+
+  function forceElementInViewport(id) {
+    var $el = $('.node',$(id));
+    var rect = $el[0].getBoundingClientRect();
+    if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
+      console.log("[forceElementInViewport]", $el.attr('class'));
+      if( $el.hasClass('col-offset-top-1') ) {
+        var n = 1;
+        var nn = 0;
+      } else {
+        var cl = $el.attr('class');
+        var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
+        var nn = Math.floor(Math.random() * n);
+      }
+      $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
+      if( nn > 0 )
+        forceElementInViewport(id);
+    }
   }
 
   /* =load */
   function themeNidRecovered(event,nid) {
-    $('body').removeClass("random-mode program-mode").addClass(_mode+'-mode');
-    _Theme = new Theme(nid);
-    _Theme.$.one('hide-lpr-theme', getContent);
+    _Content = new Theme(nid);
+    _Content.$.one('hide-lpr-theme', getContent);
+  }
+
+  function programNidsRecovered(event,data) {
+    _Content = new Program(data.nid,data.nids);
+    _Content.$.one('hide-lpr-program', getContent);
   }
 
   /* =BORD TIME */
@@ -98,7 +136,7 @@ Drupal.behaviors.init_theme = function (context) {
     moveBordTime();
     setInterval(function(){
       moveBordTime();
-    }, 6000); // 6000ms = 1 min.
+    }, 60000); // 60000ms = 1 min.
   };
 
   function moveBordTime() {
@@ -110,9 +148,117 @@ Drupal.behaviors.init_theme = function (context) {
     _$bordTime.css('top', top + '%');
   };
 
-  /* =READY
+
+
+  /* =PROGRAM
   -----------------------------------------------------------------------------*/
-  $(document).ready(init);
+  function Program(nid,nids) {
+
+    console.log(" - - - - - - - - - New Program - - - - - - - - - ");
+
+    this.$ =               $(this);
+    this.nid =             nid;
+    this.nids =            nids;
+    this.id =              "#program-"+this.nid;
+    this.container =       "#container-prog-"+this.nid;
+    this.currentSequence = null;
+    this.sequences =       [];
+    this.timer =           null;
+
+    /* PROTOTYPES */
+    if(typeof Program.prototype.initialized == "undefined"){
+
+      Program.prototype.init = function() {
+
+        this.append();
+        this.events();
+        this.invocSequence();
+
+      };
+
+      Program.prototype.append = function() {
+        console.log("Program :: node append");
+        // Append theme to DOM.
+        _$main.append(
+          $('<div>')
+            .attr('id', this.container.replace('#',''))
+            .addClass('container-prog')
+            .append(
+              $(this.html)
+                .attr('id', this.id.replace('#',''))
+                .addClass('program')
+            )
+        );
+      }
+
+      Program.prototype.events = function() {
+
+        this.$
+          .on('show-lpr-sequence',  this.invocSequence )
+          .one('hide-lpr-sequence', this.hide );
+
+      };
+
+      Program.prototype.invocSequence = function() {
+
+        console.log('Program :: invoc Sequence');
+        // console.log('this.nids',this.nids);
+
+        var program = this;
+
+        var sequence = this.nids.shift();
+
+        if( sequence ) {
+
+          var nid =  sequence.nid;
+          var type = sequence.ctype;
+
+          if ( type == 'voisin' ) {
+
+            // * neighbour
+            this.currentSequence = new Neighbour(nid,this.container);
+            this.sequences.push(this.currentSequence);
+            this.currentSequence.$.on('hide-lpr-neighbourhood-watch',   function(event) { program.sequenceHide(event); });
+
+          } else if ( type == 'thematique' ) {
+
+            // * theme
+            this.currentSequence = new Theme(nid);
+            this.sequences.push(this.currentSequence);
+            this.currentSequence.$.one('hide-lpr-theme', function(event) { program.sequenceHide(event); });
+
+          };
+
+        } else {
+          this.$.trigger('hide-lpr-program');
+        }
+
+
+      };
+
+      Program.prototype.hide = function() {
+        console.log('Program :: hide');
+        this.$.off();
+      };
+
+      Program.prototype.sequenceHide = function(event) {
+        console.log('Program :: sequence Hide');
+        var program = this;
+        clearTimeout(this.timer);
+        var delay = this.currentSequence.delay || 1;
+        this.timer = setTimeout(function(){
+          // queue the sequences, when one finish, invoc a new one
+          program.$.trigger('show-lpr-sequence');
+        }, delay*1000 );
+      };
+
+    }// - end prototypes
+
+    this.init();
+
+  }// - end Program
+
+
 
   /* =THEME
   -----------------------------------------------------------------------------*/
@@ -129,11 +275,13 @@ Drupal.behaviors.init_theme = function (context) {
       iframe : null,
       $player : null,
       status : null,
+      clinicalDeath : null,
     };
     this.voisins = {
       nids : [],
       loaded : [],
     };
+    this.neighbourhood = null;
 
     /* PROTOTYPES */
     if(typeof Theme.prototype.initialized == "undefined"){
@@ -157,7 +305,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.neighbours = function() {
-        _Neighbourhood = new Neighbourhood(this.voisins.nids,this.container);
+        this.neighbourhood = new Neighbourhood(this.voisins.nids,this.container);
       }
 
       Theme.prototype.append = function() {
@@ -247,7 +395,7 @@ Drupal.behaviors.init_theme = function (context) {
           .addClass('shown-lpr');
 
         // Theme is displayed, active Neighbourhood.
-        _Neighbourhood.$.trigger('show-lpr-neighbourhood');
+        this.neighbourhood.$.trigger('show-lpr-neighbourhood');
       };
 
       Theme.prototype.hide = function(event) {
@@ -263,7 +411,7 @@ Drupal.behaviors.init_theme = function (context) {
           });
 
         // Theme is hide, desactive Neighbourhood.
-        _Neighbourhood.$.trigger('hide-lpr-neighbourhood');
+        this.neighbourhood.$.trigger('hide-lpr-neighbourhood');
       };
 
       Theme.prototype.hidden = function(event) {
@@ -284,16 +432,25 @@ Drupal.behaviors.init_theme = function (context) {
 
       Theme.prototype.vimeoPlay = function(id) {
         console.log("Theme :: vimeo ---> [Play]",id);
+        // check if a neighbour replay after stoping,
+        // cancel the countdown to clinical death.
+        clearTimeout(this.vimeo.clinicalDeath);
       }
 
       Theme.prototype.vimeoPause = function(id) {
         console.log("Theme :: vimeo ---> [Pause]",id);
         // force video playing.
         this.vimeo.$player.api("play");
+        var theme = this;
+        this.vimeo.clinicalDeath = setTimeout(function(){
+          console.log("Theme :: vimeo ---> [clinical death]",id);
+          theme.$.trigger('hide-lpr-theme');
+        }, 30000); // 30s
       }
 
       Theme.prototype.vimeoFinish = function(id) {
         console.log("Theme :: vimeo ---> [Finish]");
+        clearTimeout(this.vimeo.clinicalDeath);
       }
 
       Theme.prototype.vimeoPlayProgress = function(data, id) {
@@ -307,6 +464,8 @@ Drupal.behaviors.init_theme = function (context) {
     this.nodeLoad();
 
   }// - end Theme
+
+
 
   /* =NEIGHBORHOOD
   -----------------------------------------------------------------------------*/
@@ -339,9 +498,7 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbourhood.prototype.events = function() {
 
         this.$
-          .on('show-lpr-neighbourhood',         this.invocNeighbour )
-          .on('loaded-lpr-neighbourhood-watch', this.neighbourLoaded )
-          .on('hide-lpr-neighbourhood-watch',   this.neighbourHide )
+          .on('show-lpr-neighbourhood', this.invocNeighbour )
           .one('hide-lpr-neighbourhood', this.hide );
       };
 
@@ -357,6 +514,10 @@ Drupal.behaviors.init_theme = function (context) {
           this.currentNeighbour = new Neighbour(nid,this.container);
           this.neighbours.push(this.currentNeighbour);
           this.called ++;
+
+          // attach events on the neighbour.
+          this.currentNeighbour.$.on('loaded-lpr-neighbourhood-watch', function(event) { neighbourhood.neighbourLoaded(event); });
+          this.currentNeighbour.$.on('hide-lpr-neighbourhood-watch',   function(event) { neighbourhood.neighbourHide(event); });
         }
 
       };
@@ -376,11 +537,11 @@ Drupal.behaviors.init_theme = function (context) {
 
       };
 
-      Neighbourhood.prototype.neighbourLoaded = function(event,nid) {
+      Neighbourhood.prototype.neighbourLoaded = function(event) {
         console.log('Neighbourhood :: neighbour Loaded');
       };
 
-      Neighbourhood.prototype.neighbourHide = function(event,nid) {
+      Neighbourhood.prototype.neighbourHide = function(event) {
         console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour.nid);
         var neighbourhood = this;
         this.called --;
@@ -438,7 +599,7 @@ Drupal.behaviors.init_theme = function (context) {
         this.events();
 
         // When it’s loaded, inform the Neighbourhood.
-        _Neighbourhood.$.trigger( 'loaded-lpr-neighbourhood-watch', this.nid );
+        this.$.trigger( 'loaded-lpr-neighbourhood-watch', this.nid );
       };
 
       Neighbour.prototype.append = function() {
@@ -543,7 +704,7 @@ Drupal.behaviors.init_theme = function (context) {
           });
 
         // When it’s hidding, inform the Neighbourhood.
-        _Neighbourhood.$.trigger( 'hide-lpr-neighbourhood-watch', this.nid );
+        this.$.trigger( 'hide-lpr-neighbourhood-watch', this.nid );
       };
 
       Neighbour.prototype.hidden = function(event) {
@@ -564,7 +725,7 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbour.prototype.vimeoPlay = function(id) {
         console.log("Neighbour :: vimeo ---> [Play]",id);
         // check if a neighbour replay after stoping,
-        //cancel the countdown to clinical death.
+        // cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
       }
 
@@ -598,7 +759,9 @@ Drupal.behaviors.init_theme = function (context) {
 
   }// - end Neighbour
 
-
+  /* =READY
+  -----------------------------------------------------------------------------*/
+  $(document).ready(init);
 
 
   /* =Dév.
@@ -618,24 +781,5 @@ Drupal.behaviors.init_theme = function (context) {
       }
     }
   });
-
-  function forceElementInViewport(id) {
-    var $el = $('.node',$(id));
-    var rect = $el[0].getBoundingClientRect();
-    if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
-      console.log("[forceElementInViewport]", $el.attr('class'));
-      if( $el.hasClass('col-offset-top-1') ) {
-        var n = 1;
-        var nn = 0;
-      } else {
-        var cl = $el.attr('class');
-        var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
-        var nn = Math.floor(Math.random() * n);
-      }
-      $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
-      if( nn > 0 )
-        forceElementInViewport(id);
-    }
-  }
 
 })(jQuery);
