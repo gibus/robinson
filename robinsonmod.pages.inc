@@ -503,7 +503,7 @@ function robinsonmod_ressources_getAll(){
   $query = new ThemaEntityFieldQuery();
 
   $entities = $query
-    ->fieldCondition('field_is_this_theme_a_sound', 'value', false, '=')
+    ->fieldCondition('field_type_of_vimeo', 'value', false, '=')
     ->fieldOrderBy('field_memo', 'value')
     ->execute();
 

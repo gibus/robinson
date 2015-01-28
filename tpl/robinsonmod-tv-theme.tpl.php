@@ -9,8 +9,8 @@
         <? $video = field_view_value('node', $node, 'field_video', $field_video[0]); ?>
         <?= render($video) ?>
       </div>
-      <?php $field_is_this_theme_a_sound = field_get_items('node', $node, 'field_is_this_theme_a_sound'); ?>
-      <?php $is_sound = field_view_value('node', $node, 'field_is_this_theme_a_sound', $field_is_this_theme_a_sound[0]); ?>
+      <?php $field_type_of_vimeo = field_get_items('node', $node, 'field_type_of_vimeo'); ?>
+      <?php $is_sound = field_view_value('node', $node, 'field_type_of_vimeo', $field_type_of_vimeo[0]); ?>
       <?php if ($is_sound['#access']!=1): ?>
       <figcaption>
         <h2 class="node-title"><?= $node->title ?></h2>
