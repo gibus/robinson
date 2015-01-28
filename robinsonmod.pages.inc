@@ -162,7 +162,7 @@ function robinsonmod_tv_show_giveMeATheme(){
   if( isset($entities['node']) )
     $ret = robinsonmod_tv_show_program($entities);
 
-  if( !$ret )
+  if( !isset($ret) )
     $ret = robinsonmod_tv_show_random($opt);
 
   // return $ret;
@@ -218,10 +218,8 @@ function robinsonmod_tv_show_program($entities){
         foreach ($field_prog_element as $key => $field) {
 
           // Get type info from related sequences.
-          $query = new EntityFieldQuery() ;
+          $query = new NodeEntityFieldQuery() ;
           $relEntities = $query
-            ->entityCondition('entity_type', 'node')
-            ->propertyCondition('status', 1)
             ->entityCondition('bundle', array('voisin','thematique'))
             ->entityCondition('entity_id', $field["target_id"], '=')
             ->execute();
@@ -502,12 +500,11 @@ function robinsonmod_ressources_getcontent($arg=FALSE){
 }
 
 function robinsonmod_ressources_getAll(){
-  $query = new EntityFieldQuery();
+  $query = new ThemaEntityFieldQuery();
 
   $entities = $query
-    ->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', array('thematique'))
-    ->propertyCondition('status', 1)
+    ->fieldCondition('field_is_this_theme_a_sound', 'value', false, '=')
+    ->fieldOrderBy('field_memo', 'value')
     ->execute();
 
   $data = array();

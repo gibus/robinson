@@ -2,8 +2,8 @@
 
 class NodeEntityFieldQuery extends EntityFieldQuery {
   public function __construct() {
-    // //parent::__construct();
-//    global $language;
+    // parent::__construct();
+    // global $language;
     $this
       ->entityCondition('entity_type', 'node')
       ->propertyCondition('status', 1);
@@ -13,7 +13,7 @@ class NodeEntityFieldQuery extends EntityFieldQuery {
 
 class ProgramEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
-    ////parent::__construct();
+    // parent::__construct();
     $this
       ->entityCondition('entity_type', 'node')
       ->propertyCondition('status', 1)
@@ -23,7 +23,7 @@ class ProgramEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
 
 class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
-    ////parent::__construct();
+    // parent::__construct();
     $this
       ->entityCondition('entity_type', 'node')
       ->propertyCondition('status', 1)
@@ -33,7 +33,7 @@ class ThemaEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
 
 class VoisinEntityFieldQuery extends EntityFieldQuery{ //NodeEntityFieldQuery {
   public function __construct() {
-    ////parent::__construct();
+    // parent::__construct();
     $this
       ->entityCondition('entity_type', 'node')
       ->propertyCondition('status', 1)
