@@ -162,7 +162,7 @@ function robinsonmod_tv_show_giveMeATheme(){
   if( isset($entities['node']) )
     $ret = robinsonmod_tv_show_program($entities);
 
-  if( !isset($ret) || $ret==false )
+  if( $ret==false || !isset($ret) )
     $ret = robinsonmod_tv_show_random($opt);
 
   // return $ret;
