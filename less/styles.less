@@ -314,14 +314,23 @@ body.front main#main {
       opacity: 0;
       background-color: @brand-success;
       color: @brand-success;
+      body.program-mode & {
+        background-color: @brand-danger;
+        color: @brand-danger;
+      }
     }
     article figure iframe {
       opacity: 0;
     }
     aside figure {
       background-color: @brand-success;
+      body.program-mode & {
+        background-color: @brand-danger;
+      }
     }
     aside figure img { }
+
+
 
     &.show-lpr {
       opacity: 1;
