@@ -355,8 +355,9 @@ function robinsonmod_tv_show_nodeLoad_programme($node){
 function robinsonmod_tv_show_nodeLoad_thematique($node){
   $ret['html'] = theme('robinsonmod_tv_theme', array('node' => $node));
   $voisins = field_get_items('node', $node, 'field_ref_voisin');
-  foreach ($voisins as $voisin)
-    $ret['voisins_nids'][] = $voisin['target_id'];
+  if ($voisins)
+    foreach ($voisins as $voisin)
+      $ret['voisins_nids'][] = $voisin['target_id'];
   return $ret;
 }
 
