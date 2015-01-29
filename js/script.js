@@ -99,8 +99,7 @@ Drupal.behaviors.init_theme = function (context) {
     }
   }
 
-  function forceElementInViewport(id) {
-    var $el = $('.node',$(id));
+  function forceElementInViewport($el) {
     var rect = $el[0].getBoundingClientRect();
     if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
       console.log("[forceElementInViewport]", $el.attr('class'));
@@ -114,7 +113,7 @@ Drupal.behaviors.init_theme = function (context) {
       }
       $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
       if( nn > 0 )
-        forceElementInViewport(id);
+        forceElementInViewport($el);
     }
   }
 
@@ -386,7 +385,8 @@ Drupal.behaviors.init_theme = function (context) {
             theme.$.trigger('shown-lpr-theme');
           });
 
-        forceElementInViewport(this.id);
+        forceElementInViewport( $('article.node',$(this.id)) );
+        forceElementInViewport( $('aside.node',$(this.id)) );
       };
 
       Theme.prototype.shown = function(event) {
@@ -670,7 +670,7 @@ Drupal.behaviors.init_theme = function (context) {
             neighbour.$.trigger('shown-lpr-neighbour');
           });
 
-        forceElementInViewport(this.id);
+        forceElementInViewport( $('.node',$(this.id)) );
 
       };
 

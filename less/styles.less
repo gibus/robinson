@@ -244,21 +244,11 @@ body.front {
     .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
       padding-left: 0; padding-right: 0;
     }
-    .col-offset-top--1 {
-      margin-top: -6.25%; // correspond to 1/4 height of 4/3 column. (trust me)
-    }
-    .col-offset-top-1 {
-      margin-top: 6.25%; // correspond to 1/4 height of 4/3 column. (trust me)
-    }
-    .col-offset-top-2 {
-      margin-top: 12.5%; // correspond to half height of 4/3 column. (trust me)
-    }
-    .col-offset-top-3 {
-      margin-top: 18.75%; // correspond to 3/4 height of 4/3 column. (trust me)
-    }
-    .col-offset-top-4 {
-      margin-top: 25%; // correspond to plain height of 4/3 column. (trust me)
-    }
+    .col-offset-top--1 { margin-top: -6.25%; } // correspond to 1/4 height of 4/3 column. (trust me)
+    .col-offset-top-1 { margin-top: 6.25%;  } // correspond to 1/4 height of 4/3 column. (trust me)
+    .col-offset-top-2 { margin-top: 12.5%;  } // correspond to half height of 4/3 column. (trust me)
+    .col-offset-top-3 { margin-top: 18.75%; } // correspond to 3/4 height of 4/3 column. (trust me)
+    .col-offset-top-4 { margin-top: 25%;    } // correspond to plain height of 4/3 column. (trust me)
     .col-offset-top-5 { margin-top: 31.25%; }
     .col-offset-top-6 { margin-top: 37.5%;  }
     .col-offset-top-7 { margin-top: 43.75%; }
@@ -309,82 +299,107 @@ body.front main#main {
   // animations
   .theme {
     opacity: 0;
-    article { background-color: @body-bg; }
-    article figure {
-      opacity: 0;
-      background-color: @brand-success;
-      color: @brand-success;
-      body.program-mode & {
-        background-color: @brand-danger;
-        color: @brand-danger;
+    article {
+      background-color: @body-bg;
+      figure {
+        opacity: 0;
+        background-color: @brand-success;
+        color: @brand-success;
+        body.program-mode & {
+          background-color: @brand-danger;
+          color: @brand-danger;
+        }
+        iframe {
+          opacity: 0;
+        }
       }
     }
-    article figure iframe {
-      opacity: 0;
-    }
-    aside figure {
-      background-color: @brand-success;
-      body.program-mode & {
-        background-color: @brand-danger;
+    aside {
+      figure {
+        background-color: @brand-success;
+        body.program-mode & {
+          background-color: @brand-danger;
+        }
+        img { }
       }
     }
-    aside figure img { }
 
 
 
     &.show-lpr {
       opacity: 1;
       .transition(opacity 2s linear);
-      article figure {
-        opacity: 1;
-        .transition(opacity 2s 5s linear);
+      article {
+        figure {
+          opacity: 1;
+          .transition(opacity 2s 5s linear);
+          iframe { }
+        }
       }
-      article figure iframe { }
-      aside figure { }
-      aside figure img { }
+      aside {
+        figure {
+          img { }
+        }
+      }
     }
 
     &.shown-lpr {
-      article figure {
-        background-color: transparent;
-        .transition(background-color 5s linear);
+      article {
+        figure {
+          background-color: transparent;
+          .transition(background-color 5s linear);
+          iframe {
+            opacity: 1;
+            .transition(opacity 5s linear);
+          }
+        }
       }
-      article figure iframe {
-        opacity: 1;
-        .transition(opacity 5s linear);
+      aside {
+        figure {
+          img { }
+        }
       }
-      aside figure { }
-      aside figure img { }
     }
 
     &.hide-lpr {
       opacity: 0;
       .transition(opacity 60s linear);
-      article figure {
-        background-color: @gray-light;
-        color: @gray-light;
-        .transition(~'background-color 5s linear, color 5s linear');
+      article {
+        figure {
+          background-color: @gray-light;
+          color: @gray-light;
+          .transition(~'background-color 5s linear, color 5s linear');
+          iframe {
+            opacity: 0;
+            .transition(opacity 5s linear);
+          }
+        }
       }
-      article figure iframe {
-        opacity: 0;
-        .transition(opacity 5s linear);
-      }
-      aside figure {
-        background-color: @gray-light;
-        .transition(background-color 2s 5s linear);
-      }
-      aside figure img {
-        opacity: 0;
-        .transition(opacity 5s 5s linear);
+
+      aside {
+        figure {
+          background-color: @gray-light;
+          .transition(background-color 2s 5s linear);
+          img {
+            opacity: 0;
+            .transition(opacity 5s 5s linear);
+          }
+        }
       }
     }
 
     &.hidden-lpr {
       display: none;
-      article figure        { }
-      article figure iframe { }
-      aside figure          { }
-      aside figure img      { }
+      article {
+        figure {
+          iframe { }
+        }
+      }
+      aside {
+        figure {
+          img { }
+        }
+      }
     }
 
   }
@@ -437,7 +452,7 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 10s linear);
+      .transition(opacity 5s 30s linear);
       article {
         figure, .jumbotron {
           iframe, img, p {
