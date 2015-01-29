@@ -297,6 +297,9 @@ body.front main#main {
   }
 
   // animations
+  @easeOutCirc : cubic-bezier(0.075, 0.82, 0.165, 1);
+
+
   .theme {
     opacity: 0;
     article {
@@ -452,7 +455,7 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 5s 30s linear);
+      .transition(opacity 0s 30s linear);
       article {
         figure, .jumbotron {
           iframe, img, p {
@@ -583,7 +586,7 @@ body.front main#main {
 
 #dev2 {
 
-  position: fixed; top:120px; width: 100%;
+  position: fixed; top:49px; width: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   visibility: hidden; z-index: -1;
 
