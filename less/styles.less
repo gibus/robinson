@@ -331,11 +331,11 @@ body.front main#main {
 
     &.show-lpr {
       opacity: 1;
-      .transition(opacity 2s linear);
+      .transition(opacity 2s);
       article {
         figure {
           opacity: 1;
-          .transition(opacity 2s 5s linear);
+          .transition(opacity 2s 5s);
           iframe { }
         }
       }
@@ -350,10 +350,10 @@ body.front main#main {
       article {
         figure {
           background-color: transparent;
-          .transition(background-color 5s linear);
+          .transition(background-color 5s);
           iframe {
             opacity: 1;
-            .transition(opacity 5s linear);
+            .transition(opacity 5s);
           }
         }
       }
@@ -366,15 +366,15 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 60s linear);
+      .transition(opacity 60s);
       article {
         figure {
           background-color: @gray-light;
           color: @gray-light;
-          .transition(~'background-color 5s linear, color 5s linear');
+          .transition(~'background-color 5s, color 5s');
           iframe {
             opacity: 0;
-            .transition(opacity 5s linear);
+            .transition(opacity 5s);
           }
         }
       }
@@ -382,10 +382,10 @@ body.front main#main {
       aside {
         figure {
           background-color: @gray-light;
-          .transition(background-color 2s 5s linear);
+          .transition(background-color 2s 5s);
           img {
             opacity: 0;
-            .transition(opacity 5s 5s linear);
+            .transition(opacity 5s 5s);
           }
         }
       }
@@ -434,7 +434,7 @@ body.front main#main {
 
     &.show-lpr {
       opacity: 1;
-      .transition(opacity 2s linear);
+      .transition(opacity 2s);
       article {
         figure, .jumbotron {
           iframe, img, p { }
@@ -447,7 +447,7 @@ body.front main#main {
         figure, .jumbotron {
           iframe, img, p {
             opacity: 1;
-            .transition(opacity 2s 5s linear);
+            .transition(opacity 2s 5s);
           }
         }
       }
@@ -455,12 +455,12 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 0s 30s linear);
+      .transition(opacity 0s 30s);
       article {
         figure, .jumbotron {
           iframe, img, p {
             opacity: 0;
-            .transition(opacity 5s linear);
+            .transition(opacity 5s);
           }
         }
       }
