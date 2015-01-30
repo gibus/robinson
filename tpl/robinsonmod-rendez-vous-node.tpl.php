@@ -8,7 +8,7 @@
 
   <article class="node node-<?= $node->nid ?> col-xs-12 col-sm-10 col-md-8 col-lg-6">
     <?php
-    $fieldvalues = field_get_items('node', $node, 'field_prog_plage');
+    // $fieldvalues = field_get_items('node', $node, 'field_prog_plage');
     // foreach ($fieldvalues as $fieldvalue) :
     //   $tstart = timestampDay( $fieldvalue['value'], TRUE );
     //   $format = 'H:i';
@@ -20,8 +20,6 @@
     $end = "blabla";
     $field_prog_plage  = field_view_field('node', $node, 'field_prog_plage',  array("label"=>"hidden"));
     $field_description = field_view_field('node', $node, 'field_description', array("label"=>"hidden"));
-
-    dsm($fieldvalues,'$fieldvalues');
     ?>
 
     <?php if ($date): ?>
