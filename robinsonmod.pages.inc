@@ -172,7 +172,7 @@ function robinsonmod_tv_show_giveMeATheme(){
 
 function robinsonmod_tv_show_program($entities){
 
-  dsm($entities['node'],'$entities[\'node\']');
+  // dsm($entities['node'],'$entities[\'node\']');
 
   // -- create an array contains datas.
   $data = array();
