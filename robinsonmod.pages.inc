@@ -490,7 +490,7 @@ function robinsonmod_rendez_vous_getAll(){
 
 function robinsonmod_rendez_vous_getNode($nid,$date){
   $node = node_load($nid);
-  return "pouet";//theme('robinsonmod_rendez_vous_node', array('node' => $node, 'date' => $date));
+  return theme('robinsonmod_rendez_vous_node', array('node' => $node, 'date' => $date));
 }
 
 /* RESSOURCES */
