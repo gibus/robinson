@@ -335,7 +335,7 @@ body.front main#main {
       article {
         figure {
           opacity: 1;
-          .transition(opacity 2s 5s);
+          .transition(opacity 5s 2s);
           iframe { }
         }
       }
@@ -366,7 +366,7 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 60s);
+      .transition(opacity 60s @easeOutCirc);
       article {
         figure {
           background-color: @gray-light;
@@ -382,10 +382,10 @@ body.front main#main {
       aside {
         figure {
           background-color: @gray-light;
-          .transition(background-color 2s 5s);
+          .transition(background-color 5s 2s);
           img {
             opacity: 0;
-            .transition(opacity 5s 5s);
+            .transition(opacity 5s 5s @easeOutCirc);
           }
         }
       }
@@ -447,7 +447,7 @@ body.front main#main {
         figure, .jumbotron {
           iframe, img, p {
             opacity: 1;
-            .transition(opacity 2s 5s);
+            .transition(opacity 5s 2s);
           }
         }
       }
@@ -455,12 +455,12 @@ body.front main#main {
 
     &.hide-lpr {
       opacity: 0;
-      .transition(opacity 0s 30s);
+      .transition(opacity 30s 0s @easeOutCirc);
       article {
         figure, .jumbotron {
           iframe, img, p {
             opacity: 0;
-            .transition(opacity 5s);
+            .transition(opacity 5s @easeOutCirc);
           }
         }
       }
