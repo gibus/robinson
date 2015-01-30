@@ -100,20 +100,22 @@ Drupal.behaviors.init_theme = function (context) {
   }
 
   function forceElementInViewport($el) {
-    var rect = $el[0].getBoundingClientRect();
-    if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
-      console.log("[forceElementInViewport]", $el.attr('class'));
-      if( $el.hasClass('col-offset-top-1') ) {
-        var n = 1;
-        var nn = 0;
-      } else {
-        var cl = $el.attr('class');
-        var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
-        var nn = Math.floor(Math.random() * n);
+    if( $el.length > 0 ) {
+      var rect = $el[0].getBoundingClientRect();
+      if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
+        console.log("[forceElementInViewport]", $el.attr('class'));
+        if( $el.hasClass('col-offset-top-1') ) {
+          var n = 1;
+          var nn = 0;
+        } else {
+          var cl = $el.attr('class');
+          var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
+          var nn = Math.floor(Math.random() * n);
+        }
+        $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
+        if( nn > 0 )
+          forceElementInViewport($el);
       }
-      $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
-      if( nn > 0 )
-        forceElementInViewport($el);
     }
   }
 
