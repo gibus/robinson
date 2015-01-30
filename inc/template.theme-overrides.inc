@@ -6,7 +6,7 @@ function robinsontheme_breadcrumb($vars) {
   // dsm($vars,'$vars in *robinsonthememeta_breadcrumb*');
 
   // Limit the breadcrumb to ressources and rendez-vous pages.
-  $display_close_btn = true;//drupal_match_path(current_path(), "rendez-vous/*\nressources/*");
+  $display_close_btn = drupal_match_path(current_path(), "rendez-vous/*\nressources/*");
 
   if ( !empty($vars['breadcrumb']) && $display_close_btn ) {
 
