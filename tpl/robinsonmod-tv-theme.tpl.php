@@ -1,5 +1,6 @@
 <?php if ($node): ?>
 <?php $offsetTop = mt_rand(0,9); ?>
+<?php $offsetTopImg = mt_rand(0,9); ?>
 <div class="row">
 
   <article class="node node-<?= $node->nid ?> node-<?= $node->type ?> col-xs-12 col-md-4 col-offset-top-<?= $offsetTop ?>">
@@ -23,7 +24,7 @@
 
   <? $field_titre_lettrage = field_get_items('node', $node, 'field_titre_lettrage'); ?>
   <? if ( $field_titre_lettrage ): ?>
-  <aside class="node node-<?= $node->nid ?> col-xs-12 col-md-8">
+  <aside class="node node-<?= $node->nid ?> col-xs-12 col-md-8 col-offset-top-<?= $offsetTopImg ?>">
     <figure class="thumbnail">
       <? $img = field_view_value('node', $node, 'field_titre_lettrage', $field_titre_lettrage[0]); ?>
       <?= render($img) ?>
