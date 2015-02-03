@@ -1,8 +1,8 @@
 ;----------// Theme informations
 
 name = "robinsontheme"
-description = "Drupal theme for leprojetrobinson.org, by Julien"
-version = "7.x-1"
+description = "Drupal theme for leprojetrobinson.org, by Julien Gargot (g-u-i.net)"
+version = "7.x-2"
 core = "7.x"
 engine = "phptemplate"
 
@@ -16,7 +16,6 @@ stylesheets[all][] = "css/styles.css"
 
 scripts[] = "libraries/bootstrap/dist/js/bootstrap.min.js"
 scripts[] = "libraries/froogaloop.js"
-;scripts[] = "libraries/froogaloop2.min.js"
 scripts[] = "libraries/soundcloud-sdk.js"
 scripts[] = "js/script.js"
 

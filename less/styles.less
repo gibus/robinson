@@ -49,14 +49,6 @@ nav {
   font-family: @headings-font-family;
 }
 
-nav#breadcrumb {
-  ol.breadcrumb {
-    > li:last-child > a {
-      color: transparent;
-    }
-  }
-}
-
 main#main {
 
   * {
@@ -79,8 +71,6 @@ main#main {
 *, *:focus { outline: none !important; }
 
 html, body, body > .container { height: 100%; position: relative; }
-
-body { overflow-y: scroll; }
 
 header#header {
 
@@ -116,13 +106,7 @@ nav#breadcrumb {
       content:"/";
     }
     > li:last-child > a {
-      // Make a cross
-      @size: 0.8*@font-size-h1; @weigth:2px;
-      display: block;
-      position: absolute; top: 0; right: 0;
-      width: @size; height: @size;
-      visibility: visible; overflow: hidden;
-      background: transparent url("../img/cross-2.gif") center no-repeat;
+      .cross();
     }
   }
 }
@@ -221,8 +205,26 @@ body.not-front main#main {
 
 body.front {
 
+  overflow: hidden;
+
   header#header {
     margin-bottom: 0;
+  }
+
+  main#main {
+
+    .alert-standard {
+
+      background-color: @body-bg;
+      border: 2px solid @text-color;
+      padding: @grid-gutter-width!important;
+      margin-bottom: 0;
+      margin-top: @grid-gutter-width;
+
+      > a { .cross(); margin:@grid-gutter-width; }
+
+    }
+
   }
 
   .row {
@@ -241,23 +243,23 @@ body.front {
     .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
       padding-left: 0; padding-right: 0;
     }
-    .col-offset-top--1 { margin-top: -6.25%; } // correspond to 1/4 height of 4/3 column. (trust me)
-    .col-offset-top-1 { margin-top: 6.25%;  } // correspond to 1/4 height of 4/3 column. (trust me)
-    .col-offset-top-2 { margin-top: 12.5%;  } // correspond to half height of 4/3 column. (trust me)
-    .col-offset-top-3 { margin-top: 18.75%; } // correspond to 3/4 height of 4/3 column. (trust me)
-    .col-offset-top-4 { margin-top: 25%;    } // correspond to plain height of 4/3 column. (trust me)
-    .col-offset-top-5 { margin-top: 31.25%; }
-    .col-offset-top-6 { margin-top: 37.5%;  }
-    .col-offset-top-7 { margin-top: 43.75%; }
-    .col-offset-top-8 { margin-top: 50%;    }
-    .col-offset-top-9 { margin-top: 56.25%; }
+    .col-offset-top-0  { margin-top: -6.25%; }
+    .col-offset-top-1  { margin-top: 0%;     }
+    .col-offset-top-2  { margin-top: 6.25%;  } // correspond to 1/4 height of 4/3 column. (trust me)
+    .col-offset-top-3  { margin-top: 12.5%;  } // correspond to half height of 4/3 column. (trust me)
+    .col-offset-top-4  { margin-top: 18.75%; } // correspond to 3/4 height of 4/3 column. (trust me)
+    .col-offset-top-5  { margin-top: 25%;    } // correspond to plain height of 4/3 column. (trust me)
+    .col-offset-top-6  { margin-top: 31.25%; }
+    .col-offset-top-7  { margin-top: 37.5%;  }
+    .col-offset-top-8  { margin-top: 43.75%; }
+    .col-offset-top-9  { margin-top: 50%;    }
+    .col-offset-top-10 { margin-top: 56.25%; }
   }
 }
 
 body.front main#main {
 
   position: relative;
-  z-index: -1;
 
   @media (min-width: @screen-md-min) {
     .container-theme,
@@ -480,65 +482,20 @@ body.front main#main {
 
 }
 
-/*
-#stream-wrapper {
-
-  position: relative;
-  // z-index: -1;
-
-  .field-item
-    img { background-color: @gray-lighter; display: block; width: 50%; height: auto; }
-
-  .thema {
-
-    .node {
-
-    }
-
-    .node-thematique {
-      img { width: 100%; height: 100%; }
-      .player {
-        // Modifier class for 4:3 aspect ratio
-        padding-bottom: 75%;
-      }
-    }
-
-    .node-voisin {
-      overflow: hidden;
-    }
-
-  }
-
-  .player {
-    .embed-responsive();
-    iframe {
-      .embed-responsive-item();
-      .scale(1.03); // 4:3 cause small black border on top and bottom. This is a working dirty fix that nobody will notice.
-    }
-  }
-
-  .view-mode-voisin_video_t1_16_9,
-  .view-mode-voisin_video_t2_16_9,
-  .view-mode-voisin_video_t3_16_9 {
-    .player {
-      // Modifier class for 16:9 aspect ratio
-      padding-bottom: 56.25%;
-    }
-  }
-  .view-mode-voisin_video_t1_4_3,
-  .view-mode-voisin_video_t2_4_3,
-  .view-mode-voisin_video_t3_4_3 {
-    .player {
-      // Modifier class for 4:3 aspect ratio
-      padding-bottom: 75%;
-    }
-  }
-
+.cross(){
+  // Make a cross
+  color: transparent;
+  @size: 0.8*@font-size-h1; @weigth:2px;
+  display: block;
+  position: absolute; top: 0; right: 0;
+  width: @size; height: @size;
+  visibility: visible; overflow: hidden;
+  background: transparent url("../img/cross-2.gif") center no-repeat;
+  cursor: pointer;
 }
-*/
 
 #bord-time {
-  position: fixed; right: 0; bottom: 0; left: 0; z-index: -2;
+  position: fixed; right: 0; bottom: 0; left: 0; z-index: -3;
   height: 20%;
   box-shadow: (2*@grid-gutter-width) 0px 0px 0px @brand-success inset, (-2*@grid-gutter-width) 0px 0px 0px @brand-success inset;
   .container {

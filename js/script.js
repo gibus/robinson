@@ -62,7 +62,7 @@ Drupal.behaviors.init_theme = function (context) {
 
     _$main = $('#main');
     _$main.addClass('tv-show');
-    $('> *', _$main).fadeOut();
+    // $('> *', _$main).fadeOut();
 
   }
 
