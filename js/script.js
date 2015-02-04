@@ -103,18 +103,23 @@ Drupal.behaviors.init_theme = function (context) {
     if( $el.length > 0 ) {
       var rect = $el[0].getBoundingClientRect();
       if( rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) ) {
-        console.log("[forceElementInViewport]", $el.attr('class'));
-        if( $el.hasClass('col-offset-top-1') ) {
-          var n = 1;
-          var nn = 0;
+        // console.log("[forceElementInViewport]", $el.attr('class'));
+
+        var minTop = $el.hasClass('node-thematique') ? 1 : 0;
+
+        if( $el.hasClass('col-offset-top-'+(minTop+1)) ) {
+          var n = (minTop+1);
+          var nn = minTop;
         } else {
           var cl = $el.attr('class');
           var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
           var nn = Math.floor(Math.random() * (n-1));
         }
+
         $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
-        if( nn > 0 )
+        if( nn > minTop )
           forceElementInViewport($el);
+
       }
     }
   }

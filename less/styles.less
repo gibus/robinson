@@ -306,6 +306,7 @@ body.front.program-mode main#main {
 
   // animations
   @easeOutCirc : cubic-bezier(0.075, 0.82, 0.165, 1);
+  @custom : cubic-bezier(0.08,0.82,0.12,0.12);
 
 
   .theme {
@@ -336,7 +337,7 @@ body.front.program-mode main#main {
       article {
         figure {
           opacity: 1;
-          .transition(opacity 5s 2s);
+          .transition(opacity 5s 2.3s);
           iframe { }
         }
       }
@@ -360,7 +361,14 @@ body.front.program-mode main#main {
       }
       aside {
         figure {
-          img { }
+          background-color: @gray-light;
+          opacity: 0;
+          .transition(~'background-color 5s 10s, opacity 30s 15.3s' @custom);
+          img {
+            opacity: 0;
+            .transition(opacity 5s 5s);
+          }
+          background-image: url("jaimemangerdespantoufles.jpg");
         }
       }
     }
@@ -382,11 +390,7 @@ body.front.program-mode main#main {
 
       aside {
         figure {
-          background-color: @gray-light;
-          .transition(background-color 5s 2s);
           img {
-            opacity: 0;
-            .transition(opacity 5s 5s @easeOutCirc);
           }
         }
       }
