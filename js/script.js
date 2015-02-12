@@ -113,7 +113,7 @@ Drupal.behaviors.init_theme = function (context) {
         } else {
           var cl = $el.attr('class');
           var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
-          var nn = Math.floor(Math.random() * (n-1));
+          var nn = Math.floor( minTop + Math.random() * (n-1-minTop) ); // -1 pour ne pas retomber sur la même valeur. -minTop pour compenser le minimum…
         }
 
         $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
