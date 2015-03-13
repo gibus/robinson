@@ -103,11 +103,8 @@
           <?php if ($main_menu): ?>
           <li class="dropdown">
             <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
-              <?= t('informations') ?> <span class="caret"></span>
+              <?= t('ressources') ?> <span class="caret"></span>
             </button>
-            <!-- <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/">
-              <?= t('informations') ?> <span class="caret"></span>
-            </a> -->
             <?= theme('links__system_main_menu', array('links' => $main_menu, 'attributes' => array('id' => 'main-menu', 'class' => array('dropdown-menu'), 'role' => 'menu'))); ?>
           </li>
           <?php endif; ?>
