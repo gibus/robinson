@@ -1,6 +1,6 @@
 <?php if ($node): ?>
-<?php $offsetTop = mt_rand(0,9); ?>
-<?php $offsetTopImg = mt_rand(0,9); ?>
+<?php $offsetTop = mt_rand(1,10); ?>
+<?php $offsetTopImg = mt_rand(0,10); ?>
 <div class="row">
 
   <article class="node node-<?= $node->nid ?> node-<?= $node->type ?> col-xs-12 col-md-4 col-offset-top-<?= $offsetTop ?>">

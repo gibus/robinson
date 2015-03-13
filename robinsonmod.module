@@ -43,7 +43,7 @@ function robinsonmod_menu() {
   );
 
   $items['ressources'] = $base + array(
-    'title' => 'Ressources',
+    'title' => 'Thématiques',
     'page callback' => 'robinsonmod_ressources_getcontent',
     'access callback' => true,
     'menu_name' => 'main-menu',

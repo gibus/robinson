@@ -5,7 +5,7 @@
   // Transform 3 grid system in 12.
   $size *= 4;
   $offset *= 4;
-  $offsetTop = mt_rand(-1,9);
+  $offsetTop = mt_rand(0,10);
 
   // Get media fields
   $field_image =        field_get_items('node', $node, 'field_image');

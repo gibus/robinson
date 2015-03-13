@@ -1,7 +1,5 @@
 <?php // dsm($data,'$data'); ?>
 
-<h2 class="page-subtitle"><?= t("Thématiques") ?></h2>
-
 <div class="row">
 
   <?php foreach ($data as $key => $node): ?>
