@@ -46,6 +46,18 @@ function robinsontheme_preprocess(&$vars, $hook) {
   }
 }
 
+/**
+ * Implements hook_admin_paths().
+ *
+ * Add IMCE to admin paths.
+ */
+function mymodule_admin_paths() {
+  $paths = array(
+    'imce' => TRUE,
+  );
+  return $paths;
+}
+
 $path = drupal_get_path('theme', 'robinsontheme');
 
 # Include custom functions.
