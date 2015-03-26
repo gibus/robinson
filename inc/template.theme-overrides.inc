@@ -5,8 +5,8 @@ function robinsontheme_breadcrumb($vars) {
 
   // dsm($vars,'$vars in *robinsonthememeta_breadcrumb*');
 
-  // Limit the breadcrumb to ressources and rendez-vous pages.
-  $display_close_btn = drupal_match_path(current_path(), "rendez-vous/*\nressources/*");
+  // Limit the breadcrumb to thematiques and rendez-vous pages.
+  $display_close_btn = drupal_match_path(current_path(), "rendez-vous/*\nthematiques/*");
 
   if ( !empty($vars['breadcrumb']) && $display_close_btn ) {
 
@@ -15,7 +15,7 @@ function robinsontheme_breadcrumb($vars) {
     foreach ($vars['breadcrumb'] as $link)
       $output .= "<li>$link</li>";
 
-    // Add current page onto the end for ressources or rendez-vous pages.
+    // Add current page onto the end for thematiques or rendez-vous pages.
     $item = menu_get_item();
     $end = end($vars['breadcrumb']);
     if ($end && strip_tags($end) !== $item['title']) {
