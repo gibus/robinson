@@ -42,9 +42,9 @@ function robinsonmod_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['ressources'] = $base + array(
+  $items['thematiques'] = $base + array(
     'title' => 'Thématiques',
-    'page callback' => 'robinsonmod_ressources_getcontent',
+    'page callback' => 'robinsonmod_thematiques_getcontent',
     'access callback' => true,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
@@ -197,17 +197,17 @@ function robinsonmod_theme($existing, $type, $theme, $path) {
       ),
       'template' => 'tpl/robinsonmod-rendez-vous-node',
     ),
-    'robinsonmod_ressources' => array(
+    'robinsonmod_thematiques' => array(
       'variables' => array(
         'data' => array()
       ),
-      'template' => 'tpl/robinsonmod-ressources',
+      'template' => 'tpl/robinsonmod-thematiques',
     ),
-    'robinsonmod_ressources_node' => array(
+    'robinsonmod_thematiques_node' => array(
       'variables' => array(
         'node' => FALSE
       ),
-      'template' => 'tpl/robinsonmod-ressources-node',
+      'template' => 'tpl/robinsonmod-thematiques-node',
     ),
   );
 }

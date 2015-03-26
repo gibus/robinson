@@ -493,14 +493,14 @@ function robinsonmod_rendez_vous_getNode($nid,$date){
   return theme('robinsonmod_rendez_vous_node', array('node' => $node, 'date' => $date));
 }
 
-/* RESSOURCES */
-function robinsonmod_ressources_getcontent($arg=FALSE){
+/* THEMATIQUES */
+function robinsonmod_thematiques_getcontent($arg=FALSE){
   // dsm($arg,'$arg');
-  $ret = preg_match('/\d+/', $arg) ? robinsonmod_ressources_getNode($arg) : robinsonmod_ressources_getAll();
+  $ret = preg_match('/\d+/', $arg) ? robinsonmod_thematiques_getNode($arg) : robinsonmod_thematiques_getAll();
   return $ret;
 }
 
-function robinsonmod_ressources_getAll(){
+function robinsonmod_thematiques_getAll(){
   $query = new ThemaEntityFieldQuery();
 
   $entities = $query
@@ -516,12 +516,12 @@ function robinsonmod_ressources_getAll(){
 
   endif;
 
-  return theme('robinsonmod_ressources', array('data' => $data) );
+  return theme('robinsonmod_thematiques', array('data' => $data) );
 }
 
-function robinsonmod_ressources_getNode($nid){
+function robinsonmod_thematiques_getNode($nid){
   $node = node_load($nid);
-  return theme('robinsonmod_ressources_node', array('node' => $node));
+  return theme('robinsonmod_thematiques_node', array('node' => $node));
 }
 
 /**
