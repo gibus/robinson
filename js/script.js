@@ -311,8 +311,9 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.neighbours = function() {
+
         this.neighbourhood = new Neighbourhood(this.voisins.nids,this.container);
-      }
+      };
 
       Theme.prototype.append = function() {
         console.log("Theme :: node append");
@@ -327,7 +328,7 @@ Drupal.behaviors.init_theme = function (context) {
                 .addClass('theme')
             )
         );
-      }
+      };
 
       Theme.prototype.events = function() {
 
@@ -379,8 +380,7 @@ Drupal.behaviors.init_theme = function (context) {
             //end dev
 
           });
-
-      }
+      };
 
       Theme.prototype.show = function(event) {
         console.log('Theme :: show');
@@ -431,7 +431,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
 
-
+      /* vimeo */
       Theme.prototype.vimeoStart = function() {
         console.log('Theme :: Start vimeo playing');
         this.vimeo.$player.api("play");
@@ -442,7 +442,7 @@ Drupal.behaviors.init_theme = function (context) {
         // check if a neighbour replay after stoping,
         // cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
-      }
+      };
 
       Theme.prototype.vimeoPause = function(id) {
         console.log("Theme :: vimeo ---> [Pause]",id);
@@ -453,18 +453,18 @@ Drupal.behaviors.init_theme = function (context) {
           console.log("Theme :: vimeo ---> [clinical death]",id);
           theme.$.trigger('hide-lpr-theme');
         }, 30000); // 30s
-      }
+      };
 
       Theme.prototype.vimeoFinish = function(id) {
         console.log("Theme :: vimeo ---> [Finish]");
         clearTimeout(this.vimeo.clinicalDeath);
-      }
+      };
 
       Theme.prototype.vimeoPlayProgress = function(data, id) {
         // console.log("Theme :: vimeo ---> " + data.seconds + 's played');
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-theme');
-      }
+      };
 
     }// - end prototypes
 
@@ -474,7 +474,7 @@ Drupal.behaviors.init_theme = function (context) {
 
 
 
-  /* =NEIGHBORHOOD
+  /* =NEIGHBOURHOOD
   -----------------------------------------------------------------------------*/
   function Neighbourhood(nids,container) {
 
@@ -564,6 +564,8 @@ Drupal.behaviors.init_theme = function (context) {
     this.init();
 
   }// - end Neighbourhood
+
+
 
   /* =NEIGHBOUR
   -----------------------------------------------------------------------------*/
@@ -765,6 +767,8 @@ Drupal.behaviors.init_theme = function (context) {
     this.nodeLoad();
 
   }// - end Neighbour
+
+
 
   /* =READY
   -----------------------------------------------------------------------------*/
