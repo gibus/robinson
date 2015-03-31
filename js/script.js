@@ -127,7 +127,7 @@ Drupal.behaviors.init_theme = function (context) {
   /* =load */
   function themeNidRecovered(event,nid) {
     _Content = new Theme(nid);
-    _Content.$.one('hide-lpr-theme', getContent);
+    _Content.$.one('next-lpr-theme', getContent);
   }
 
   function programNidsRecovered(event,data) {
@@ -409,6 +409,8 @@ Drupal.behaviors.init_theme = function (context) {
         console.log('Theme :: hide');
         var theme = this;
 
+        theme.$.trigger('next-lpr-theme');
+
         theme.vimeo.$player.removeEvent('pause');
 
         $(this.id)
@@ -418,7 +420,7 @@ Drupal.behaviors.init_theme = function (context) {
           });
 
         // Theme is hide, desactive Neighbourhood.
-        this.neighbourhood.$.trigger('hide-lpr-neighbourhood');
+        theme.neighbourhood.$.trigger('hide-lpr-neighbourhood');
       };
 
       Theme.prototype.hidden = function(event) {
