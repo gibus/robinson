@@ -231,7 +231,7 @@ Drupal.behaviors.init_theme = function (context) {
             // * theme
             this.currentSequence = new Theme(nid);
             this.sequences.push(this.currentSequence);
-            this.currentSequence.$.one('hide-lpr-theme', function(event) { program.sequenceHide(event); });
+            this.currentSequence.$.one('next-lpr-theme', function(event) { program.sequenceHide(event); });
 
           };
 
