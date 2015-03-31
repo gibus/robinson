@@ -528,7 +528,6 @@ Drupal.behaviors.init_theme = function (context) {
           this.currentNeighbour.$.on('loaded-lpr-neighbourhood-watch', function(event) { neighbourhood.neighbourLoaded(event); });
           this.currentNeighbour.$.on('hide-lpr-neighbourhood-watch',   function(event) { neighbourhood.neighbourHide(event); });
         }
-
       };
 
       Neighbourhood.prototype.hide = function() {
@@ -543,7 +542,6 @@ Drupal.behaviors.init_theme = function (context) {
           this.neighbours[i].request.abort(); // abort the ajax request if neighbour hasn’t finish to load.
           this.neighbours[i].$.trigger('hide-lpr-neighbour'); // hide him
         };
-
       };
 
       Neighbourhood.prototype.neighbourLoaded = function(event) {
@@ -621,7 +619,7 @@ Drupal.behaviors.init_theme = function (context) {
             .attr('id', this.id.replace('#',''))
             .addClass('neighbour')
         );
-      }
+      };
 
       Neighbour.prototype.events = function() {
 
@@ -669,8 +667,7 @@ Drupal.behaviors.init_theme = function (context) {
             neighbour.$.trigger('show-lpr-neighbour');
           },500);
         }
-
-      }
+      };
 
       Neighbour.prototype.show = function(event) {
         console.log('Neighbour :: show',this.id);
@@ -682,7 +679,6 @@ Drupal.behaviors.init_theme = function (context) {
           });
 
         forceElementInViewport( $('.node',$(this.id)) );
-
       };
 
       Neighbour.prototype.shown = function(event) {
@@ -738,7 +734,7 @@ Drupal.behaviors.init_theme = function (context) {
         // check if a neighbour replay after stoping,
         // cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
-      }
+      };
 
       Neighbour.prototype.vimeoPause = function(id) {
         console.log("Neighbour :: vimeo ---> [Pause]",id);
@@ -750,19 +746,19 @@ Drupal.behaviors.init_theme = function (context) {
           console.log("Neighbour :: vimeo ---> [clinical death]",id);
           neighbour.$.trigger('hide-lpr-neighbour');
         },5000);
-      }
+      };
 
       Neighbour.prototype.vimeoFinish = function(id) {
         console.log("Neighbour :: vimeo ---> [Finish]",id);
         clearTimeout(this.vimeo.clinicalDeath);
-      }
+      };
 
       Neighbour.prototype.vimeoPlayProgress = function(data, id) {
         // console.log("Neighbour :: vimeo ---> " + data.seconds + 's played');
         // console.log("Neighbour :: vimeo in vimeoPlayProgress; this = ", this);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-neighbour');
-      }
+      };
 
     }// - end prototypes
 
