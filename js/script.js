@@ -311,8 +311,9 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.neighbours = function() {
-
+        var theme = this;
         this.neighbourhood = new Neighbourhood(this.voisins.nids,this.container);
+        this.neighbourhood.$.on('next-lpr-theme-watch', function(event) { theme.end(event); });
       };
 
       Theme.prototype.append = function() {
@@ -398,6 +399,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Theme.prototype.shown = function(event) {
         console.log('Theme :: shown');
+
         $(this.id)
           .addClass('shown-lpr');
 
@@ -409,8 +411,6 @@ Drupal.behaviors.init_theme = function (context) {
         console.log('Theme :: hide');
         var theme = this;
 
-        theme.$.trigger('next-lpr-theme');
-
         theme.vimeo.$player.removeEvent('pause');
 
         $(this.id)
@@ -419,16 +419,27 @@ Drupal.behaviors.init_theme = function (context) {
             theme.$.trigger('hidden-lpr-theme');
           });
 
-        // Theme is hide, desactive Neighbourhood.
-        theme.neighbourhood.$.trigger('hide-lpr-neighbourhood');
+        // Theme is hide, end the Neighbourhood grow.
+        theme.neighbourhood.$.trigger('end-lpr-neighbourhood');
       };
 
       Theme.prototype.hidden = function(event) {
         console.log('Theme :: hidden');
-        var theme = this;
+
         $(this.id)
-          .addClass('hidden-lpr')
+          .addClass('hidden-lpr');
+      };
+
+      Theme.prototype.end = function(event) {
+        console.log('Theme :: end');
+
+        // call for next theme
+        this.$.trigger('next-lpr-theme');
+
+        $(this.id)
           .remove();
+
+        // Remove events
         this.$.off();
       };
 
@@ -487,6 +498,7 @@ Drupal.behaviors.init_theme = function (context) {
     this.currentNeighbour = null;
     this.neighbours =       [];
     this.timer =            null;
+    this.stop =             null;
 
     /* PROTOTYPES */
     if(typeof Neighbourhood.prototype.initialized == "undefined"){
@@ -507,8 +519,9 @@ Drupal.behaviors.init_theme = function (context) {
       Neighbourhood.prototype.events = function() {
 
         this.$
-          .on('show-lpr-neighbourhood', this.invocNeighbour )
-          .one('hide-lpr-neighbourhood', this.hide );
+          .on('show-lpr-neighbourhood',  this.invocNeighbour )
+          .one('hide-lpr-neighbourhood', this.hide )
+          .one('end-lpr-neighbourhood',  this.end );
       };
 
       Neighbourhood.prototype.invocNeighbour = function() {
@@ -530,7 +543,14 @@ Drupal.behaviors.init_theme = function (context) {
         }
       };
 
-      Neighbourhood.prototype.hide = function() {
+      Neighbourhood.prototype.end = function(event) {
+        console.log('Neighbourhood :: end');
+
+        this.stop = true; // flag for stop calling new Neighbour
+      };
+
+      Neighbourhood.prototype.hide = function(event) {
+        console.log('Neighbourhood :: hide');
         // console.log('Neighbourhood revoc Neighbour', this.called);
         // console.log('this.nids',this.nids);
 
@@ -550,13 +570,21 @@ Drupal.behaviors.init_theme = function (context) {
 
       Neighbourhood.prototype.neighbourHide = function(event) {
         console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour.nid);
+        console.log('Neighbourhood :: neighbourHide, status = ', this.stop);
+
         var neighbourhood = this;
         this.called --;
         clearTimeout(this.timer);
-        this.timer = setTimeout(function(){
-          // queue the neighbours, when one finish, invoc a new one
-          neighbourhood.$.trigger('show-lpr-neighbourhood');
-        }, this.currentNeighbour.delay*1000 );
+
+        if( !this.stop ) { // check flag for before calling new Neighbour
+          this.timer = setTimeout(function(){
+            // queue neighbours, when one finish, invoc a new one
+            neighbourhood.$.trigger('show-lpr-neighbourhood');
+          }, this.currentNeighbour.delay*1000 );
+        } else if( this.called < 1 ) {
+          this.$.trigger('next-lpr-theme-watch');
+          this.$.trigger('hide-lpr-neighbourhood');
+        }
       };
 
     }// - end prototypes
