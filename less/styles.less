@@ -365,7 +365,7 @@ body.front.program-mode main#main {
       }
       aside {
         figure {
-          background-color: transparent;//@gray-light;
+          background-color: @gray-light;
           opacity: 0;
           .transition(~'background-color 5s 10s, opacity 30s 15.3s' @custom);
           img {
@@ -437,6 +437,12 @@ body.front.program-mode main#main {
         background-color: @gray-light;
         iframe, img, p {
           opacity: 0;
+        }
+      }
+
+      &[data-is-image="1"] {
+        figure {
+          background-color: transparent;
         }
       }
     }
