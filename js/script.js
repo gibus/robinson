@@ -48,16 +48,18 @@ Drupal.behaviors.init_theme = function (context) {
 
     setupBordTime();
 
-    if( !$('body').is('.front') )
-      return;
-
-
     var size;
     $('#size').each(function(index, el) {
       size = window.getComputedStyle(this,':after').content;
+      console.log('size b', size);
+      size = size.replace(/^('|")*(.*)\1$/g, "$2");
+      console.log('size a', size);
     });
 
-    if( size == '"Phones (-xs)"' ) {
+    if( !$('body').is('.front') )
+      return;
+
+    if( size == 'Phones (-xs)' ) {
       console.log("mobile. Stop.");
       return;
     }

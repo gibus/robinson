@@ -93,7 +93,14 @@ header#header {
         float: none!important;
         ul.dropdown-menu {
           float: none!important; right:0;
+          background-color: @brand-primary !important;
           .box-shadow(none);
+        }
+      }
+
+      @media (max-width: @screen-xs-max) {
+        & {
+          margin-left: 0; margin-right: 0;
         }
       }
     }
