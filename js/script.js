@@ -51,6 +51,17 @@ Drupal.behaviors.init_theme = function (context) {
     if( !$('body').is('.front') )
       return;
 
+
+    var size;
+    $('#size').each(function(index, el) {
+      size = window.getComputedStyle(this,':after').content;
+    });
+
+    if( size == '"Phones (-xs)"' ) {
+      console.log("mobile. Stop.");
+      return;
+    }
+
     _ajax_base_path = Drupal.settings.basePath+Drupal.settings.pathPrefix;
     setupTV();
     setupEvent();
