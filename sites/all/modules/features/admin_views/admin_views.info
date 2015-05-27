@@ -28,7 +28,6 @@ features[menu_links][] = navigation_dashboard:admin/dashboard
 features[menu_links][] = navigation_log-out:user/logout
 features[menu_links][] = navigation_media:admin/content/medias
 features[menu_links][] = navigation_user-account:user
-features[menu_links][] = navigation_workflow-summary:workflow
 features[user_permission][] = administer menu
 features[user_permission][] = administer simplemenu
 features[user_permission][] = view simplemenu

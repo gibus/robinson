@@ -279,31 +279,6 @@ function themas_and_voisins_strongarm() {
         'path' => array(
           'weight' => '5',
         ),
-        'workflow' => array(
-          'weight' => '7',
-        ),
-      ),
-      'display' => array(
-        'workflow_current_state' => array(
-          'stream' => array(
-            'weight' => '6',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '-99',
-            'visible' => FALSE,
-          ),
-        ),
-        'workflow' => array(
-          'stream' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-        ),
       ),
     ),
   );
@@ -432,9 +407,6 @@ function themas_and_voisins_strongarm() {
         'path' => array(
           'weight' => '6',
         ),
-        'workflow' => array(
-          'weight' => '4',
-        ),
       ),
       'display' => array(
         'workflow_current_state' => array(
@@ -504,76 +476,6 @@ function themas_and_voisins_strongarm() {
           ),
           'voisin_video_t3_4_3' => array(
             'weight' => '-99',
-            'visible' => FALSE,
-          ),
-        ),
-        'workflow' => array(
-          'voisin_video' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_audio' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_image' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_text' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '10',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t1' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t2' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t3' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_image_t1' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_image_t2' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_image_t3' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t1_16_9' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t2_16_9' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t3_16_9' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t1_4_3' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t2_4_3' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-          'voisin_video_t3_4_3' => array(
-            'weight' => '99',
             'visible' => FALSE,
           ),
         ),
@@ -694,13 +596,6 @@ function themas_and_voisins_strongarm() {
       'has_required' => TRUE,
       'title' => 'Title',
     ),
-    'workflow' => array(
-      'region' => 'right',
-      'weight' => '2',
-      'has_required' => FALSE,
-      'title' => 'Change Publication state',
-      'hidden' => 0,
-    ),
     'field_titre_lettrage' => array(
       'region' => 'main',
       'weight' => '1',
@@ -797,13 +692,6 @@ function themas_and_voisins_strongarm() {
       'weight' => '1',
       'has_required' => TRUE,
       'title' => 'Type media',
-    ),
-    'workflow' => array(
-      'region' => 'right',
-      'weight' => '4',
-      'has_required' => FALSE,
-      'title' => 'Change Publication state',
-      'hidden' => 0,
     ),
     'field_comportement' => array(
       'region' => 'right',

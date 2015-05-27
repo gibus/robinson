@@ -196,23 +196,6 @@ function programme_strongarm() {
         'path' => array(
           'weight' => '2',
         ),
-        'workflow' => array(
-          'weight' => '4',
-        ),
-      ),
-      'display' => array(
-        'workflow_current_state' => array(
-          'default' => array(
-            'weight' => '-99',
-            'visible' => FALSE,
-          ),
-        ),
-        'workflow' => array(
-          'default' => array(
-            'weight' => '99',
-            'visible' => FALSE,
-          ),
-        ),
       ),
     ),
   );
@@ -285,13 +268,6 @@ function programme_strongarm() {
       'weight' => '0',
       'has_required' => FALSE,
       'title' => 'Mémo',
-      'hidden' => 0,
-    ),
-    'workflow' => array(
-      'region' => 'right',
-      'weight' => '1',
-      'has_required' => FALSE,
-      'title' => 'Change Publication state',
       'hidden' => 0,
     ),
   );

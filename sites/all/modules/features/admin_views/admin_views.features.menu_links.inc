@@ -170,23 +170,6 @@ function admin_views_menu_default_menu_links() {
     'weight' => -50,
     'customized' => 1,
   );
-  // Exported menu link: navigation_workflow-summary:workflow
-  $menu_links['navigation_workflow-summary:workflow'] = array(
-    'menu_name' => 'navigation',
-    'link_path' => 'workflow',
-    'router_path' => 'workflow',
-    'link_title' => 'Workflow summary',
-    'options' => array(
-      'identifier' => 'navigation_workflow-summary:workflow',
-    ),
-    'module' => 'system',
-    'hidden' => 1,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -42,
-    'customized' => 1,
-  );
   // Translatables
   // Included for use with string extractors like potx.
   t('Add content');

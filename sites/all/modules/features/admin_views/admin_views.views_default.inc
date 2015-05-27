@@ -198,20 +198,6 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::workflow_vbo_given_state_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::workflow_vbo_next_state_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
     'action::node_assign_owner_action' => array(
       'selected' => 0,
       'postpone_processing' => 0,
@@ -451,8 +437,7 @@ function admin_views_views_default_views() {
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   /* Champ: Processus : Current state */
   $handler->display->display_options['fields']['sid']['id'] = 'sid';
-  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['fields']['sid']['field'] = 'sid';
+    $handler->display->display_options['fields']['sid']['field'] = 'sid';
   $handler->display->display_options['fields']['sid']['label'] = 'Publication';
   /* Champ: Contenu : Lien de modification */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
@@ -583,7 +568,6 @@ function admin_views_views_default_views() {
   $handler->display->display_options['filters']['field_comportement_tid']['vocabulary'] = 'comportement';
   /* Critère de filtrage: Processus : Current state */
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
     'all' => 'all',
