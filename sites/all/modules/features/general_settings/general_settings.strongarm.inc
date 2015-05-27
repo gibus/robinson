@@ -872,48 +872,5 @@ function general_settings_strongarm() {
   $strongarm->value = '40';
   $export['ultimate_cron_simultaneous_connections'] = $strongarm;
 
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_access_priority';
-  $strongarm->value = '0';
-  $export['workflow_access_priority'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_page';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_page'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_programme';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_programme'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_thematique';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_thematique'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_voisin';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_voisin'] = $strongarm;
-
   return $export;
 }

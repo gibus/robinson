@@ -31,14 +31,6 @@ function general_settings_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'access workflow summary views'.
-  $permissions['access workflow summary views'] = array(
-    'name' => 'access workflow summary views',
-    'roles' => array(
-      'root' => 'root',
-    ),
-    'module' => 'workflow_views',
-  );
 
   // Exported permission: 'add terms in comportement'.
   $permissions['add terms in comportement'] = array(
@@ -120,14 +112,6 @@ function general_settings_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
-  // Exported permission: 'administer workflow'.
-  $permissions['administer workflow'] = array(
-    'name' => 'administer workflow',
-    'roles' => array(
-      'root' => 'root',
-    ),
-    'module' => 'workflow_admin_ui',
-  );
 
   // Exported permission: 'bypass node access'.
   $permissions['bypass node access'] = array(
@@ -209,18 +193,6 @@ function general_settings_user_default_permissions() {
     'module' => 'content_type_extras',
   );
 
-  // Exported permission: 'participate in workflow'.
-  $permissions['participate in workflow'] = array(
-    'name' => 'participate in workflow',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'anonymous user' => 'anonymous user',
-      'authenticated user' => 'authenticated user',
-      'root' => 'root',
-    ),
-    'module' => 'workflow_admin_ui',
-  );
-
   // Exported permission: 'revert revisions'.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',
@@ -229,24 +201,6 @@ function general_settings_user_default_permissions() {
       'root' => 'root',
     ),
     'module' => 'node',
-  );
-
-  // Exported permission: 'schedule workflow transitions'.
-  $permissions['schedule workflow transitions'] = array(
-    'name' => 'schedule workflow transitions',
-    'roles' => array(
-      'root' => 'root',
-    ),
-    'module' => 'workflow',
-  );
-
-  // Exported permission: 'show workflow state form'.
-  $permissions['show workflow state form'] = array(
-    'name' => 'show workflow state form',
-    'roles' => array(
-      'root' => 'root',
-    ),
-    'module' => 'workflow',
   );
 
   // Exported permission: 'view own unpublished content'.
