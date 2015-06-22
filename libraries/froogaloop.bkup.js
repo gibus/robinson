@@ -10,7 +10,7 @@ var Froogaloop = (function(){
         hasWindowEvent = false,
         isReady = false,
         slice = Array.prototype.slice,
-        playerOrigin = '*';
+        playerDomain = '';
 
     Froogaloop.fn = Froogaloop.prototype = {
         element: null,
@@ -21,6 +21,9 @@ var Froogaloop = (function(){
             }
 
             this.element = iframe;
+
+            // Register message event listeners
+            playerDomain = getDomainFromUrl(this.element.getAttribute('src'));
 
             return this;
         },
@@ -118,12 +121,17 @@ var Froogaloop = (function(){
             return false;
         }
 
-        var data = JSON.stringify({
-            method: method,
-            value: params
-        });
+        var url = target.getAttribute('src').split('?')[0],
+            data = JSON.stringify({
+                method: method,
+                value: params
+            });
 
-        target.contentWindow.postMessage(data, playerOrigin);
+        if (url.substr(0, 2) === '//') {
+            url = window.location.protocol + url;
+        }
+
+        target.contentWindow.postMessage(data, url);
     }
 
     /**
@@ -145,13 +153,9 @@ var Froogaloop = (function(){
             isReady = true;
         }
 
-        // Handles messages from the vimeo player only
-        if (!(/^https?:\/\/player.vimeo.com/).test(event.origin)) {
+        // Handles messages from moogaloop only
+        if (event.origin != playerDomain) {
             return false;
-        }
-
-        if (playerOrigin === '*') {
-            playerOrigin = event.origin;
         }
 
         var value = data.value,
@@ -231,6 +235,30 @@ var Froogaloop = (function(){
         }
 
         return true;
+    }
+
+    /**
+     * Returns a domain's root domain.
+     * Eg. returns http://vimeo.com when http://vimeo.com/channels is sbumitted
+     *
+     * @param url (String): Url to test against.
+     * @return url (String): Root domain of submitted url
+     */
+    function getDomainFromUrl(url) {
+        if (url.substr(0, 2) === '//') {
+            url = window.location.protocol + url;
+        }
+
+        var url_pieces = url.split('/'),
+            domain_str = '';
+
+        for(var i = 0, length = url_pieces.length; i < length; i++) {
+            if(i<3) {domain_str += url_pieces[i];}
+            else {break;}
+            if(i<2) {domain_str += '/';}
+        }
+
+        return domain_str;
     }
 
     function isFunction(obj) {
