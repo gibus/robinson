@@ -1,7 +1,6 @@
 name = Programme
 core = 7.x
 package = Robinson
-dependencies[] = corresponding_entity_references
 dependencies[] = ctools
 dependencies[] = date
 dependencies[] = entityreference
@@ -12,7 +11,6 @@ dependencies[] = node
 dependencies[] = strongarm
 dependencies[] = text
 dependencies[] = themas_and_voisins
-features[corresponding_entity_references][] = node*programme*field_prog_element*node*programme*field_prog_element
 features[ctools][] = corresponding_entity_references:default_corresponding_entity_references_presets:1
 features[ctools][] = field_group:field_group:1
 features[ctools][] = strongarm:strongarm:1
