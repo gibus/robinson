@@ -2,7 +2,7 @@
   Drupal.behaviors.content_type_extras_manage_fields = {
     attach: function(context, settings) {
       $('#edit-fields-add-new-field-label').blur(function() {
-        var label = $(this).val().toLowerCase().replace(/[^a-zA-Z 0-9]+/g, '').split(' ').join('_').substring(0, 26);
+        var label = processLabel($(this));
         $('#edit-fields-add-new-field-field-name').val(label);
       });
       
@@ -18,9 +18,16 @@
       });
       
       $('#edit-fields-add-new-group-label').blur(function() {
-        var label = $(this).val().toLowerCase().replace(/[^a-zA-Z 0-9]+/g, '').split(' ').join('_').substring(0, 26);
+        var label = processLabel($(this));
         $('#edit-fields-add-new-group-group-name').val(label);
       });
+      
+      function processLabel($this) {
+        return $this.val().toLowerCase()
+                 .replace(/[\/\& ]+/g, '_')
+                 .replace(/[^a-zA-Z 0-9_]+/g, '')
+                 .substring(0, 26);
+      }
     }
   }
 })(jQuery);

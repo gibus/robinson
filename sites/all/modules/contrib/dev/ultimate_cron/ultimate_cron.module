@@ -22,6 +22,11 @@
 define('ULTIMATE_CRON_SIMULTANEOUS_CONNECTIONS', 40);
 
 /**
+ * Default handle prefix for background processes.
+ */
+define('ULTIMATE_CRON_HANDLE_PREFIX', 'uc:');
+
+/**
  * Default rule.
  */
 define('ULTIMATE_CRON_RULE',         '*/10+@ * * * *');
@@ -74,7 +79,7 @@ define('ULTIMATE_CRON_CLEANUP_LOG', 86400 * 30);
 /**
  * Default setting for poorman.
  */
-define('ULTIMATE_CRON_POORMAN', TRUE);
+define('ULTIMATE_CRON_POORMAN', FALSE);
 
 /**
  * Default queue polling latency.
@@ -131,6 +136,31 @@ function ultimate_cron_menu() {
     'access arguments' => array('administer ultimate cron'),
     'weight' => 0,
     'file' => 'ultimate_cron.admin.inc',
+  );
+  $weight = 0;
+  foreach (array(
+    'error' => 'Errors', 
+    'warning' => 'Warnings', 
+    'info' => 'Info', 
+    'success' => 'Success',
+    'running' => 'Running',
+  ) as $status => $title) {
+    $items['admin/config/system/cron/overview/' . $status] = array(
+      'title' => $title,
+      'description' => 'View and manage cron table',
+      'page callback' => 'ultimate_cron_view_page',
+      'page arguments' => array(5),
+      'access arguments' => array('administer ultimate cron'),
+      'module' => 'ultimate_cron',
+      'file' => 'ultimate_cron.admin.inc',
+      'weight' => $weight++,
+      'type' => MENU_LOCAL_TASK,
+    );
+  }
+  $items['admin/config/system/cron/overview/all'] = array(
+    'title' => 'All',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => $weight++,
   );
   $items['admin/reports/cron'] = array(
     'title' => 'Cron logs',
@@ -252,17 +282,19 @@ function ultimate_cron_cron_run($return = FALSE) {
   drupal_set_message(t('%jobs jobs scheduled for launch', array('%jobs' => count($schedule))));
 
   // Start the jobs. Keep launching jobs until X seconds into the request.
-  set_time_limit(120);
+  @set_time_limit(120);
   $time = time();
   $expire = $time + variable_get('ultimate_cron_launch_window', ULTIMATE_CRON_LAUNCH_WINDOW);
   $running = array();
   $launched = 0;
 
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+
   // Try to launch jobs within the given time frame
   while (!empty($schedule) && time() < $expire) {
     $running_processes = db_select('background_process', 'bp')
                           ->fields('bp', array('handle'))
-                          ->condition('bp.handle', 'uc:%', 'LIKE')
+                          ->condition('bp.handle', $handle_prefix . '%', 'LIKE')
                           ->countQuery()
                           ->execute()
                           ->fetchField();
@@ -284,7 +316,7 @@ function ultimate_cron_cron_run($return = FALSE) {
 
       // Handle errors.
       if ($result) {
-        $handle = 'uc:' . $name;
+        $handle = $handle_prefix . $name;
         $running[$handle] = $result;
         unset($schedule[$name]);
         $launched++;
@@ -306,7 +338,9 @@ function ultimate_cron_cron_run($return = FALSE) {
     if ($running) {
       $result = db_query("SELECT p.name FROM {progress} p WHERE p.name IN (:running)", array(':running' => array_keys($running)));
       while ($handle = $result->fetchObject()) {
-        fclose($running[$handle->name]);
+        if (is_resource($running[$handle->name])) {
+          fclose($running[$handle->name]);
+        }
         unset($running[$handle->name]);
       }
     }
@@ -316,7 +350,9 @@ function ultimate_cron_cron_run($return = FALSE) {
   // Close all jobs left
   if ($running) {
     foreach (array_keys($running) as $handle) {
-      fclose($running[$handle]);
+      if (is_resource($running[$handle])) {
+        fclose($running[$handle]);
+      }
       unset($running[$handle]);
     }
   }
@@ -390,6 +426,10 @@ function ultimate_cron_cronapi($op, $job = NULL, $hook = NULL) {
       $end = time() + (isset($info['time']) ? $info['time'] : 15);
       $queue = DrupalQueue::get($queue_name);
       $items = 0;
+
+      $settings = ultimate_cron_get_settings("ultimate_cron_queue_$queue_name");
+      $polling_throttle = isset($settings['queue_polling_throttle']) ? $settings['queue_polling_throttle'] : 0;
+
       while (time() < $end) {
         $lease_time = isset($hook['settings']['queue_lease_time']) ? $hook['settings']['queue_lease_time'] : variable_get('ultimate_cron_queue_lease_time', ULTIMATE_CRON_QUEUE_LEASE_TIME);
         $item = $queue->claimItem($lease_time);
@@ -402,9 +442,27 @@ function ultimate_cron_cronapi($op, $job = NULL, $hook = NULL) {
             break;
           }
         }
-        $function($item->data);
-        $queue->deleteItem($item);
-        $items++;
+        try {
+          if (is_numeric($polling_throttle)) {
+            if ($items == 0) {
+              // Move the boundary if using a throttle, to avoid waiting for nothing
+              $end -= $polling_throttle / 1000;
+            } else {
+              // Sleep before retrieving
+              usleep($polling_throttle * 1000);
+            }
+          }
+          $function($item->data);
+          $queue->deleteItem($item);
+          $items++;
+        }
+        catch (Exception $e) {
+          // Just continue ...
+          watchdog('ultimate_cron', "Queue item %item_id failed with message %message", array(
+            '%item_id' => $item->item_id,
+            '%message' => $e->getMessage()
+          ), WATCHDOG_ERROR);
+        }
       }
       drupal_set_message(t('Processed @items items', array('@items' => $items)));
       if (is_numeric($polling_latency)) {
@@ -435,8 +493,10 @@ function ultimate_cron_progress_message_alter(&$message) {
  * Implements hook_background_process_message_alter().
  */
 function ultimate_cron_background_process_message_alter(&$message) {
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+
   // Only alter Ultimate Cron background process messages
-  if (substr($message->data->background_process->handle, 0, 3) !== 'uc:') {
+  if (substr($message->data->background_process->handle, 0, 3) !== $handle_prefix) {
     return;
   }
 
@@ -459,9 +519,9 @@ function ultimate_cron_theme_registry_alter(&$theme_registry) {
  */
 function ultimate_cron_watchdog($log = array()) {
   $record = &drupal_static('ultimate_cron_record', FALSE);
-  if ($record && $log['severity'] <= WATCHDOG_WARNING) {
+  if ($record) {
     $log['variables'] = is_array($log['variables']) ? $log['variables'] : array();
-    ultimate_cron_record_log(t($log['message'], $log['variables']));
+    ultimate_cron_record_log(t($log['message'], $log['variables']), FALSE, $log['severity']);
   }
 }
 
@@ -530,7 +590,9 @@ function ultimate_cron_launch_poorman() {
  */
 function ultimate_cron_background_process_shutdown($process, $shutdown_msg = NULL) {
   $args = func_get_args();
-  $name = preg_replace('/^uc:/', '', $process->handle);
+  $record = drupal_static('ultimate_cron_record', FALSE);
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+  $name = preg_replace('/^' . $handle_prefix . '/', '', $process->handle);
   if (!empty($name) && $name != $process->handle) {
     static $has_run = array();
     if (!empty($has_run[$name])) {
@@ -541,37 +603,49 @@ function ultimate_cron_background_process_shutdown($process, $shutdown_msg = NUL
     // Record end time
     $end = microtime(TRUE);
 
-    $fatal_msg = '';
-    if (count(func_get_args()) == 1) {
+    if ($record) {
+      // Get drupal messages
+      $messages = drupal_get_messages(NULL, TRUE);
+      $messages['status'] = empty($messages['status']) ? array() : $messages['status'];
+      $messages['warning'] = empty($messages['warning']) ? array() : $messages['warning'];
+      $messages['error'] = empty($messages['error']) ? array() : $messages['error'];
+
+      foreach ($messages['status'] as $message) {
+        ultimate_cron_record_log($message);
+      }
+      foreach ($messages['warning'] as $message) {
+        ultimate_cron_record_log($message, FALSE, WATCHDOG_WARNING);
+      }
+      foreach ($messages['error'] as $message) {
+        ultimate_cron_record_log($message, FALSE, WATCHDOG_ERROR);
+      }
+
+      // Get error messages
       $error = error_get_last();
       if ($error) {
-        if ($error['type'] & (E_ERROR | E_CORE_ERROR | E_RECOVERABLE_ERROR)) {
-          $fatal_msg =  $error['message'] . ' (line ' . $error['line'] . ' of ' . $error['file'] . ').' . "\n";
+        $message = $error['message'] . ' (line ' . $error['line'] . ' of ' . $error['file'] . ').' . "\n";
+        $severity = WATCHDOG_INFO;
+        if ($error['type'] && (E_NOTICE || E_USER_NOTICE || E_USER_WARNING)) {
+          $severity = WATCHDOG_NOTICE;
         }
-        else {
-          $fatal_msg .= t('Died unexpectedly');
+        if ($error['type'] && (E_WARNING || E_CORE_WARNING || E_USER_WARNING)) {
+          $severity = WATCHDOG_WARNING;
         }
+        if ($error['type'] && (E_ERROR || E_CORE_ERROR || E_USER_ERROR || E_RECOVERABLE_ERROR)) {
+          $severity = WATCHDOG_ERROR;
+        }
+        ultimate_cron_record_log($message, FALSE, $severity);
       }
     }
-    if (is_null($shutdown_msg)) {
-      $messages = drupal_get_messages();
-    }
 
-    $msg = ultimate_cron_record_log(NULL);
     if ($shutdown_msg) {
-      $msg .= $msg ? "\n$shutdown_msg" : $shutdown_msg;
+      ultimate_cron_record_log($shutdown_msg, FALSE, WATCHDOG_ERROR);
     }
 
-    if (!empty($messages['error'])) {
-      $msg .= join("\n", $messages['error']) . "\n";
-    }
-    $msg .= $fatal_msg;
-
-    // If success, use status messages if any
-    $result = empty($msg);
-    if ($result && !empty($messages['status'])) {
-      $msg = join("\n", $messages['status']);
-    }
+    $log = drupal_static('ultimate_cron_record_log', array('msg' => '', 'severity' => -1));
+    $severity = $log['severity'];
+    $msg = $log['msg'];
+    $result = $severity < 0 || $severity >= WATCHDOG_INFO ? 1: 0;
 
     // log results here ...
     $object = (object)array(
@@ -580,6 +654,7 @@ function ultimate_cron_background_process_shutdown($process, $shutdown_msg = NUL
       'end_stamp' => $end,
       'service_host' => $process->service_host,
       'exec_status' => $result,
+      'severity' => $severity,
       'msg' => trim($msg),
     );
     $old_db = db_set_active('background_process');
@@ -589,7 +664,7 @@ function ultimate_cron_background_process_shutdown($process, $shutdown_msg = NUL
     $object->formatted['start_stamp'] = format_date((int)$object->start_stamp, 'custom', 'Y-m-d H:i:s');
     $object->formatted['end_stamp'] = format_date((int)$object->end_stamp, 'custom', 'Y-m-d H:i:s');
     $object->formatted['duration'] = gmdate('H:i:s', (int)($object->end_stamp - $object->start_stamp));
-    $object->formatted['severity'] = $object->exec_status ? 'noerror' : 'error';
+    $object->formatted['severity'] = $object->severity < 0 ? 'success' : ($object->severity >= WATCHDOG_NOTICE ? 'info' : ($object->severity >= WATCHDOG_WARNING ? 'warning' : 'error'));
     $object->formatted['executeURL'] = url('admin/ultimate-cron/service/start/' . $object->name, array('query' => array('destination' => 'admin/config/system/cron')));
     $object->formatted['msg'] = strip_tags(html_entity_decode($object->msg, ENT_QUOTES));
     if (module_exists('nodejs')) {
@@ -753,7 +828,8 @@ function ultimate_cron_cleanup_log() {
 function ultimate_cron_run_hook($name, $hook) {
   // Run the job in background
   $result = NULL;
-  $handle = "uc:" . $name;
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+  $handle = $handle_prefix . $name;
   $process = new BackgroundProcess($handle);
 
   // Always run cron job as anonymous user
@@ -772,7 +848,8 @@ function ultimate_cron_run_hook($name, $hook) {
 function ultimate_cron_run_hook_cli($name, $hook) {
   // Run the job in background
   $result = NULL;
-  $handle = "uc:" . $name;
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+  $handle = $handle_prefix . $name;
   $process = new BackgroundProcess($handle);
 
   // Always run cron job as anonymous user
@@ -823,7 +900,7 @@ function ultimate_cron_run_hook_cli($name, $hook) {
  *   TRUE on success, FALSE on failure.
  */
 function _ultimate_cron_run_hook($name, $hook) {
-  set_time_limit(variable_get('ultimate_cron_max_execution_time', ULTIMATE_CRON_MAX_EXECUTION_TIME));
+  @set_time_limit(variable_get('ultimate_cron_max_execution_time', ULTIMATE_CRON_MAX_EXECUTION_TIME));
   drupal_save_session(FALSE);
 
   // Load current process
@@ -1126,15 +1203,17 @@ function ultimate_cron_get_log($name) {
  * @return string
  *   Message recorded.
  */
-function ultimate_cron_record_log($msg = NULL, $reset = FALSE) {
-  static $log = '';
+function ultimate_cron_record_log($msg = NULL, $reset = FALSE, $severity = -1) {
+  $log = &drupal_static('ultimate_cron_record_log', array());
   if ($reset) {
-    $log = '';
+    $log = array();
   }
+  $log += array('msg' => '', 'severity' => -1);
   if ($msg) {
-    $log .= "$msg\n";
+    $log['msg'] .= "$msg\n";
   }
-  return $log;
+  $log['severity'] = $log['severity'] < 0 || ($severity >= 0 && $severity < $log['severity']) ? $severity : $log['severity'];
+  return $log['msg'];
 }
 
 /**
@@ -1170,16 +1249,18 @@ function ultimate_cron_validate_rule($rule) {
  * @return boolean
  *   TRUE if rule is scheduled to run, FALSE if not.
  */
-function ultimate_cron_should_run($rules, $last_run, $now = NULL, $catch_up = 0, $offset = 0) {
+function ultimate_cron_should_run($rules, $job_last_ran, $now = NULL, $catch_up = 0, $offset = 0) {
   $now = is_null($now) ? time() : $now;
   require_once 'CronRule.class.php';
   $cron = new CronRule();
   foreach ($rules as $rule) {
     $cron->rule = $rule;
     $cron->offset = $offset;
-    $last_ran = $cron->getLastRan($now);
-    if ($last_ran > $last_run && $last_ran >= $now - $catch_up) {
-      return TRUE;
+    $cron_last_ran = $cron->getLastRan($now);
+    if ($job_last_ran < $cron_last_ran && $cron_last_ran <= $now) {
+      if ($now <= $cron_last_ran + $catch_up) {
+        return TRUE;
+      }
     }
   }
   return FALSE;
@@ -1241,6 +1322,7 @@ function ultimate_cron_module_name($module) {
  *   Array of cronjobs and their data.
  */
 function _ultimate_cron_preload_cron_data() {
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
   if (module_exists('ctools')) {
     ctools_include('export');
     $functions = ctools_export_crud_load_all('ultimate_cron');
@@ -1261,7 +1343,7 @@ function _ultimate_cron_preload_cron_data() {
   if (function_exists('background_process_update_status')) {
     $query = db_select('background_process', 'b')
       ->fields('b', array('handle', 'service_host'))
-      ->condition('handle', 'uc:%', 'LIKE');
+      ->condition('handle', $handle_prefix . '%', 'LIKE');
     $query->addField('b', 'start_stamp', 'start');
     $query->addField('b', 'exec_status', 'status');
     $processes = $query->execute()->fetchAllAssoc('handle', PDO::FETCH_ASSOC);
@@ -1269,7 +1351,7 @@ function _ultimate_cron_preload_cron_data() {
   else {
     $processes = db_select('background_process', 'b')
       ->fields('b', array('handle', 'service_host', 'start', 'status'))
-      ->condition('handle', 'uc:%', 'LIKE')
+      ->condition('handle', $handle_prefix . '%', 'LIKE')
       ->execute()
       ->fetchAllAssoc('handle', PDO::FETCH_ASSOC);
   }
@@ -1277,7 +1359,7 @@ function _ultimate_cron_preload_cron_data() {
   foreach ($hooks as $name => $hook) {
     $settings = empty($functions[$name]->settings) ? array() : $functions[$name]->settings;
     $settings += $hook['settings'];
-    $handle = 'uc:' . $name;
+    $handle = $handle_prefix . $name;
     $data[$name] = array(
       'settings' => $settings,
       'background_process' => empty($processes[$handle]) ? NULL : (object)$processes[$handle],
@@ -1337,5 +1419,6 @@ function _ultimate_cron_default_settings($default_rule = NULL) {
     'rules' => $default_rule ? array($default_rule) : array(),
     'catch_up' => $default_rule ? variable_get('ultimate_cron_catch_up', ULTIMATE_CRON_CATCH_UP) : '',
     'queue_lease_time' => '',
+    'queue_polling_throttle' => ''
   );
 }

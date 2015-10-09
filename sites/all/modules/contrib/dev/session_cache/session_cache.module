@@ -17,6 +17,10 @@ define('SESSION_CACHE_STORAGE_COOKIE', 3);
 define('SESSION_CACHE_STORAGE_DB_CORE', 2);
 define('SESSION_CACHE_STORAGE_SESSION', 1);
 
+define('SESSION_CACHE_COOKIE_FOR_SID', 0);
+define('SESSION_CACHE_UID_FOR_SID', 1);
+define('SESSION_CACHE_IP_ADDRESS_FOR_SID', 2);
+
 define('SESSION_CACHE_DEFAULT_EXPIRATION_DAYS', 7);
 
 // See [#2119579]
@@ -44,16 +48,19 @@ function session_cache_set($bin, $data) {
   switch ($method) {
 
     case SESSION_CACHE_STORAGE_COOKIE:
+      $serialized_data = ($data == NULL) ? NULL : serialize($data);
+
+      // For $cookie_domain see also: drupal_settings_initialize()
+      global $cookie_domain;
+      // .localhost causes problems
+      $cdom = ($cookie_domain == '.localhost') ? ini_get('session.cookie_domain') : $cookie_domain;
+
       // Tell the browser to return the cookie only via HTTP or HTTPS, to any
       // path under the root of this server.
-      // Don't use "global $cookie_domain", as it may contain the invalid
-      // '.localhost'!
-      $cookie_domain = ini_get('session.cookie_domain');
-      $serialized_data = ($data == NULL) ? NULL : serialize($data);
       setcookie("Drupal.session_cache.$bin", $serialized_data,
         // If no data make it a cookie that expires when the browser is closed.
         ($data == NULL) ? 0 : session_cache_expiration_time(),
-        '/', $cookie_domain, NULL, TRUE);
+        '/', $cdom, NULL, TRUE);
       // Make sure that subsequent session_cache_get() calls get the data
       // updated here, not what was in the cookie at the start of the request!
       // Note that in array indices '.' are converted to '_'
@@ -123,7 +130,8 @@ function session_cache_flush_caches() {
 /**
  * Returns an identifier for the current user session.
  *
- * Typically only called when a database storage mechanism is used.
+ * Typically only called when a database or file-based storage mechanism is
+ * employd.
  *
  * @return int
  *   session cache id
@@ -131,19 +139,34 @@ function session_cache_flush_caches() {
 function session_cache_get_sid() {
   global $user;
 
-  if (!empty($user->uid) && variable_get('session_cache_use_uid_as_sid', FALSE)) {
-    // Good if concurrent sessions for the same auth. user are NOT required.
+  $sid_source = variable_get('session_cache_sid_source', SESSION_CACHE_COOKIE_FOR_SID);
+  
+  if ($sid_source == SESSION_CACHE_IP_ADDRESS_FOR_SID) {
+    // Do we want '::1' for localhost or dots in file names?
+    $sid = ip_address();
+    return ($sid == '::1') ? 'localhost' : $sid;
+  }
+
+  // SESSION_CACHE_UID_FOR_SID falls back on cookie for anonymous users.
+  if ($sid_source == SESSION_CACHE_UID_FOR_SID && !empty($user->uid)) {
+    // Fine if concurrent sessions for the same auth. user are NOT required.
     return 'user' . $user->uid;
   }
+
   if (empty($_COOKIE['Drupal_session_cache_sid'])) {
 
     // Don't use core's session id. Security not a problem, so keep it short.
     $sid = drupal_substr(session_id(), 0, 12);
+
+    global $cookie_domain;
+    // .localhost causes problems
+    $cdom = ($cookie_domain == '.localhost') ? ini_get('session.cookie_domain') : $cookie_domain;
+
     // If setcookie() fails, then everything still works, but a new session will
     // be created when logging in or out.
-    // Don't use "global $cookie_domain", as '.localhost' is invalid!
-    $cookie_domain = ini_get('session.cookie_domain');
-    setcookie('Drupal.session_cache.sid', $sid, session_cache_expiration_time(), '/', $cookie_domain, NULL, TRUE);
+    setcookie('Drupal.session_cache.sid', $sid, session_cache_expiration_time(), '/', $cdom, NULL, TRUE);
+    // Need to also set $_COOKIE explicitly, see [#2210329].
+    $_COOKIE['Drupal_session_cache_sid'] = $sid;
   }
   else {
     $sid = $_COOKIE['Drupal_session_cache_sid'];

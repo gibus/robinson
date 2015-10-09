@@ -243,7 +243,6 @@ function title_field_replacement_enabled($entity_type, $bundle, $legacy_field) {
  */
 function title_field_replacement_toggle($entity_type, $bundle, $legacy_field) {
   $info = title_field_replacement_info($entity_type, $legacy_field);
-
   if (!$info) {
     return;
   }
@@ -829,24 +828,26 @@ function title_field_attach_create_bundle($entity_type, $bundle) {
 
   $options = variable_get('title_' . $entity_type, array());
 
-  foreach (array_keys($entity_info['field replacement']) as $field_name) {
-    if (!isset($options['auto_attach'][$field_name])) {
+  foreach (array_keys($entity_info['field replacement']) as $legacy_field) {
+    if (empty($options['auto_attach'][$legacy_field])) {
       continue;
     }
 
     // Do not continue if the replacement field already exists.
+    $field_name = $entity_info['field replacement'][$legacy_field]['field']['field_name'];
     if (field_info_instance($entity_type, $field_name, $bundle)) {
       continue;
     }
 
-    title_field_replacement_toggle($entity_type, $bundle, $field_name);
+    title_field_replacement_toggle($entity_type, $bundle, $legacy_field);
 
     $instance = field_info_instance($entity_type, $field_name, $bundle);
-    $params = array(
-      '@entity_label' => drupal_strtolower($entity_info['label']),
-      '%field_name' => t($entity_info['field replacement'][$field_name]['instance']['label']),
-     );
-
-    drupal_set_message(t('The @entity_label %field_name field was automatically replaced.', $params));
+    if ($instance) {
+      $params = array(
+        '@entity_label' => drupal_strtolower($entity_info['label']),
+        '%field_name' => $instance['label'],
+      );
+      drupal_set_message(t('The @entity_label %field_name field was automatically replaced.', $params));
+    }
   }
 }

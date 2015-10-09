@@ -114,7 +114,7 @@ function background_process_overview_page() {
 
     $data[] = array(
       $process->handle,
-      $process->callback,
+      _background_process_callback_name($process->callback),
       $process->uid,
       $process->service_host,
       format_date((int)$process->start, 'custom', 'Y-m-d H:i:s'),

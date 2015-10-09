@@ -98,6 +98,33 @@ Statistics:
 You can view the recorded performance statistics (summary and details) at
 /admin/reports/performance-logging
 
+Custom detailed logging implementation
+--------------------------------------
+As mentioned before, detailed logging is NOT recommended on production environ-
+ments. If you, for whatever reason, DO wish detailed logging on production, you
+should create a custom detailed logging mechanism that will NOT interfere with
+your live site. You can do this by creating your own versions of the following
+functions:
+
+  - performance_log_details($params)
+    => function that is called to store the performance data
+  - performance_view_details()
+    => function that is called to view the stored detail log. This function is
+       called from hook_menu() and should return content that Drupal can render
+      as a page.
+  - performance_clear_details()
+    => function that is called to delete the entire detail log
+
+Have a look at includes/performance.details.inc for more details about these
+functions.
+
+When you have created those functions, add the location of the file containing
+your custom implementation to settings.php like so:
+
+  $conf['performance_detail_logging'] = './sites/all/path/to/your/file';
+
+NOTE: there is NO drush support for your custom detail logging implementation!
+
 Drush support
 -------------
 Drush support has been integrated as well. You can check the summary and detail

@@ -56,7 +56,8 @@ Drupal.Nodejs.callbacks.nodejsBackgroundProcess = {
 
     var process = message.data.background_process;
     var ultimate_cron = message.data.ultimate_cron;
-    var name = process.handle.replace(/^uc:/, '');
+    var regex = new RegExp('^' + Drupal.settings.ultimate_cron.handle_prefix);
+    var name = process.handle.replace(regex, '');
     if (name == process.handle) {
       return;
     }

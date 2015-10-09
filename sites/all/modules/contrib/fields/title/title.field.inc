@@ -104,7 +104,7 @@ function title_field_formatter_view($entity_type, $entity, $field, $instance, $l
     $output = l($output, $uri['path'], array('html' => TRUE));
   }
 
-  $wrap_tag = isset($settings['title_style']) ? $settings['title_style'] : '_none';
+  $wrap_tag = empty($settings['title_style']) ? '_none' : $settings['title_style'];
 
   if ($wrap_tag != '_none') {
     $element = array(

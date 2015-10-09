@@ -87,11 +87,14 @@ function content_taxonomy_autocomplete_field_attach_form($entity_type, $entity, 
       && isset($form[$instance['field_name']]) 
       && isset($instance['widget']['settings']['content_taxonomy_autocomplete_new_terms'])) {
 
+      // Use the language that is used in this form (which doesn't necessarily
+      // be the default language in $langcode).
+      $lang_key = $form[$instance['field_name']]['#language'];
       if ($instance['widget']['settings']['content_taxonomy_autocomplete_new_terms'] == 'moderate') {
-        $form[$instance['field_name']]['#element_validate'][] = 'content_taxonomy_autocomplete_validate_moderate_new_terms';
+        $form[$instance['field_name']][$lang_key]['#element_validate'][] = 'content_taxonomy_autocomplete_validate_moderate_new_terms';
       }
       else if ($instance['widget']['settings']['content_taxonomy_autocomplete_new_terms'] == 'deny') {
-        $form[$instance['field_name']]['#element_validate'][] = 'content_taxonomy_autocomplete_validate_deny_new_terms';
+        $form[$instance['field_name']][$lang_key]['#element_validate'][] = 'content_taxonomy_autocomplete_validate_deny_new_terms';
       }
     }
   }
@@ -100,12 +103,14 @@ function content_taxonomy_autocomplete_field_attach_form($entity_type, $entity, 
 /**
  * Form element validate handler for taxonomy term autocomplete element, which denies any new terms.
  */
-function content_taxonomy_autocomplete_validate_deny_new_terms($element, &$form_state) {
-  // taxonomy_field_validate() is invoked before.
-  $field_name = $element[$element['#language']]['#field_name'];
-  foreach ($form_state['values'][$field_name][$element['#language']] as $delta => $value) {
+function content_taxonomy_autocomplete_validate_deny_new_terms($element, &$form_state, $form) {
+  $values = $form_state['values'];
+  foreach ($element['#array_parents'] as $parent) {
+    $values = $values[$parent];
+  }
+  foreach ($values as $delta => $value) {
     if ($value['tid'] == 'autocreate') {
-      form_error($element, t('%name: new terms are not allowed.', array('%name' => $element[$element['#language']]['#title'])));
+      form_error($element, t('%name: new terms are not allowed. Please choose from the given list.', array('%name' => $element['#title'])));
     }
   }
 }
@@ -116,14 +121,17 @@ function content_taxonomy_autocomplete_validate_deny_new_terms($element, &$form_
 function content_taxonomy_autocomplete_validate_moderate_new_terms($element, &$form_state) {
   // taxonomy_field_validate() is invoked before.
   // Reset vocabulary id for new terms.
-  $field_name = $element[$element['#language']]['#field_name'];
-  $field = $form_state['field'][$field_name][$element['#language']]['field'];
+  $field = field_widget_field($element, $form_state);
+  $values =& $form_state['values'];
+  foreach ($element['#array_parents'] as $parent) {
+    $values =& $values[$parent];
+  }
   if (isset($field['settings']['allowed_values'][1])) {
     if ($voc2 = taxonomy_vocabulary_machine_name_load($field['settings']['allowed_values'][1]['vocabulary'])) {
-      foreach ($form_state['values'][$field_name][$element['#language']] as $delta => $value) {
+      foreach ($values as $delta => $value) {
         if ($value['tid'] == 'autocreate') {
-          $form_state['values'][$field_name][$element['#language']][$delta]['vid'] = $voc2->vid;
-          $form_state['values'][$field_name][$element['#language']][$delta]['vocabulary_machine_name'] = $voc2->machine_name;
+          $values[$delta]['vid'] = $voc2->vid;
+          $values[$delta]['vocabulary_machine_name'] = $voc2->machine_name;
         }
       }
     }
@@ -140,4 +148,16 @@ function content_taxonomy_autocomplete_query_autocomplete_deluxe_taxonomy_autoco
       $query->condition('t.vid', $voc1->vid);
     }
   }
+}
+
+/**
+ * Implements hook_search_api_processor_info().
+ */
+function content_taxonomy_autocomplete_search_api_processor_info() {
+  $callbacks['content_taxonomy_autocomplete_moderated_terms'] = array(
+    'name' => t('Content Taxonomy Autocomplete Moderated Terms Filter'),
+    'description' => t('Filters terms from autocompletes that belong to the moderated vocabulary.'),
+    'class' => 'ContentTaxonomyAutocompleteModeratedTermsSearchAPIProcessor',
+  );
+  return $callbacks;
 }

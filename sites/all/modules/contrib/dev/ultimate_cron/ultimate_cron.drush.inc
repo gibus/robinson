@@ -27,7 +27,7 @@ function ultimate_cron_drush_command() {
   $items['cron-run'] = array(
     'description' => "Run cron job.",
     'arguments' => array(
-      'function' => 'Function to run',
+      'function' => 'Function to run. Use "all" for running all jobs (default)',
     ),
     'options' => array(
       'cli' => "Don't spawn a background process through http",
@@ -186,6 +186,11 @@ function drush_ultimate_cron_cron_run($function = NULL) {
   $logfile = drush_get_option('logfile');
   $logfile = is_string($logfile) ? $logfile : '/dev/null';
 
+  // Default to run all jobs if not specified.
+  if (is_null($function)) {
+    $function = 'all';
+  }
+
   // Get global options
   $options = drush_get_context('cli');
   $cmd_options = '';
@@ -233,8 +238,10 @@ function drush_ultimate_cron_cron_run($function = NULL) {
         ultimate_cron_cron_run(TRUE);
       }
       $messages = drupal_get_messages();
-      foreach ($messages['status'] as $message) {
-        drush_print(strip_tags($message));
+      if (!empty($messages['status'])) {
+        foreach ($messages['status'] as $message) {
+          drush_print(strip_tags($message));
+        }
       }
       return;
     }
@@ -338,7 +345,8 @@ function drush_ultimate_cron_cron_unlock($function) {
     return drush_set_error(dt('"!function" not found', array('!function' => $function)));
   }
 
-  $handle = 'uc:' . $function;
+  $handle_prefix = variable_get('ultimate_cron_handle_prefix', ULTIMATE_CRON_HANDLE_PREFIX);
+  $handle = $handle_prefix . $function;
   if ($process = background_process_get_process($handle)) {
     // Unlock the process
     if (background_process_remove_process($process->handle, $process->start)) {

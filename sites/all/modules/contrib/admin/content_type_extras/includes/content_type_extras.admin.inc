@@ -5,11 +5,17 @@ function content_type_extras_settings() {
   // Get all available user roles
   $roles = user_roles();
   $admin_role = variable_get('user_admin_role', 0);
-  
+
   if ($admin_role != 0) {
     $roles[$admin_role] .= t(' <em>(administrator role)</em>');
   }
-  
+  if(!isset($defaults['user_permissions']['edit_own_roles'])) {
+    $defaults['user_permissions']['edit_own_roles'] = array();
+  }
+  if(!isset($defaults['user_permissions']['delete_own_roles'])) {
+    $defaults['user_permissions']['delete_own_roles'] = array();
+  }
+
   $form = array(
     'intro' => array(
       '#markup' => t('Set the default settings for all new content types below. These settings can be overridden on the content type page.'),
@@ -30,11 +36,6 @@ function content_type_extras_settings() {
           '#title'         => t('Title field label'),
           '#default_value' => $defaults['title_label'],
           '#required'      => 1,
-        ),
-        'content_type_extras_remove_body' => array(
-          '#type'          => 'checkbox',
-          '#title'         => t('Remove body field from content types'),
-          '#default_value' => $defaults['content_type_extras_remove_body'],
         ),
         'node_preview' => array(
           '#type'    => 'radios',
@@ -142,26 +143,44 @@ function content_type_extras_settings() {
           '#options'       => $roles,
           '#default_value' => $defaults['user_permissions']['edit_roles'],
         ),
+        'edit_own_roles' => array(
+          '#type'          => 'checkboxes',
+          '#title'         => t('Roles that can EDIT own content'),
+          '#options'       => $roles,
+          '#default_value' => $defaults['user_permissions']['edit_own_roles'],
+        ),
         'delete_roles' => array(
           '#type'          => 'checkboxes',
           '#title'         => t('Roles that can DELETE any content'),
           '#options'       => $roles,
           '#default_value' => $defaults['user_permissions']['delete_roles'],
         ),
+        'delete_own_roles' => array(
+          '#type'          => 'checkboxes',
+          '#title'         => t('Roles that can DELETE own content'),
+          '#options'       => $roles,
+          '#default_value' => $defaults['user_permissions']['delete_own_roles'],
+        ),
       ),
       'extras' => array(
         '#type'   => 'fieldset',
         '#title'  => t('Extra settings'),
         '#weight' => 40,
-        'node_type_forms' => array(
+        'content_type_forms' => array(
           '#type'   => 'fieldset',
-          '#title'  => t('Node type forms'),
+          '#title'  => t('Content type forms'),
           '#weight' => 0,
           'content_type_extras_descriptions_required' => array(
             '#type'          => 'checkbox',
             '#title'         => t('Make description field on all content types required'),
             '#description'   => t('Drupal by default does not require that the description field be filled in. Enabling this option will make the description field required.'),
             '#default_value' => $defaults['content_type_extras_descriptions_required'],
+          ),
+          'content_type_extras_remove_body' => array(
+            '#type'          => 'checkbox',
+            '#description'   => t("Drupal by default automatically creates a body field for each content type. Enabling this option will remove the body field from a newly created content type. This option can be overridden on a per content type basis."),
+            '#title'         => t('Remove body field from content types'),
+            '#default_value' => $defaults['content_type_extras_remove_body'],
           ),
         ),
         'node_titles' => array(
@@ -203,9 +222,20 @@ function content_type_extras_settings() {
           ),
         ),
       ),
+      'configuration' => array(
+        '#type'   => 'fieldset',
+        '#title'  => t('Configuration settings'),
+        '#weight' => 50,
+        'content_type_extras_excluded_node_forms' => array(
+          '#type'          => 'textarea',
+          '#title'         => t('Excluded node forms'),
+          '#description'   => t('Enter the node form ids that you would like to exclude from being processed by Content Type: Extras, one per line.<br><strong>Note:</strong> \'subscriptions_ui_node_form\' and \'field_collection_item_form\' will always be added to prevent errors.'),
+          '#default_value' => implode("\n", $defaults['content_type_extras_excluded_node_forms']),
+        ),
+      ),
     ),
   );
-  
+
   if (module_exists('comment')) {
     $form['content_type_extras']['comment'] = array(
       '#type'   => 'fieldset',
@@ -267,7 +297,7 @@ function content_type_extras_settings() {
       ),
     );
   }
-  
+
   if (module_exists('xmlsitemap')) {
     $form['content_type_extras']['xmlsitemap_settings'] = array(
       '#type'   => 'fieldset',
@@ -308,9 +338,53 @@ function content_type_extras_settings() {
       ),
     );
   }
-  
+
+  if (module_exists('scheduler')) {
+    $form['content_type_extras']['scheduler_settings'] = array(
+      '#type'   => 'fieldset',
+      '#title'  => t('Scheduler'),
+      '#tree'   => TRUE, // Set to TRUE to match node_type_form for saving settings
+      '#weight' => 35,
+      'publish_enable' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Enable Scheduled publishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['publish_enable'],
+      ),
+      'publish_touch' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Change content creation time to match the scheduled publish time for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['publish_touch'],
+      ),
+      'publish_require' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Require scheduled publishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['publish_require'],
+      ),
+      'publish_revision' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Create a new revision on publishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['publish_revision'],
+      ),
+      'unpublish_enable' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Enable scheduled unpublishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['unpublish_enable'],
+      ),
+      'unpublish_require' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Require scheduled unpublishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['unpublish_require'],
+      ),
+      'unpublish_revision' => array(
+        '#type'          => 'checkbox',
+        '#title'         => t('Create a new revision on unpublishing for new content types'),
+        '#default_value' => $defaults['scheduler_settings']['unpublish_revision'],
+      ),
+    );
+  }
+
   if (module_exists('fpa')) {
-    $form['content_type_extras']['extras']['node_type_forms']['content_type_extras_user_permissions_select'] = array(
+    $form['content_type_extras']['extras']['content_type_forms']['content_type_extras_user_permissions_select'] = array(
       '#type'    => 'radios',
       '#title'   => t('Select which user interface to use to manage permissions on node type forms'),
       '#options' => array(
@@ -320,19 +394,22 @@ function content_type_extras_settings() {
       '#default_value' => $defaults['content_type_extras_user_permissions_select'],
     );
   }
-  
+
   $form['actions'] = array(
     'submit'   => array(
       '#type'  => 'submit',
       '#value' => t('Save configuration'),
     ),
   );
-  
+
   return $form;
 }
 
 function content_type_extras_settings_submit(&$form, &$form_state) {
   $values = $form_state['values'];
+  // Place the values of content_type_extras_excluded_node_forms into an array
+  $values['content_type_extras_excluded_node_forms'] = explode("\n", $values['content_type_extras_excluded_node_forms']);
+
   unset($values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['op']);
   variable_set('content_type_extras_default_settings', $values);
 
