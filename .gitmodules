@@ -1,0 +1,6 @@
+[submodule "sites/all/themes/gui/robinsontheme"]
+	path = sites/all/themes/gui/robinsontheme
+[submodule "sites/all/themes/gui/robinsonmeta"]
+	path = sites/all/themes/gui/robinsonmeta
+[submodule "sites/all/modules/gui/robinson"]
+	path = sites/all/modules/gui/robinson
