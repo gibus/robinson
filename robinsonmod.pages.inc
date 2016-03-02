@@ -363,14 +363,14 @@ function robinsonmod_tv_show_nodeLoad_thematique($node){
 
 function robinsonmod_tv_show_nodeLoad_voisin($node){
   $field_comportement = field_get_items('node', $node, 'field_comportement');
-  $comportement = taxonomy_term_load($field_comportement[0]['tid']);
-  $field_type_media = field_get_items('node', $node, 'field_type_media');
-  $mediatype = taxonomy_term_load($field_type_media[0]['tid']);
+  $comportement       = taxonomy_term_load($field_comportement[0]['tid']);
+  $field_type_media   = field_get_items('node', $node, 'field_type_media');
+  $mediatype          = taxonomy_term_load($field_type_media[0]['tid']);
 
   // Get size
   $field_size = field_get_items('taxonomy_term', $comportement, 'field_taille_minmax');
-  $size = field_view_value('taxonomy_term', $comportement, 'field_taille_minmax', $field_size[0]);
-  $size = render($size);
+  $size       = field_view_value('taxonomy_term', $comportement, 'field_taille_minmax', $field_size[0]);
+  $size       = render($size);
   preg_match_all('/\d+/', $size, $sizes);
   if( isset($sizes[0]) ):
 
@@ -399,11 +399,11 @@ function robinsonmod_tv_show_nodeLoad_voisin($node){
   // Get delay after voisin
   $field_delay = field_get_items('taxonomy_term', $comportement, 'field_pause_apres_le_voisin');
   $delay = field_view_value('taxonomy_term', $comportement, 'field_pause_apres_le_voisin', $field_delay[0]);
-    /* TODO > get min max delay, random on it, and pass the result to js. */
+  $delay = render($delay);
   preg_match_all('/\d+/', $delay, $delays);
   if( isset($delays[0]) ):
-    $min = min($delays[0]);
-    $max = max($delays[0]);
+    $min   = min($delays[0]);
+    $max   = max($delays[0]);
     $delay = $min==$max? $min : mt_rand($min,$max);
   else:
     $delay = 0;
@@ -413,26 +413,23 @@ function robinsonmod_tv_show_nodeLoad_voisin($node){
   $type = $mediatype->name;
 
   // Get duration
-  if( $type == 'photo' || $type == 'texte' ):
-    $field_duree_sec_minmax = field_get_items('taxonomy_term', $comportement, 'field_duree_sec_minmax');
-    $duration = field_view_value('taxonomy_term', $comportement, 'field_duree_sec_minmax', $field_duree_sec_minmax[0]);
-    $duration = render($duration);
-    preg_match_all('/\d+/', $duration, $durations);
-    if( isset($durations[0]) ):
-      $min = min($durations[0]);
-      $max = max($durations[0]);
-      $duration = mt_rand($min,$max);
-    else:
-      $duration = 10;
-    endif;
+  $field_duree_sec_minmax = field_get_items('taxonomy_term', $comportement, 'field_duree_sec_minmax');
+  $duration = field_view_value('taxonomy_term', $comportement, 'field_duree_sec_minmax', $field_duree_sec_minmax[0]);
+  $duration = render($duration);
+  preg_match_all('/\d+/', $duration, $durations);
+  if( isset($durations[0]) ):
+    $min      = min($durations[0]);
+    $max      = max($durations[0]);
+    $duration = mt_rand($min,$max);
   else:
     $duration = null;
   endif;
 
-  $ret['duration'] =  $duration;
-  $ret['mediatype'] = $type;
-  $ret['delay'] =     $delay;
-  $ret['html'] =      theme('robinsonmod_tv_voisin', array('node' => $node, 'size' => $size, 'offset' => $offset));
+  $ret['comportement'] = $comportement->name;
+  $ret['duration']     = $duration;
+  $ret['mediatype']    = $type;
+  $ret['delay']        = $delay;
+  $ret['html'] = theme('robinsonmod_tv_voisin', array('node' => $node, 'size' => $size, 'offset' => $offset));
   return $ret;
 }
 

@@ -1,0 +1,8 @@
+{
+  "type":"voisin",
+  "comportement":"voisin-danse",
+  "duration":63,
+  "mediatype":"vid\u00e9o",
+  "delay":7,
+  "html":"\n\u003Cdiv class=\u0022row\u0022\u003E\n\n  \u003Carticle class=\u0022node node-302 node-voisin col-xs-8 col-xs-offset-3 col-sm-offset-4 col-offset-top-9\u0022\n           data-is-image=\u0022\u0022\n           data-is-video=\u00221\u0022\n           data-is-text=\u0022\u0022\u003E\n                                  \u003Cfigure\u003E\n        \u003Cdiv class=\u0022embed-responsive embed-responsive-4by3\u0022\u003E\n          \n\u003Cdiv class=\u0022embedded-video\u0022\u003E\n  \u003Cdiv class=\u0022player\u0022\u003E\n    \u003Ciframe class=\u0022\u0022 id=\u0022vimeo-116950910\u0022 width=\u0022640px\u0022 height=\u0022360px\u0022 src=\u0022\/\/player.vimeo.com\/video\/116950910?width=640px\u0026amp;height=360px\u0026amp;color=ffffff\u0026amp;portrait=0\u0026amp;title=0\u0026amp;byline=0\u0026amp;autoplay=0\u0026amp;loop=0\u0026amp;player_id=vimeo-116950910\u0022 frameborder=\u00220\u0022 webkitAllowFullScreen mozallowfullscreen allowfullscreen\u003E\u003C\/iframe\u003E  \u003C\/div\u003E\n\u003C\/div\u003E\n        \u003C\/div\u003E\n      \u003C\/figure\u003E\n      \u003C\/article\u003E\n\n\u003C\/div\u003E\n"
+}

@@ -8,16 +8,18 @@
   $offsetTop = mt_rand(0,10);
 
   // Get media fields
-  $field_image =        field_get_items('node', $node, 'field_image');
-  $field_video =        field_get_items('node', $node, 'field_video');
+  $field_image        = field_get_items('node', $node, 'field_image');
+  $field_video        = field_get_items('node', $node, 'field_video');
   $field_format_video = field_get_items('node', $node, 'field_format_video');
-  $field_text =        field_get_items('node', $node, 'field_texte');
+  $field_text         = field_get_items('node', $node, 'field_texte');
 ?>
 
 <div class="row">
 
   <article class="node node-<?= $node->nid ?> node-<?= $node->type ?> col-xs-<?= $size ?> col-xs-offset-<?= mt_rand(0,$offset) ?> col-sm-offset-<?= $offset ?> col-offset-top-<?= $offsetTop ?>"
-           data-is-image="<?= $field_image != FALSE; ?>" data-is-image="<?= $field_image != FALSE; ?>" data-is-video="<?= $field_video != FALSE; ?>" data-is-text="<?= $field_text != FALSE; ?>">
+           data-is-image="<?= $field_image != FALSE; ?>"
+           data-is-video="<?= $field_video != FALSE; ?>"
+           data-is-text="<?= $field_text != FALSE; ?>">
     <?php if ( $field_image ): ?>
       <?php $img = field_view_value('node', $node, 'field_image', $field_image[0]); ?>
       <figure class="thumbnail">
