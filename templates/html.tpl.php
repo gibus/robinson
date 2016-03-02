@@ -93,13 +93,13 @@
       <div class="row">
 
         <?php for ($j=0; $j < $n; $j++) : ?>
-        <?
+        <?php
           $class = "";
           if($j > 0) $class .= $hidden[0];
           if($j > 1) $class .= $hidden[1];
           if($j > 2) $class .= $hidden[2];
         ?>
-        <div class="col-xs-12 col-sm-4 <?= $class ?>">
+        <div class="col-xs-12 col-sm-4 <?= isset($class) ? $class : ""; ?>">
           <div class="ratio">
             <div class="in">
               <?php for ($k=0; $k < 4; $k++) : ?>

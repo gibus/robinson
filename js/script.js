@@ -1,6 +1,7 @@
 // @koala-prepend "gui.js"
 // @codekit-prepend "gui.js"
 
+console.log('Hello Robinson!');
 
 Drupal.behaviors.init_theme = function (context) {
   // Growl-style system messages
@@ -564,8 +565,8 @@ Drupal.behaviors.init_theme = function (context) {
 
       Neighbourhood.prototype.hide = function(event) {
         console.log('Neighbourhood :: hide');
-        // console.log('Neighbourhood revoc Neighbour', this.called);
-        // console.log('this.nids',this.nids);
+        console.log('Neighbourhood revoc Neighbour', this.called);
+        console.log('this.nids',this.nids);
 
         this.$.off();
 
@@ -590,10 +591,8 @@ Drupal.behaviors.init_theme = function (context) {
         clearTimeout(this.timer);
 
         if( !this.stop ) { // check flag for before calling new Neighbour
-          this.timer = setTimeout(function(){
-            // queue neighbours, when one finish, invoc a new one
-            neighbourhood.$.trigger('show-lpr-neighbourhood');
-          }, this.currentNeighbour.delay*1000 );
+          // queue neighbours, when one finish, invoc a new one
+          neighbourhood.$.trigger('show-lpr-neighbourhood');
         } else if( this.called < 1 ) {
           this.$.trigger('next-lpr-theme-watch');
           this.$.trigger('hide-lpr-neighbourhood');
@@ -730,6 +729,8 @@ Drupal.behaviors.init_theme = function (context) {
           .addClass('shown-lpr');
 
         // If duration set, start Timer.
+        // Neighbour duration will be video length
+        // or, if shorter, the duration.
         if( this.duration > 0 ) {
           setTimeout(function(){
             neighbour.$.trigger('hide-lpr-neighbour');
@@ -738,21 +739,28 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.hide = function(event) {
-        console.log('Neighbour :: hide',this.id);
+        console.log('Neighbour :: hide', this.id, this.delay);
         var neighbour = this;
 
         if( neighbour.vimeo.$player ) {
           neighbour.vimeo.$player.removeEvent('pause');
         }
 
-        $(this.id)
-          .addClass('hide-lpr')
-          .one('bsTransitionEnd', function(event) {
-            neighbour.$.trigger('hidden-lpr-neighbour');
-          });
+        neighbour.timer = setTimeout(function(){
 
-        // When it’s hidding, inform the Neighbourhood.
-        this.$.trigger( 'hide-lpr-neighbourhood-watch', this.nid );
+          console.log('Neighbour :: delay end');
+
+
+          $(neighbour.id)
+            .addClass('hide-lpr')
+            .one('bsTransitionEnd', function(event) {
+              neighbour.$.trigger('hidden-lpr-neighbour');
+            });
+
+          // When it’s hidding, inform the Neighbourhood.
+          neighbour.$.trigger( 'hide-lpr-neighbourhood-watch', this.nid );
+
+        }, neighbour.delay*1000 );
       };
 
       Neighbour.prototype.hidden = function(event) {
