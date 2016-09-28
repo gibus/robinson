@@ -4,9 +4,9 @@ dependencies[] = session_cache
 configure = admin/config/development/session_cache
 core = 7.x
 
-; Information added by drupal.org packaging script on 2013-10-25
-version = "7.x-1.2"
+; Information added by Drupal.org packaging script on 2015-12-06
+version = "7.x-1.4"
 core = "7.x"
 project = "session_cache"
-datestamp = "1382672428"
+datestamp = "1449373143"
 

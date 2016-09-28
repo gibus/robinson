@@ -6,9 +6,9 @@ configure = admin/structure/types/defaults
 
 files[] = includes/content_type_extras.node_type_form.inc
 
-; Information added by drupal.org packaging script on 2012-02-10
-version = "7.x-1.7"
+; Information added by Drupal.org packaging script on 2016-09-02
+version = "7.x-1.12"
 core = "7.x"
 project = "content_type_extras"
-datestamp = "1328894137"
+datestamp = "1472853844"
 

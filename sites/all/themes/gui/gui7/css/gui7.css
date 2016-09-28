@@ -1,0 +1,112 @@
+/*body{background-color: red;}*/
+
+#page{width:1000px; margin:0 auto;}
+.sidebar{width:15%; min-width:150px;}
+
+#center{min-width:800px;}
+.one-sidebar #center{width:83%;}
+.two-sidebar #center{width:68%;}
+
+.sidebar, .one-sidebar #center, .two-sidebar #center{display:inline-block; vertical-align: top;}
+
+.sidebar .region{padding:0 15px;}
+
+
+
+/**
+ * help description on hover 
+ */
+form:not(	#views-ui-config-item-form ) .form-item {
+    position:relative;
+/*    padding:9px;*/
+    }
+
+	form:not(	#views-ui-config-item-form ) .form-item .description{
+	  position:absolute;
+	  bottom:140%;
+/*	  right:-15px;*/
+	  z-index:5;
+		left:50%;
+	  color:#1A1A1A;
+		line-height:1.1;
+	  background:url(../images/popup.png) 50% 100% no-repeat;
+	  width:240px;
+	  margin:0px 0px -15px;
+	  padding:9px 10px 20px;
+	  display:none;
+		border-top: 1px solid #9F9F9F;
+	  }
+ form:not(	#views-ui-config-item-form )  .form-item:hover {
+    z-index:1;
+    height:auto; /* Fix for flicker in IE7 */
+    }
+ form:not(	#views-ui-config-item-form )  .form-item:hover > .description { display:block; }
+
+
+
+	/**
+	 * Messages.
+	 */
+	div.messages {
+		position:relative;
+	  padding: 9px;
+	  margin: 0.5em 0 0;
+	  color: #036;
+	  background: #bdf;
+	  border: 1px solid #ace;
+		-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+
+	}
+	
+	div.messages span.close{
+		font-weight:bold;
+		cursor:pointer;
+		padding:0 5px;
+		position:absolute;
+		top:0;
+		right:0;
+	}
+	
+	div.warning {
+	  color: #840;
+	  background: #fe6;
+	  border-color: #ed5;
+	}
+
+	div.error {
+	  color: #fff;
+	  background: #e63;
+	  border-color: #d52;
+	}
+
+	div.error p.error {
+	  color: #333;
+	}
+
+	div.status {
+	  color: #360;
+	  background: #cf8;
+	  border-color: #be7;
+	}
+
+
+
+	/**
+	 * VIEW
+	 */
+	div.changed {
+	  background-color: #FFF98E;
+	}
+	
+	.views-display .tab-section .inside .defaulted {
+	  color: #4C4C4C;
+		background-color: #E4E4E4;
+	  font-style: italic;
+/*		font-weight:bold;*/
+	}
+
+	.views-display .tab-section .inside .defaulted a {
+	  font-style: italic;
+	}

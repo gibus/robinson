@@ -1,5 +1,0 @@
-1354482-er-user-roles-19.patch
-http://drupal.org/node/1354482
-
-patch-entityreference-7.x.patch
-http://drupal.org/node/1691612

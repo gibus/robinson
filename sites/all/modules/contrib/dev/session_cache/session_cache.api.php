@@ -25,8 +25,8 @@
  */
 function session_cache_set($bin, $data) {
   // See the following modules for examples:
-  // o IP Geolocation Views & Maps
-  // o Views Global Filter
+  // o IP Geolocation Views & Maps.
+  // o Views Global Filter.
 }
 
 /**
@@ -34,11 +34,14 @@ function session_cache_set($bin, $data) {
  *
  * @param string $bin
  *   unique id eg a string prefixed by the module name
+ *
+ * @return mixed
+ *   the cache data
  */
 function session_cache_get($bin) {
   // See the following modules for examples:
-  // o IP Geolocation Views & Maps
-  // o Views Global Filter
+  // o IP Geolocation Views & Maps.
+  // o Views Global Filter.
 }
 
 /**
@@ -47,12 +50,14 @@ function session_cache_get($bin) {
  */
 
 /**
- * Add your own variation of the available storage mechanisms by implementing
- * this hook.
+ * Implement this set-hook to complete your own storage mechanism.
  *
  * @param int $storage_method
+ *   the storage method
  * @param string $bin
- * @param mixe $data
+ *   the name of the bin under which to store $data
+ * @param mixed $data
+ *   the data to store
  */
 function hook_session_cache_set($storage_method, $bin, $data) {
   if ($storage_method != MYMODULE_SESSION_STORAGE) {
@@ -63,25 +68,27 @@ function hook_session_cache_set($storage_method, $bin, $data) {
 }
 
 /**
- * Complete your own variation of the available storage mechanisms by
- * implementing this hook.
+ * Implement this get-hook to complete your own storage mechanism.
  *
  * @param int $storage_method
+ *   the storage methd
  * @param string $bin
+ *   the name of the bin to retrieve cached data from
+ *
  * @return mixed
+ *   the cached data
  */
 function hook_session_cache_get($storage_method, $bin) {
   if ($storage_method != MYMODULE_SESSION_STORAGE) {
     return NULL;
   }
-  // ... your retrieval mechanism
+  // ... your retrieval mechanism goes here.
   $data = "your data based on $bin";
   return $data;
 }
 
 /**
- * You make your storage mechanism selectable through the existing admin UI by
- * implementing hook_form_session_cache_admin_config_alter().
+ * Implement this hook to make your storage mechanism selectable in the UI.
  */
 function hook_form_session_cache_admin_config_alter(&$form, &$form_state) {
   $form['session_cache_storage_method']['#options'][MYMODULE_SESSION_STORAGE]

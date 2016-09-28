@@ -268,13 +268,14 @@ function background_process_service_access($handle, $token) {
   }
 
   // Login as the user that requested the call
+  global $user;
   if ($process->uid) {
-    global $user;
-    $user = user_load($process->uid);
-    if (!$user) {
+    $load_user = user_load($process->uid);
+    if (!$load_user) {
       // Invalid user!
       return FALSE;
     }
+    $user = $load_user;
   }
   else {
     $user = drupal_anonymous_user();
@@ -291,7 +292,7 @@ function background_process_init() {
     return;
   }
   // Don't determine on check-token page, to avoid infinite loop
-  if ($_GET['q'] == 'background-process/check-token') {
+  if (strpos($_GET['q'], 'background-process/check-token') === 0) {
     return;
   }
   // Only determine when installation of site is finished
@@ -842,7 +843,8 @@ function background_process_unlock($handle, $msg = NULL, $start = NULL) {
     // Unlock the process
     if (background_process_remove_process($process->handle, $process->start)) {
       global $user;
-      module_invoke_all('background_process_shutdown', $process, $msg ? $msg : t('Manually unlocked by !name', array('!name' => $user->name)));
+      $username = $user->uid ? $user->name : t('anonymous');
+      module_invoke_all('background_process_shutdown', $process, $msg ? $msg : t('Manually unlocked by !name', array('!name' => $username)));
       return TRUE;
     }
   }
@@ -989,7 +991,7 @@ function background_process_build_request($url, $service_hostname = NULL, $optio
   $headers = _background_process_request_headers();
   $headers = _background_process_filter_headers($headers);
   $headers['Host'] = $host;
-  $headers['Connection'] = 'Close';
+  $headers['Connection'] = 'close';
 
   if (isset($parsed['user'])) {
     $headers['Authorization'] = 'Basic ' . base64_encode($parsed['user'] . ':' . $parsed['pass']);

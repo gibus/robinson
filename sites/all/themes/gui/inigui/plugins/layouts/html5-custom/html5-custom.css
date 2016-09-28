@@ -1,0 +1,5 @@
+.panel-html5-custom{width:100%;}
+.panel-html5-custom .nav{ float:left; width:100%; }
+.panel-html5-custom .article{ clear:both; float:left; width:50%; }
+.panel-html5-custom .aside{ float:right; width:50%; }
+.clear-after:after{clear:both;content:'';display:block;height:0px;overflow:hidden;visibility:hidden;width:0px;}

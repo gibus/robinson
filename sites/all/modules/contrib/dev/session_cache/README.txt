@@ -1,6 +1,6 @@
 
-Installation
-============
+Session Cache API Installation
+==============================
 You typically use this module for one of two reasons:
 a) because another module tells you to, i.e. it may list Session Cache API as
    a dependency;
@@ -13,9 +13,7 @@ configuration page, admin/config/development/session_cache.
 
 If Varnish isn't used on your system, the default configuration settings are
 fine, i.e. do nothing.
-
-If Varnish is used, pick the cookie option as the storage mechanism and be done
-with it. Or continue reading to learn more.
+If Varnish is used, read the Varnish section further down this page.
 
 About sessions
 ==============
@@ -50,7 +48,6 @@ logout. So while the PHP/Drupal-core generated $_SESSION gets destroyed, Session
 API will return to the programmer an equivalent sid that is valid for both the
 logged-in and logged-out situations.
 Neat.
-
 However Session API has limited scope (as it should) and does not itself
 implement any storage against this "unified" sid. You have to do that yourself.
 That's where the Session Cache API module comes in.
@@ -75,6 +72,7 @@ as there is no encryption.
 
 This module does one small job: help create a smooth experience for both users
 and programmers when it comes to anonymous user session management.
+You do NOT need the Session API module.
 
 This API is independent of the underlying session storage mechanism. In fact the
 storage model does not enter the API. Instead it is selected through the
@@ -84,25 +82,47 @@ The storage mechanisms available are:
  o cookie, i.e. store session on the user's computer
  o database, i.e. store session on the server, in a cache table
  o $_SESSION, i.e. store in server RAM, backed by core's {sessions} table
-
-Both the cookie and database storage mechanisms offer a seamless user experience
-across login/logout boundaries. You do not need to add Session API for this.
+ o file, i.e. one tiny file on the server per session -- enable the
+   session_cache_file submodule for this option
 
 Administrators may switch the storage mechanism on the module's configuration
 page at any time.
 
-The $_SESSION option may be unsuitable when used in combination with a caching
-engine like Varnish.
-The cookie option can be a good solution, also because it distributes storage
-foot print from the server to its clients.
-All three mechanisms require the user to have cookies enabled in their browser.
-In the first mechanism the session data itself is stored in a cookie, while in
-the remaining two a smaller cookie is used to hold the key to the session data.
-The database mechanism still works if cookies are disabled, except there will
-be a discontinuity of the session data across login and logout.
+For the database and file storage mechanisms the site administrator may pick
+what source is used to create the session identifier:
+- cookie for everyone (default)
+- user id for logged-in users, cookie for anonymous users
+- IP address for everyone
 
-NOTE: users who have cookies switched off will not be able to login, so are
-doomed to remain anonymous AND will not have their session state remembered.
+Unlike $_SESSION, the cookie, database and file storage mechanisms offer
+seamless user experiences across login/logout boundaries.
+
+With cookies being configured for use as session ids, the database mechanism,
+if selected, stills work when cookies are disabled on the client, except there
+will be a discontinuity of the session data across login and logout.
+
+Cookies have a size limitation of about 4k. The global cookie domain may be set
+in settings.php, e.g., for multi-site installations.
+
+Varnish or similar engine
+-------------------------
+The $_SESSION option may be unsuitable when used in combination with a caching
+engine like Varnish. The cookie option can be a good solution, also because it
+distributes storage foot print from the server to its clients. However you may
+have to combine it with a page exclusion strategy whereby no caching takes
+place for some pages, thus allowing for cookies to exist.
+By default, all mechanisms require anonymous users to have cookies enabled in
+their browser, unless the IP address is chosen as the session identifier in the
+database or file storage approaches -- something to consider when using Varnish.
+In the cookie mechanism the session data itself is stored in the cookie, while
+in the $_SESSION, database, file and mechanisms a smaller cookie is used just to
+hold the key to the session data. However database and file allow you to bypass
+cookies completely by selecting the IP address as the session identifier.
+
+NOTE: visitors who have cookies switched off in their browsers will not be able
+to login, so are doomed to remain anonymous AND will not have their session
+states remembered, unless their IP address was picked as the source to identify
+sessions.
 
 The API to read and write user session data is the same in all cases and
 comprises these two functions:
