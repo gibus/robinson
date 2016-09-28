@@ -1,7 +1,7 @@
 // @koala-prepend "gui.js"
 // @codekit-prepend "gui.js"
 
-console.log('Hello Robinson!');
+// console.log('Hello Robinson!');
 
 Drupal.behaviors.init_theme = function (context) {
   // Growl-style system messages
@@ -52,16 +52,16 @@ Drupal.behaviors.init_theme = function (context) {
     var size;
     $('#size').each(function(index, el) {
       size = window.getComputedStyle(this,':after').content;
-      console.log('size b', size);
+      // console.log('size b', size);
       size = size.replace(/^('|")*(.*)\1$/g, "$2");
-      console.log('size a', size);
+      // console.log('size a', size);
     });
 
     if( !$('body').is('.front') )
       return;
 
     if( size == 'Phones (-xs)' ) {
-      console.log("mobile. Stop.");
+      // console.log("mobile. Stop.");
       return;
     }
 
@@ -94,7 +94,7 @@ Drupal.behaviors.init_theme = function (context) {
   };
 
   function success(data) {
-    console.log("This is a theme:", data);
+    // console.log("This is a theme:", data);
     if( data.nid ) {
       _loaded.push(data.nid);
       _mode = data.mode;
@@ -109,7 +109,7 @@ Drupal.behaviors.init_theme = function (context) {
         $(window).trigger('program-lpr-nid-recovered', data );
 
     } else {
-      console.log("Hoops. No Nid came in.");
+      // console.log("Hoops. No Nid came in.");
     }
   }
 
@@ -174,7 +174,7 @@ Drupal.behaviors.init_theme = function (context) {
   -----------------------------------------------------------------------------*/
   function Program(nid,nids) {
 
-    console.log(" - - - - - - - - - New Program - - - - - - - - - ");
+    // console.log(" - - - - - - - - - New Program - - - - - - - - - ");
 
     this.$ =               $(this);
     this.nid =             nid;
@@ -197,7 +197,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Program.prototype.append = function() {
-        console.log("Program :: node append");
+        // console.log("Program :: node append");
         // Append theme to DOM.
         _$main.append(
           $('<div>')
@@ -221,7 +221,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Program.prototype.invocSequence = function() {
 
-        console.log('Program :: invoc Sequence');
+        // console.log('Program :: invoc Sequence');
         // console.log('this.nids',this.nids);
 
         var program = this;
@@ -257,12 +257,12 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Program.prototype.hide = function() {
-        console.log('Program :: hide');
+        // console.log('Program :: hide');
         this.$.off();
       };
 
       Program.prototype.sequenceHide = function(event) {
-        console.log('Program :: sequence Hide');
+        // console.log('Program :: sequence Hide');
         var program = this;
         clearTimeout(this.timer);
         var delay = this.currentSequence.delay || 1;
@@ -284,7 +284,7 @@ Drupal.behaviors.init_theme = function (context) {
   -----------------------------------------------------------------------------*/
   function Theme(nid) {
 
-    console.log(" - - - - - - - - - New Theme - - - - - - - - - ");
+    // console.log(" - - - - - - - - - New Theme - - - - - - - - - ");
 
     this.$ =         $(this);
     this.nid =       nid;//300;//212;
@@ -312,7 +312,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.nodeLoaded = function(data) {
-        console.log('Theme :: Loaded');//,data);
+        // console.log('Theme :: Loaded');//,data);
 
         // Save datas
         this.html = data.html;
@@ -331,7 +331,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.append = function() {
-        console.log("Theme :: node append");
+        // console.log("Theme :: node append");
         // Append theme to DOM.
         _$main.append(
           $('<div>')
@@ -359,8 +359,8 @@ Drupal.behaviors.init_theme = function (context) {
         $(this.id + ' iframe')
           .one('load', function(event){
 
-            console.log( 'Theme :: iframe =', $(this) );
-            console.log( 'Theme :: theme.id', theme.id );
+            // console.log( 'Theme :: iframe =', $(this) );
+            // console.log( 'Theme :: theme.id', theme.id );
 
             var iframe = $(this)[0];
             var player = $f(iframe);
@@ -383,7 +383,7 @@ Drupal.behaviors.init_theme = function (context) {
               event.preventDefault();
               /* Act on the event */
               theme.vimeo.$player.api('getDuration', function (value, player_id) {
-                console.log('Theme :: duration',value);
+                // console.log('Theme :: duration',value);
                 theme.vimeo.$player.api('seekTo', (value-10));
               });
             });
@@ -398,7 +398,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.show = function(event) {
-        console.log('Theme :: show');
+        // console.log('Theme :: show');
         var theme = this;
         $(this.id)
           .addClass('show-lpr');
@@ -412,7 +412,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.shown = function(event) {
-        console.log('Theme :: shown');
+        // console.log('Theme :: shown');
 
         $(this.id)
           .addClass('shown-lpr');
@@ -422,7 +422,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.hide = function(event) {
-        console.log('Theme :: hide');
+        // console.log('Theme :: hide');
         var theme = this;
 
         theme.vimeo.$player.removeEvent('pause');
@@ -438,14 +438,14 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.hidden = function(event) {
-        console.log('Theme :: hidden');
+        // console.log('Theme :: hidden');
 
         $(this.id)
           .addClass('hidden-lpr');
       };
 
       Theme.prototype.end = function(event) {
-        console.log('Theme :: end');
+        // console.log('Theme :: end');
 
         // call for next theme
         this.$.trigger('next-lpr-theme');
@@ -468,30 +468,30 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Theme.prototype.vimeoPlay = function(id) {
-        console.log("Theme :: vimeo ---> [Play]",id);
+        // console.log("Theme :: vimeo ---> [Play]",id);
         // check if a neighbour replay after stoping,
         // cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
       Theme.prototype.vimeoPause = function(id) {
-        console.log("Theme :: vimeo ---> [Pause]",id);
+        // console.log("Theme :: vimeo ---> [Pause]",id);
         // force video playing.
         this.vimeo.$player.api("play");
         var theme = this;
         this.vimeo.clinicalDeath = setTimeout(function(){
-          console.log("Theme :: vimeo ---> [clinical death]",id);
+          // console.log("Theme :: vimeo ---> [clinical death]",id);
           theme.$.trigger('hide-lpr-theme');
         }, 30000); // 30s
       };
 
       Theme.prototype.vimeoFinish = function(id) {
-        console.log("Theme :: vimeo ---> [Finish]");
+        // console.log("Theme :: vimeo ---> [Finish]");
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
       Theme.prototype.vimeoPlayProgress = function(data, id) {
-        // console.log("Theme :: vimeo ---> " + data.seconds + 's played');
+        // console.log("Theme :: vimeo ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-theme');
       };
@@ -526,7 +526,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbourhood.prototype.nodeLoaded = function(data) {
-        console.log('Neighbourhood :: Loaded',data);
+        // console.log('Neighbourhood :: Loaded',data);
         this.nids = data.nids;
 
         // Init actions.
@@ -543,7 +543,7 @@ Drupal.behaviors.init_theme = function (context) {
 
       Neighbourhood.prototype.invocNeighbour = function() {
 
-        console.log('Neighbourhood :: invoc neighbour');//,this.called);
+        // console.log('Neighbourhood :: invoc neighbour');//,this.called);
         // console.log('this.nids',this.nids);
 
         var neighbourhood = this;
@@ -561,33 +561,33 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbourhood.prototype.end = function(event) {
-        console.log('Neighbourhood :: end');
+        // console.log('Neighbourhood :: end');
 
         this.stop = true; // flag for stop calling new Neighbour
       };
 
       Neighbourhood.prototype.hide = function(event) {
-        console.log('Neighbourhood :: hide');
-        console.log('Neighbourhood revoc Neighbour', this.called);
-        console.log('this.nids',this.nids);
+        // console.log('Neighbourhood :: hide');
+        // console.log('Neighbourhood revoc Neighbour', this.called);
+        // console.log('this.nids',this.nids);
 
         this.$.off();
 
         // Revoc all Neighbours
         for (var i = 0; i < this.neighbours.length; i++) {
-          console.log("this.neighbours[]["+i+"]");
+          // console.log("this.neighbours[]["+i+"]");
           this.neighbours[i].request.abort(); // abort the ajax request if neighbour hasn’t finish to load.
           this.neighbours[i].$.trigger('hide-lpr-neighbour'); // hide him
         };
       };
 
       Neighbourhood.prototype.neighbourLoaded = function(event) {
-        console.log('Neighbourhood :: neighbour Loaded');
+        // console.log('Neighbourhood :: neighbour Loaded');
       };
 
       Neighbourhood.prototype.neighbourHide = function(event) {
-        console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour.nid);
-        console.log('Neighbourhood :: neighbourHide, status = ', this.stop);
+        // console.log('Neighbourhood :: neighbour Hide', this.currentNeighbour.nid);
+        // console.log('Neighbourhood :: neighbourHide, status = ', this.stop);
 
         var neighbourhood = this;
         this.called --;
@@ -638,7 +638,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.nodeLoaded = function(data) {
-        console.log('Neighbour :: Loaded',data);
+        // console.log('Neighbour :: Loaded',data);
 
         // Save datas
         this.html =      data.html;
@@ -655,7 +655,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.append = function() {
-        console.log("Neighbour :: Display");
+        // console.log("Neighbour :: Display");
         // Append theme to DOM.
         $(this.container).append(
           $(this.html)
@@ -713,7 +713,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.show = function(event) {
-        console.log('Neighbour :: show',this.id);
+        // console.log('Neighbour :: show',this.id);
         var neighbour = this;
         $(this.id)
           .addClass('show-lpr')
@@ -725,7 +725,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.shown = function(event) {
-        console.log('Neighbour :: shown',this.id);
+        // console.log('Neighbour :: shown',this.id);
         var neighbour = this;
 
         $(this.id)
@@ -742,7 +742,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.hide = function(event) {
-        console.log('Neighbour :: hide', this.id, this.delay);
+        // console.log('Neighbour :: hide', this.id, this.delay);
         var neighbour = this;
 
         if( neighbour.vimeo.$player ) {
@@ -751,7 +751,7 @@ Drupal.behaviors.init_theme = function (context) {
 
         neighbour.timer = setTimeout(function(){
 
-          console.log('Neighbour :: delay end');
+          // console.log('Neighbour :: delay end');
 
 
           $(neighbour.id)
@@ -767,7 +767,7 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.hidden = function(event) {
-        console.log('Neighbour :: hidden',this.id);
+        // console.log('Neighbour :: hidden',this.id);
         $(this.id)
           .addClass('hidden-lpr')
           .remove();
@@ -785,31 +785,31 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.vimeoPlay = function(id) {
-        console.log("Neighbour :: vimeo ---> [Play]",id);
+        // console.log("Neighbour :: vimeo ---> [Play]",id);
         // check if a neighbour replay after stoping,
         // cancel the countdown to clinical death.
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
       Neighbour.prototype.vimeoPause = function(id) {
-        console.log("Neighbour :: vimeo ---> [Pause]",id);
+        // console.log("Neighbour :: vimeo ---> [Pause]",id);
 
         // check if a neighbour stop playing for too long,
         // which is probably not good. In this case, we hide it.
         var neighbour = this;
         this.vimeo.clinicalDeath = setTimeout(function(){
-          console.log("Neighbour :: vimeo ---> [clinical death]",id);
+          // console.log("Neighbour :: vimeo ---> [clinical death]",id);
           neighbour.$.trigger('hide-lpr-neighbour');
         },5000);
       };
 
       Neighbour.prototype.vimeoFinish = function(id) {
-        console.log("Neighbour :: vimeo ---> [Finish]",id);
+        // console.log("Neighbour :: vimeo ---> [Finish]",id);
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
       Neighbour.prototype.vimeoPlayProgress = function(data, id) {
-        // console.log("Neighbour :: vimeo ---> " + data.seconds + 's played');
+        // console.log("Neighbour :: vimeo ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration);
         // console.log("Neighbour :: vimeo in vimeoPlayProgress; this = ", this);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-neighbour');
