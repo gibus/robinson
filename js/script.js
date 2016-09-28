@@ -460,8 +460,11 @@ Drupal.behaviors.init_theme = function (context) {
 
       /* vimeo */
       Theme.prototype.vimeoStart = function() {
-        console.log('Theme :: Start vimeo playing');
-        this.vimeo.$player.api("play");
+        // console.log('Theme :: Start vimeo playing in 1s');
+        var theme = this;
+        setTimeout(function() {
+          theme.vimeo.$player.api("play");
+        }, 1000);
       };
 
       Theme.prototype.vimeoPlay = function(id) {
@@ -774,8 +777,11 @@ Drupal.behaviors.init_theme = function (context) {
 
 
       Neighbour.prototype.vimeoStart = function() {
-        console.log('Neighbour :: Start vimeo playing',this.id);
-        this.vimeo.$player.api("play");
+        // console.log('Neighbour :: Start vimeo playing in 1s',this.id);
+        var neighbour = this;
+        setTimeout(function() {
+          neighbour.vimeo.$player.api("play");
+        }, 1000);
       };
 
       Neighbour.prototype.vimeoPlay = function(id) {
