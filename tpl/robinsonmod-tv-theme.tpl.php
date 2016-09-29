@@ -16,7 +16,7 @@
       <figcaption>
         <h2 class="node-title"><?= $node->title ?></h2>
         <?php $field_thema_date = field_get_items('node', $node, 'field_thema_date'); ?>
-        <h3 class="date"><?= date('d.m.y',$field_thema_date[0][value]) ?></h3>
+        <h3 class="date"><?= date('d.m.y',$field_thema_date[0]['value']) ?></h3>
       </figcaption>
       <?php endif ?>
     </figure>
