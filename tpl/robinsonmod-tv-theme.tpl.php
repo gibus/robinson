@@ -11,7 +11,8 @@
         <?= render($video) ?>
       </div>
       <?php $field_type_of_vimeo = field_get_items('node', $node, 'field_type_of_vimeo'); ?>
-      <?php $type_of_vimeo = render(field_view_value('node', $node, 'field_type_of_vimeo', $field_type_of_vimeo[0])); ?>
+      <?php $field_type_of_vimeo_val = field_view_value('node', $node, 'field_type_of_vimeo', $field_type_of_vimeo[0]); ?>
+      <?php $type_of_vimeo = render($field_type_of_vimeo_val); ?>
       <?php if ($type_of_vimeo != 'sound'): ?>
       <figcaption>
         <h2 class="node-title"><?= $node->title ?></h2>
