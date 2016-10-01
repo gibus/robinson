@@ -1,0 +1,3 @@
+[submodule "sites/all/themes/gui/robinsontheme/libraries/bootstrap"]
+	path = sites/all/themes/gui/robinsontheme/libraries/bootstrap
+	url = https://github.com/twbs/bootstrap.git
