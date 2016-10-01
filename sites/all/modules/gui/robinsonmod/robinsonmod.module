@@ -1,0 +1,508 @@
+<?php
+
+
+/**
+ * Implements hook_menu().
+ */
+function robinsonmod_menu() {
+  $base = array(
+    'type' => MENU_CALLBACK,
+    'file' => 'robinsonmod.pages.inc',
+  );
+
+  $items['ajax/robinson/getcontent'] = $base + array(
+    'title' => 'ajax get content',
+    'page callback' => 'robinsonmod_ajax_getcontent',
+    'page arguments' => array(),
+    'access callback' => true,
+    // 'access arguments' => array(''),
+  );
+
+  $items['ajax/robinson/thema'] = $base + array(
+    'title' => 'ajax thema',
+    'page callback' => 'robinsonmod_ajax_thema',
+    'page arguments' => array(),
+    'access callback' => true,
+    // 'access arguments' => array(''),
+  );
+
+  $items['ajax/robinson/voisin'] = $base + array(
+    'title' => 'ajax voisin',
+    'page callback' => 'robinsonmod_ajax_voisin',
+    'page arguments' => array(),
+    'access callback' => true,
+    // 'access arguments' => array(''),
+  );
+
+  $items['rendez-vous'] = $base + array(
+    'title' => 'Rendez-vous',
+    'page callback' => 'robinsonmod_rendez_vous_getcontent',
+    'access callback' => true,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['thematiques'] = $base + array(
+    'title' => 'Thématiques',
+    'page callback' => 'robinsonmod_thematiques_getcontent',
+    'access callback' => true,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['ajax/tv-show/give-me-a-theme'] = $base + array(
+    'title' => 'Get TVcontent by ajax request',
+    'page callback' => 'robinsonmod_tv_show_giveMeATheme',
+    'page arguments' => array(),
+    'access callback' => true,
+  );
+
+  $items['ajax/tv-show/node-load'] = $base + array(
+    'title' => 'Get TV node by ajax request',
+    'page callback' => 'robinsonmod_tv_show_nodeLoad',
+    'page arguments' => array(),
+    'access callback' => true,
+  );
+
+  $items['ajax/tv-show/give-me-a-neighbour'] = $base + array(
+    'title' => 'Get TVcontent by ajax request',
+    'page callback' => 'robinsonmod_tv_show_giveMeANeighbour',
+    'page arguments' => array(),
+    'access callback' => true,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function robinsonmod_entity_info_alter(&$entity_info) {
+  $base  = array('custom settings' => TRUE);
+
+  $entity_info['node']['view modes']['stream'] = $base + array(
+    'label' => t('Stream')
+  );
+  $entity_info['node']['view modes']['voisin_audio'] = $base + array(
+    'label' => t('Voisin audio')
+  );
+  $entity_info['node']['view modes']['voisin_video'] = $base + array(
+    'label' => t('Voisin video (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t1_16_9'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne) 16/9')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2_16_9'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes) 16/9')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3_16_9'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes) 16/9')
+  );
+  $entity_info['node']['view modes']['voisin_video_t1_4_3'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne) 4/3')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2_4_3'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes) 4/3')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3_4_3'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes) 4/3')
+  );
+  $entity_info['node']['view modes']['rendez_vous'] = $base + array(
+    'label' => t('Rendez-vous')
+  );
+
+
+  //  (deprecated) - - - - - - - - - - - - - - - - - - - -
+
+  $entity_info['node']['view modes']['voisin_video_t1'] = $base + array(
+    'label' => t('Voisin video taille 1 (1 colonne) (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t2'] = $base + array(
+    'label' => t('Voisin video taille 2 (2 colonnes) (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_video_t3'] = $base + array(
+    'label' => t('Voisin video taille 3 (3 colonnes) (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_image'] = $base + array(
+    'label' => t('Voisin image (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t1'] = $base + array(
+    'label' => t('Voisin image taille 1 (1 colonne)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t2'] = $base + array(
+    'label' => t('Voisin image taille 2 (2 colonnes)')
+  );
+  $entity_info['node']['view modes']['voisin_image_t3'] = $base + array(
+    'label' => t('Voisin image taille 3 (3 colonnes)')
+  );
+  $entity_info['node']['view modes']['voisin_text'] = $base + array(
+    'label' => t('Voisin text')
+  );
+
+  /* these following view modes are deprecated, they should be removed */
+  $entity_info['node']['view modes']['voisin_atmosphere_audio'] = $base + array(
+    'label' => t('Voisin Atmosphere audio (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_atmosphere_video'] = $base + array(
+    'label' => t('Voisin Atmosphere video (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_atmosphere_image'] = $base + array(
+    'label' => t('Voisin Atmosphere image (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_discursif'] = $base + array(
+    'label' => t('Voisin Discursif (audio) (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_txt'] = $base + array(
+    'label' => t('Voisin Contribution text (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_video'] = $base + array(
+    'label' => t('Voisin Contribution video (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_audio'] = $base + array(
+    'label' => t('Voisin Contribution audio (deprecated)')
+  );
+  $entity_info['node']['view modes']['voisin_contrib_image'] = $base + array(
+    'label' => t('Voisin Contribution image (deprecated)')
+  );
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function robinsonmod_theme($existing, $type, $theme, $path) {
+  return array(
+    'robinsonmod_tv_theme' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-tv-theme',
+    ),
+    'robinsonmod_tv_voisin' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-tv-voisin',
+    ),
+    'robinsonmod_rendez_vous' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-rendez-vous',
+    ),
+    'robinsonmod_rendez_vous_node' => array(
+      'variables' => array(
+        'node' => FALSE,
+        'date' => FALSE
+      ),
+      'template' => 'tpl/robinsonmod-rendez-vous-node',
+    ),
+    'robinsonmod_thematiques' => array(
+      'variables' => array(
+        'data' => array()
+      ),
+      'template' => 'tpl/robinsonmod-thematiques',
+    ),
+    'robinsonmod_thematiques_node' => array(
+      'variables' => array(
+        'node' => FALSE
+      ),
+      'template' => 'tpl/robinsonmod-thematiques-node',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_query_TAG_alter
+ */
+function robinsonmod_query_random_alter($query) {
+  $query->orderRandom();
+}
+
+
+/**
+ * Implements hook_video_embed_field_handlers_alter().
+ */
+function robinsonmod_video_embed_field_handlers_alter(&$handlers) {
+  $handlers['vimeo']['function'] = 'robinsonmod_handle_vimeo';
+}
+
+/**
+ * Wrapper function to allow forcing API to be enabled for Vimeo videos.
+ */
+function robinsonmod_handle_vimeo($url, $settings) {
+  // dsm($settings, 'settings');
+  $settings['api'] = 1;
+  return video_embed_field_handle_vimeo($url, $settings);
+}
+
+function rodinsonmod_checkPrograme(&$rep){
+  $rep['mode'] = "program";
+
+  $query = new ProgramEntityFieldQuery;
+
+  $now = $rep['currentTime'];
+  $query
+    ->fieldCondition('field_prog_plage', 'value', $now, '<')
+    // ->fieldCondition('field_date', 'value', array('2011-03-01', '2011-03-31'), 'BETWEEN')
+    ->fieldCondition('field_prog_plage', 'value2', $now, '>')
+    ->fieldOrderBy('field_prog_plage', 'value', 'ASC');
+    // ->range(0,1);
+
+  $results = $query->execute();
+
+  foreach ($results['node'] as $nid => $value) {
+    $p = node_load($nid);
+    $fd = field_get_items('node', $p, 'field_prog_plage');
+
+    foreach ($fd as $i => $values) {
+      if($values['value'] < $now && $values['value2'] > $now){
+        $progs[] = $p;
+        break;
+      }
+    }
+  }
+  // $rep['progs'] = $progs;
+
+  if(count($progs)){
+    $prog_node = array_pop($progs);
+    // $rep['prog'] = $prog;
+
+    foreach ($prog_node->field_prog_element['und'] as $ref) {
+      $result = db_query('SELECT n.type FROM {node} n WHERE n.nid = :nid', array(':nid' => $ref["target_id"]));
+      foreach($result as $record)
+        $type = $record->type;
+
+      $rep['sequence'][] = array(
+        "nid"   => $ref["target_id"],
+        "type"  => $type
+      );
+    }
+
+    $rep['sequence_length'] = count($prog_node->field_prog_element['und']);
+  }else{
+    robinsonmod_randomThema($rep);
+  }
+}
+
+function robinsonmod_randomThema(&$rep){
+
+  # get all the thematiques
+  $query = new ThemaEntityFieldQuery;
+
+  # get 10 last already displayed themas
+  // $displayed_themas = variable_get('robinsonmod_displayed_themas', array());
+  # TODO : record displayed thema on session
+  // $displayed_themas = session_cache_get('robinsonmod_displayed_themas');
+  // dsm($displayed_themas);
+
+  if(isset($rep['displayed_themas']))
+    $query->entityCondition('entity_id', $rep['displayed_themas'], 'NOT IN');
+
+  $themas = $query->execute();
+  // dsm($themas);
+
+  # get a random thema
+  $thema = $themas['node'][array_rand($themas['node'])];
+
+  // $displayed_themas[] = $thema->nid;
+  // if(count($displayed_themas) > 10)
+  //   array_pop($displayed_themas);
+
+  // $rep['displayed_themas'] = $displayed_themas;
+  // variable_set('robinsonmod_displayed_themas', $displayed_themas);
+  // session_cache_set('robinsonmod_displayed_themas', $displayed_themas);
+
+  $rep['mode'] = "random";
+  $rep['thema'] = $thema;
+}
+
+function robinsonmod_renderVoisin($nid, $debug = false){
+  $voisin_node = node_load($nid);
+
+  if(!$voisin_node)
+    return;
+
+  $voisin = array("nid"=>$voisin_node->nid);
+
+  if($debug)
+    $voisin['node'] = $voisin_node;
+
+  $media_type_tid = $voisin_node->field_type_media['und'][0]['tid'];
+
+  switch ($media_type_tid) {
+    case 12: #video
+      $media_type = "video";
+      break;
+    case 13: #image
+      $media_type = "image";
+      break;
+    case 14: #son
+      $media_type = "audio";
+      break;
+    case 15: #texte
+      $media_type = "text";
+      break;
+  }
+  $voisin['media_type'] = $media_type;
+
+  $viewmode = "voisin_".$media_type;
+
+  # flatenize comportement
+  $comportement_tid = $voisin_node->field_comportement['und'][0]['tid'];
+  $voisin['comportement'] = $comp = robinsonmod_getFlatenizedComportement($comportement_tid);
+
+  // VIDEO & IMAGES : change viewmode for size for images and videos (one viewmode by size 1,2,3)
+  if(in_array($media_type, array("video", "image"))){
+    $viewmode .= "_t".$comp["taille"];
+  }
+
+  if($media_type == "video"){
+    $field_format = $voisin_node->field_format_video;
+    $viewmode .= "_".(isset($field_format['und'][0]['value']) ? $field_format['und'][0]['value'] : "16_9");
+  }
+
+  # record viewmode and render node
+  $voisin['viewmode'] = $viewmode;
+
+  # get space
+  $voisin['space'] = robinsonmod_getVoisinSpace($voisin);
+
+  $node_view = node_view($voisin_node, $viewmode);
+  $voisin['rendered'] = drupal_render($node_view);
+
+  return $voisin;
+}
+
+/**
+* helpers
+*/
+function robinsonmod_getAllThemas(){
+  $all_themas = &drupal_static(__FUNCTION__);
+  if (!isset($all_themas)) {
+    if ($cache = cache_get('robinsonmod_all_themas')) {
+      $all_themas = $cache->data;
+    }
+    else {
+      $themas_query = new ThemaEntityFieldQuery;
+      $themas_results = $voisins_query->execute();
+      $all_themas = $themas_results['node'];
+      cache_set('robinsonmod_all_voisins', $all_themas, 'cache', time() + 60*60*1);
+    }
+  }
+  return $all_themas;
+}
+
+function robinsonmod_getAllVoisins(){
+  $all_voisins = &drupal_static(__FUNCTION__);
+  if (!isset($all_voisins)) {
+    if ($cache = cache_get('robinsonmod_all_voisins')) {
+      $all_voisins = $cache->data;
+    }
+    else {
+      $voisins_query = new VoisinEntityFieldQuery;
+      $voisins_results = $voisins_query->execute();
+      $all_voisins = $voisins_results['node'];
+      cache_set('robinsonmod_all_voisins', $all_voisins, 'cache', time() + 60*60*1);
+    }
+  }
+  return $all_voisins;
+}
+
+function robinsonmod_getAllVoisinsBySpace(){
+  // $all_voisins_by_space = &drupal_static(__FUNCTION__);
+  // if (!isset($all_voisins_by_space)) {
+  //   if ($cache = cache_get('robinsonmod_all_voisins_by_space')) {
+  //     $all_voisins_by_space = $cache->data;
+  //   }
+  //   else {
+      $all_voisins = robinsonmod_getAllVoisins();
+      foreach ($all_voisins as $nid => $voisin) {
+        $rendered_voisin = robinsonmod_renderVoisin($nid);
+        $space      = $rendered_voisin['space'];
+        $media_type = $rendered_voisin['media_type'];
+        $discursif  = $rendered_voisin['comportement']['discursif'] ? "discursif" : "no-discursif";
+        $all_voisins_by_space[$space][$media_type][$discursif][$nid] = $rendered_voisin;
+      }
+  //     cache_set('robinsonmod_all_voisins_by_space', $all_voisins_by_space, 'cache', time() + 60*60*1);
+  //   }
+  // }
+  return $all_voisins_by_space;
+}
+
+function robinsonmod_getVoisinSpace($voisin){
+  $space = 0;
+  $comp = $voisin["comportement"];
+  switch ($voisin["media_type"]) {
+    case "video":
+      $space = 3*$comp['taille'];
+      break;
+    case "image":
+      $space = 3*$comp['taille'];//*$comp["duree"];
+      break;
+    case "audio":
+      $space = 1;
+      break;
+    case "text":
+    default:
+      $space = 3*$comp['taille'];
+      break;
+  }
+
+  return $space;
+}
+
+function robinsonmod_getFlatenizedComportement($tid){
+  $term = (array)taxonomy_term_load($tid);
+  foreach ($term as $key => $value) {
+    if(strpos($key, "field_") === 0 && is_array($value)){
+      $term[$key] = $value['und'][0]['value'];
+    }
+    else{
+      $term[$key] = $value;
+    }
+  }
+
+  $comp["tid"] = intval($tid);
+  $comp["name"] = $term->name;
+  $comp["discursif"] = intval($term["field_discursif"]) == 1;
+  $comp["proba"] = intval($term["field_proba"]);
+
+  $fields = array(
+    array(
+      'name'=>"field_duree_sec_minmax",
+      'shortname'=>'duree',
+      'exp'=>'/(\d{1,3})\/(\d{1,3})/'),
+    array(
+      'name'=>"field_pause_apres_le_voisin",
+      'shortname'=>'pause',
+      'exp'=>'/(\d{1,3})\/(\d{1,3})/'),
+    array(
+      'name'=>"field_taille_minmax",
+      'shortname'=>'taille',
+      'exp'=>'/(\d{1})\/(\d{1})/'),
+  );
+
+  foreach ($fields as $field) {
+    preg_match($field['exp'], $term[$field['name']], $matches);
+    $comp[$field["shortname"]."_minmax"] = $minmax = array(
+      "min" => intval($matches[1]),
+      "max" => intval($matches[2]),
+    );
+    $val = round(rand($minmax['min'], $minmax['max']));
+    $comp[$field["shortname"]] = $val;
+  }
+
+  return $comp;
+}
+
+function timestampDay($timestamp, $returnform = FALSE) {
+  $ret = format_date( $timestamp, 'custom', 'l j F' );
+  if( $returnform )
+    $ret = strtotime($ret);
+  return $ret;
+}
+
+
+
+
