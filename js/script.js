@@ -809,9 +809,9 @@ Drupal.behaviors.init_theme = function (context) {
       };
 
       Neighbour.prototype.vimeoPlayProgress = function(data, id) {
-        // console.log("Neighbour :: vimeo ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration);
+        // console.log("Neighbour :: vimeo ("+this.nid+") ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration + ' delay=' + this.delay);
         // console.log("Neighbour :: vimeo in vimeoPlayProgress; this = ", this);
-        if( (data.duration - data.seconds) < 5 )
+        if( (data.duration - data.seconds - this.delay) < 5 )
           this.$.trigger('hide-lpr-neighbour');
       };
 
