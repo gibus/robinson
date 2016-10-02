@@ -1,9 +1,0 @@
-/** COMMONS */
-.inline-block {
-  display: inline-block;
-  display: moz-inline-stack;
-  *display: inline;
-  *zoom: 1;
-  vertical-align: top;
-}
-/** HTML5 */
