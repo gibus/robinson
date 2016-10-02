@@ -1,0 +1,13 @@
+.ctu-term-edit-form-box{border: 1px solid #ddd; padding:0.5em;}
+#node-form fieldset.tcu-advanced-options,
+#node-form fieldset.tcu-term-fields{width:45%; display:inline-block; vertical-align: top;}
+
+.tode-add-modal-wrapper{
+	
+}
+.tode-add-modal-wrapper .form-item{
+	display:inline-block;
+}
+.tode-add-modal-wrapper .tode-add-modal-links{
+	display:inline-block;
+}
