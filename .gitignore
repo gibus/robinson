@@ -5,16 +5,5 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 
-# Ignore gui themes and modules
-sites/all/modules/gui/contentsadminrelink
-sites/all/modules/gui/editmenu
-sites/all/modules/gui/selectList
-sites/all/modules/gui/tode
-sites/all/themes/gui/adaptivetheme_gui_admin
-sites/all/themes/gui/adaptivetheme_gui_starter
-sites/all/themes/gui/gui7
-sites/all/themes/gui/guibik
-sites/all/themes/gui/inigui
-
 # drush config file
 sites/*/drushrc.php
