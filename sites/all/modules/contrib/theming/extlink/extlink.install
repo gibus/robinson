@@ -13,5 +13,5 @@ function extlink_install() {
  */
 function extlink_uninstall() {
   db_query("DELETE FROM {variable} WHERE name LIKE 'extlink_%'");
-  cache()->deleteTags(array('variables' => TRUE));
+  //cache()->deleteTags(array('variables' => TRUE));
 }
