@@ -16,7 +16,7 @@ stylesheets[all][] = "css/styles.css"
 
 scripts[] = "libraries/bootstrap/dist/js/bootstrap.min.js"
 scripts[] = "libraries/froogaloop.js"
-scripts[] = "js/script.js"
+scripts[] = "js/robinson.js"
 
 
 ;----------// Regions
