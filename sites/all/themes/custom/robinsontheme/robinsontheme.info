@@ -16,7 +16,6 @@ stylesheets[all][] = "css/styles.css"
 
 scripts[] = "libraries/bootstrap/dist/js/bootstrap.min.js"
 scripts[] = "libraries/froogaloop.js"
-scripts[] = "libraries/soundcloud-sdk.js"
 scripts[] = "js/script.js"
 
 
