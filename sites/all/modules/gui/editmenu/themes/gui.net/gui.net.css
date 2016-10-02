@@ -1,0 +1,92 @@
+/* ------ DISPLAY ------ */
+body.editmenu-enabled{margin-top:23px;}
+.editmenu-block{height:23px;position:fixed;top:0;left:0;width:100%;}
+ul#editmenu,ul#editmenu *{margin:0;padding:0;list-style:none;}
+ul#editmenu{line-height:1.0;position:relative;width:100%;z-index:9999;}
+ul#editmenu ul{position:absolute;top:-999em;width:14em;font-size:1em;line-height:1em;}
+ul#editmenu ul li{width:100%;}
+ul#editmenu a{width:auto;}
+ul#editmenu li{float:left;position:relative;z-index:99;}
+ul#editmenu a{display:block;}
+ul#editmenu li:hover ul,
+ul#editmenu li.sfHover ul{left:0px;top:30px;}
+ul#editmenu li:hover li ul,
+ul#editmenu li.sfHover li ul{top:-999em;}
+ul#editmenu li li:hover ul,
+ul#editmenu li li.sfHover ul{left:14em;top:-1px;}
+.superfish li:hover ul,
+.superfish li li:hover ul{top:-999em;}
+ul#editmenu:after{
+	clear: both;
+	content: '.';
+	display: block;
+	height:0px;
+	overflow:hidden;
+	visibility:hidden;
+	width:0px;
+}
+
+
+/* ------ STYLE ------ */
+ul#editmenu {
+	background-color:#333;
+	border-bottom: 1px dotted #9A9A9A;
+	box-shadow: 0 0 15px #000000 inset;
+	-moz-box-shadow: 0 0 15px #000000 inset;
+	-webkit-box-shadow: 0 0 15px #000000 inset;
+}
+.editmenu-block:after{
+	content:'by g.u.i.';
+	color:#fff;
+	font: italic 600 1em 'Baskerville',serif;
+	display:block;
+	position:fixed;
+	top:6px;
+	right:1em;
+	z-index:10000;
+}
+ul#editmenu li:hover ul,
+ul#editmenu li.sfHover ul{
+	background:#1a1a1a;
+	border: 1px dotted #9A9A9A;
+	padding: 6px 0;
+}
+ul#editmenu li:hover ul:before,
+ul#editmenu li.sfHover ul:before{
+	background:url('bkgd-border.png') 15px 0 no-repeat;
+	content:'';
+	display:block;
+	height:9px;
+	margin-top:-15px;
+	width:100%;
+}
+
+
+
+/* ------ FONT ------ */
+.editmenu-block{font:normal normal 100 11px/1em 'Monaco','Lucida Console','Consolas',monospace;color:#fff;}
+ul#editmenu a{color:#fff;margin:4px;padding:2px;text-decoration:none;word-spacing:-.35em;
+	transition: background-color .5s, color .5s;
+	-moz-transition: background-color .5s, color .5s;
+	-o-transition: background-color .5s, color .5s;
+	-webkit-transition: background-color .5s, color .5s;
+}
+ul#editmenu>li.first a{color:#777;}
+
+ul#editmenu li.sfHover>a,
+ul#editmenu a:focus,
+ul#editmenu a:hover,
+ul#editmenu a:active{
+	color: #000;
+	background-color:#fff;
+	transition-duration:0s;
+	-moz-transition-duration:0s;
+	-o-transition-duration:0s;
+	-webkit-transition-duration:0s;
+}
+ul#editmenu>li.first a:focus,
+ul#editmenu>li.first a:hover,
+ul#editmenu>li.first a:active{
+	color: #000;
+	background-color:#cc3733;
+}

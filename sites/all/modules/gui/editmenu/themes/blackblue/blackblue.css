@@ -1,0 +1,49 @@
+
+.editmenu-block {
+  height: 21px;
+}
+#editmenu {
+  background: #000;
+  color: #fff;
+  font:11px Verdana, Helvetica, sans-serif;
+  width: 100%;
+  text-align: left;
+}
+#editmenu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 3px 12px 5px 12px;
+  width: auto;
+}
+#editmenu li {
+  background: transparent;
+}
+#editmenu li.expanded > a {
+  background: url(arrow_right.gif) no-repeat 94%;
+  padding-right: 18px;
+}
+#editmenu li.root > a {
+  background: url(arrow_down.gif) no-repeat 94%;
+  padding-right: 18px;
+}
+#editmenu li:hover, #editmenu li.sfHover,
+#editmenu a:focus, #editmenu a:hover, #editmenu a:active {
+  background: #4c77b3;
+  color: #fff;
+}
+#editmenu li ul {
+  border: 1px solid #ccc;
+  background: #fafcff;
+}
+#editmenu li ul a {
+  color: #4e4e4e; 
+  height: auto;
+}
+#editmenu li ul li:hover, #editmenu li ul li.sfHover,
+#editmenu li ul a:focus, #editmenu li ul a:hover, #editmenu li ul a:active {
+  background-color: #cde;
+  color: #4e4e4e;
+}
+
+/* vim: ts=2 sw=2 et syntax=css
+*/
