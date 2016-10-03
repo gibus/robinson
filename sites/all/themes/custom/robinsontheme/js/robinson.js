@@ -1,7 +1,4 @@
-// @koala-prepend "gui.js"
-// @codekit-prepend "gui.js"
-
-// console.log('Hello Robinson!');
+// console.log('Hello Robinson without froogaloop!');
 
 Drupal.behaviors.init_theme = function (context) {
   // Growl-style system messages
@@ -127,7 +124,7 @@ Drupal.behaviors.init_theme = function (context) {
         } else {
           var cl = $el.attr('class');
           var n = parseInt(/col-offset-top-(\d+)/.exec(cl)[1], 10);
-          var nn = Math.floor( minTop + Math.random() * (n-1-minTop) ); // -1 pour ne pas retomber sur la même valeur. -minTop pour compenser le minimum…
+          var nn = Math.floor( minTop + Math.random() * (n-1-minTop) ); // -1 pour ne pas retomber sur la m�me valeur. -minTop pour compenser le minimum
         }
 
         $el.removeClass('col-offset-top-'+n).addClass('col-offset-top-'+nn);
@@ -576,7 +573,7 @@ Drupal.behaviors.init_theme = function (context) {
         // Revoc all Neighbours
         for (var i = 0; i < this.neighbours.length; i++) {
           // console.log("this.neighbours[]["+i+"]");
-          this.neighbours[i].request.abort(); // abort the ajax request if neighbour hasn’t finish to load.
+          this.neighbours[i].request.abort(); // abort the ajax request if neighbour hasn't finish to load.
           this.neighbours[i].$.trigger('hide-lpr-neighbour'); // hide him
         };
       };
@@ -732,8 +729,8 @@ Drupal.behaviors.init_theme = function (context) {
           .addClass('shown-lpr');
 
         // If duration set, start Timer.
-        // Neighbour duration will be video length
-        // or, if shorter, the duration.
+        // Neighbour duration will be video length
+        // or, if shorter, the duration.
         if( this.duration > 0 ) {
           setTimeout(function(){
             neighbour.$.trigger('hide-lpr-neighbour');
