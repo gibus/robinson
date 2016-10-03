@@ -14,6 +14,7 @@ stylesheets[all][] = "css/styles.css"
 
 ;----------// Scripts
 
+scripts[] = "libraries/tether/dist/js/tether.min.js"
 scripts[] = "libraries/bootstrap/dist/js/bootstrap.min.js"
 scripts[] = "libraries/player.min.js"
 scripts[] = "js/robinson.js"

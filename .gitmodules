@@ -1,3 +1,6 @@
 [submodule "sites/all/themes/custom/robinsontheme/libraries/bootstrap"]
 	path = sites/all/themes/custom/robinsontheme/libraries/bootstrap
 	url = https://github.com/twbs/bootstrap.git
+[submodule "sites/all/themes/custom/robinsontheme/libraries/tether"]
+	path = sites/all/themes/custom/robinsontheme/libraries/tether
+	url = https://github.com/HubSpot/tether.git
