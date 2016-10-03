@@ -1,8 +1,0 @@
-<?php
-
-function editmenu_multi_menu_uninstall() {
-  variable_del('editmenu_menus');
-  variable_del('editmenu_multi_menu_theme_function');
-}
-
-// vim: ts=2 sw=2 et syntax=php
