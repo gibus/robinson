@@ -12,11 +12,28 @@ function styles_install() {
   return array();
 }
 
+function styles_variable_default_uninstall($name = NULL) {
+  static $defaults;
+
+  if (!isset($defaults)) {
+    $defaults = array(
+    );
+  }
+
+  if (!isset($name)) {
+    return $defaults;
+  }
+
+  if (isset($defaults[$name])) {
+    return $defaults[$name];
+  }
+}
+
 /**
  * Implement hook_uninstall().
  */
 function styles_uninstall() {
-  foreach (styles_variable_default() as $variable => $value) {
+  foreach (styles_variable_default_uninstall() as $variable => $value) {
     styles_variable_del($variable);
   }
   return array(array('success' => TRUE, 'query' => "Deleted all variables in the Styles namespace."));
