@@ -1,8 +1,0 @@
-name = "selectList"
-description = apply select list jquery plugin to admin multiple select list
-:dependencies[] = jqplug
-package = gui
-project = "jquery"
-version = "7.x-0.dev"
-core = "7.x"
-
