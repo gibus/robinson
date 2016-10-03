@@ -30,11 +30,6 @@ regions[footer]  = Footer
 
 ;----------// Features
 
-features[] = logo
-features[] = favicon
 features[] = name
 features[] = slogan
-features[] = search
-features[] = comment_user_picture
 features[] = main_menu
-features[] = secondary_menu
