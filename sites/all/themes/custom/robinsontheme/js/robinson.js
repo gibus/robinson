@@ -360,28 +360,45 @@ Drupal.behaviors.init_theme = function (context) {
             // console.log( 'Theme :: theme.id', theme.id );
 
             var iframe = $(this)[0];
-            var player = $f(iframe);
+            var player = new Vimeo.Player(iframe);
+            player.setAutopause(false).then(function(autopause) {
+              // autopause was turned off
+            }).catch(function(error) {
+              // an error occurred
+            });
             theme.vimeo.$player = player;
 
             // When the player is ready, add listeners for pause, finish, and playProgress
-            player.addEvent('ready', function() {
-              player.addEvent('play',         function(id) { theme.vimeoPlay(id)   });
-              player.addEvent('pause',        function(id) { theme.vimeoPause(id)  });
-              player.addEvent('finish',       function(id) { theme.vimeoFinish(id) });
-              player.addEvent('playProgress', function(data, id) { theme.vimeoPlayProgress(data, id) });
-
+            player.on('play',         function(id) { theme.vimeoPlay(data)   });
+            player.on('pause',        function(id) { theme.vimeoPause(data)  });
+            player.on('ended',        function(id) { theme.vimeoFinish(data) });
+            player.on('timeupdate',   function(data, id) { theme.vimeoPlayProgress(data) });
+            player.ready().then(function() {
               theme.$.trigger('show-lpr-theme');
               theme.$.trigger('play-lpr-vimeo');
             });
 
             // DEV
-            // ajout d’un bouton pour aller 10s avant la fin de la vidéo.
+            // ajout d'un bouton pour aller 10s avant la fin de la vid�o.
             $(theme.id).on('click', '.seek', function(event) {
               event.preventDefault();
               /* Act on the event */
-              theme.vimeo.$player.api('getDuration', function (value, player_id) {
-                // console.log('Theme :: duration',value);
-                theme.vimeo.$player.api('seekTo', (value-10));
+              theme.vimeo.$player.getDuration().then(function(duration) {
+                // console.log('Theme :: duration', duration);
+                theme.vimeo.$player.setCurrentTime(duration-10).then(function(seconds) {
+                  // console.log('Theme :: setCurentTime', seconds);
+                }).catch(function(error) {
+                  switch (error.name) {
+                    case 'RangeError':
+                      console.error('SetCurrentTime is negative or greater than video\'s duration', error.name);
+                      break;
+                    default:
+                      console.error('error in setCurrentTime:', error.name);
+                      break;
+                  }
+                });
+              }).catch(function(error) {
+                console.error('error in getDuration', error);
               });
             });
             $(theme.id).prepend(
@@ -422,7 +439,7 @@ Drupal.behaviors.init_theme = function (context) {
         // console.log('Theme :: hide');
         var theme = this;
 
-        theme.vimeo.$player.removeEvent('pause');
+        theme.vimeo.$player.off('pause');
 
         $(this.id)
           .addClass('hide-lpr')
@@ -457,11 +474,10 @@ Drupal.behaviors.init_theme = function (context) {
 
       /* vimeo */
       Theme.prototype.vimeoStart = function() {
-        // console.log('Theme :: Start vimeo playing in 1s');
-        var theme = this;
-        setTimeout(function() {
-          theme.vimeo.$player.api("play");
-        }, 1000);
+        // console.log('Theme :: Start vimeo playing');
+        this.vimeo.$player.play().catch(function(error) {
+          console.error('error playing the video:', error.name);
+        });
       };
 
       Theme.prototype.vimeoPlay = function(id) {
@@ -474,7 +490,9 @@ Drupal.behaviors.init_theme = function (context) {
       Theme.prototype.vimeoPause = function(id) {
         // console.log("Theme :: vimeo ---> [Pause]",id);
         // force video playing.
-        this.vimeo.$player.api("play");
+        this.vimeo.$player.play().catch(function(error) {
+          console.error('error playing the video:', error.name);
+        });
         var theme = this;
         this.vimeo.clinicalDeath = setTimeout(function(){
           // console.log("Theme :: vimeo ---> [clinical death]",id);
@@ -487,7 +505,7 @@ Drupal.behaviors.init_theme = function (context) {
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
-      Theme.prototype.vimeoPlayProgress = function(data, id) {
+      Theme.prototype.vimeoPlayProgress = function(data) {
         // console.log("Theme :: vimeo ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration);
         if( (data.duration - data.seconds) < 5 )
           this.$.trigger('hide-lpr-theme');
@@ -681,16 +699,20 @@ Drupal.behaviors.init_theme = function (context) {
               // console.log( 'Neighbour :: neighbour.id', neighbour.id );
 
               var iframe = $(this)[0];
-              var player = $f(iframe);
+              var player = new Vimeo.Player(iframe);
+              player.setAutopause(false).then(function(autopause) {
+                // autopause was turned off
+              }).catch(function(error) {
+                // an error occurred
+              });
               neighbour.vimeo.$player = player;
 
               // When the player is ready, add listeners for pause, finish, and playProgress
-              player.addEvent('ready', function() {
-                player.addEvent('play',         function(id) { neighbour.vimeoPlay(id)   });
-                player.addEvent('pause',        function(id) { neighbour.vimeoPause(id)  });
-                player.addEvent('finish',       function(id) { neighbour.vimeoFinish(id) });
-                player.addEvent('playProgress', function(data, id) { neighbour.vimeoPlayProgress(data, id) });
-
+              player.on('play',         function(data) { neighbour.vimeoPlay(data)   });
+              player.on('pause',        function(data) { neighbour.vimeoPause(data)  });
+              player.on('ended',        function(data) { neighbour.vimeoFinish(data) });
+              player.on('timeupdate',   function(data) { neighbour.vimeoPlayProgress(data) });
+              player.ready().then(function() {
                 neighbour.$.trigger('show-lpr-neighbour');
                 neighbour.$.trigger('play-lpr-neighbourVimeo');
               });
@@ -743,7 +765,7 @@ Drupal.behaviors.init_theme = function (context) {
         var neighbour = this;
 
         if( neighbour.vimeo.$player ) {
-          neighbour.vimeo.$player.removeEvent('pause');
+          neighbour.vimeo.$player.off('pause');
         }
 
         neighbour.timer = setTimeout(function(){
@@ -774,11 +796,10 @@ Drupal.behaviors.init_theme = function (context) {
 
 
       Neighbour.prototype.vimeoStart = function() {
-        // console.log('Neighbour :: Start vimeo playing in 1s',this.id);
-        var neighbour = this;
-        setTimeout(function() {
-          neighbour.vimeo.$player.api("play");
-        }, 1000);
+        // console.log('Neighbour :: Start vimeo playing',this.id);
+        this.vimeo.$player.play().catch(function(error) {
+          console.error('error playing the video:', error.name);
+        });
       };
 
       Neighbour.prototype.vimeoPlay = function(id) {
@@ -805,7 +826,7 @@ Drupal.behaviors.init_theme = function (context) {
         clearTimeout(this.vimeo.clinicalDeath);
       };
 
-      Neighbour.prototype.vimeoPlayProgress = function(data, id) {
+      Neighbour.prototype.vimeoPlayProgress = function(data) {
         // console.log("Neighbour :: vimeo ("+this.nid+") ---> " + data.seconds + 's played duration=' + this.duration + '/' + data.duration + ' delay=' + this.delay);
         // console.log("Neighbour :: vimeo in vimeoPlayProgress; this = ", this);
         if( (data.duration - data.seconds - this.delay) < 5 )
