@@ -14,7 +14,7 @@ $result = $efq->execute();
  
 // Ensure we've got some node results.
 if (!isset($result['node'])) {
-  drush_log("No nodes to process.", "ok");
+  drush_print("No nodes to process.");
   return;
 }
 $nb_nodes = 0;
