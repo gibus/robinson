@@ -35,14 +35,14 @@ foreach($result['node'] as $nid => $stub_node) {
   $wrapped_node = entity_metadata_wrapper("node", $node);
  
   $description = $wrapped_node->field_description->value();
-  if (preg_match('!\[https?://vimeo.com!', $description['value'])) {
+  if (preg_match('!\[video:https?://vimeo.com!', $description['value'])) {
     $nb_nodes_ok++;
     if ($node->status) {
       $nb_nodes_publish_ok++;
     }
     drush_print("Processed OK nid={$node->nid}, title={$node->title}");
   }
-  else {
+  elseif (preg_match('!\[https?://vimeo.com!', $description['value'])) {
     $description['value'] = preg_replace('!\[(https?://vimeo.com)!', '[video:$1', $description['value']);
     $wrapped_node->field_description->set($description);
     $wrapped_node->save();
