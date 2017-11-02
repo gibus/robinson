@@ -208,7 +208,11 @@ class EntityReference_SelectionHandler_Generic implements EntityReference_Select
    * Implements EntityReferenceHandler::validateAutocompleteInput().
    */
   public function validateAutocompleteInput($input, &$element, &$form_state, $form) {
-      $entities = $this->getReferencableEntities($input, '=', 6);
+      $bundled_entities = $this->getReferencableEntities($input, '=', 6);
+      $entities = array();
+      foreach($bundled_entities as $entities_list) {
+        $entities += $entities_list;
+      }
       if (empty($entities)) {
         // Error if there are no entities available for a required field.
         form_error($element, t('There are no entities matching "%value"', array('%value' => $input)));
@@ -305,7 +309,7 @@ class EntityReference_SelectionHandler_Generic implements EntityReference_Select
    */
   public function getLabel($entity) {
     $target_type = $this->field['settings']['target_type'];
-    return entity_access('view', $target_type, $entity) ? entity_label($target_type, $entity) : t('- Restricted access -');
+    return entity_access('view', $target_type, $entity) ? entity_label($target_type, $entity) : t(ENTITYREFERENCE_DENIED);
   }
 
   /**
@@ -372,27 +376,6 @@ class EntityReference_SelectionHandler_Generic_node extends EntityReference_Sele
  * This only exists to workaround core bugs.
  */
 class EntityReference_SelectionHandler_Generic_user extends EntityReference_SelectionHandler_Generic {
-  /**
-   * Implements EntityReferenceHandler::settingsForm().
-   */
-  public static function settingsForm($field, $instance) {
-    $settings = $field['settings']['handler_settings'];
-    $form = parent::settingsForm($field, $instance);
-    $form['referenceable_roles'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('User roles that can be referenced'),
-      '#default_value' => isset($settings['referenceable_roles']) ? array_filter($settings['referenceable_roles']) : array(),
-      '#options' => user_roles(TRUE),
-    );
-    $form['referenceable_status'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('User status that can be referenced'),
-      '#default_value' => isset($settings['referenceable_status']) ? array_filter($settings['referenceable_status']) : array('active' => 'active'),
-      '#options' => array('active' => t('Active'), 'blocked' => t('Blocked')),
-    );
-    return $form;
-  }
-
   public function buildEntityFieldQuery($match = NULL, $match_operator = 'CONTAINS') {
     $query = parent::buildEntityFieldQuery($match, $match_operator);
 
@@ -401,33 +384,21 @@ class EntityReference_SelectionHandler_Generic_user extends EntityReference_Sele
       $query->propertyCondition('name', $match, $match_operator);
     }
 
-    $field = $this->field;
-    $settings = $field['settings']['handler_settings'];
-    $referenceable_roles = isset($settings['referenceable_roles']) ? array_filter($settings['referenceable_roles']) : array();
-    $referenceable_status = isset($settings['referenceable_status']) ? array_filter($settings['referenceable_status']) : array('active' => 'active');
-
-    // If this filter is not filled, use the users access permissions.
-    if (empty($referenceable_status)) {
-      // Adding the 'user_access' tag is sadly insufficient for users: core
-      // requires us to also know about the concept of 'blocked' and 'active'.
-      if (!user_access('administer users')) {
-        $query->propertyCondition('status', 1);
-      }
+    // Adding the 'user_access' tag is sadly insufficient for users: core
+    // requires us to also know about the concept of 'blocked' and
+    // 'active'.
+    if (!user_access('administer users')) {
+      $query->propertyCondition('status', 1);
     }
-    elseif (count($referenceable_status) == 1) {
-      $values = array('active' => 1, 'blocked' => 0);
-      $query->propertyCondition('status', $values[key($referenceable_status)]);
-    }
-
     return $query;
   }
 
   public function entityFieldQueryAlter(SelectQueryInterface $query) {
-    $conditions = &$query->conditions();
     if (user_access('administer users')) {
-      // If the user is administrator, we need to make sure to
+      // In addition, if the user is administrator, we need to make sure to
       // match the anonymous user, that doesn't actually have a name in the
       // database.
+      $conditions = &$query->conditions();
       foreach ($conditions as $key => $condition) {
         if ($key !== '#conjunction' && is_string($condition['field']) && $condition['field'] === 'users.name') {
           // Remove the condition.
@@ -453,19 +424,6 @@ class EntityReference_SelectionHandler_Generic_user extends EntityReference_Sele
           $query->condition($or);
         }
       }
-    }
-
-    $field = $this->field;
-    $settings = $field['settings']['handler_settings'];
-    $referenceable_roles = isset($settings['referenceable_roles']) ? array_filter($settings['referenceable_roles']) : array();
-    if (!$referenceable_roles || !empty($referenceable_roles[DRUPAL_AUTHENTICATED_RID])) {
-      // Return early if "authenticated user" choosen.
-      return;
-    }
-
-    if (!isset($referenceable_roles[DRUPAL_AUTHENTICATED_RID])) {
-      $query->join('users_roles', 'users_roles', 'users.uid = users_roles.uid');
-      $query->condition('users_roles.rid', array_keys($referenceable_roles), 'IN');
     }
   }
 }
