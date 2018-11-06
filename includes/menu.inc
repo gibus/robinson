@@ -576,7 +576,7 @@ function _menu_load_objects(&$item, &$map) {
           // 'load arguments' in the hook_menu() entry, but they need
           // some processing. In this case the $function is the key to the
           // load_function array, and the value is the list of arguments.
-          list($function, $args) = each($function);
+          list($args, $function) = each($function);
           $load_functions[$index] = $function;
 
           // Some arguments are placeholders for dynamic items to process.
