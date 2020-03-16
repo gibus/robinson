@@ -523,7 +523,7 @@ function video_embed_field_handle_vimeo($url, $settings) {
 
   return array(
     '#markup' => '<iframe class="' . check_plain($class) . '" id="' . $settings['player_id'] . '" width="' . check_plain($settings['width']) . '" height="' . check_plain($settings['height']) . '" src="//player.vimeo.com/video/' . $id .
-    '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>',
+    '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen allow="autoplay"></iframe>',
   );
 }
 
