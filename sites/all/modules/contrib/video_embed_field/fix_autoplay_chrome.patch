@@ -1,0 +1,13 @@
+diff --git a/sites/all/modules/contrib/video_embed_field/video_embed_field.handlers.inc b/sites/all/modules/contrib/video_embed_field/video_embed_field.handlers.inc
+index 19620082..5be6d2c0 100644
+--- a/sites/all/modules/contrib/video_embed_field/video_embed_field.handlers.inc
++++ b/sites/all/modules/contrib/video_embed_field/video_embed_field.handlers.inc
+@@ -523,7 +523,7 @@ function video_embed_field_handle_vimeo($url, $settings) {
+ 
+   return array(
+     '#markup' => '<iframe class="' . check_plain($class) . '" id="' . $settings['player_id'] . '" width="' . check_plain($settings['width']) . '" height="' . check_plain($settings['height']) . '" src="//player.vimeo.com/video/' . $id .
+-    '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>',
++    '?' . $settings_str . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen allow="autoplay"></iframe>',
+   );
+ }
+ 
