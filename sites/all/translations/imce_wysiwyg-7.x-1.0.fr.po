@@ -1,0 +1,26 @@
+# French translation of IMCE Wysiwyg bridge (7.x-1.0)
+# Copyright (c) 2011 by the French translation team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMCE Wysiwyg bridge (7.x-1.0)\n"
+"POT-Creation-Date: 2011-10-06 21:56+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "User interface"
+msgstr "Interface utilisateur"
+msgid "IMCE"
+msgstr "IMCE"
+msgid "IMCE Wysiwyg API bridge"
+msgstr "IMCE Wysiwyg API d'intégration"
+msgid ""
+"Makes IMCE available as plugin for client-side editors integrated via "
+"Wysiwyg API."
+msgstr ""
+"Permet de définir IMCE comme un plugin pour les éditeurs côté "
+"client intégré via l'API Wysiwyg."
