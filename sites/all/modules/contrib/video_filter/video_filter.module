@@ -13,6 +13,7 @@ module_load_include('inc', 'video_filter', 'video_filter.codecs');
  */
 function video_filter_filter_info() {
   $filters = array();
+  $codecs = array_keys(_video_filter_map_codecs_name(video_filter_get_codec_info()));
   $filters['video_filter'] = array(
     'title' => t('Video Filter'),
     'description' => t('Substitutes [video:URL] with embedded HTML.'),
@@ -24,7 +25,7 @@ function video_filter_filter_info() {
       'video_filter_autoplay' => 1,
       'video_filter_related' => 1,
       'video_filter_html5' => 1,
-      'video_filter_codecs' => _video_filter_map_codecs_name(video_filter_get_codec_info()),
+      'video_filter_codecs' => array_combine($codecs, $codecs),
       'video_filter_multiple_sources' => TRUE,
     ),
     'tips callback' => '_video_filter_tips',
@@ -250,6 +251,16 @@ function _video_filter_process($text, $filter, $format, $langcode, $cache, $cach
         }
         $video['height'] += $control_bar_height;
 
+        // Resize to fit within width and height repecting aspect ratio.
+        if ($ratio) {
+          $scale_factor = min(array(
+            ($video['height'] - $control_bar_height),
+            $video['width'] / $ratio,
+          ));
+          $video['height'] = round($scale_factor + $control_bar_height);
+          $video['width'] = round($scale_factor * $ratio);
+        }
+
         $video['autoplay'] = (bool) $video['autoplay'];
         $video['align'] = (isset($video['align']) && in_array($video['align'], array(
           'left',
@@ -268,7 +279,7 @@ function _video_filter_process($text, $filter, $format, $langcode, $cache, $cach
         }
         else {
           // Invalid callback.
-          $replacement = '<!-- VIDEO FILTER - INVALID CALLBACK IN: ' . $pattern . ' -->';
+          $replacement = '<!-- VIDEO FILTER - INVALID CALLBACK IN: ' . $video['codec']['callback'] . ' -->';
         }
       }
       // Invalid format.
@@ -295,6 +306,13 @@ function video_filter_flash($video, $params = array()) {
  */
 function video_filter_iframe($video) {
   return theme('video_filter_iframe', array('video' => $video));
+}
+
+/**
+ * Wrapper that calls the theme function.
+ */
+function video_filter_brightcove_iframe($video) {
+  return theme('video_filter_brightcove_iframe', array('video' => $video));
 }
 
 /**
@@ -396,6 +414,20 @@ function theme_video_filter_iframe($variables) {
 }
 
 /**
+ * Function that outputs HTML5 compatible iFrame for Brightcove.
+ *
+ * @ingroup themeable
+ */
+function theme_video_filter_brightcove_iframe($variables) {
+  $video = $variables['video'];
+  $classes = video_filter_get_classes($video);
+
+  $output = '<div style="display: block; position: relative; max-width: ' . $video['width'] . 'px;" class="' . implode(' ', $classes) . '"><div style="padding-top: 56.25%;"><iframe frameborder="0" src="' . $video['source'] . '" allowfullscreen webkitallowfullscreen mozallowfullscreen style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"></iframe></div></div>';
+
+  return $output;
+}
+
+/**
  * Implements hook_theme().
  */
 function video_filter_theme($existing, $type, $theme, $path) {
@@ -404,6 +436,9 @@ function video_filter_theme($existing, $type, $theme, $path) {
       'variables' => array('video' => NULL, 'params' => NULL),
     ),
     'video_filter_iframe' => array(
+      'variables' => array('video' => NULL, 'params' => NULL),
+    ),
+    'video_filter_brightcove_iframe' => array(
       'variables' => array('video' => NULL, 'params' => NULL),
     ),
     'video_filter_dashboard' => array(
