@@ -371,13 +371,12 @@ function l10n_update_d8_plural_conversion(array &$report, $start = 0, $length = 
  * @param int $length
  *   Maximum number of records to load.
  *
- * @return array|bool
+ * @return array
  *   An array of data from source and translation strings of which the source
- *   string contains a Drupal 8 style plural delimiter. Returns false if not
- *   found.
+ *   string contains a Drupal 8 style plural delimiter.
  */
 function l10n_update_get_d8_plural_strings($start = 0, $length = 0) {
-  $translation_strings = FALSE;
+  $translation_strings = array();
 
   $query = db_select('locales_source', 'ls');
   $query->fields('ls', array(

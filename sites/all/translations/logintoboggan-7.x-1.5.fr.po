@@ -1,10 +1,10 @@
 # French translation of LoginToboggan (7.x-1.5)
-# Copyright (c) 2015 by the French translation team
+# Copyright (c) 2021 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: LoginToboggan (7.x-1.5)\n"
-"POT-Creation-Date: 2015-05-04 09:18+0000\n"
+"POT-Creation-Date: 2021-12-14 01:38+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "Utilisateur"
 msgid "Access denied"
 msgstr "Accès refusé"
 msgid "Add a role to the selected users"
-msgstr "Ajouter un rôle aux utilisateurs sélectionnés."
+msgstr "Ajouter un rôle aux utilisateurs sélectionnés"
 msgid "Other"
 msgstr "Autre"
 msgid "Log in"
