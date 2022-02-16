@@ -1,10 +1,10 @@
 # French translation of Drupal core (7.50)
-# Copyright (c) 2021 by the French translation team
+# Copyright (c) 2022 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Drupal core (7.50)\n"
-"POT-Creation-Date: 2021-12-13 22:11+0000\n"
+"POT-Creation-Date: 2022-01-25 12:24+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -10488,7 +10488,7 @@ msgstr "Voir le contenu publié"
 msgid "Access the content overview page"
 msgstr "Accéder à la page de vue d'ensemble du contenu"
 msgid "Bypass content access control"
-msgstr "Outrepasser le contrôle d'accès au contenu"
+msgstr "Contourner le contrôle d'accès au contenu"
 msgid "View content revisions"
 msgstr "Voir les révisions de contenu"
 msgid "Revert content revisions"
