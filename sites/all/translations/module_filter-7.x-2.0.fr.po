@@ -1,10 +1,10 @@
 # French translation of Module Filter (7.x-2.0)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2022 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Module Filter (7.x-2.0)\n"
-"POT-Creation-Date: 2019-04-12 17:26+0000\n"
+"POT-Creation-Date: 2022-03-14 01:02+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -70,5 +70,7 @@ msgid "Number of enabled modules"
 msgstr "Nombre de modules activés"
 msgid "Configure how the modules page looks and acts."
 msgstr "Configurer comment s'affiche et se comporte la page des modules."
+msgid "@enabled of @total"
+msgstr "@enabled sur @total"
 msgid "Version: !module-version"
 msgstr "Version : !module-version"

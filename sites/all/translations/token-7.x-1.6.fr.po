@@ -1,10 +1,10 @@
 # French translation of Token (7.x-1.6)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2022 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Token (7.x-1.6)\n"
-"POT-Creation-Date: 2019-03-25 09:22+0000\n"
+"POT-Creation-Date: 2022-03-04 13:32+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -357,7 +357,7 @@ msgstr ""
 msgid "The base name of the file."
 msgstr "Le nom de base du fichier."
 msgid "This field supports tokens."
-msgstr "Ce champ permet l'utilisation de jetons."
+msgstr "Ce champ prend en charge les jetons (tokens)."
 msgid ""
 "The following tokens or token types are missing required name and/or "
 "description information:"

@@ -1,10 +1,10 @@
 # French translation of Backup and Migrate (7.x-2.8)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2022 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Backup and Migrate (7.x-2.8)\n"
-"POT-Creation-Date: 2019-04-10 16:02+0000\n"
+"POT-Creation-Date: 2022-02-16 22:27+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -939,6 +939,8 @@ msgid "This listing was fetched !time ago. !refresh"
 msgstr "Cette liste a été récupérée il y a !time. !refresh"
 msgid "!name Backup Options"
 msgstr "Options de sauvegarde de !name"
+msgid "Administer Backup and Migrate"
+msgstr "Administrer Backup and Migrate"
 msgctxt "compression format"
 msgid "Zip"
 msgstr "Zip"
