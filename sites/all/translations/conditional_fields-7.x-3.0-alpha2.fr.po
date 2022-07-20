@@ -1,10 +1,10 @@
 # French translation of Conditional Fields (7.x-3.0-alpha2)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2022 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Conditional Fields (7.x-3.0-alpha2)\n"
-"POT-Creation-Date: 2019-05-03 23:42+0000\n"
+"POT-Creation-Date: 2022-06-12 01:54+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -80,3 +80,7 @@ msgid "Filled"
 msgstr "Rempli"
 msgid "has value..."
 msgstr "a comme valeur..."
+msgid "Add new dependency"
+msgstr "Ajouter une nouvelle dépendance"
+msgid "Add dependency"
+msgstr "Ajouter une dépendance"
