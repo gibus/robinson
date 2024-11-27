@@ -1,10 +1,10 @@
 # French translation of Date (7.x-2.9)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2023 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Date (7.x-2.9)\n"
-"POT-Creation-Date: 2019-03-28 16:18+0000\n"
+"POT-Creation-Date: 2023-10-31 09:42+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -749,9 +749,9 @@ msgstr "Sélectionnez le ou les champs date à filtrer"
 msgid "All Day"
 msgstr "Toute la journée"
 msgid "Time hence"
-msgstr "Temps relatif"
+msgstr "Durée relative"
 msgid "Time hence (with \"hence\" appended)"
-msgstr "Temps relatif (avec \"d'ici/dans\" ajouté)"
+msgstr "Durée relative (avec \"Il y a/dans\" ajouté)"
 msgid "Time span (future dates have \"-\" prepended)"
 msgstr "Durée (les dates futures ont un \"-\" en préfixe)"
 msgid "Time span (past dates have \"-\" prepended)"

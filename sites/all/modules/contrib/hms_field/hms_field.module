@@ -64,7 +64,7 @@ function hms_field_field_instance_settings_form($field, $instance) {
       '#title' => t('Input format'),
       '#default_value' => $instance['settings']['format'],
       '#options' => _hms_format_options(),
-      '#description' => t('The input format used for this field.'),
+      '#description' => t('The input format used for this field. Decimal number can be used separated with dot (e.g. 0,25 = 15 minutes)'),
     ),
     'default_description' => array(
       '#type' => 'checkbox',
@@ -114,7 +114,7 @@ function hms_field_field_widget_form(&$form, &$form_state, $field, $instance, $l
   );
 
   if ($default_description && (!isset($widget['#description']) || !strlen($widget['#description']))) {
-    $widget['#description'] = t('Input format: @format.', array('@format' => $format));
+    $widget['#description'] = t('Input format: @format. Decimal number can be used separated with dot (e.g. 0,25 = 15 minutes)', array('@format' => $format));
   }
 
   $element['value'] = $widget;
@@ -253,9 +253,9 @@ function hms_field_field_formatter_view($entity_type, $entity, $field, $instance
       $element[$delta]['#theme'] = 'hms_natural_language';
       $element[$delta]['#value'] = $item['value'];
       $element[$delta]['#format'] = '';
-      foreach ($display['settings']['display_formats'] as $type =>$fragment) {
+      foreach ($display['settings']['display_formats'] as $fragment) {
         if ($fragment) {
-          $element[$delta]['#format'] .= ':' . $type;
+          $element[$delta]['#format'] .= ':' . $fragment;
         }
       }
       if (!strlen($element[$delta]['#format'])) {
@@ -386,7 +386,7 @@ function _hms_validate_form_element($element, &$form_state, $form) {
 function _hms_format_options() {
   $format = drupal_static(__FUNCTION__);
   if (empty($format)) {
-    $format = array('h:mm' => 'h:mm', 'h:mm:ss' => 'h:mm:ss', 'm:ss' => 'm:ss', 'h' => 'h', 'm' => 'm', 's' => 's');
+    $format = array('ISO 8601 based' => array('h:mm' => 'h:mm', 'h:mm:ss' => 'h:mm:ss', 'm:ss' => 'm:ss', 'h' => 'h', 'm' => 'm', 's' => 's'), 'Space separated' => array('hms' => 'e.q. 3h 15m 30s'));
     drupal_alter('hms_format', $format);
   }
   return $format;
@@ -407,11 +407,11 @@ function _hms_factor_map($return_full = FALSE) {
   $factor = drupal_static(__FUNCTION__);
   if (empty($factor)) {
     $factor = array(
-      'w' => array('factor value' => 604800, 'label single' => 'week', 'label multiple' => 'weeks'),
-      'd' => array('factor value' => 86400, 'label single' => 'day', 'label multiple' => 'days'),
-      'h' => array('factor value' => 3600, 'label single' => 'hour', 'label multiple' => 'hours'),
-      'm' => array('factor value' => 60, 'label single' => 'minute', 'label multiple' => 'minutes'),
-      's' => array('factor value' => 1, 'label single' => 'second', 'label multiple' => 'seconds'),
+      'w' => array('factor value' => 604800, 'label single' => t('week'), 'label multiple' => t('weeks')),
+      'd' => array('factor value' => 86400, 'label single' => t('day'), 'label multiple' => t('days')),
+      'h' => array('factor value' => 3600, 'label single' => t('hour'), 'label multiple' => t('hours')),
+      'm' => array('factor value' => 60, 'label single' => t('minute'), 'label multiple' => t('minutes')),
+      's' => array('factor value' => 1, 'label single' => t('second'), 'label multiple' => t('seconds')),
     );
     drupal_alter('hms_factor', $factor);
   }
@@ -436,17 +436,80 @@ function _hms_factor_map($return_full = FALSE) {
  * 0 is 0
  * FALSE is error.
  */
-function _hms_formatted_to_seconds($str, $format='h:m:s') {
-
+function _hms_formatted_to_seconds($str, $format='h:m:s', $element = NULL) {
   if (!strlen($str)) {
     return NULL;
   }
-
   if ($str == '0') {
     return 0;
   }
 
   $value = 0;
+  $error = FALSE;
+
+  // Input validation for space separated format.
+  if($format == 'hms') {
+    $preg = array();
+    if ((is_numeric($str) || preg_match('/^(?P<H>[-]{0,1}[0-9]{1,5}(\.[0-9]{1,3})?)$|^(?P<negative>[-]{0,1})(((?P<w>[0-9.]{1,5})w)?((?P<d>[0-9.]{1,5})d)?((?P<h>[0-9.]{1,5})h)?([ ]{0,1})((?P<m>[0-9.]{1,05})m)?([ ]{0,1})((?P<s>[0-9.]{1,5})s)?)/', $str, $preg))) {
+      $error = TRUE;
+      foreach($preg as $code => $val) {
+        if (!is_numeric($val)) {
+          continue;
+        }
+        switch ($code) {
+          case 'w':
+            $error = FALSE;
+            $value += $val * 604800;
+            break;
+          case 'd':
+            $error = FALSE;
+            $value += $val * 86400;
+            break;
+          case 'h':
+          case 'H':
+            $error = FALSE;
+            $value += $val * 3600;
+            break;
+          case 'm':
+            $error = FALSE;
+            $value += $val * 60;
+            break;
+          case 's':
+            $error = FALSE;
+            $value += $val;
+            break;
+          default:
+            break;
+        }
+      }
+      if (!empty($preg['negative'])) {
+        $value = $value * -1;
+      }
+      if ($error == 0) {
+        return $value;
+      }
+    }
+    else {
+      $error = TRUE;
+    }
+  }
+
+  // Input validation ISO 8601 based.
+  $preg_string = preg_replace(array('/[h]{1,6}/', '/[m]{1,2}|[s]{1,2}/'), array('([0-9]{1,6})', '([0-9]{1,2})'), $format);
+  if (!preg_match("@^".$preg_string."$@", $str) && !preg_match('/^[0-9]{1,6}([,.][0-9]{1,6})?$/', $str)) {
+    $error = TRUE;
+  }
+
+  // Does not follow space separated format.
+  if ($error) {
+    if(!empty($element)) {
+      form_error($element, t('The "!name" value is in wrong format, check in field settings.', array('!name' => t($element['#title']))));
+    }
+    else {
+      form_set_error(NULL, t('The "!name" value is in wrong format, check in field settings.'));
+    }
+    return FALSE;
+  }
 
   // is the value negative?
   $negative = FALSE;
@@ -457,7 +520,7 @@ function _hms_formatted_to_seconds($str, $format='h:m:s') {
 
   $factor_map = _hms_factor_map();
   $search = _hms_normalize_format($format);
-  for ($i=0;$i<strlen($search);$i++) {
+  for ($i=0; $i<strlen($search); $i++) {
     // Is this char in the factor map?
     if (isset($factor_map[$search[$i]])) {
       $factor = $factor_map[$search[$i]];
@@ -466,7 +529,7 @@ function _hms_formatted_to_seconds($str, $format='h:m:s') {
       if (isset($search[$i+1])) {
         $bumper = '(' . preg_quote($search[$i+1], '/') . '|$)';
       }
-      if(preg_match_all('/^(.*)' . $bumper . '/U', $str, $matches)) {
+      if (preg_match_all('/^(.*)' . $bumper . '/U', $str, $matches)) {
         // Replace , with .
         $num = str_replace(',', '.', $matches[1][0]);
         // Return error when found string is not numeric
@@ -510,40 +573,59 @@ function _hms_seconds_to_formatted($seconds, $format='h:mm', $leading_zero = TRU
   }
 
   $factor = _hms_factor_map();
+
   // We need factors, biggest first.
   arsort($factor, SORT_NUMERIC);
   $values = array();
   $left_over = $seconds;
   $str = '';
+
   if ($seconds < 0) {
     $str .= '-';
     $left_over = abs($left_over);
   }
-  foreach ($factor as $key => $val) {
-    if (strpos($format, $key) === FALSE) {
-      continue; // Not in our format, please go on, so we can plus this on a value in our format.
+
+  // Space separated format
+  if ($format == 'hms') {
+    foreach ($factor as $key => $val) {
+      if ($left_over == 0) {
+        break;
+      }
+      $values[$key] = floor($left_over / $factor[$key]);
+      if($values[$key]) {
+        $left_over -= ($values[$key] * $factor[$key]);
+        $str .= $values[$key] . $key . ' ';
+      }
     }
-    if ($left_over == 0) {
-      $values[$key] = 0;
-      continue;
-    }
-    $values[$key] = floor($left_over/$factor[$key]);
-    $left_over -= ($values[$key] * $factor[$key]);
   }
 
-  $format = explode(':', $format);
-
-  foreach($format as $key) {
-    if (!$leading_zero && (empty($values[substr($key, 0, 1)]) || !$values[substr($key, 0, 1)])) {
-      continue;
+  // ISO based formats
+  else {
+    foreach ($factor as $key => $val) {
+      if (strpos($format, $key) === FALSE) {
+        continue; // Not in our format, please go on, so we can plus this on a value in our format.
+      }
+      if ($left_over == 0) {
+        $values[$key] = 0;
+        continue;
+      }
+      $values[$key] = floor($left_over/$factor[$key]);
+      $left_over -= ($values[$key] * $factor[$key]);
     }
-    $leading_zero = TRUE;
-    $str .= sprintf('%0'.strlen($key).'d', $values[substr($key, 0, 1)]) . ':';
+    $format = explode(':', $format);
+    foreach($format as $key) {
+      if (!$leading_zero && (empty($values[substr($key, 0, 1)]) || !$values[substr($key, 0, 1)])) {
+        continue;
+      }
+      $leading_zero = TRUE;
+      $str .= sprintf('%0'.strlen($key).'d', $values[substr($key, 0, 1)]) . ':';
+    }
+    if (!strlen($str)) {
+      $key = array_pop($format);
+      $str = sprintf('%0'.strlen($key).'d', 0) . ':';
+    }
   }
-  if (!strlen($str)) {
-    $key = array_pop($format);
-    $str = sprintf('%0'.strlen($key).'d', 0) . ':';
-  }
+
   return substr($str, 0, -1);
 }
 
@@ -568,9 +650,16 @@ function _add_multi_search_tokens($item) {
 /**
  * Helper function to convert input values to seconds (FORM API).
  */
-function _hms_value_callback($element, $input = NULL, $form_state) {
+function _hms_value_callback($element, $input, $form_state) {
   if ($form_state['process_input'] && (!empty($input) || $input === 0)) {
-    return _hms_formatted_to_seconds($input, $element['#format']);
+    $seconds = _hms_formatted_to_seconds($input, $element['#format']);
+    // If seconds are 0 return string instead of integer.
+    if ($seconds == 0) {
+
+      return '0';
+    }
+
+    return $seconds;
   }
   return $input;
 }

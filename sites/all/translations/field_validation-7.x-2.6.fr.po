@@ -1,10 +1,10 @@
 # French translation of Field Validation (7.x-2.6)
-# Copyright (c) 2021 by the French translation team
+# Copyright (c) 2024 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Field Validation (7.x-2.6)\n"
-"POT-Creation-Date: 2021-12-16 20:41+0000\n"
+"POT-Creation-Date: 2024-08-23 21:55+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -107,7 +107,7 @@ msgstr "Suisse"
 msgid "Regular expression"
 msgstr "Expression régulière"
 msgid "Replacement patterns"
-msgstr "Motifs de remplacement"
+msgstr "Motifs de substitution"
 msgid "equals"
 msgstr "égale"
 msgid "Hour"

@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Internationalization (i18n) hooks
+ * Internationalization (i18n) hooks.
  */
 
 /**
@@ -14,7 +15,7 @@ function i18n_block_i18n_object_info() {
     'load callback' => 'block_load',
     'key' => array('module', 'delta'),
     'placeholders' => array(
-    	'%module' => 'module',
+      '%module' => 'module',
       '%delta' => 'delta',
     ),
     'edit path' => 'admin/structure/block/manage/%module/%delta/configure',
@@ -31,7 +32,7 @@ function i18n_block_i18n_object_info() {
         ),
       ),
       'translate path' => 'admin/structure/block/manage/%module/%delta/translate/%i18n_language',
-    )
+    ),
   );
   return $info;
 }
@@ -43,8 +44,10 @@ function i18n_block_i18n_string_info() {
   $groups['blocks'] = array(
     'title' => t('Blocks'),
     'description' => t('Configurable blocks titles and content.'),
-    'format' => TRUE, // This group has strings with format (block body)
-    'list' => TRUE, // This group can list all strings
+    // This group has strings with format (block body)
+    'format' => TRUE,
+    // This group can list all strings
+    'list' => TRUE,
   );
   return $groups;
 }

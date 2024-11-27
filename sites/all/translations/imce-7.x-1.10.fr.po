@@ -1,10 +1,10 @@
 # French translation of IMCE (7.x-1.10)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2023 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: IMCE (7.x-1.10)\n"
-"POT-Creation-Date: 2019-04-17 01:18+0000\n"
+"POT-Creation-Date: 2023-12-15 21:38+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -459,3 +459,5 @@ msgid "Dimensions must be specified in <kbd>WIDTHxHEIGHT</kbd> format."
 msgstr ""
 "Les dimensions doivent s'exprimer en format "
 "<kbd>LARGEURxHAUTEUR</kbd>."
+msgid "Maximum image dimensions"
+msgstr "Dimensions maximales d'image"

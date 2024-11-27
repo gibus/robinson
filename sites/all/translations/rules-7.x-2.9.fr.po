@@ -1,10 +1,10 @@
 # French translation of Rules (7.x-2.9)
-# Copyright (c) 2021 by the French translation team
+# Copyright (c) 2024 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Rules (7.x-2.9)\n"
-"POT-Creation-Date: 2021-12-16 21:15+0000\n"
+"POT-Creation-Date: 2024-08-23 23:38+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -217,7 +217,7 @@ msgstr "Jeton (token)"
 msgid "Clear"
 msgstr "Vider"
 msgid "Replacement patterns"
-msgstr "Motifs de remplacement"
+msgstr "Motifs de substitution"
 msgid "equals"
 msgstr "égale"
 msgid "Target type"

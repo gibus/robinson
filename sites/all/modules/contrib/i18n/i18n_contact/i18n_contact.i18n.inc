@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Internationalization (i18n) hooks
+ * Internationalization (i18n) hooks.
  */
 
 /**
@@ -42,7 +43,7 @@ function i18n_contact_i18n_object_info() {
       'textgroup' => 'contact',
       // Object type property for string translation.
       'type' => 'category',
-      // Table where the object is stored, to automate string lists
+      // Table where the object is stored, to automate string lists.
       'table' => 'contact',
       // Translatable properties of these objects.
       'properties' => array(
@@ -51,7 +52,7 @@ function i18n_contact_i18n_object_info() {
       ),
       // Path to translate strings to every language.
       'translate path' => 'admin/structure/contact/edit/%contact/translate/%i18n_language',
-    )
+    ),
   );
   return $info;
 }

@@ -1,10 +1,10 @@
 # French translation of Content Type: Extras (7.x-1.12)
-# Copyright (c) 2019 by the French translation team
+# Copyright (c) 2024 by the French translation team
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Content Type: Extras (7.x-1.12)\n"
-"POT-Creation-Date: 2019-02-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-24 00:00+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -55,11 +55,11 @@ msgstr "Facultatif"
 msgid "Hidden"
 msgstr "Caché"
 msgid "Replacement patterns"
-msgstr "Motifs de remplacement"
+msgstr "Motifs de substitution"
 msgid "Publishing options"
 msgstr "Options de publication"
 msgid "Create new revision"
-msgstr "Créer une nouvelle révision"
+msgstr "Créer une nouvelle version"
 msgid "Path alias"
 msgstr "Alias de chemin"
 msgid "Included"

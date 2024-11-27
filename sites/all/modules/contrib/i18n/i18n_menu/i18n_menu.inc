@@ -3,6 +3,8 @@
  * @file
  * Internationalization (i18n) module - Translation set
  */
+
+#[AllowDynamicProperties]
 class i18n_menu_link_translation_set extends i18n_translation_set {
   /**
    * Load all path translations
